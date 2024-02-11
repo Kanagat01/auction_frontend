@@ -1,0 +1,18 @@
+$colors: (
+  "default-font-color": #202020,
+  "gradient1": linear-gradient(#D4E0EE, #E8EDD7),
+  "primary": #3054E8,
+  "bg-color": #fff,
+  "bg-color-2": #f9faff,
+  "text-color": #fff,
+  "btn-bg": #f0f3f8,
+  "menu-bg": rgba(255, 255, 255, 0.50),
+  "yellow": #e8c030,
+);
+
+:root {
+  @each $name, $color in $colors {
+    --#{$name}: #{$color};
+  }
+  --default-border-radius: 20px;
+}

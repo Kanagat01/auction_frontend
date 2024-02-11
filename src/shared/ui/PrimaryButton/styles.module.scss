@@ -1,0 +1,16 @@
+.primary-btn {
+    display: inline-flex;
+    padding: 1.2rem 17rem;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid transparent;
+    border-radius: var(--default-border-radius);
+    background: var(--primary);
+    margin-top: 2rem;
+
+    color: #fff;
+    font-family: "Gilroy-Medium";
+    font-size: 2rem;
+    font-weight: 500;
+}

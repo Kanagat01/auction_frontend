@@ -1,10 +1,12 @@
 html,
 body {
-    padding: 0;
-    margin: 0;
-    font-size: 10px;
+  padding: 0;
+  margin: 0;
+  font-size: 10px;
+  font-family: "TT Firs Neue";
+  color: var(--default-font-color);
 }
 
 .container {
-    background-color: var(--gradient1);
+  background-color: var(--gradient1);
 }

@@ -1,21 +1,17 @@
-import { lazy, Suspense } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { lazy } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-const TasksListPage = lazy(() => import("./tasks-list"));
-const TaskDetailsPage = lazy(() => import("./task-details"));
-const ForgotPassword = lazy(() => import("./forgot-password"));
+const HomePage = lazy(() => import("./home"));
 const Login = lazy(() => import("./login"));
+const ForgotPassword = lazy(() => import("./forgot-password"));
 
 export const Routing = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Routes>
-        <Route path="/" element={<TasksListPage />} />
-        <Route path="/:taskId" element={<TaskDetailsPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Suspense>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 };

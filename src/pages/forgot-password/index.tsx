@@ -1,19 +1,17 @@
 import FormPage from "~/shared/ui/FormPage";
-import RoundedInput from "~/shared/ui/RoundedInput";
+import RoundedInputGroup from "~/shared/ui/RoundedInputGroup";
 import styles from "./styles.module.scss";
 
-const ForgotPasswordPage: React.FC = () => {
+function ForgotPassword() {
   return (
-    <FormPage
-      title="Название"
-      buttonText="Войти"
-      inputGroup={<RoundedInput placeholder="Номер телефона" />}
-    >
+    <FormPage title="Название" buttonText="Войти">
       <span className={styles["forgot-password-text"]}>
-        Для восстановления пароля введите Ваш адрес электронной почты.
+        Для восстановления пароля введите <br /> Ваш адрес электронной почты
       </span>
+      <RoundedInputGroup>
+        <RoundedInputGroup.Input placeholder="Номер телефона" />
+      </RoundedInputGroup>
     </FormPage>
   );
-};
-
-export default ForgotPasswordPage;
+}
+export default ForgotPassword;

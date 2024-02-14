@@ -1,0 +1,33 @@
+.search-box {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--default-border-radius);
+  background: #fff;
+  padding: 1.2rem 1.8rem;
+  width: 30rem;
+}
+
+.search-icon {
+  display: inline-block;
+  width: 2.8rem;
+  height: 2.6rem;
+  opacity: 0.3;
+  margin-right: 4px;
+}
+
+.search-input {
+  flex: 1;
+  font-family: "Gilroy";
+  font-size: 1.6rem;
+  font-weight: 400;
+
+  &::placeholder {
+    opacity: 0.3;
+  }
+
+  &,
+  &:focus-visible {
+    border: none;
+    outline: none;
+  }
+}

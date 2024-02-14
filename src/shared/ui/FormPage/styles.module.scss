@@ -1,34 +1,30 @@
-@import "~/app/styles/vars.scss";
-
-$border-color: map-get($colors, 'default-font-color');
-
 .login-page {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
-    height: 100vh;
-    margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  margin: auto;
 }
 
 .login-form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 
-    .input-group {
-        width: 40rem;
-        display: flex;
-        flex-direction: column;
-        border: 1px solid rgba($border-color, 0.5);
-        border-radius: var(--default-border-radius);
-    }
+  a {
+    margin-top: 2rem;
+    color: var(--primary);
+    font-family: "Gilroy";
+    font-size: 2rem;
+    font-weight: 500;
+  }
 }
 
 .login-title {
-    font-family: "Gilroy-Bold";
-    font-size: 4rem;
-    font-weight: 700;
-    margin-bottom: 3.2rem;
+  font-family: "Gilroy";
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: 3.2rem;
 }

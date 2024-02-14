@@ -1,6 +1,6 @@
 import { Routing } from "~/pages";
 import { withProviders } from "./providers";
-import "./index.scss";
+import "./styles/index.scss";
 
 const App = () => {
   return (

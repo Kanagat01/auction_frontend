@@ -1,4 +1,4 @@
-export * from "./PasswordInputContainer";
 export * from "./PrimaryButton";
-export * from "./RoundedInput";
+export * from "./RoundedInputGroup";
 export * from "./FormPage";
+export * from "./SearchInput";

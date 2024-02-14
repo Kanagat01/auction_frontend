@@ -5,8 +5,15 @@ import { FaRegBell } from "react-icons/fa6";
 import { RxPerson } from "react-icons/rx";
 import { CiSettings } from "react-icons/ci";
 import { HiOutlineLogout } from "react-icons/hi";
-import { TbBrandGoogleAnalytics } from "react-icons/tb";
-import Sidebar1 from "./icons/sidebar1";
+import {
+  StatisticsIcon,
+  DeleteNoteIcon,
+  HammerIcon,
+  CubeIcon,
+  CreateNoteIcon,
+  HistoryIcon,
+  BookIcon,
+} from "./icons";
 import "./style.scss";
 
 const HomePage = () => {
@@ -49,18 +56,19 @@ const HomePage = () => {
       </header>
       <div style={{ display: "flex", padding: "3rem 0 3rem 1.5rem" }}>
         <aside>
-          <a href="#">
-            <Sidebar1 style={{ width: "100%", height: "100%" }} />
-          </a>
-          <a href="#">
-            <TbBrandGoogleAnalytics style={{ width: "100%", height: "100%" }} />
-          </a>
-          <a href="#">
-            <TbBrandGoogleAnalytics style={{ width: "100%", height: "100%" }} />
-          </a>
-          <a href="#">
-            <TbBrandGoogleAnalytics style={{ width: "100%", height: "100%" }} />
-          </a>
+          {[
+            <StatisticsIcon />,
+            <HammerIcon />,
+            <CubeIcon />,
+            <CreateNoteIcon />,
+            <HistoryIcon />,
+            <BookIcon />,
+            <DeleteNoteIcon />,
+          ].map((icon, index) => (
+            <a href="#" key={index}>
+              {icon}
+            </a>
+          ))}
         </aside>
         <main>
           <h1>Заказчики</h1>

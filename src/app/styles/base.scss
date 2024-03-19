@@ -7,6 +7,35 @@ body {
   color: var(--default-font-color);
 }
 
-.container {
-  background-color: var(--gradient1);
+.app-wrapper {
+  display: flex;
+  padding: 3rem 0 3rem 1.5rem;
+}
+
+button {
+  cursor: pointer;
+}
+
+.rounded-block {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 1024px) {
+  html,
+  body {
+    font-size: 7px;
+  }
 }

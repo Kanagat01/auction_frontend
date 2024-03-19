@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
 
-const SearchInput: FC<InputProps> = (props) => {
+export const SearchInput: FC<InputProps> = (props) => {
   return (
     <div className={styles["search-box"]}>
       <span className={styles["search-icon"]}>
@@ -14,5 +14,3 @@ const SearchInput: FC<InputProps> = (props) => {
     </div>
   );
 };
-
-export default SearchInput;

@@ -3,12 +3,12 @@ import styles from "./styles.module.scss";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
-export default function PrimaryButton({
+export function PrimaryButton({
   children,
   ...props
 }: Props): React.ReactElement {
   return (
-    <button className={styles["primary-btn"]} {...props}>
+    <button className={styles["main-btn"]} {...props}>
       {children}
     </button>
   );

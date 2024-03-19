@@ -1,0 +1,26 @@
+$border-color: rgba(0, 0, 0, 0.1);
+
+table {
+  border-spacing: 0;
+  width: 100%;
+  height: fit-content;
+
+  th {
+    border-right: 1px solid $border-color;
+    padding: 1.5rem 1rem;
+    background: $border-color;
+  }
+  td {
+    border-bottom: 1px solid $border-color;
+    border-right: 1px solid $border-color;
+    padding: 1rem;
+  }
+  tr:last-child {
+    td {
+      border-bottom: none;
+    }
+    td:last-child {
+      border-right: none;
+    }
+  }
+}

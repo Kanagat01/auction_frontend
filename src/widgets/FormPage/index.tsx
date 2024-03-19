@@ -1,5 +1,5 @@
 import React from "react";
-import PrimaryButton from "~/shared/ui/PrimaryButton";
+import { PrimaryButton } from "~/shared/ui";
 import styles from "./styles.module.scss";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
   isLoginPage?: boolean;
 }
 
-const FormPage: React.FC<Props> = ({
+export const FormPage: React.FC<Props> = ({
   title,
   children,
   buttonText,
@@ -26,5 +26,3 @@ const FormPage: React.FC<Props> = ({
     </div>
   );
 };
-
-export default FormPage;

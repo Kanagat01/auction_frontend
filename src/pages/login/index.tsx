@@ -1,5 +1,4 @@
-import FormPage from "~/shared/ui/FormPage";
-import RoundedInputGroup from "~/shared/ui/RoundedInputGroup";
+import { FormPage, RoundedInputGroup } from "~/shared/ui";
 
 function Login() {
   return (

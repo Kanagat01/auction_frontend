@@ -5,3 +5,8 @@ export * from "./Cube";
 export * from "./Hammer";
 export * from "./History";
 export * from "./StatisticsIcon";
+export * from "./FolderPlus";
+export * from "./Person";
+export * from "./Settings";
+export * from "./Logout";
+export * from "./RegBell";

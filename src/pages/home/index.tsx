@@ -1,77 +1,78 @@
-import SearchInput from "~/shared/ui/SearchInput";
-import person from "./icons/ava.jpg";
-import { FaAngleDown } from "react-icons/fa";
-import { FaRegBell } from "react-icons/fa6";
-import { RxPerson } from "react-icons/rx";
-import { CiSettings } from "react-icons/ci";
-import { HiOutlineLogout } from "react-icons/hi";
-import {
-  StatisticsIcon,
-  DeleteNoteIcon,
-  HammerIcon,
-  CubeIcon,
-  CreateNoteIcon,
-  HistoryIcon,
-  BookIcon,
-} from "./icons";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
 import "./style.scss";
+import { Header, Sidebar, TableTanstack } from "~/widgets";
+import { PrimaryButton, FolderPlusIcon, InputContainer } from "~/shared/ui";
 
 const HomePage = () => {
   return (
-    <div className="container">
-      <header>
-        <div className="logo">
-          <span className="logo-circle">Logo</span>
-          <div className="logo-name">Transpareon</div>
-        </div>
-        <div className="left-side">
-          <SearchInput placeholder="Поиск" />
-          <div className="menu-profile-info">
-            <div className="profile-img">
-              <img src={person} alt="person-img" />
-            </div>
-            <div className="profile-main">
-              <span className="full-name">Anton Zheltyshev</span>
-              <span className="org-name">ООО “Евразия” (312362)</span>
-            </div>
-            <span>
-              <FaAngleDown style={{ width: "2rem", height: "2rem" }} />
-            </span>
-          </div>
-          <div className="actions">
-            <a href="#">
-              <FaRegBell />
-            </a>
-            <a href="#">
-              <RxPerson />
-            </a>
-            <a href="#">
-              <CiSettings />
-            </a>
-            <a href="#">
-              <HiOutlineLogout />
-            </a>
-          </div>
-        </div>
-      </header>
-      <div style={{ display: "flex", padding: "3rem 0 3rem 1.5rem" }}>
-        <aside>
-          {[
-            <StatisticsIcon />,
-            <HammerIcon />,
-            <CubeIcon />,
-            <CreateNoteIcon />,
-            <HistoryIcon />,
-            <BookIcon />,
-            <DeleteNoteIcon />,
-          ].map((icon, index) => (
-            <a href="#" key={index}>
-              {icon}
-            </a>
-          ))}
-        </aside>
+    <div
+      style={{
+        background: "var(--main-bg-color)",
+      }}
+    >
+      <Header />
+      <div className="app-wrapper">
+        <Sidebar />
         <main>
-          <h1>Заказчики</h1>
+          <div className="main-head">
+            <div className="main-title">
+              <span>Заказы</span>
+              <button>...</button>
+            </div>
+            <div className="control-panel">
+              {[
+                ["id", "№ Транспортировки", "00000000"],
+                ["city_from", "Город-старт", "Москва"],
+                ["city_to", "Город-место назначения", "Балашиха"],
+              ].map(([name, label, placeholder]) => (
+                <InputContainer
+                  name={name}
+                  label={label}
+                  placeholder={placeholder}
+                  style={{ height: "-webkit-fill-available" }}
+                />
+              ))}
+              <div className="actions">
+                <span className="actions-title">Действия</span>
+                <div className="d-flex">
+                  <div className="d-inline-flex">
+                    {[
+                      FolderPlusIcon,
+                      LuCopyPlus,
+                      LuPenSquare,
+                      FaRegTrashCan,
+                    ].map((Icon) => (
+                      <button className="me-2">
+                        <Icon style={{ width: "2rem", height: "2rem" }} />
+                      </button>
+                    ))}
+                  </div>
+                  <div className="d-inline-flex ms-3">
+                    {["В аукцион", "На торги", "Назначить"].map(
+                      (buttonText) => (
+                        <PrimaryButton
+                          style={{
+                            background: "var(--primary)",
+                            color: "#fff",
+                            fontSize: "1.2rem",
+                            fontWeight: 400,
+                            borderRadius: "5px",
+                          }}
+                          className="me-2 px-3 py-2"
+                        >
+                          {buttonText}
+                        </PrimaryButton>
+                      )
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="main-body">
+            <TableTanstack />
+          </div>
         </main>
       </div>
     </div>

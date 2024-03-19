@@ -1,5 +1,5 @@
-import FormPage from "~/shared/ui/FormPage";
-import RoundedInputGroup from "~/shared/ui/RoundedInputGroup";
+import { FormPage } from "~/widgets";
+import { RoundedInputGroup } from "~/shared/ui";
 import styles from "./styles.module.scss";
 
 function ForgotPassword() {

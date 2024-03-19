@@ -1,0 +1,69 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--menu-bg);
+  backdrop-filter: blur(30px);
+  height: 8rem;
+  width: 100%;
+  padding: 1.8rem 3rem;
+  box-sizing: border-box;
+}
+
+.logo {
+  font-family: "TT Firs Neue";
+  font-size: 2.6rem;
+  font-weight: 600;
+  line-height: 34px;
+  text-align: left;
+}
+
+.left-side {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.menu-profile-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-name,
+.org-name {
+  display: inline-block;
+}
+
+.full-name {
+  font-family: "Gilroy";
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.org-name {
+  font-family: "Gilroy";
+  font-size: 1.4rem;
+  font-weight: 400;
+  opacity: 0.5;
+}
+
+.menu-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  a {
+    text-decoration: none;
+    color: var(--default-font-color);
+  }
+  svg {
+    width: 3.5rem;
+    height: 2.5rem;
+  }
+}

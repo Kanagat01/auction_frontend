@@ -34,7 +34,7 @@ const Group: FC<GroupProps> = ({ children }) => {
   return <div className={styles["input-group"]}>{children}</div>;
 };
 
-const RoundedInputGroup: FC<GroupProps> & {
+export const RoundedInputGroup: FC<GroupProps> & {
   Input: typeof RoundedInput;
   PasswordInput: typeof PasswordInput;
 } = ({ children }) => {
@@ -43,5 +43,3 @@ const RoundedInputGroup: FC<GroupProps> & {
 
 RoundedInputGroup.Input = RoundedInput;
 RoundedInputGroup.PasswordInput = PasswordInput;
-
-export default RoundedInputGroup;

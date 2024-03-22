@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
-import { LogoutIcon, PersonIcon, SearchInput, SettingsIcon } from "~/shared/ui";
-import person from "~/shared/ui/icons/ava.jpg";
+import { ReactSVG } from "react-svg";
+import { SettingsModal } from "~/widgets";
+import { Notifications, CompaniesList } from "~/features";
+import { Person, Logout, Ava } from "~/shared/assets";
+import { SearchInput } from "~/shared/ui";
 import styles from "./styles.module.scss";
-import { CompaniesList } from "~/entities/Company";
-import { Notifications } from "~/entities/Notification";
 
-export function Header(): ReactNode {
+export function Header() {
   return (
     <header className={styles.header}>
       <div className={styles["logo"]}>Kargonika</div>
@@ -13,7 +13,7 @@ export function Header(): ReactNode {
         <SearchInput placeholder="Поиск" />
         <div className={styles["menu-profile-info"]}>
           <div className="rounded-block">
-            <img src={person} alt="person-img" />
+            <img src={Ava} alt="person-img" />
           </div>
           <div className={styles["profile-main"]}>
             <span className={styles["full-name"]}>Anton Zheltyshev</span>
@@ -23,9 +23,13 @@ export function Header(): ReactNode {
         </div>
         <div className={styles["menu-actions"]}>
           <Notifications />
-          {[<PersonIcon />, <SettingsIcon />, <LogoutIcon />].map((el) => (
-            <a href="#">{el}</a>
-          ))}
+          <a href="#">
+            <ReactSVG src={Person} />
+          </a>
+          <SettingsModal />
+          <a href="#">
+            <ReactSVG src={Logout} />
+          </a>
         </div>
       </div>
     </header>

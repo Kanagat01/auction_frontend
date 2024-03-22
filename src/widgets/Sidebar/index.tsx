@@ -1,31 +1,24 @@
-import { ReactNode } from "react";
 import {
-  StatisticsIcon,
-  DeleteNoteIcon,
-  HammerIcon,
-  CubeIcon,
-  CreateNoteIcon,
-  HistoryIcon,
-  BookIcon,
-} from "~/shared/ui";
+  Statistics,
+  DeleteNote,
+  Hammer,
+  Cube,
+  CreateNote,
+  History,
+  Book,
+} from "~/shared/assets";
 import styles from "./styles.module.scss";
 
-export function Sidebar(): ReactNode {
+export function Sidebar() {
   return (
     <aside className={styles.aside}>
-      {[
-        StatisticsIcon,
-        HammerIcon,
-        CubeIcon,
-        CreateNoteIcon,
-        HistoryIcon,
-        BookIcon,
-        DeleteNoteIcon,
-      ].map((Icon, index) => (
-        <a href="#" key={index}>
-          <Icon style={{ width: "2rem", height: "2rem" }} />
-        </a>
-      ))}
+      {[Statistics, Hammer, Cube, CreateNote, History, Book, DeleteNote].map(
+        (src, index) => (
+          <a href="#" key={index}>
+            <img src={src} style={{ width: "2.4rem", height: "2.4rem" }} />
+          </a>
+        )
+      )}
     </aside>
   );
 }

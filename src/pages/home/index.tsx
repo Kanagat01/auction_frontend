@@ -1,16 +1,14 @@
+import { ReactSVG } from "react-svg";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
-import "./style.scss";
 import { Header, Sidebar, TableTanstack } from "~/widgets";
-import { PrimaryButton, FolderPlusIcon, InputContainer } from "~/shared/ui";
+import { Button, InputContainer } from "~/shared/ui";
+import { FolderPlus } from "~/shared/assets";
+import "./style.scss";
 
 const HomePage = () => {
   return (
-    <div
-      style={{
-        background: "var(--main-bg-color)",
-      }}
-    >
+    <div className="main-bg">
       <Header />
       <div className="app-wrapper">
         <Sidebar />
@@ -38,31 +36,27 @@ const HomePage = () => {
                 <div className="d-flex">
                   <div className="d-inline-flex">
                     {[
-                      FolderPlusIcon,
+                      () => (
+                        <ReactSVG
+                          src={FolderPlus}
+                          style={{ fontSize: "2rem" }}
+                        />
+                      ),
                       LuCopyPlus,
                       LuPenSquare,
                       FaRegTrashCan,
                     ].map((Icon) => (
-                      <button className="me-2">
+                      <Button variant="outline" className="me-2">
                         <Icon style={{ width: "2rem", height: "2rem" }} />
-                      </button>
+                      </Button>
                     ))}
                   </div>
                   <div className="d-inline-flex ms-3">
                     {["В аукцион", "На торги", "Назначить"].map(
                       (buttonText) => (
-                        <PrimaryButton
-                          style={{
-                            background: "var(--primary)",
-                            color: "#fff",
-                            fontSize: "1.2rem",
-                            fontWeight: 400,
-                            borderRadius: "5px",
-                          }}
-                          className="me-2 px-3 py-2"
-                        >
+                        <Button variant="primary" className="me-2 px-3 py-2">
                           {buttonText}
-                        </PrimaryButton>
+                        </Button>
                       )
                     )}
                   </div>

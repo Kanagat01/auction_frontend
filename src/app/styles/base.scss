@@ -7,6 +7,10 @@ body {
   color: var(--default-font-color);
 }
 
+.main-bg {
+  background: var(--main-bg-color);
+}
+
 .app-wrapper {
   display: flex;
   padding: 3rem 0 3rem 1.5rem;
@@ -14,6 +18,11 @@ body {
 
 button {
   cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: var(--default-font-color);
 }
 
 .rounded-block {
@@ -33,7 +42,35 @@ button {
   }
 }
 
-@media (max-width: 1024px) {
+.full-size {
+  width: 100%;
+  height: 100%;
+}
+
+.avg-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+.modal {
+  .modal-content,
+  .modal-body {
+    border-radius: 10px;
+    width: 365px;
+  }
+  .modal-body {
+    padding: 3rem 2rem;
+  }
+}
+
+.rounded-modal {
+  .modal-content,
+  .modal-body {
+    border-radius: 20px 0px 0px 20px;
+  }
+}
+
+@media (max-width: 992px) {
   html,
   body {
     font-size: 7px;

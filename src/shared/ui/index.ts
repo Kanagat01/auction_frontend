@@ -1,5 +1,4 @@
-export * from "./PrimaryButton";
+export * from "./Button";
 export * from "./RoundedInputGroup";
 export * from "./SearchInput";
-export * from "./icons";
 export * from "./InputContainer";

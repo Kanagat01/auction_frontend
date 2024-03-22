@@ -1,0 +1,21 @@
+.primary-btn,
+.outline-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: "Gilroy";
+  font-size: 1.2rem;
+  font-weight: 400;
+
+  border: 1px solid var(--primary);
+  border-radius: 5px;
+}
+.primary-btn {
+  color: #fff;
+  background: var(--primary);
+}
+.outline-btn {
+  color: var(--primary);
+  background: #fff;
+}

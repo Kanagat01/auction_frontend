@@ -53,14 +53,5 @@ $default-font-color: map-get($colors, "default-font-color");
       font-weight: 400;
       line-height: 14px;
     }
-    button {
-      object-fit: contain;
-      box-sizing: border-box;
-      border: 1px solid var(--primary);
-      border-radius: 5px;
-      padding: 4px 5px;
-      color: var(--primary);
-      background: transparent;
-    }
   }
 }

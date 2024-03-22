@@ -9,7 +9,7 @@ $border-color: map-get($colors, "default-font-color");
   height: 2rem;
   flex-shrink: 0;
   border-radius: 12px;
-  background: url("./icons/hide.svg") center no-repeat;
+  background: url("~/shared/assets/svg/hide.svg") center no-repeat;
   background-size: cover;
 }
 

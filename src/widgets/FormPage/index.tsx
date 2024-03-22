@@ -1,5 +1,5 @@
 import React from "react";
-import { PrimaryButton } from "~/shared/ui";
+import { Button } from "~/shared/ui";
 import styles from "./styles.module.scss";
 
 interface Props {
@@ -20,7 +20,7 @@ export const FormPage: React.FC<Props> = ({
       <form className={styles["login-form"]}>
         <span className={styles["login-title"]}>{title}</span>
         {children}
-        <PrimaryButton type="submit">{buttonText}</PrimaryButton>
+        <Button type="submit">{buttonText}</Button>
         {isLoginPage ? <a href="/forgot-password">Забыли пароль?</a> : ""}
       </form>
     </div>

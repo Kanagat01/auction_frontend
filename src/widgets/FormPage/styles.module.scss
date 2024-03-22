@@ -5,6 +5,14 @@
   width: 100vw;
   height: 100vh;
   margin: auto;
+
+  button {
+    padding: 1.2rem 17rem;
+    border-radius: var(--default-border-radius);
+    margin-top: 2rem;
+    font-size: 2rem;
+    font-weight: 500;
+  }
 }
 
 .login-form {

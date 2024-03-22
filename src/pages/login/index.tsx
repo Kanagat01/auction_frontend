@@ -1,4 +1,5 @@
-import { FormPage, RoundedInputGroup } from "~/shared/ui";
+import { FormPage } from "~/widgets";
+import { RoundedInputGroup } from "~/shared/ui";
 
 function Login() {
   return (

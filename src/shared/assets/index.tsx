@@ -11,6 +11,7 @@ export { default as Bell } from "./svg/bell.svg";
 export { default as Company } from "./svg/company.svg";
 export { default as FolderPlus } from "./svg/folderPlus.svg";
 export { default as Integration } from "./svg/integration.svg";
+export { default as Key } from "./svg/key.svg";
 export { default as Logout } from "./svg/logout.svg";
 export { default as Person } from "./svg/person.svg";
 export { default as Security } from "./svg/security.svg";

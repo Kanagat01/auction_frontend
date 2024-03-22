@@ -5,6 +5,7 @@ import { FaAngleRight } from "react-icons/fa";
 import { NotificationCard, NotificationType } from "~/entities/Notification";
 import { useModalState } from "~/shared/lib";
 import { Bell } from "~/shared/assets";
+import { Button } from "~/shared/ui";
 
 export function Notifications() {
   const [show, changeShow] = useModalState(false);
@@ -32,34 +33,19 @@ export function Notifications() {
       </a>
 
       <Modal show={show} onHide={changeShow} className="rounded-modal">
-        <Modal.Body>
+        <Modal.Body style={{ height: "90vh" }}>
           <div className="d-flex justify-content-end mb-2">
             <FaAngleRight className="avg-icon" />
           </div>
           <div className="d-flex mb-4" style={{ gap: "1rem" }}>
             {["Информация", "Финансы"].map((text) => (
-              <button
+              <Button
                 onClick={() => setActiveSection(text)}
-                style={{
-                  boxSizing: "border-box",
-                  border:
-                    activeSection === text
-                      ? "1px solid rgba(5, 10, 4, 0.2)"
-                      : "none",
-                  borderRadius: "10px",
-                  background:
-                    activeSection === text ? "#fff" : "rgba(5, 10, 4, 0.05)",
-                  color: "rgb(5, 10, 4)",
-                  fontFamily: "Gilroy",
-                  fontSize: "1.4rem",
-                  fontWeight: 400,
-                  lineHeight: "17px",
-                  textAlign: "left",
-                  padding: "0.5rem 1.5rem",
-                }}
+                variant="section"
+                isActive={activeSection === text}
               >
                 {text}
-              </button>
+              </Button>
             ))}
           </div>
           {notifications.map((el) => (

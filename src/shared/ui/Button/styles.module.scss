@@ -1,3 +1,6 @@
+@import "~/app/styles/colors.scss";
+$font-color: map-get($colors, "default-font-color");
+
 .primary-btn,
 .outline-btn {
   display: inline-flex;
@@ -17,5 +20,22 @@
 }
 .outline-btn {
   color: var(--primary);
+  background: #fff;
+}
+
+.section-btn {
+  padding: 0.8rem 2rem;
+  background: rgba($font-color, 0.05);
+  color: $font-color;
+  border: none;
+  border-radius: 10px;
+  font-family: "Gilroy";
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.7rem;
+}
+
+.section-btn.active {
+  border: 1px solid rgba($font-color, 0.2);
   background: #fff;
 }

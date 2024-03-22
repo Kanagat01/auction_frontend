@@ -36,18 +36,17 @@ const HomePage = () => {
                 <div className="d-flex">
                   <div className="d-inline-flex">
                     {[
-                      () => (
-                        <ReactSVG
-                          src={FolderPlus}
-                          style={{ fontSize: "2rem" }}
-                        />
-                      ),
+                      () => <ReactSVG src={FolderPlus} />,
                       LuCopyPlus,
                       LuPenSquare,
                       FaRegTrashCan,
                     ].map((Icon) => (
-                      <Button variant="outline" className="me-2">
-                        <Icon style={{ width: "2rem", height: "2rem" }} />
+                      <Button
+                        variant="outline"
+                        className="me-2"
+                        style={{ fontSize: "2rem" }}
+                      >
+                        <Icon />
                       </Button>
                     ))}
                   </div>

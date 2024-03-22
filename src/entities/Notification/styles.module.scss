@@ -1,0 +1,59 @@
+@import "~/app/styles/colors.scss";
+$font-color: map-get($colors, "default-font-color");
+
+.notificationDate {
+  display: inline-block;
+  font-family: "Gilroy";
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1.9rem;
+  text-align: left;
+}
+
+.notificationCard {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: rgba($font-color, 0.05);
+  border-radius: 10px;
+  font-family: "Gilroy";
+}
+
+.notificationType {
+  color: rgba($font-color, 0.5);
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+}
+
+.notificationTitle {
+  color: rgba($font-color, 0.8);
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.7rem;
+}
+
+.notificationText {
+  color: rgba($font-color, 0.5);
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.4rem;
+}
+
+.notificationTime {
+  color: rgba($font-color, 0.5);
+  font-size: 1.3rem;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+}
+
+.readMore {
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+}

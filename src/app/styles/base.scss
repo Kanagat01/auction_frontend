@@ -54,6 +54,17 @@ a {
   height: 2.4rem;
 }
 
+.tooltip {
+  --bs-tooltip-border-radius: 5px;
+  --bs-tooltip-bg: #fff;
+  --bs-tooltip-color: #000;
+  --bs-tooltip-font-size: max(0.9rem, 9px);
+}
+
+.tooltip-arrow {
+  display: none !important;
+}
+
 .modal {
   .modal-dialog {
     display: flex;
@@ -80,6 +91,6 @@ a {
 @media (max-width: 992px) {
   html,
   body {
-    font-size: 7px;
+    font-size: 8px;
   }
 }

@@ -1,11 +1,12 @@
 export { default as Ava } from "./images/ava.jpg";
-export { default as Book } from "./images/book.png";
-export { default as CreateNote } from "./images/createNote.png";
-export { default as Cube } from "./images/cube.png";
-export { default as DeleteNote } from "./images/deleteNote.png";
-export { default as Hammer } from "./images/hammer.png";
-export { default as History } from "./images/history.png";
-export { default as Statistics } from "./images/statistics.png";
+
+export { default as Book } from "./svg/book.svg";
+export { default as CreateNote } from "./svg/createNote.svg";
+export { default as Cube } from "./svg/cube.svg";
+export { default as DeleteNote } from "./svg/deleteNote.svg";
+export { default as Hammer } from "./svg/hammer.svg";
+export { default as History } from "./svg/history.svg";
+export { default as Statistics } from "./svg/statistics.svg";
 
 export { default as Bell } from "./svg/bell.svg";
 export { default as Company } from "./svg/company.svg";

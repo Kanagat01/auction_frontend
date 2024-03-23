@@ -23,8 +23,9 @@ const HomePage = () => {
                 ["id", "№ Транспортировки", "00000000"],
                 ["city_from", "Город-старт", "Москва"],
                 ["city_to", "Город-место назначения", "Балашиха"],
-              ].map(([name, label, placeholder]) => (
+              ].map(([name, label, placeholder], idx) => (
                 <InputContainer
+                  key={idx}
                   name={name}
                   label={label}
                   placeholder={placeholder}
@@ -40,8 +41,9 @@ const HomePage = () => {
                       LuCopyPlus,
                       LuPenSquare,
                       FaRegTrashCan,
-                    ].map((Icon) => (
+                    ].map((Icon, idx) => (
                       <Button
+                        key={idx}
                         variant="outline"
                         className="me-2"
                         style={{ fontSize: "2rem" }}
@@ -53,7 +55,11 @@ const HomePage = () => {
                   <div className="d-inline-flex ms-3">
                     {["В аукцион", "На торги", "Назначить"].map(
                       (buttonText) => (
-                        <Button variant="primary" className="me-2 px-3 py-2">
+                        <Button
+                          key={buttonText}
+                          variant="primary"
+                          className="me-2 px-3 py-2"
+                        >
                           {buttonText}
                         </Button>
                       )

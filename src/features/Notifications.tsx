@@ -40,6 +40,7 @@ export function Notifications() {
           <div className="d-flex mb-4" style={{ gap: "1rem" }}>
             {["Информация", "Финансы"].map((text) => (
               <Button
+                key={text}
                 onClick={() => setActiveSection(text)}
                 variant="section"
                 isActive={activeSection === text}
@@ -48,8 +49,8 @@ export function Notifications() {
               </Button>
             ))}
           </div>
-          {notifications.map((el) => (
-            <NotificationCard {...el} />
+          {notifications.map((el, idx) => (
+            <NotificationCard key={idx} {...el} />
           ))}
         </Modal.Body>
       </Modal>

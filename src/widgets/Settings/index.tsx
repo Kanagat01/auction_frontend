@@ -43,8 +43,9 @@ export function SettingsModal() {
             </a>
           </div>
           <div className="d-flex flex-column mt-5" style={{ gap: "2rem" }}>
-            {settingOptions.map(([icon, title, description]) => (
+            {settingOptions.map(([icon, title, description], idx) => (
               <div
+                key={idx}
                 className="d-flex align-items-center"
                 style={{ gap: "1rem" }}
               >

@@ -26,8 +26,8 @@ export function CompaniesList() {
       <Modal show={show} onHide={changeShow}>
         <Modal.Body>
           <div className={`${styles.yourCompanies} mb-4`}>Ваши компании</div>
-          {companies.map((comp: Company) => (
-            <CompanyCard {...comp} />
+          {companies.map((comp: Company, idx) => (
+            <CompanyCard key={idx} {...comp} />
           ))}
           <a
             href="#"

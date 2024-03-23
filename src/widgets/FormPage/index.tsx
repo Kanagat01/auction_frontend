@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "~/shared/ui";
 import styles from "./styles.module.scss";
+import { NavLink } from "react-router-dom";
 
 interface Props {
   title: string;
@@ -20,8 +21,14 @@ export const FormPage: React.FC<Props> = ({
       <form className={styles["login-form"]}>
         <span className={styles["login-title"]}>{title}</span>
         {children}
-        <Button type="submit">{buttonText}</Button>
-        {isLoginPage ? <a href="/forgot-password">Забыли пароль?</a> : ""}
+        <Button variant="primary" type="submit">
+          {buttonText}
+        </Button>
+        {isLoginPage ? (
+          <NavLink to="/forgot-password">Забыли пароль?</NavLink>
+        ) : (
+          ""
+        )}
       </form>
     </div>
   );

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./table.scss";
+import styles from "./styles.module.scss";
 
 import {
   createColumnHelper,
@@ -102,7 +102,7 @@ export function TableTanstack() {
   });
 
   return (
-    <table>
+    <table className={styles.table}>
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>

@@ -18,3 +18,4 @@ export { default as Person } from "./svg/person.svg";
 export { default as Security } from "./svg/security.svg";
 export { default as Settings } from "./svg/settings.svg";
 export { default as Hide } from "./svg/hide.svg";
+export { default as LocationIcon } from "./svg/location.svg";

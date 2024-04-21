@@ -5,7 +5,7 @@ import { FaAngleRight } from "react-icons/fa";
 import { NotificationCard, NotificationType } from "~/entities/Notification";
 import { useModalState } from "~/shared/lib";
 import { Bell } from "~/shared/assets";
-import { Button } from "~/shared/ui";
+import { SectionButton } from "~/shared/ui";
 
 export function Notifications() {
   const [show, changeShow] = useModalState(false);
@@ -39,14 +39,13 @@ export function Notifications() {
           </div>
           <div className="d-flex mb-4" style={{ gap: "1rem" }}>
             {["Информация", "Финансы"].map((text) => (
-              <Button
+              <SectionButton
                 key={text}
                 onClick={() => setActiveSection(text)}
-                variant="section"
-                isActive={activeSection === text}
+                className={activeSection === text ? "active" : ""}
               >
                 {text}
-              </Button>
+              </SectionButton>
             ))}
           </div>
           {notifications.map((el, idx) => (

@@ -1,17 +1,23 @@
-import React, { createContext, Dispatch, SetStateAction } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useState,
+} from "react";
 
 type AuthContextType = {
   isAuthenticated: boolean;
   setAuth: Dispatch<SetStateAction<boolean>>;
 };
 
-const AuthContext = createContext<AuthContextType>({
+export const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   setAuth: () => {},
 });
 
-export const withAuthContext = (component: () => React.ReactNode) => () => {
-  const [isAuthenticated, setAuth] = React.useState(false);
+export const withAuthContext = (component: () => ReactNode) => () => {
+  const [isAuthenticated, setAuth] = useState(true);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, setAuth }}>

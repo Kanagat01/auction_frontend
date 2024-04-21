@@ -4,6 +4,8 @@ import { Notifications, CompaniesList } from "~/features";
 import { Person, Logout, Ava } from "~/shared/assets";
 import { SearchInput } from "~/shared/ui";
 import styles from "./styles.module.scss";
+import { NavLink } from "react-router-dom";
+import { PROFILE_ROUTE } from "~/shared/routes";
 
 export function Header() {
   return (
@@ -23,13 +25,13 @@ export function Header() {
         </div>
         <div className={styles["menu-actions"]}>
           <Notifications />
-          <a href="#">
+          <NavLink to={PROFILE_ROUTE}>
             <ReactSVG src={Person} />
-          </a>
+          </NavLink>
           <SettingsModal />
-          <a href="#">
+          <NavLink to="#">
             <ReactSVG src={Logout} />
-          </a>
+          </NavLink>
         </div>
       </div>
     </header>

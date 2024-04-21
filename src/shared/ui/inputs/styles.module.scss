@@ -14,11 +14,17 @@ $default-font-color: map-get($colors, "default-font-color");
     font-weight: 400;
     line-height: 1.4rem;
   }
-  input {
+  input,
+  textarea,
+  select {
     box-sizing: border-box;
     border: 1px solid rgba($default-font-color, 0.5);
     border-radius: 5px;
     padding: 0.5rem 1rem;
     width: 12rem;
+
+    &:focus-visible {
+      outline: none;
+    }
   }
 }

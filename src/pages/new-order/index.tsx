@@ -1,10 +1,9 @@
 import { Col, Row } from "react-bootstrap";
 import { InputContainer, OutlineButton, RoundedWhiteBox } from "~/shared/ui";
 import styles from "./styles.module.scss";
-import { ReactSVG } from "react-svg";
-import { FolderPlus } from "~/shared/assets";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { CreateDelivery } from "~/widgets";
 
 export default function NewOrder() {
   const options1: Array<[string, string]> = [
@@ -147,29 +146,49 @@ export default function NewOrder() {
             ))}
           </table>
         </Col>
-        <Col md={12} lg={4}>
-          <InputContainer
-            name=""
-            label="№ Поставки"
-            variant="input"
-            label_style={{ color: "var(--default-font-color)" }}
-            className={styles.input}
-          />
-
-          {[
-            () => <ReactSVG src={FolderPlus} />,
-            LuCopyPlus,
-            LuPenSquare,
-            FaRegTrashCan,
-          ].map((Icon, idx) => (
+        <Col className="d-flex justify-content-between" md={12} lg={4}>
+          <div className="d-flex flex-column align-items-start">
+            <InputContainer
+              name=""
+              label="№ Поставки"
+              variant="input"
+              label_style={{ color: "var(--default-font-color)" }}
+              className={`${styles.input} mb-4`}
+            />
+            <div className="d-flex">
+              {[CreateDelivery, LuCopyPlus, LuPenSquare, FaRegTrashCan].map(
+                (Icon, idx) => (
+                  <OutlineButton
+                    key={idx}
+                    className="px-2 py-0 me-2"
+                    style={{
+                      fontSize: "2rem",
+                      border: "1px solid gray",
+                    }}
+                  >
+                    <Icon color="gray" />
+                  </OutlineButton>
+                )
+              )}
+            </div>
+          </div>
+          <div
+            className="d-flex flex-column align-items-end"
+            style={{ width: "10rem" }}
+          >
             <OutlineButton
-              key={idx}
-              className="px-2 py-0 me-2"
-              style={{ fontSize: "2rem" }}
+              style={{ padding: "0.5rem 1.5rem" }}
+              className="w-100 my-3"
             >
-              <Icon />
+              Сохранить
             </OutlineButton>
-          ))}
+            <OutlineButton
+              className="w-100 mt-3"
+              style={{ padding: "0.5rem 1.5rem" }}
+            >
+              Отмена
+            </OutlineButton>
+          </div>
         </Col>
       </Row>
     </RoundedWhiteBox>

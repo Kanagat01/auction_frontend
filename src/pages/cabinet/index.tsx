@@ -1,6 +1,7 @@
 import { Col, Row } from "react-bootstrap";
 import { FaPen } from "react-icons/fa6";
 import {
+  EditField,
   PrimaryButton,
   RoundedGrayButton,
   RoundedWhiteBox,
@@ -14,7 +15,7 @@ export default function Cabinet() {
   return (
     <Row className="w-100">
       <Col md={4}>
-        <RoundedWhiteBox className="p-4">
+        <RoundedWhiteBox className="p-5">
           <div className="d-flex justify-content-between align-items-center">
             <TitleMd>Информация о профиле</TitleMd>
             <RoundedGrayButton
@@ -35,8 +36,24 @@ export default function Cabinet() {
               <ReactSVG src={LocationIcon} style={{ lineHeight: "1.4rem" }} />
               <span style={{ lineHeight: "2.4rem" }}>Москва</span>
             </div>
+            <EditField
+              variant="input"
+              label="Ф.И.О."
+              value="Иван Иванов"
+              name="full_name"
+              className="mb-4"
+            />
+            <EditField
+              variant="input"
+              label="Номер телефона"
+              value="+7 (707) 707-77-77"
+              name="phone"
+              type="phone"
+              className="mb-4"
+            />
             <PrimaryButton
-              style={{ padding: ".5rem 3rem", fontSize: "1.6rem" }}
+              className="mt-3"
+              style={{ padding: "0.5rem 3rem", fontSize: "1.6rem" }}
             >
               Сохранить
             </PrimaryButton>
@@ -44,7 +61,7 @@ export default function Cabinet() {
         </RoundedWhiteBox>
       </Col>
       <Col md={8}>
-        <RoundedWhiteBox className="p-4">
+        <RoundedWhiteBox className="p-5">
           <div className="d-flex justify-content-between align-items-center">
             <TitleMd>Информация о профиле</TitleMd>
             <RoundedGrayButton

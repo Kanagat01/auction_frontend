@@ -28,3 +28,36 @@ $default-font-color: map-get($colors, "default-font-color");
     }
   }
 }
+
+.edit-field {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 100%;
+
+  label {
+    color: rgba($default-font-color, 0.2);
+    font-family: "Gilroy";
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.5rem 0;
+    color: $default-font-color;
+    font-family: "Gilroy";
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1.9rem;
+
+    border: none;
+    border-bottom: 1px solid rgba(5, 10, 4, 0.1);
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+}

@@ -66,29 +66,6 @@ a {
   display: none !important;
 }
 
-.modal {
-  .modal-dialog {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-content,
-  .modal-body {
-    border-radius: 10px;
-    width: 365px;
-  }
-  .modal-body {
-    padding: 3rem 2rem;
-  }
-}
-
-.rounded-modal {
-  .modal-content,
-  .modal-body {
-    border-radius: 20px 0px 0px 20px;
-  }
-}
-
 @media (max-width: 992px) {
   html,
   body {

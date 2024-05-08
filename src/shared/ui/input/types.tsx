@@ -9,9 +9,10 @@ export type BaseProp = {
   name: string;
   label: string;
   label_style?: CSSProperties;
+  container_style?: CSSProperties;
 };
 
-export type InputContainerProps = BaseProp &
+export type InputProps = BaseProp &
   InputHTMLAttributes<HTMLInputElement> & { variant: "input" };
 
 export type TextAreaProps = BaseProp &

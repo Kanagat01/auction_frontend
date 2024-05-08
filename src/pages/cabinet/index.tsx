@@ -5,7 +5,7 @@ import {
   PrimaryButton,
   RoundedGrayButton,
   RoundedWhiteBox,
-  TitleMd,
+  TitleLg,
 } from "~/shared/ui";
 import { Ava, LocationIcon } from "~/shared/assets";
 import "./style.scss";
@@ -17,7 +17,7 @@ export default function Cabinet() {
       <Col md={4}>
         <RoundedWhiteBox className="p-5">
           <div className="d-flex justify-content-between align-items-center">
-            <TitleMd>Информация о профиле</TitleMd>
+            <TitleLg>Информация о профиле</TitleLg>
             <RoundedGrayButton
               style={{ fontSize: "2rem", width: "4rem", height: "4rem" }}
             >
@@ -63,7 +63,7 @@ export default function Cabinet() {
       <Col md={8}>
         <RoundedWhiteBox className="p-5">
           <div className="d-flex justify-content-between align-items-center">
-            <TitleMd>Информация о профиле</TitleMd>
+            <TitleLg>Информация о профиле</TitleLg>
             <RoundedGrayButton
               style={{
                 fontSize: "2rem",

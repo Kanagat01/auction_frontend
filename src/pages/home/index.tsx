@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
-import { TableTanstack } from "~/widgets";
+import { Assign, TableTanstack } from "~/widgets";
 import {
   InputContainer,
   OutlineButton,
@@ -58,11 +58,12 @@ const HomePage = () => {
                 ))}
               </div>
               <div className="d-inline-flex ms-3">
-                {["В аукцион", "На торги", "Назначить"].map((buttonText) => (
+                {["В аукцион", "На торги"].map((buttonText) => (
                   <PrimaryButton key={buttonText} className="me-2 px-3 py-2">
                     {buttonText}
                   </PrimaryButton>
                 ))}
+                <Assign />
               </div>
             </div>
           </div>

@@ -32,7 +32,7 @@ export function SettingsModal() {
         <ReactSVG src={Settings} />
       </a>
       <Modal show={show} onHide={changeShow} className="rounded-modal">
-        <Modal.Body style={{ height: "90vh" }}>
+        <Modal.Body>
           <div className="d-flex align-items-center justify-content-between mb-2">
             <a href="#">
               <ReactSVG src={Logout} style={{ fontSize: "3rem" }} />

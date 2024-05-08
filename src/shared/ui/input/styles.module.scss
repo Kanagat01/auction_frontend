@@ -54,10 +54,18 @@ $default-font-color: map-get($colors, "default-font-color");
     line-height: 1.9rem;
 
     border: none;
-    border-bottom: 1px solid rgba(5, 10, 4, 0.1);
+    border-bottom: 1px solid rgba($default-font-color, 0.1);
 
     &:focus-visible {
       outline: none;
     }
   }
+}
+
+.checkbox {
+  box-sizing: border-box;
+  border: 1px solid #bebebe;
+  border-radius: 5px;
+  width: 2rem;
+  height: 2rem;
 }

@@ -1,7 +1,7 @@
-import { NotificationType } from "./model";
+import { TNotification } from "./model";
 import styles from "./styles.module.scss";
 
-export const NotificationCard = (props: NotificationType) => {
+export const NotificationCard = (props: TNotification) => {
   return (
     <>
       <span className={`${styles.notificationDate} mb-3`}>{props.date}</span>

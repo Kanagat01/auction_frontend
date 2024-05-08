@@ -1,8 +1,8 @@
 import { FiCheck } from "react-icons/fi";
-import { Company } from "./model";
+import { TCompany } from "./model";
 import styles from "./styles.module.scss";
 
-export const CompanyCard = (comp: Company) => {
+export const CompanyCard = (comp: TCompany) => {
   return (
     <div className="d-flex align-items-center">
       <div className={`rounded-block ${styles.companyLogo}`}>{comp.logo}</div>

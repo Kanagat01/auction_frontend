@@ -3,3 +3,7 @@ export * from "./Sidebar";
 export * from "./TableTanstack";
 export * from "./Settings";
 export * from "./Delivery";
+export * from "./DataSection";
+export * from "./MapSection";
+export * from "./DocumentsSection";
+export * from "./Assign";

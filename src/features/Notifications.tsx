@@ -33,7 +33,7 @@ export function Notifications() {
       </a>
 
       <Modal show={show} onHide={changeShow} className="rounded-modal">
-        <Modal.Body style={{ height: "90vh" }}>
+        <Modal.Body>
           <div className="d-flex justify-content-end mb-2">
             <FaAngleRight className="avg-icon" />
           </div>

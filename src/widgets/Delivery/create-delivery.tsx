@@ -5,7 +5,7 @@ import { useModalState } from "~/shared/lib";
 import { InputContainer, ModalTitle, OutlineButton } from "~/shared/ui";
 
 export const CreateDelivery = () => {
-  const [show, changeShow] = useModalState(true);
+  const [show, changeShow] = useModalState(false);
   return (
     <>
       <ReactSVG

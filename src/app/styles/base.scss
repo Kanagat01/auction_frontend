@@ -55,6 +55,17 @@ a {
   height: 2.4rem;
 }
 
+.gray-bg {
+  border-radius: 5px;
+  background: #f3f4f8;
+  padding: 2rem 1rem;
+}
+
+.gray-line {
+  height: 0.5px;
+  background: #acacac;
+}
+
 .tooltip {
   --bs-tooltip-border-radius: 5px;
   --bs-tooltip-bg: #fff;

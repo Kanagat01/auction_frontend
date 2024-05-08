@@ -1,4 +1,4 @@
-export type NotificationType = {
+export type TNotification = {
   date: string;
   time: string;
   type: string;

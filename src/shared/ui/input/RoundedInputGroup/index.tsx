@@ -1,10 +1,23 @@
-import React, { FC, InputHTMLAttributes, useState } from "react";
+import { FC, InputHTMLAttributes, ReactNode, useState } from "react";
 import styles from "./styles.module.scss";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  error?: string;
+}
 
-const RoundedInput: FC<InputProps> = (props) => {
-  return <input type="text" className={styles["rounded-input"]} {...props} />;
+const RoundedInput: FC<InputProps> = ({ error, ...props }) => {
+  return (
+    <div className={styles["input-container"]}>
+      <input
+        type="text"
+        className={`${styles["rounded-input"]} ${
+          error ? styles["input-error"] : ""
+        }`}
+        {...props}
+      />
+      {error && <div className={styles["error-message"]}>{error}</div>}
+    </div>
+  );
 };
 
 const PasswordInput: FC<InputProps> = (props) => {
@@ -27,7 +40,7 @@ const PasswordInput: FC<InputProps> = (props) => {
 };
 
 interface GroupProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const Group: FC<GroupProps> = ({ children }) => {

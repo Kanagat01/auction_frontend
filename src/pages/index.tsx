@@ -1,38 +1,23 @@
-import { ComponentType, lazy, useContext } from "react";
-import { Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
-import { AuthContext } from "~/app/providers/withAuthContext";
+import { ComponentType, lazy } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import * as routes from "~/shared/routes";
-import { Header, Sidebar } from "~/widgets";
+import { PrivateRoute } from "./PrivateRoute";
 
 const Login = lazy(() => import("./login"));
 const ForgotPassword = lazy(() => import("./forgot-password"));
 const HomePage = lazy(() => import("./home"));
 const NewOrder = lazy(() => import("./new-order"));
 const Cabinet = lazy(() => import("./cabinet"));
-
-const PrivateRoute = () => {
-  const { isAuthenticated } = useContext(AuthContext);
-  const location = useLocation();
-
-  return isAuthenticated ? (
-    <div className="main-bg">
-      <Header />
-      <div className="app-wrapper">
-        <Sidebar />
-        <Outlet />
-      </div>
-    </div>
-  ) : (
-    <Navigate to={routes.LOGIN_ROUTE} state={{ from: location }} replace />
-  );
-};
+const CargoPlan = lazy(() => import("./cargo-plan"));
 
 export const Routing = () => {
   const private_routes: Array<[string, ComponentType]> = [
     [routes.HOME_ROUTE, HomePage],
     [routes.NEW_ORDER_ROUTE, NewOrder],
     [routes.PROFILE_ROUTE, Cabinet],
+    [routes.CARGO_PLAN_ROUTE, CargoPlan],
   ];
+
   return (
     <Routes>
       <Route path={routes.LOGIN_ROUTE} element={<Login />} />

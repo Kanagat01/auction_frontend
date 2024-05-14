@@ -1086,6 +1086,18 @@ dom-helpers@^5.0.1, dom-helpers@^5.2.0, dom-helpers@^5.2.1:
     "@babel/runtime" "^7.8.7"
     csstype "^3.0.2"
 
+effector-react@^23.2.0:
+  version "23.2.0"
+  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-23.2.0.tgz#b0bbb09f8b786ba565f99829827c83ff3349b64d"
+  integrity sha512-e7tWJ+lpVKJpzS0UDR2Oi/0dAfvyDYyT44CWIFzBd8aJ7u4VXqP/3RJ4GCa3sH2g8Wffx6IA3BuTUGvgeH8ypg==
+  dependencies:
+    use-sync-external-store "^1.0.0"
+
+effector@^23.2.1:
+  version "23.2.1"
+  resolved "https://registry.yarnpkg.com/effector/-/effector-23.2.1.tgz#855766159b5bf3bf05937a0f272ad5943931cd3b"
+  integrity sha512-WoqZKLJKWOsq91hpxEpaVzIIlREVNNC5IxgRME8/oXvRmvxi+4ITzwxs9NEc1ygyeVLEKAA7zfpNA7eVJ6RmQg==
+
 electron-to-chromium@^1.4.601:
   version "1.4.642"
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.642.tgz"
@@ -2045,6 +2057,11 @@ uri-js@^4.2.2:
   integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
   dependencies:
     punycode "^2.1.0"
+
+use-sync-external-store@^1.0.0:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.2.tgz#c3b6390f3a30eba13200d2302dcdf1e7b57b2ef9"
+  integrity sha512-PElTlVMwpblvbNqQ82d2n6RjStvdSoNe9FG28kNfz3WiXilJm4DdNkEzRhCZuIDwY8U08WVihhGR5iRqAwfDiw==
 
 vite@^5.0.8:
   version "5.0.12"

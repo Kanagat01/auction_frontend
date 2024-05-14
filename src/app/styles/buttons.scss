@@ -1,6 +1,17 @@
 @import "~/app/styles/colors.scss";
 $font-color: map-get($colors, "default-font-color");
 
+a {
+  text-decoration: none;
+  color: var(--default-font-color);
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
 .primary-btn,
 .outline-btn {
   display: inline-flex;

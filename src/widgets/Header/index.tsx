@@ -1,11 +1,12 @@
+import { NavLink } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 import { SettingsModal } from "~/widgets";
 import { Notifications, CompaniesList } from "~/features";
-import { Person, Logout, Ava } from "~/shared/assets";
+import { LogoutBtn } from "~/features/authorization";
+import { Person, Ava } from "~/shared/assets";
 import { SearchInput } from "~/shared/ui";
-import styles from "./styles.module.scss";
-import { NavLink } from "react-router-dom";
 import { PROFILE_ROUTE } from "~/shared/routes";
+import styles from "./styles.module.scss";
 
 export function Header() {
   return (
@@ -29,9 +30,7 @@ export function Header() {
             <ReactSVG src={Person} />
           </NavLink>
           <SettingsModal />
-          <NavLink to="#">
-            <ReactSVG src={Logout} />
-          </NavLink>
+          <LogoutBtn />
         </div>
       </div>
     </header>

@@ -56,3 +56,11 @@ $border-color: map-get($colors, "default-font-color");
     box-sizing: border-box;
   }
 }
+
+.input-error {
+  border-color: red;
+}
+.error-message {
+  color: red;
+  font-size: 12px;
+}

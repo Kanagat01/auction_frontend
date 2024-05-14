@@ -11,21 +11,16 @@ body {
   background: var(--main-bg-color);
 }
 
+.gray-bg {
+  border-radius: 5px;
+  background: #f3f4f8;
+  padding: 2rem 1rem;
+}
+
 .app-wrapper {
   display: flex;
   padding-top: 3rem;
   padding-right: 3rem;
-}
-
-button {
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-a {
-  text-decoration: none;
-  color: var(--default-font-color);
 }
 
 .rounded-block {
@@ -55,26 +50,32 @@ a {
   height: 2.4rem;
 }
 
-.gray-bg {
-  border-radius: 5px;
-  background: #f3f4f8;
-  padding: 2rem 1rem;
-}
-
 .gray-line {
   height: 0.5px;
   background: #acacac;
 }
 
-.tooltip {
-  --bs-tooltip-border-radius: 5px;
-  --bs-tooltip-bg: #fff;
-  --bs-tooltip-color: #000;
-  --bs-tooltip-font-size: max(0.9rem, 9px);
-}
+@import "~/app/styles/colors.scss";
+$default-font-color: map-get($colors, "default-font-color");
 
-.tooltip-arrow {
-  display: none !important;
+.control-panel {
+  margin-top: 2rem;
+  display: flex;
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    gap: 0.5rem;
+
+    span {
+      color: rgba($default-font-color, 0.5);
+      font-family: "Gilroy";
+      font-size: 1.2rem;
+      font-weight: 400;
+      line-height: 1.4rem;
+    }
+  }
 }
 
 @media (max-width: 992px) {

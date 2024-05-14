@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ReactSVG } from "react-svg";
 import { FaAngleRight } from "react-icons/fa";
-import { NotificationCard, NotificationType } from "~/entities/Notification";
+import { NotificationCard, TNotification } from "~/entities/Notification";
 import { useModalState } from "~/shared/lib";
 import { Bell } from "~/shared/assets";
 import { SectionButton } from "~/shared/ui";
@@ -10,7 +10,7 @@ import { SectionButton } from "~/shared/ui";
 export function Notifications() {
   const [show, changeShow] = useModalState(false);
   const [activeSection, setActiveSection] = useState("Информация");
-  const notifications: NotificationType[] = [
+  const notifications: TNotification[] = [
     {
       date: "23 ноября",
       time: "23:48",

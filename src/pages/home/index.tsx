@@ -5,22 +5,19 @@ import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
 import { Assign, TableTanstack } from "~/widgets";
 import {
   InputContainer,
+  MainTitle,
   OutlineButton,
   PrimaryButton,
   RoundedWhiteBox,
 } from "~/shared/ui";
 import { FolderPlus } from "~/shared/assets";
 import { NEW_ORDER_ROUTE } from "~/shared/routes";
-import "./style.scss";
 
 const HomePage = () => {
   return (
     <RoundedWhiteBox>
       <div className="p-5">
-        <div className="main-title">
-          <span>Заказы</span>
-          <button>...</button>
-        </div>
+        <MainTitle>Заказы</MainTitle>
         <div className="control-panel">
           {[
             ["id", "№ Транспортировки", "00000000"],

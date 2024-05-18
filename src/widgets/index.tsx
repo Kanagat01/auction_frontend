@@ -5,5 +5,6 @@ export * from "./Settings";
 export * from "./Delivery";
 export * from "./DataSection";
 export * from "./MapSection";
+export * from "./MenuProfile";
 export * from "./DocumentsSection";
 export * from "./Assign";

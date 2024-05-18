@@ -5,9 +5,9 @@ import styles from "./styles.module.scss";
 export const CompanyCard = (comp: TCompany) => {
   return (
     <div className="d-flex align-items-center">
-      <div className={`rounded-block ${styles.companyLogo}`}>{comp.logo}</div>
+      <div className="rounded-block company-logo">{comp.company_name[0]}</div>
       <div className="d-flex flex-column ms-3">
-        <span className={styles.companyName}>{comp.name}</span>
+        <span className={styles.companyName}>{comp.company_name}</span>
         <span className={styles.companyRole}>{comp.role}</span>
       </div>
       {comp.checked ? (

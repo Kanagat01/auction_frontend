@@ -1,5 +1,10 @@
-import { ReactNode } from "react";
+import { FC, HTMLAttributes, PropsWithChildren } from "react";
 
-export const TitleMd = ({ children }: { children: ReactNode }) => (
-  <div className="title-md">{children}</div>
+export const TitleMd: FC<PropsWithChildren<HTMLAttributes<HTMLDivElement>>> = ({
+  children,
+  ...props
+}) => (
+  <div {...props} className={`title-md ${props.className}`}>
+    {children}
+  </div>
 );

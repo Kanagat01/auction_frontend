@@ -15,12 +15,18 @@ export function LogoutBtn() {
       <Modal show={show} onHide={changeShow} className="rounded-modal">
         <Modal.Body>
           <TextCenter>
-            <TitleMd>Вы уверены, что хотите выйти со своего аккаунта?</TitleMd>
+            <TitleMd style={{ fontSize: "1.7rem" }}>
+              Вы уверены, что хотите выйти со своего аккаунта?
+            </TitleMd>
           </TextCenter>
         </Modal.Body>
         <Modal.Footer className="justify-content-evenly">
-          <OutlineButton onClick={changeShow}>Отмена</OutlineButton>
-          <PrimaryButton onClick={logout}>Выйти</PrimaryButton>
+          <OutlineButton style={{ fontSize: "1.4rem" }} onClick={changeShow}>
+            Отмена
+          </OutlineButton>
+          <PrimaryButton style={{ fontSize: "1.4rem" }} onClick={logout}>
+            Выйти
+          </PrimaryButton>
         </Modal.Footer>
       </Modal>
     </>

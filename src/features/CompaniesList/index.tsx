@@ -5,16 +5,8 @@ import { FaAngleDown } from "react-icons/fa";
 import { useModalState } from "~/shared/lib";
 import styles from "./styles.module.scss";
 
-export function CompaniesList() {
+export function CompaniesList({ companies}: {companies: TCompany[]}) {
   const [show, changeShow] = useModalState(false);
-  const companies = [
-    {
-      logo: "E",
-      name: "ООО “Евразия” (312362)",
-      role: "Руководитель",
-      checked: true,
-    },
-  ];
   return (
     <>
       <button onClick={changeShow}>

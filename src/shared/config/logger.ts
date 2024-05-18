@@ -2,14 +2,12 @@ export interface LogFn {
   (message?: any, ...optionalParams: any[]): void;
 }
 
-/** Basic logger interface */
 export interface Logger {
   log: LogFn;
   warn: LogFn;
   error: LogFn;
 }
 
-/** Logger which outputs to the browser console */
 export class ConsoleLogger implements Logger {
   readonly log: LogFn;
   readonly warn: LogFn;

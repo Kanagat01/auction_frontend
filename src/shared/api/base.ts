@@ -12,6 +12,7 @@ apiInstance.interceptors.request.use(async (config) => {
   }
   return config;
 });
+
 async function getValidToken() {
-  return null;
+  return localStorage.getItem("token");
 }

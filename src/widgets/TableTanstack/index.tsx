@@ -7,7 +7,6 @@ import {
 import { Modal } from "react-bootstrap";
 
 import { DataSection, DocumentsSection, MapSection } from "~/widgets";
-import { TOrder } from "~/entities/Order";
 import { MainTable, OutlineButton } from "~/shared/ui";
 import { useModalState } from "~/shared/lib";
 
@@ -27,13 +26,13 @@ export function TableTanstack() {
     }
   };
 
-  const [selectedOrder, setSelectedOrder] = useState<TOrder | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const defaultData: TOrder[] = [];
+  const defaultData: any[] = [];
   for (let i = 1; i <= 16; i++) {
     defaultData.push({
       id: i,
-      client: "Роквул OOO",
+      customer_manager: "Роквул OOO",
       loadingPeriod: "00:00-23:59",
       startCity: "г.Балашиха",
       O: 1,
@@ -46,7 +45,7 @@ export function TableTanstack() {
       weight: 4604.79,
     });
   }
-  const columnHelper = createColumnHelper<TOrder>();
+  const columnHelper = createColumnHelper<any>();
 
   const columns = [
     columnHelper.accessor("id", {

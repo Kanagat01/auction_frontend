@@ -1,4 +1,5 @@
 type NameType = {
+  id: number;
   name: string;
 };
 

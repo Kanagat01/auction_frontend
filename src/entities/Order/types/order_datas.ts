@@ -1,26 +1,30 @@
-import { TransporterManager } from "~/entities/User";
+import { TransporterManager } from "~/entities/Company";
 import { OrderModel } from ".";
 
 export type OrderTracking = {
+  id: number;
   order: OrderModel;
 };
 
 export type OrderTrackingGeoPoint = {
+  id: number;
   tracking: OrderTracking;
   latitude: number;
   longitude: number;
-  createdAt: Date;
+  created_at: Date;
 };
 
 export type OrderDocument = {
+  id: number;
   order: OrderModel;
   file: string;
-  createdAt: Date;
+  created_at: Date;
 };
 
 export type OrderOffer = {
+  id: number;
   order: OrderModel;
-  transporterManager: TransporterManager;
+  transporter_manager: TransporterManager;
   price: number;
   rejected: boolean;
 };

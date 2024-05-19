@@ -1,2 +1,2 @@
-export * from "./Notifications";
 export * from "./CompaniesList";
+export * from "./CompanyCard";

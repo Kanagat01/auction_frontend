@@ -1,11 +1,16 @@
 import { Modal } from "react-bootstrap";
-import { TCompany, CompanyCard } from "~/entities/Company";
+import { CompanyCard } from "~/entities/Company";
 import { FiPlus } from "react-icons/fi";
 import { FaAngleDown } from "react-icons/fa";
 import { useModalState } from "~/shared/lib";
 import styles from "./styles.module.scss";
+import { TransporterCompany } from "~/entities/User";
 
-export function CompaniesList({ companies}: {companies: TCompany[]}) {
+export function CompaniesList({
+  companies,
+}: {
+  companies: TransporterCompany[];
+}) {
   const [show, changeShow] = useModalState(false);
   return (
     <>
@@ -18,7 +23,7 @@ export function CompaniesList({ companies}: {companies: TCompany[]}) {
       <Modal show={show} onHide={changeShow}>
         <Modal.Body>
           <div className={`${styles.yourCompanies} mb-4`}>Ваши компании</div>
-          {companies.map((comp: TCompany, idx) => (
+          {companies.map((comp, idx) => (
             <CompanyCard key={idx} {...comp} />
           ))}
           <a

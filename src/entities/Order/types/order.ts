@@ -1,4 +1,5 @@
-import { CustomerManager, TransporterManager } from "~/entities/User";
+import { CustomerManager } from "~/entities/User";
+import { TransporterManager } from "~/entities/Company";
 import {
   OrderTransportBodyType,
   OrderTransportLoadType,
@@ -17,6 +18,7 @@ export enum OrderStatus {
 export type TOrderStatus = keyof typeof OrderStatus;
 
 export enum OrderTranslations {
+  id = "id",
   customer_manager = "Менеджер Заказчика",
   transporter_manager = "Менеджер Перевозчика",
   created_at = "Время создания",
@@ -39,23 +41,24 @@ export enum OrderTranslations {
 }
 
 export type OrderModel = {
-  customerManager: CustomerManager;
-  transporterManager: TransporterManager | null;
-  createdAt: Date;
-  updatedAt: Date;
+  id: number;
+  customer_manager: CustomerManager;
+  transporter_manager: TransporterManager | null;
+  created_at: Date;
+  updated_at: Date;
   status: OrderStatus;
-  transportationNumber: number;
-  startPrice: number;
-  priceStep: number;
-  commentsForTransporter: string;
-  additionalRequirements: string;
-  transportBodyType: OrderTransportBodyType;
-  transportLoadType: OrderTransportLoadType;
-  transportUnloadType: OrderTransportUnloadType;
-  transportVolume: number;
-  tempMode: string;
+  transportation_number: number;
+  start_price: number;
+  price_step: number;
+  comments_for_transporter: string;
+  additional_requirements: string;
+  transport_body_type: OrderTransportBodyType;
+  transport_load_type: OrderTransportLoadType;
+  transport_unload_type: OrderTransportUnloadType;
+  transport_volume: number;
+  temp_mode: string;
   adr: number;
-  transportBodyWidth: number;
-  transportBodyLength: number;
-  transportBodyHeight: number;
+  transport_body_width: number;
+  transport_body_length: number;
+  transport_body_height: number;
 };

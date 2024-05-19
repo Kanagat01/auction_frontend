@@ -1,19 +1,21 @@
 import { OrderModel } from ".";
 
 export type OrderStageCouple = {
+  id: number;
   order: OrderModel;
-  createdAt: Date;
-  updatedAt: Date;
-  orderStageNumber: number;
+  created_at: Date;
+  updated_at: Date;
+  order_stage_number: number;
 };
 
 export type OrderStages = {
+  id: number;
   date: Date;
-  timeStart: string;
-  timeEnd: string;
+  time_start: string;
+  time_end: string;
   company: string;
   address: string;
-  contactPerson: string;
+  contact_person: string;
   cargo: string;
   weight: number;
   volume: number;
@@ -21,6 +23,7 @@ export type OrderStages = {
 };
 
 export type OrderLoadStage = {
+  id: number;
   order_couple: OrderStageCouple;
 };
 

@@ -1,35 +1,30 @@
+import { TUser } from ".";
 import { OrderModel } from "~/entities/Order";
-import { UserModel, CustomerSubscriptions, TransporterSubscriptions } from ".";
+import { TransporterCompany } from "~/entities/Company";
 
-export type TransporterCompany = {
-  user: UserModel;
-  companyName: string;
-  subscription: TransporterSubscriptions;
-};
+export enum CustomerSubscriptionTranslation {
+  customer_unpaid = "Заказчик НЕоплаченный",
+  customer_paid = "Заказчик оплаченный",
+}
+export type CustomerSubscriptions =
+  keyof typeof CustomerSubscriptionTranslation;
 
 export type CustomerCompany = {
-  user: UserModel;
-  companyName: string;
+  id: number;
+  user: TUser;
+  company_name: string;
   subscription: CustomerSubscriptions;
   allowedTransporterCompanies: TransporterCompany[];
 };
 
 export type CustomerManager = {
-  user: UserModel;
+  id: number;
+  user: TUser;
   company: CustomerCompany;
 };
 
-export type TransporterManager = {
-  user: UserModel;
-  company: TransporterCompany;
-};
-
-export type DriverProfile = {
-  user: UserModel;
-  company: TransporterCompany;
-};
-
 export type OrderViewer = {
-  user: UserModel;
+  id: number;
+  user: TUser;
   order: OrderModel;
 };

@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 import { MenuProfile, SettingsModal } from "~/widgets";
-import { Notifications } from "~/features";
 import { LogoutBtn } from "~/features/authorization";
+import { Notifications } from "~/entities/Notification";
 import { Person } from "~/shared/assets";
 import { SearchInput } from "~/shared/ui";
 import { HOME_ROUTE, PROFILE_ROUTE } from "~/shared/routes";

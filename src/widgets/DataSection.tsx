@@ -1,8 +1,7 @@
 import { Col, Row } from "react-bootstrap";
-import { TOrder } from "~/entities/Order";
 import { InputContainer, RoundedTable, TitleSm } from "~/shared/ui";
 
-export function DataSection({ selectedOrder }: { selectedOrder: TOrder }) {
+export function DataSection({ selectedOrder }: { selectedOrder: any }) {
   const inputs = [
     [
       [

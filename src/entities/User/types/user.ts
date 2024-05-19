@@ -9,3 +9,11 @@ export enum UserTypes {
 }
 
 export type TUserType = keyof typeof UserTypes;
+
+export type TUser = {
+  id: number;
+  email: string;
+  full_name: string;
+  user_type: TUserType;
+  blocked?: boolean;
+};

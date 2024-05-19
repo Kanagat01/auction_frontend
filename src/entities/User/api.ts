@@ -1,19 +1,28 @@
 import { createEffect, createStore } from "effector";
+import { TransporterCompany } from "~/entities/Company";
 import { apiInstance } from "~/shared/api";
 import { logger } from "~/shared/config";
-import { TUser } from ".";
+import { CustomerManager, TUser } from ".";
 
-export const getUserFx = createEffect(async () => {
+type TGetUser = {
+  user: TUser;
+  customer_company_id: number;
+  managers: CustomerManager[];
+  allowed_transporter_companies: TransporterCompany[];
+  company_name: string;
+  subscription: string;
+};
+
+export const getUserFx = createEffect<any, TGetUser, any>(async () => {
   try {
     const response = await apiInstance.get("/user/common/get_user/");
-    console.log("resp", response);
-
     return response.data.message;
   } catch (error) {
     logger.error(error);
   }
 });
 
-export const $user = createStore<any>(null);
-$user.on(getUserFx.doneData, (_, data: { user: TUser }) => data);
-getUserFx();
+export const $mainData = createStore<TGetUser | null>(null).on(
+  getUserFx.doneData,
+  (_, payload) => payload
+);

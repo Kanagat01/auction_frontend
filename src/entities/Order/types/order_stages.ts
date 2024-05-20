@@ -10,7 +10,7 @@ export type OrderStageCouple = {
 
 export type OrderStages = {
   id: number;
-  date: Date;
+  date: string;
   time_start: string;
   time_end: string;
   company: string;
@@ -28,3 +28,8 @@ export type OrderLoadStage = {
 };
 
 export type OrderUnloadStage = OrderLoadStage;
+
+export type TStages = Partial<{
+  load_stage: Omit<OrderStages, "id">;
+  unload_stage: Omit<OrderStages, "id">;
+}>;

@@ -52,9 +52,9 @@ export type OrderModel = {
   price_step: number;
   comments_for_transporter: string;
   additional_requirements: string;
-  transport_body_type: OrderTransportBodyType;
-  transport_load_type: OrderTransportLoadType;
-  transport_unload_type: OrderTransportUnloadType;
+  transport_body_type: OrderTransportBodyType | number;
+  transport_load_type: OrderTransportLoadType | number;
+  transport_unload_type: OrderTransportUnloadType | number;
   transport_volume: number;
   temp_mode: string;
   adr: number;

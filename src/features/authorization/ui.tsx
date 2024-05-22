@@ -10,7 +10,10 @@ export function LogoutBtn() {
   return (
     <>
       <button onClick={changeShow}>
-        <ReactSVG src={Logout} />
+        <ReactSVG
+          src={Logout}
+          style={{ fontSize: "3rem", lineHeight: "2rem" }}
+        />
       </button>
       <Modal show={show} onHide={changeShow} className="rounded-modal">
         <Modal.Body>

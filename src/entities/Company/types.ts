@@ -25,4 +25,8 @@ export type DriverProfile = {
   id: number;
   user: TUser;
   company: TransporterCompany;
+  birth_date: string;
+  passport_number: string;
+  machine_data: string;
+  machine_number: string;
 };

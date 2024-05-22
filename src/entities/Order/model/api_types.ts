@@ -4,8 +4,8 @@ import {
   OrderTransportBodyType,
   OrderTransportLoadType,
   OrderTransportUnloadType,
-  TStages,
 } from "~/entities/Order";
+import { TStages } from "~/entities/OrderStage";
 
 export type PreCreateOrderResponse = {
   transport_body_types: OrderTransportBodyType[];
@@ -36,14 +36,9 @@ export type EditOrderRequest = { order_id: number } & Partial<
   >
 >;
 
-export type AddOrderStageRequest = { order_id: number } & TStages;
-export type EditOrderStageRequest = { order_stage_id: number } & TStages;
-
-export type AcceptOfferRequest = { order_offer_id: number };
-export type RejectOfferRequest = { order_offer_id: number };
-
 export type CancelOrderRequest = { order_id: number };
 export type UnpublishOrderRequest = { order_id: number };
+export type CompleteOrderRequest = { order_id: number };
 export type PublishOrderRequest = {
   order_id: number;
   publish_to:
@@ -51,7 +46,3 @@ export type PublishOrderRequest = {
     | OrderStatus.in_bidding
     | OrderStatus.in_direct;
 };
-export type CompleteOrderRequest = { order_id: number };
-
-export type AddDocumentRequest = { order_id: number; file: File };
-export type DeleteDocumentRequest = { document_id: number };

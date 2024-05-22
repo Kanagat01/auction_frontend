@@ -1,4 +1,4 @@
-import { OrderModel } from ".";
+import { OrderModel } from "~/entities/Order";
 
 export type OrderStageCouple = {
   id: number;

@@ -1,5 +1,6 @@
 import axios, { Method } from "axios";
 import { createEffect } from "effector";
+import { setAuth } from "~/features/authorization";
 import { API_URL, logger } from "~/shared/config";
 
 export const apiInstance = axios.create({
@@ -7,16 +8,12 @@ export const apiInstance = axios.create({
 });
 
 apiInstance.interceptors.request.use(async (config) => {
-  const token = await getValidToken();
+  const token = localStorage.getItem("token");
   if (token) {
     config.headers["Authorization"] = `Token ${token}`;
   }
   return config;
 });
-
-async function getValidToken() {
-  return localStorage.getItem("token");
-}
 
 export type RequestParams = {
   method: Method;
@@ -29,7 +26,10 @@ export const apiRequestFx = createEffect<RequestParams, any, Error>(
     try {
       const response = await apiInstance({ method, url, data });
       return response.data.message;
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        setAuth(false);
+      }
       logger.error(error);
     }
   }

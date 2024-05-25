@@ -4,10 +4,9 @@ $gray: map-get($colors, "gray");
 .scheduleCard {
   border-radius: 5px;
   background: rgba($gray, 0.3);
-  width: 13rem;
-  height: 10rem;
   overflow: hidden;
   position: relative;
+  height: 100%;
 
   display: flex;
   flex-direction: column;

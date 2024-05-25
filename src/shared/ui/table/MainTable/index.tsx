@@ -2,7 +2,11 @@ import { Table, flexRender } from "@tanstack/react-table";
 import styles from "./styles.module.scss";
 import { TextCenter, TitleMd } from "~/shared/ui";
 
-type MainTableProps = { table: Table<any>; showFooter?: boolean };
+type MainTableProps = {
+  table: Table<any>;
+  showFooter?: boolean;
+  paginator?: { size: number; currentPage: number };
+};
 
 export function MainTable({ table, showFooter }: MainTableProps) {
   const headerGroups = table.getHeaderGroups();

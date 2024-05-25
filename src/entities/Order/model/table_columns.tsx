@@ -32,6 +32,7 @@ export const getColumns = ({ setSelectedOrder, changeModal }: TgetColumns) => {
     columnHelper.accessor(key, {
       cell: (info) => {
         const row = info.row;
+        const value = info.getValue();
         if (key === "transportation_number")
           return (
             <div className="d-flex align-items-center">
@@ -50,17 +51,25 @@ export const getColumns = ({ setSelectedOrder, changeModal }: TgetColumns) => {
                   changeModal();
                 }}
               >
-                {info.getValue()?.toString()}
+                {value ? value.toString() : "-"}
               </button>
             </div>
           );
         else if (["updated_at", "created_at"].includes(key)) {
-          return info.getValue()?.toString().replace("T", " ").replace("Z", "");
+          if (value) {
+            const parts = value
+              .toString()
+              .replace("T", " ")
+              .replace("Z", "")
+              .split(":");
+            return parts && parts[0] + ":" + parts[1];
+          }
+          return "-";
         } else if (key === "status") {
           const value = info.getValue()?.toString() as TOrderStatus;
           return OrderStatus[value];
         }
-        return info.getValue()?.toString();
+        return value ? value.toString() : "-";
       },
       header: () => orderTranslations[key],
     })

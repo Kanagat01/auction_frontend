@@ -3,14 +3,21 @@ import { useUnit } from "effector-react";
 
 import { Header, Sidebar } from "~/widgets";
 import { $isAuthenticated } from "~/features/authorization";
-import { $mainData } from "~/entities/User";
+import { $mainData, getMainData } from "~/entities/User";
 import { LOGIN_ROUTE } from "~/shared/routes";
 import { Preloader } from "~/shared/ui";
+import { useEffect } from "react";
 
 export const PrivateRoute = () => {
   const isAuthenticated = useUnit($isAuthenticated);
   const location = useLocation();
   const mainData = useUnit($mainData);
+
+  useEffect(() => {
+    if (isAuthenticated && mainData === null) {
+      getMainData();
+    }
+  }, [isAuthenticated]);
 
   if (isAuthenticated) {
     return mainData === null ? (

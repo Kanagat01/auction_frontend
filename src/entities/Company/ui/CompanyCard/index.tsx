@@ -1,6 +1,6 @@
 // import { FiCheck } from "react-icons/fi";
 import styles from "./styles.module.scss";
-import { TransporterCompany } from "~/entities/User";
+import { TransporterCompany } from "~/entities/Company";
 
 export const CompanyCard = (comp: TransporterCompany) => {
   return (

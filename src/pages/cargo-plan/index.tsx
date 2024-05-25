@@ -33,9 +33,7 @@ export default function CargoPlan() {
         key === "Время" ? (
           <TextCenter>{info.getValue()}</TextCenter>
         ) : (
-          <div className="d-flex justify-content-center">
-            <ScheduleCard {...info.getValue()} />
-          </div>
+          <ScheduleCard {...info.getValue()} />
         ),
       header: () => <TextCenter>{key}</TextCenter>,
     })
@@ -148,7 +146,7 @@ export default function CargoPlan() {
           </div>
         </div>
       </div>
-      <MainTable table={table} />
+      <MainTable table={table} showFooter />
     </RoundedWhiteBox>
   );
 }

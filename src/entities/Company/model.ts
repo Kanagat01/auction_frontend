@@ -28,14 +28,12 @@ const deleteFromAllowedFx = createEffect(
   }
 );
 
-export const addTransportToAllowed = createEvent<number>().watch(
-  (transporter_company_id) => {
-    addToAllowedFx(transporter_company_id);
-  }
-);
+export const addTransportToAllowed = createEvent<number>();
+addTransportToAllowed.watch((transporter_company_id) => {
+  addToAllowedFx(transporter_company_id);
+});
 
-export const deleteTransportFromAllowed = createEvent<number>().watch(
-  (transporter_company_id) => {
-    deleteFromAllowedFx(transporter_company_id);
-  }
-);
+export const deleteTransportFromAllowed = createEvent<number>();
+deleteTransportFromAllowed.watch((transporter_company_id) => {
+  deleteFromAllowedFx(transporter_company_id);
+});

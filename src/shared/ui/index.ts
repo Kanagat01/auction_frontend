@@ -5,3 +5,4 @@ export * from "./TooltipOnHover";
 export * from "./RoundedWhiteBox";
 export * from "./Button";
 export * from "./Preloader";
+export * from "./ScheduleCard";

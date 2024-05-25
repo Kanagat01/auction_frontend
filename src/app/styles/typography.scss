@@ -7,7 +7,6 @@ $font-color: map-get($colors, "default-font-color");
 
 .main-title {
   color: var(--default-font-color);
-  font-family: "Gilroy";
   font-size: 2rem;
   line-height: 2.4rem;
   font-weight: 600;
@@ -15,7 +14,6 @@ $font-color: map-get($colors, "default-font-color");
 
 .title-sm {
   color: $font-color;
-  font-family: "Gilroy";
   font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.4rem;
@@ -23,7 +21,6 @@ $font-color: map-get($colors, "default-font-color");
 
 .title-md {
   color: #000;
-  font-family: "Gilroy";
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 1.7rem;
@@ -31,7 +28,6 @@ $font-color: map-get($colors, "default-font-color");
 
 .title-lg {
   color: $font-color;
-  font-family: "Gilroy";
   font-size: 2rem;
   font-weight: 500;
   line-height: 2.4rem;

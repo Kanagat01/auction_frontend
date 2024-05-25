@@ -18,7 +18,7 @@ export const TooltipOnHover: FC<TooltipOnHoverProps> = ({
 }) => (
   <OverlayTrigger
     overlay={
-      <Tooltip id={id} placement={placement}>
+      <Tooltip id={id} placement={placement} style={{ fontSize: "1.4rem" }}>
         {title}
       </Tooltip>
     }

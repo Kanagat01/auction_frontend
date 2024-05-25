@@ -1,14 +1,11 @@
 import { Col, Row } from "react-bootstrap";
+import { OrderModel } from "~/entities/Order";
 import { InputContainer, RoundedTable, TitleSm } from "~/shared/ui";
 
-export function DataSection({ selectedOrder }: { selectedOrder: any }) {
+export function DataSection({ order }: { order: OrderModel }) {
   const inputs = [
     [
-      [
-        "id",
-        "№ Транспортировки",
-        selectedOrder ? selectedOrder.id.toString() : "",
-      ],
+      ["id", "№ Транспортировки", order ? order.id.toString() : ""],
       ["contact_person", "Контактное лицо", "Имя"],
     ],
     [

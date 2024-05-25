@@ -5,7 +5,7 @@ type TextCenterProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export const TextCenter = ({ children, ...props }: TextCenterProps) => (
-  <div {...props} className={`text-center ${props.className}`}>
+  <div {...props} className={`text-center ${props.className ?? ""}`}>
     {children}
   </div>
 );

@@ -1,4 +1,5 @@
 export { default as Ava } from "./images/ava.jpg";
+export { default as Map } from "./images/map.png";
 
 export { default as Book } from "./svg/book.svg";
 export { default as CreateNote } from "./svg/createNote.svg";
@@ -19,3 +20,4 @@ export { default as Security } from "./svg/security.svg";
 export { default as Settings } from "./svg/settings.svg";
 export { default as Hide } from "./svg/hide.svg";
 export { default as LocationIcon } from "./svg/location.svg";
+export { default as ThreeHouses } from "./svg/3_houses.svg";

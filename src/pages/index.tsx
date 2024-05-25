@@ -5,14 +5,23 @@ import { PrivateRoute } from "./PrivateRoute";
 
 const Login = lazy(() => import("./login"));
 const ForgotPassword = lazy(() => import("./forgot-password"));
-const HomePage = lazy(() => import("./home"));
+const OrdersPage = lazy(() => import("./orders-page"));
 const NewOrder = lazy(() => import("./new-order"));
 const Cabinet = lazy(() => import("./cabinet"));
 const CargoPlan = lazy(() => import("./cargo-plan"));
 
 export const Routing = () => {
+  const order_pages = [
+    routes.ORDERS_BEING_EXECUTED,
+    routes.ORDERS_IN_AUCTION,
+    routes.ORDERS_IN_BIDDING,
+    routes.ORDERS_IN_DIRECT,
+    routes.CANCELLED_ORDERS,
+    routes.UNPUBLISHED_ORDERS,
+  ].map((route): [string, ComponentType] => [route, OrdersPage]);
+
   const private_routes: Array<[string, ComponentType]> = [
-    [routes.HOME_ROUTE, HomePage],
+    ...order_pages,
     [routes.NEW_ORDER_ROUTE, NewOrder],
     [routes.PROFILE_ROUTE, Cabinet],
     [routes.CARGO_PLAN_ROUTE, CargoPlan],
@@ -27,7 +36,10 @@ export const Routing = () => {
           <Route key={path} path={path} element={<Component />} />
         ))}
       </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route
+        path="*"
+        element={<Navigate to={routes.UNPUBLISHED_ORDERS} replace />}
+      />
     </Routes>
   );
 };

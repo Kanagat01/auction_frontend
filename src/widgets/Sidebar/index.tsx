@@ -1,38 +1,80 @@
+import { ReactNode } from "react";
 import { ReactSVG } from "react-svg";
-import {
-  Statistics,
-  DeleteNote,
-  Hammer,
-  Cube,
-  CreateNote,
-  History,
-  Book,
-} from "~/shared/assets";
+import { NavLink, useLocation } from "react-router-dom";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import { TbBoxMultiple } from "react-icons/tb";
+import { FaTruckMoving } from "react-icons/fa";
+import { ImNewspaper } from "react-icons/im";
+import { MdDownload } from "react-icons/md";
+
+import { Hammer, ThreeHouses } from "~/shared/assets";
 import { TooltipOnHover } from "~/shared/ui";
 import styles from "./styles.module.scss";
+import {
+  CANCELLED_ORDERS,
+  CARGO_PLAN_ROUTE,
+  ORDERS_BEING_EXECUTED,
+  ORDERS_IN_AUCTION,
+  ORDERS_IN_BIDDING,
+  ORDERS_IN_DIRECT,
+  UNPUBLISHED_ORDERS,
+} from "~/shared/routes";
 
 export function Sidebar() {
-  const sections = [
-    [Statistics, "Статистика"],
-    [Hammer, "Молоток"],
-    [Cube, "Куб"],
-    [CreateNote, "Создать заметку"],
-    [History, "История"],
-    [Book, "Книга"],
-    [DeleteNote, "Удалить заметку"],
+  const role: "customer" | "transporter" = "customer";
+  const sections: Array<[ReactNode, string, string]> = [
+    [<FaTruckMoving className={styles.icon} />, "Журнал", UNPUBLISHED_ORDERS],
+    [
+      <ReactSVG src={Hammer} className={styles.icon} />,
+      "Аукцион",
+      ORDERS_IN_AUCTION,
+    ],
+    [
+      <ReactSVG
+        src={ThreeHouses}
+        className={styles.icon}
+        style={{ fontSize: "3.5rem", lineHeight: "3rem" }}
+      />,
+      "Торги",
+      ORDERS_IN_BIDDING,
+    ],
+    [<MdDownload className={styles.icon} />, "Назначенные", ORDERS_IN_DIRECT],
+    [
+      <TbBoxMultiple className={styles.icon} />,
+      "План погрузки",
+      CARGO_PLAN_ROUTE,
+    ],
+    [
+      <RiDeleteBin5Line className={styles.icon} />,
+      "Отмененные",
+      CANCELLED_ORDERS,
+    ],
   ];
+
+  if (role === "customer") {
+    sections.splice(1, 0, [
+      <ImNewspaper className={styles.icon} />,
+      "Заказы",
+      ORDERS_BEING_EXECUTED,
+    ]);
+  }
+  const currentRoute = useLocation().pathname;
   return (
     <aside className={styles.aside}>
-      {sections.map(([icon, title], index) => (
+      {sections.map(([icon, title, route], index) => (
         <TooltipOnHover
           key={index}
           id={`t-${index}`}
           title={title}
           placement="right-end"
         >
-          <a href="#" className={index === 0 ? styles.active : ""}>
-            <ReactSVG src={icon} className={styles.icon} />
-          </a>
+          <NavLink
+            to={route}
+            className={route === currentRoute ? styles.active : ""}
+            style={title === "Торги" ? { padding: "0.5rem" } : {}} // TODO: поменять иконку ThreeHouses и убрать проверку
+          >
+            {icon}
+          </NavLink>
         </TooltipOnHover>
       ))}
     </aside>

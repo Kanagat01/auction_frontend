@@ -19,37 +19,29 @@ import {
   unpublishOrderFx,
 } from "./api";
 
-export const $orders = createStore<OrderModel[]>([]).on(
-  getOrdersFx.doneData,
-  (_, payload) => payload
-);
+export const $orders = createStore<OrderModel[]>([]);
+$orders.on(getOrdersFx.doneData, (_, payload) => payload);
 
-export const getOrders = createEvent<TOrderStatus>().watch(
-  (status: TOrderStatus) => getOrdersFx(status)
-);
+export const getOrders = createEvent<TOrderStatus>();
+getOrders.watch((status: TOrderStatus) => getOrdersFx(status));
 
-export const preCreateOrder = createEvent().watch(() => preCreateOrderFx());
+export const preCreateOrder = createEvent();
+preCreateOrder.watch(() => preCreateOrderFx());
 
-export const createOrder = createEvent<CreateOrderRequest>().watch((data) =>
-  createOrderFx(data)
-);
+export const createOrder = createEvent<CreateOrderRequest>();
+createOrder.watch((data) => createOrderFx(data));
 
-export const editOrder = createEvent<EditOrderRequest>().watch((data) => {
-  editOrderFx(data);
-});
+export const editOrder = createEvent<EditOrderRequest>();
+editOrder.watch((data) => editOrderFx(data));
 
-export const cancelOrder = createEvent<CancelOrderRequest>().watch((data) =>
-  cancelOrderFx(data)
-);
+export const cancelOrder = createEvent<CancelOrderRequest>();
+cancelOrder.watch((data) => cancelOrderFx(data));
 
-export const unpublishOrder = createEvent<UnpublishOrderRequest>().watch(
-  (data) => unpublishOrderFx(data)
-);
+export const unpublishOrder = createEvent<UnpublishOrderRequest>();
+unpublishOrder.watch((data) => unpublishOrderFx(data));
 
-export const publishOrder = createEvent<PublishOrderRequest>().watch((data) =>
-  publishOrderFx(data)
-);
+export const publishOrder = createEvent<PublishOrderRequest>();
+publishOrder.watch((data) => publishOrderFx(data));
 
-export const completeOrder = createEvent<CompleteOrderRequest>().watch((data) =>
-  completeOrderFx(data)
-);
+export const completeOrder = createEvent<CompleteOrderRequest>();
+completeOrder.watch((data) => completeOrderFx(data));

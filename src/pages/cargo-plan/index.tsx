@@ -1,12 +1,102 @@
-import { TableTanstack } from "~/widgets";
+import {
+  createColumnHelper,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useEffect, useState } from "react";
 import {
   InputContainer,
   MainTitle,
   OutlineButton,
   RoundedWhiteBox,
+  MainTable,
+  ScheduleCard,
+  TextCenter,
 } from "~/shared/ui";
 
-const CargoPlan = () => {
+export default function CargoPlan() {
+  const columnHelper = createColumnHelper<any>();
+  const keys = [
+    "Время",
+    "Понедельник",
+    "Вторник",
+    "Среда",
+    "Четверг",
+    "Пятница",
+    "Суббота",
+    "Воскресенье",
+  ];
+
+  const columns = keys.map((key) =>
+    columnHelper.accessor(key, {
+      cell: (info) =>
+        key === "Время" ? (
+          <TextCenter>{info.getValue()}</TextCenter>
+        ) : (
+          <div className="d-flex justify-content-center">
+            <ScheduleCard {...info.getValue()} />
+          </div>
+        ),
+      header: () => <TextCenter>{key}</TextCenter>,
+    })
+  );
+  const defaultData = [
+    {
+      Время: "08:00 - 08:30",
+      Понедельник: {
+        status: "delay",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Вторник: {
+        status: "departure",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Среда: {
+        status: "arrival",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Четверг: {
+        status: "loading",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Пятница: {
+        status: "departure",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Суббота: {
+        status: "delay",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Воскресенье: {
+        status: "empty",
+      },
+    },
+  ];
+  const [data, setData] = useState(defaultData);
+  useEffect(() => setData(defaultData), []);
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
   return (
     <RoundedWhiteBox>
       <div className="p-5">
@@ -58,9 +148,7 @@ const CargoPlan = () => {
           </div>
         </div>
       </div>
-      <TableTanstack />
+      <MainTable table={table} />
     </RoundedWhiteBox>
   );
-};
-
-export default CargoPlan;
+}

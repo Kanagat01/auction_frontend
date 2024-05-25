@@ -1,26 +1,30 @@
+@import "~/app/styles/colors.scss";
+$default-font-color: map-get($colors, "default-font-color");
 $border-color: rgba(0, 0, 0, 0.1);
 
 .table {
   border-spacing: 0;
   width: 100%;
   height: fit-content;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
 
   th {
+    color: rgba($default-font-color, 0.5);
     border-right: 1px solid $border-color;
     padding: 1.5rem 1rem;
     background: $border-color;
+
+    &:first-child {
+      text-align: center;
+    }
   }
   td {
-    border-bottom: 1px solid $border-color;
+    border-top: 1px solid $border-color;
     border-right: 1px solid $border-color;
     padding: 1rem;
   }
-  tr:last-child {
-    td {
-      border-bottom: none;
-    }
-    td:last-child {
-      border-right: none;
-    }
+  tr:last-child td:last-child {
+    border-right: none;
   }
 }

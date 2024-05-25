@@ -12,9 +12,8 @@ const acceptOfferFx: Effect<AcceptOfferRequest, OrderModel> = attach({
     data,
   }),
 });
-export const acceptOffer = createEvent<AcceptOfferRequest>().watch((data) =>
-  acceptOfferFx(data)
-);
+export const acceptOffer = createEvent<AcceptOfferRequest>();
+acceptOffer.watch((data) => acceptOfferFx(data));
 
 // reject offer
 const rejectOfferFx: Effect<RejectOfferRequest, OrderModel> = attach({
@@ -25,6 +24,5 @@ const rejectOfferFx: Effect<RejectOfferRequest, OrderModel> = attach({
     data,
   }),
 });
-export const rejectOffer = createEvent<RejectOfferRequest>().watch((data) =>
-  rejectOfferFx(data)
-);
+export const rejectOffer = createEvent<RejectOfferRequest>();
+rejectOffer.watch((data) => rejectOfferFx(data));

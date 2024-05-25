@@ -1,11 +1,16 @@
 import { Table, flexRender } from "@tanstack/react-table";
 import styles from "./styles.module.scss";
+import { TextCenter, TitleMd } from "~/shared/ui";
 
-export function MainTable({ table }: { table: Table<any> }) {
+type MainTableProps = { table: Table<any>; showFooter?: boolean };
+
+export function MainTable({ table, showFooter }: MainTableProps) {
+  const headerGroups = table.getHeaderGroups();
+  const rows = table.getRowModel().rows;
   return (
     <table className={styles.table}>
       <thead>
-        {table.getHeaderGroups().map((headerGroup) => (
+        {headerGroups.map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
               <th key={header.id}>
@@ -21,16 +26,35 @@ export function MainTable({ table }: { table: Table<any> }) {
         ))}
       </thead>
       <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
+        {rows.length !== 0 ? (
+          rows.map((row) => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={headerGroups[0].headers.length}>
+              <TitleMd className="p-4">
+                <TextCenter>Нет данных для отображения</TextCenter>
+              </TitleMd>
+            </td>
           </tr>
-        ))}
+        )}
       </tbody>
+      {showFooter && (
+        <tfoot>
+          <tr>
+            <td colSpan={headerGroups[0].headers.length}>
+              Тут будет пагинация {/* TODO: pagination */}
+            </td>
+          </tr>
+        </tfoot>
+      )}
     </table>
   );
 }

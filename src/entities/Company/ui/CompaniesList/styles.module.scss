@@ -3,7 +3,6 @@ $font-color: map-get($colors, "default-font-color");
 
 .yourCompanies {
   color: rgba($font-color, 0.6);
-  font-family: "Gilroy";
   font-size: 1.5rem;
 }
 
@@ -14,7 +13,6 @@ $font-color: map-get($colors, "default-font-color");
 
 .addCompany {
   color: var(--primary);
-  font-family: "Gilroy";
   font-size: 1.8rem;
   font-weight: 600;
   line-height: 2rem;

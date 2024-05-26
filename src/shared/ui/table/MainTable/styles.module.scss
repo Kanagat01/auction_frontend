@@ -10,10 +10,11 @@ $border-color: rgba(0, 0, 0, 0.1);
   line-height: 1.2rem;
 
   th {
+    position: relative;
     color: rgba($default-font-color, 0.5);
     border-right: 1px solid $border-color;
     padding: 1.5rem 1rem;
-    background: $border-color;
+    background: var(--table-header-color);
 
     &:first-child {
       text-align: center;
@@ -23,5 +24,55 @@ $border-color: rgba(0, 0, 0, 0.1);
     border-top: 1px solid $border-color;
     border-right: 1px solid $border-color;
     padding: 1rem;
+  }
+
+  .paginator {
+    color: var(--default-font-color);
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.9rem;
+  }
+}
+
+.cursorPointer {
+  cursor: pointer;
+}
+
+.sortingIcon,
+.columnCanSort {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  font-size: 1.5rem;
+}
+
+.columnCanSort {
+  display: inline-flex;
+  flex-direction: column;
+
+  svg:nth-child(2) {
+    margin-top: -0.8rem;
+  }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-top: 1rem;
+  margin-right: 3rem;
+  gap: 1rem;
+
+  a {
+    font-size: 1.8rem;
+    cursor: pointer;
+    font-weight: 400;
+    list-style: none;
+
+    &.activePage {
+      cursor: default;
+      color: var(--gray);
+    }
   }
 }

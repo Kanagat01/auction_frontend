@@ -1,16 +1,11 @@
 @import "~/app/styles/colors.scss";
-
 $border-color: map-get($colors, "default-font-color");
 
-.hide-btn {
-  position: absolute;
-  right: 3rem;
-  width: 3.2rem;
-  height: 2rem;
-  flex-shrink: 0;
-  border-radius: 12px;
-  background: url("~/shared/assets/svg/hide.svg") center no-repeat;
-  background-size: cover;
+.hidePasswordBtn {
+  font-size: 2.5rem;
+  margin-left: -1rem;
+  padding-right: 2rem;
+  color: var(--primary);
 }
 
 .input-group {
@@ -22,13 +17,14 @@ $border-color: map-get($colors, "default-font-color");
 }
 
 .rounded-input {
+  width: 100%;
   border-radius: var(--default-border-radius);
-  padding: 2rem 3rem;
+  border: none;
+  padding: 2rem;
+
   color: var(--default-font-color);
-  font-family: "Gilroy";
   font-size: 2rem;
   font-weight: 600;
-  border: none;
 
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
@@ -55,12 +51,4 @@ $border-color: map-get($colors, "default-font-color");
     width: 100%;
     box-sizing: border-box;
   }
-}
-
-.input-error {
-  border-color: red;
-}
-.error-message {
-  color: red;
-  font-size: 12px;
 }

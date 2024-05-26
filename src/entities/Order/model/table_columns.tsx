@@ -72,6 +72,8 @@ export const getColumns = ({ setSelectedOrder, changeModal }: TgetColumns) => {
         return value ? value.toString() : "-";
       },
       header: () => orderTranslations[key],
+      sortDescFirst: false,
+      enableSorting: key !== "status",
     })
   );
 };

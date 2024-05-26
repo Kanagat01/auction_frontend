@@ -3,7 +3,6 @@ $font-color: map-get($colors, "default-font-color");
 
 .notificationDate {
   display: inline-block;
-  font-family: "Gilroy";
   font-size: 1.8rem;
   font-weight: 600;
   line-height: 1.9rem;
@@ -19,7 +18,6 @@ $font-color: map-get($colors, "default-font-color");
   margin-bottom: 1.5rem;
   background: rgba($font-color, 0.05);
   border-radius: 10px;
-  font-family: "Gilroy";
 }
 
 .notificationTitle {

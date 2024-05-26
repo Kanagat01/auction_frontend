@@ -3,21 +3,18 @@ $default-font-color: map-get($colors, "default-font-color");
 
 .currentCompany {
   color: $default-font-color;
-  font-family: "Gilroy";
   font-size: 1.8rem;
   font-weight: 600;
   line-height: 2rem;
 }
 .settingOptionTitle {
   color: $default-font-color;
-  font-family: "Gilroy";
   font-size: 1.6rem;
   font-weight: 500;
   line-height: 1.7rem;
 }
 .settingOptionDescription {
   color: rgba($default-font-color, 0.5);
-  font-family: "Gilroy";
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 1.4rem;

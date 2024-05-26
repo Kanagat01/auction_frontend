@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
+import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router";
 import { NavLink } from "react-router-dom";
 
@@ -10,9 +11,6 @@ import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
 function Login() {
   const [email, onChangeEmail] = useTextInputState("");
   const [password, onChangePassword] = useTextInputState("");
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(
-    undefined
-  );
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,40 +18,32 @@ function Login() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const result = await login(email, password);
-    if (result === "success") {
-      navigate(from);
-    } else {
-      setErrorMessage(result);
-    }
+    toast.promise(login(email, password), {
+      loading: "Авторизуемся...",
+      success: () => {
+        navigate(from);
+        return "Вы успешно авторизованы";
+      },
+      error: (err) => `Произошла ошибка: ${err}`,
+    });
   }
 
   return (
     <div className="login-page">
       <form className="login-form" onSubmit={handleSubmit}>
-        <span className={"login-title"}>Название</span>
+        <span className={"login-title"}>Kargonika</span>
         <RoundedInputGroup>
           <RoundedInputGroup.Input
             value={email}
             onChange={onChangeEmail}
             placeholder="Логин или Email"
-            error={
-              email === ""
-                ? "Это поле обязательно для заполнения"
-                : errorMessage
-                ? ""
-                : undefined
-            }
+            required
           />
           <RoundedInputGroup.PasswordInput
             value={password}
             onChange={onChangePassword}
             placeholder="Пароль"
-            error={
-              password === ""
-                ? "Это поле обязательно для заполнения"
-                : errorMessage
-            }
+            required
           />
         </RoundedInputGroup>
         <PrimaryButton type="submit">Войти</PrimaryButton>

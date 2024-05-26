@@ -87,6 +87,198 @@ export default function CargoPlan() {
         status: "empty",
       },
     },
+    {
+      Время: "08:00 - 08:30",
+      Понедельник: {
+        status: "delay",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Вторник: {
+        status: "departure",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Среда: {
+        status: "arrival",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Четверг: {
+        status: "loading",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Пятница: {
+        status: "departure",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Суббота: {
+        status: "delay",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Воскресенье: {
+        status: "empty",
+      },
+    },
+    {
+      Время: "08:00 - 08:30",
+      Понедельник: {
+        status: "delay",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Вторник: {
+        status: "departure",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Среда: {
+        status: "arrival",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Четверг: {
+        status: "loading",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Пятница: {
+        status: "departure",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Суббота: {
+        status: "delay",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Воскресенье: {
+        status: "empty",
+      },
+    },
+    {
+      Время: "08:00 - 08:30",
+      Понедельник: {
+        status: "delay",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Вторник: {
+        status: "departure",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Среда: {
+        status: "arrival",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Четверг: {
+        status: "loading",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Пятница: {
+        status: "departure",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Суббота: {
+        status: "delay",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Воскресенье: {
+        status: "empty",
+      },
+    },
+    {
+      Время: "08:00 - 08:30",
+      Понедельник: {
+        status: "delay",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Вторник: {
+        status: "departure",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Среда: {
+        status: "arrival",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Четверг: {
+        status: "loading",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Пятница: {
+        status: "departure",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Суббота: {
+        status: "delay",
+        transportation_number: "0000000000",
+        transporter_manager: "Патрашков А.В.",
+        some_number: "K669XT174/BX577575",
+        phone_number: "+79823141388",
+      },
+      Воскресенье: {
+        status: "empty",
+      },
+    },
   ];
   const [data, setData] = useState(defaultData);
   useEffect(() => setData(defaultData), []);
@@ -146,7 +338,7 @@ export default function CargoPlan() {
           </div>
         </div>
       </div>
-      <MainTable table={table} showFooter />
+      <MainTable table={table} />
     </RoundedWhiteBox>
   );
 }

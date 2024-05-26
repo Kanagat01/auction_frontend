@@ -23,7 +23,11 @@ import {
 export function Sidebar() {
   const role: "customer" | "transporter" = "customer";
   const sections: Array<[ReactNode, string, string]> = [
-    [<FaTruckMoving className={styles.icon} />, "Журнал", UNPUBLISHED_ORDERS],
+    [
+      <FaTruckMoving className={styles.icon} />,
+      "Журнал",
+      ORDERS_BEING_EXECUTED,
+    ],
     [
       <ReactSVG src={Hammer} className={styles.icon} />,
       "Аукцион",
@@ -55,7 +59,7 @@ export function Sidebar() {
     sections.splice(1, 0, [
       <ImNewspaper className={styles.icon} />,
       "Заказы",
-      ORDERS_BEING_EXECUTED,
+      UNPUBLISHED_ORDERS,
     ]);
   }
   const currentRoute = useLocation().pathname;

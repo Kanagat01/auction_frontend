@@ -19,20 +19,20 @@ export const login = async (
     if (axios.isAxiosError(error)) {
       switch (error.response?.status) {
         case 400:
-          return "Неверный запрос";
+          throw "Неверный запрос";
         case 401:
-          return "Неверные учетные данные";
+          throw "Неверные учетные данные";
         case 403:
-          return "Доступ запрещен";
+          throw "Доступ запрещен";
         case 404:
-          return "Пользователь не найден";
+          throw "Пользователь не найден";
         case 500:
-          return "Внутренняя ошибка сервера";
+          throw "Внутренняя ошибка сервера";
         default:
-          return "Неизвестная ошибка";
+          throw "Неизвестная ошибка";
       }
     }
-    return "Неизвестная ошибка";
+    throw "Неизвестная ошибка";
   }
 };
 

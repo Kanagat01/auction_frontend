@@ -1,21 +1,15 @@
 import { FC, InputHTMLAttributes, ReactNode, useState } from "react";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 import styles from "./styles.module.scss";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
 }
 
-const RoundedInput: FC<InputProps> = ({ error, ...props }) => {
+const RoundedInput: FC<InputProps> = (props) => {
   return (
-    <div className={styles["input-container"]}>
-      <input
-        type="text"
-        className={`${styles["rounded-input"]} ${
-          error ? styles["input-error"] : ""
-        }`}
-        {...props}
-      />
-      {error && <div className={styles["error-message"]}>{error}</div>}
+    <div className="w-100">
+      <input type="text" className={styles["rounded-input"]} {...props} />
     </div>
   );
 };
@@ -30,11 +24,13 @@ const PasswordInput: FC<InputProps> = (props) => {
         {...props}
       />
       <span
-        className={styles["hide-btn"]}
+        className={styles.hidePasswordBtn}
         onClick={() => {
           setShowPassword(!showPassword);
         }}
-      ></span>
+      >
+        {showPassword ? <BsEyeSlash /> : <BsEye />}
+      </span>
     </div>
   );
 };

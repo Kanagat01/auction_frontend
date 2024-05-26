@@ -7,6 +7,10 @@ body {
   color: var(--default-font-color);
 }
 
+.custom-toaster {
+  font-size: 1.8rem;
+}
+
 .main-bg {
   background: var(--main-bg-color);
   padding-bottom: 3rem;
@@ -44,7 +48,6 @@ body {
 .company-logo {
   background: var(--company-logo-bg);
   color: rgb(255, 255, 255);
-  font-family: Gilroy;
   font-size: 2rem;
 }
 
@@ -78,7 +81,6 @@ $default-font-color: map-get($colors, "default-font-color");
 
     span {
       color: rgba($default-font-color, 0.5);
-      font-family: "Gilroy";
       font-size: 1.2rem;
       font-weight: 400;
       line-height: 1.4rem;

@@ -6,6 +6,7 @@ export * from "./InputContainer";
 export * from "./RoundedInputGroup";
 export * from "./SearchInput";
 export * from "./Checkbox";
+export * from "./types";
 
 export const renderInput = (
   props: InputProps | TextAreaProps | SelectProps

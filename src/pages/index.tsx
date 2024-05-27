@@ -5,10 +5,9 @@ import { PrivateRoute } from "./PrivateRoute";
 
 const Login = lazy(() => import("./login"));
 const ForgotPassword = lazy(() => import("./forgot-password"));
-const OrdersPage = lazy(() => import("./orders-page"));
+const OrdersPage = lazy(() => import("./orders"));
 const NewOrder = lazy(() => import("./new-order"));
 const Cabinet = lazy(() => import("./cabinet"));
-const CargoPlan = lazy(() => import("./cargo-plan"));
 
 export const Routing = () => {
   const order_pages = [
@@ -24,7 +23,7 @@ export const Routing = () => {
     ...order_pages,
     [routes.NEW_ORDER_ROUTE, NewOrder],
     [routes.PROFILE_ROUTE, Cabinet],
-    [routes.CARGO_PLAN_ROUTE, CargoPlan],
+    // [routes.CARGO_PLAN_ROUTE, CargoPlan],
   ];
 
   return (

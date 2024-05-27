@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import { ReactSVG } from "react-svg";
 import { NavLink, useLocation } from "react-router-dom";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { TbBoxMultiple } from "react-icons/tb";
 import { FaTruckMoving } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 import { MdDownload } from "react-icons/md";
@@ -12,7 +11,6 @@ import { TooltipOnHover } from "~/shared/ui";
 import styles from "./styles.module.scss";
 import {
   CANCELLED_ORDERS,
-  CARGO_PLAN_ROUTE,
   ORDERS_BEING_EXECUTED,
   ORDERS_IN_AUCTION,
   ORDERS_IN_BIDDING,
@@ -43,11 +41,11 @@ export function Sidebar() {
       ORDERS_IN_BIDDING,
     ],
     [<MdDownload className={styles.icon} />, "Назначенные", ORDERS_IN_DIRECT],
-    [
-      <TbBoxMultiple className={styles.icon} />,
-      "План погрузки",
-      CARGO_PLAN_ROUTE,
-    ],
+    // [
+    //   <TbBoxMultiple className={styles.icon} />,
+    //   "План погрузки",
+    //   CARGO_PLAN_ROUTE,
+    // ],
     [
       <RiDeleteBin5Line className={styles.icon} />,
       "Отмененные",

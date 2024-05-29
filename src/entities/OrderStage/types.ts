@@ -29,7 +29,7 @@ export type OrderLoadStage = {
 
 export type OrderUnloadStage = OrderLoadStage;
 
-export type TStages = Partial<{
+export type TStages = {
   load_stage: Omit<OrderStages, "id">;
   unload_stage: Omit<OrderStages, "id">;
-}>;
+};

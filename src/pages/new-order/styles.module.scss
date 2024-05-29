@@ -1,12 +1,15 @@
-@import "~/app/styles/colors.scss";
-$font-color: map-get($colors, "default-font-color");
-
 .title {
   text-align: center;
   font-size: 1.4rem;
   font-weight: 500;
   line-height: 1.7rem;
   margin-bottom: 1rem;
+}
+
+.secondCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
 }
 
 input,
@@ -18,12 +21,14 @@ select {
 
 input {
   height: 3rem;
+  margin-bottom: 2rem;
 }
 
 select {
   font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.4rem;
+  height: 12rem;
   text-align: left;
 
   option {
@@ -31,38 +36,8 @@ select {
   }
 }
 
-table {
-  border: 1px solid rgba($font-color, 0.2);
-  th {
-    text-align: center;
-    background: #fff;
-  }
-  th,
-  td {
-    padding: 1rem;
-    font-size: 1.4rem;
-    font-weight: 400;
-    line-height: 1.7rem;
-    border: 1px solid rgba($font-color, 0.2);
-  }
-}
-.upperCell,
-.lowerCell1,
-.lowerCell2 {
-  padding: 0;
-  font-size: 1.2rem;
-  text-align: center;
-}
-td.upperCell {
-  border-bottom: none;
-}
-td.lowerCell1,
-td.lowerCell2 {
-  border-top: none;
-}
-td.lowerCell1 {
-  border-right: none;
-}
-td.lowerCell2 {
-  border-left: none;
+.button {
+  padding: 0.5rem 1.5rem;
+  width: 100%;
+  margin-top: 2rem;
 }

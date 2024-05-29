@@ -13,7 +13,11 @@ import { OutlineButton, PrimaryButton } from "~/shared/ui";
 const unpublishedOrdersData = {
   title: "Заказы",
   inputs: [
-    { name: "id", label: "№ Транспортировки", placeholder: "00000000" },
+    {
+      name: "transportation_number",
+      label: "№ Транспортировки",
+      placeholder: "00000000",
+    },
     { name: "city_from", label: "Город-старт", placeholder: "Москва" },
     {
       name: "city_to",
@@ -57,7 +61,11 @@ const unpublishedOrdersData = {
 const cancelledOrdersData = {
   title: "Отмененные",
   inputs: [
-    { name: "id", label: "№ Транспортировки", placeholder: "00000000" },
+    {
+      name: "transportation_number",
+      label: "№ Транспортировки",
+      placeholder: "00000000",
+    },
     { name: "city_from", label: "Город-старт", placeholder: "Москва" },
     {
       name: "city_to",
@@ -71,7 +79,11 @@ const cancelledOrdersData = {
 const inAuctionOrdersData = {
   title: "Аукционы",
   inputs: [
-    { name: "id", label: "№ Транспортировки", placeholder: "00000000" },
+    {
+      name: "transportation_number",
+      label: "№ Транспортировки",
+      placeholder: "00000000",
+    },
     { name: "city_from", label: "Город-старт", placeholder: "Москва" },
     {
       name: "city_to",
@@ -94,7 +106,11 @@ const inAuctionOrdersData = {
 const inBiddingOrdersData = {
   title: "Торги",
   inputs: [
-    { name: "id", label: "№ Транспортировки", placeholder: "00000000" },
+    {
+      name: "transportation_number",
+      label: "№ Транспортировки",
+      placeholder: "00000000",
+    },
     { name: "city_from", label: "Город-старт", placeholder: "Москва" },
     {
       name: "city_to",
@@ -117,7 +133,11 @@ const inBiddingOrdersData = {
 const inDirectOrdersData = {
   title: "Назначенные",
   inputs: [
-    { name: "id", label: "№ Транспортировки", placeholder: "00000000" },
+    {
+      name: "transportation_number",
+      label: "№ Транспортировки",
+      placeholder: "00000000",
+    },
     { name: "city_from", label: "Город-старт", placeholder: "Москва" },
     {
       name: "city_to",
@@ -140,7 +160,11 @@ const inDirectOrdersData = {
 const beingExecutedOrdersData = {
   title: "Журнал перевозок",
   inputs: [
-    { name: "id", label: "№ Транспортировки", placeholder: "00000000" },
+    {
+      name: "transportation_number",
+      label: "№ Транспортировки",
+      placeholder: "00000000",
+    },
     { name: "city_from", label: "Город-старт", placeholder: "Москва" },
     {
       name: "city_to",

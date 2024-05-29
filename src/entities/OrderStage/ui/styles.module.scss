@@ -1,0 +1,15 @@
+@import "~/app/styles/colors.scss";
+$font-color: map-get($colors, "default-font-color");
+
+table {
+  border: 1px solid rgba($font-color, 0.2);
+  th,
+  td {
+    text-align: center;
+    padding: 0.5rem 1rem;
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 1.7rem;
+    border: 1px solid rgba($font-color, 0.2);
+  }
+}

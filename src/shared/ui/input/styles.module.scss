@@ -66,3 +66,15 @@ $default-font-color: map-get($colors, "default-font-color");
   width: 2rem;
   height: 2rem;
 }
+
+.invisible-input {
+  border: none;
+  padding: 0 1rem;
+  margin: 0;
+  &:focus,
+  &:focus-visible,
+  &:focus-within {
+    border: none;
+    outline: none;
+  }
+}

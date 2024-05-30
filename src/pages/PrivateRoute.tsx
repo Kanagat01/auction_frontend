@@ -3,7 +3,7 @@ import { useUnit } from "effector-react";
 
 import { Header, Sidebar } from "~/widgets";
 import { $isAuthenticated } from "~/features/authorization";
-import { $mainData, getMainData } from "~/entities/User";
+import { $mainData, getMainDataFx } from "~/entities/User";
 import { LOGIN_ROUTE } from "~/shared/routes";
 import { Preloader } from "~/shared/ui";
 import { useEffect } from "react";
@@ -15,7 +15,7 @@ export const PrivateRoute = () => {
 
   useEffect(() => {
     if (isAuthenticated && mainData === null) {
-      getMainData();
+      getMainDataFx();
     }
   }, [isAuthenticated]);
 

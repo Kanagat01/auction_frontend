@@ -1,7 +1,6 @@
 export * from "./Header";
 export * from "./Sidebar";
 export * from "./Settings";
-export * from "./Delivery";
 export * from "./DataSection";
 export * from "./MapSection";
 export * from "./MenuProfile";

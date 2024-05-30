@@ -1,17 +1,5 @@
-import {
-  OrderModel,
-  OrderStatus,
-  OrderTransportBodyType,
-  OrderTransportLoadType,
-  OrderTransportUnloadType,
-} from "~/entities/Order";
+import { OrderModel, OrderStatus } from "~/entities/Order";
 import { TStages } from "~/entities/OrderStage";
-
-export type PreCreateOrderResponse = {
-  transport_body_types: OrderTransportBodyType[];
-  transport_load_types: OrderTransportLoadType[];
-  transport_unload_types: OrderTransportUnloadType[];
-};
 
 export type CreateOrderRequest = Omit<
   OrderModel,

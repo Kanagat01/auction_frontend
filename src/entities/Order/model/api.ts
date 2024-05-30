@@ -6,7 +6,6 @@ import {
   CompleteOrderRequest,
   CreateOrderRequest,
   EditOrderRequest,
-  PreCreateOrderResponse,
   PublishOrderRequest,
   UnpublishOrderRequest,
 } from "./api_types";
@@ -27,15 +26,6 @@ export const getOrdersFx: Effect<TOrderStatus, OrderModel[]> = attach({
   mapParams: (status: TOrderStatus): RequestParams => ({
     method: "get",
     url: `/auction/customer/${OrderStatusUrls[status]}/`,
-  }),
-});
-
-// pre create order
-export const preCreateOrderFx: Effect<void, PreCreateOrderResponse> = attach({
-  effect: apiRequestFx,
-  mapParams: (): RequestParams => ({
-    method: "get",
-    url: `/auction/customer/pre_create_order/`,
   }),
 });
 

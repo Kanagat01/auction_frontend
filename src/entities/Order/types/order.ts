@@ -4,7 +4,7 @@ import {
   OrderTransportBodyType,
   OrderTransportLoadType,
   OrderTransportUnloadType,
-} from ".";
+} from "~/entities/OrderStage";
 
 export enum OrderStatus {
   unpublished = "Не опубликован",
@@ -19,11 +19,11 @@ export type TOrderStatus = keyof typeof OrderStatus;
 
 export type OrderModel = {
   id: number;
-  customer_manager: CustomerManager;
-  transporter_manager: TransporterManager | null;
-  created_at: Date;
-  updated_at: Date;
-  status: OrderStatus;
+  customer_manager: CustomerManager | number;
+  transporter_manager: TransporterManager | number | null;
+  created_at: Date | string;
+  updated_at: Date | string;
+  status: TOrderStatus;
   transportation_number: number;
   start_price: number;
   price_step: number;

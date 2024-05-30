@@ -4,8 +4,16 @@ import { FolderPlus } from "~/shared/assets";
 import { useModalState } from "~/shared/lib";
 import { InputContainer, ModalTitle, OutlineButton } from "~/shared/ui";
 
-export const CreateDelivery = () => {
+export const CreateOrderStage = () => {
   const [show, changeShow] = useModalState(false);
+  const createOrderStage = () => {
+    // toast.promise(addOrderStageFx({ order_id: 5 }), {
+    //   loading: "Создаем поставку...",
+    //   success: () => "Поставка успешно создана",
+    //   error: (err) => `Произошла ошибка: ${err}`,
+    // });
+    changeShow();
+  };
   return (
     <>
       <ReactSVG
@@ -41,24 +49,21 @@ export const CreateDelivery = () => {
             className="d-flex align-items-center mt-4"
             style={{ gap: "3rem" }}
           >
-            <OutlineButton
-              style={{
-                width: "100%",
-                padding: "0.5rem 2rem",
-                fontSize: "1.6rem",
-              }}
-            >
-              Сохранить
-            </OutlineButton>
-            <OutlineButton
-              style={{
-                width: "100%",
-                padding: "0.5rem 2rem",
-                fontSize: "1.6rem",
-              }}
-            >
-              Отмена
-            </OutlineButton>
+            {[
+              { text: "Сохранить", onClick: createOrderStage },
+              { text: "Отмена", onClick: changeShow },
+            ].map(({ text, onClick }) => (
+              <OutlineButton
+                style={{
+                  width: "100%",
+                  padding: "0.5rem 2rem",
+                  fontSize: "1.6rem",
+                }}
+                onClick={onClick}
+              >
+                {text}
+              </OutlineButton>
+            ))}
           </div>
         </Modal.Body>
       </Modal>

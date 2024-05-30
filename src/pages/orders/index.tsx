@@ -3,7 +3,12 @@ import { useLocation } from "react-router-dom";
 import { useUnit } from "effector-react";
 
 import { ControlPanel } from "~/widgets";
-import { $orders, OrdersList, TOrderStatus, getOrders } from "~/entities/Order";
+import {
+  $orders,
+  OrdersList,
+  TOrderStatus,
+  getOrdersFx,
+} from "~/entities/Order";
 import { MainTitle, RoundedWhiteBox, TitleLg } from "~/shared/ui";
 import {
   CANCELLED_ORDERS,
@@ -31,7 +36,7 @@ export default function OrdersPage() {
     const { title, ...pageData } = getPageData(orderStatus);
 
     useEffect(() => {
-      getOrders(orderStatus);
+      getOrdersFx(orderStatus);
     }, [orderStatus]);
 
     return (

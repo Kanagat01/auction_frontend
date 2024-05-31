@@ -4,6 +4,7 @@ import {
   SelectHTMLAttributes,
   TextareaHTMLAttributes,
 } from "react";
+import { FormSelectProps } from "react-bootstrap";
 
 export type BaseProp = {
   name: string;
@@ -22,4 +23,10 @@ export type SelectProps = BaseProp &
   SelectHTMLAttributes<HTMLSelectElement> & {
     options: Array<[string, string]>;
     variant: "select";
+  };
+
+export type BootstrapSelectProps = BaseProp &
+  FormSelectProps & {
+    options: Array<[string, string]>;
+    variant: "bootstrap-select";
   };

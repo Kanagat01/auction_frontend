@@ -6,7 +6,6 @@ import {
   getOrderStagesFx,
   CreateOrderStage,
   OrderStagesTable,
-  TStages,
 } from "~/entities/OrderStage";
 import {
   InputContainer,
@@ -18,34 +17,6 @@ import { renderPromise } from "~/shared/api";
 import styles from "./styles.module.scss";
 
 export default function NewOrder() {
-  const orderStageCouples: TStages[] = [
-    {
-      load_stage: {
-        date: "09.09.2022",
-        time_start: "15:00",
-        time_end: "16:00",
-        company: "Москва РОКВУП ООО",
-        address: "some adress",
-        contact_person: "Иван Иваныч",
-        cargo: "Товар какой то",
-        weight: 156,
-        volume: 157,
-        comments: "",
-      },
-      unload_stage: {
-        date: "09.09.2022",
-        time_start: "15:00",
-        time_end: "16:00",
-        company: "Москва РОКВУП ООО",
-        address: "some adress",
-        contact_person: "Иван Иваныч",
-        cargo: "Товар какой то",
-        weight: 156,
-        volume: 157,
-        comments: "",
-      },
-    },
-  ];
   return (
     <RoundedWhiteBox>
       {renderPromise(getOrderStagesFx, {
@@ -108,7 +79,7 @@ export default function NewOrder() {
                       label={label}
                       label_style={{ color: "var(--default-font-color)" }}
                       className={`${styles.textarea} w-100 mb-0`}
-                      rows={7}
+                      rows={6}
                     />
                   ))}
                 </div>
@@ -164,7 +135,7 @@ export default function NewOrder() {
                 </Row>
               </Col>
               <Col md={12} lg={8}>
-                <OrderStagesTable orderStageCouples={orderStageCouples} />
+                <OrderStagesTable />
               </Col>
               <Col className="d-flex justify-content-between" md={12} lg={4}>
                 <div className="d-flex flex-column align-items-start">

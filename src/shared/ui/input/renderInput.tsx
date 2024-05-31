@@ -1,0 +1,39 @@
+import { ReactNode } from "react";
+import { Form } from "react-bootstrap";
+import {
+  BootstrapSelectProps,
+  InputProps,
+  SelectProps,
+  TextAreaProps,
+} from "./types";
+
+export const renderInput = (
+  props: InputProps | TextAreaProps | SelectProps | BootstrapSelectProps
+): ReactNode => {
+  switch (props.variant) {
+    case "input":
+      return <input type="text" {...props} />;
+    case "textarea":
+      return <textarea {...props}></textarea>;
+    case "select":
+      return (
+        <select {...props}>
+          {props.options.map(([value, option]) => (
+            <option value={value} key={value}>
+              {option}
+            </option>
+          ))}
+        </select>
+      );
+    case "bootstrap-select":
+      return (
+        <Form.Select {...props}>
+          {props.options.map(([value, option]) => (
+            <option value={value} key={value}>
+              {option}
+            </option>
+          ))}
+        </Form.Select>
+      );
+  }
+};

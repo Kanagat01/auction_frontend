@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { InputProps, TextAreaProps } from "./types";
-import { renderInput } from ".";
+import { renderInput } from "./renderInput";
 import styles from "./styles.module.scss";
 
 export const EditField: FC<InputProps | TextAreaProps> = (props) => {

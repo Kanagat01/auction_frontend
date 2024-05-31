@@ -38,6 +38,12 @@ select {
 
 .button {
   padding: 0.5rem 1.5rem;
-  width: 100%;
-  margin-top: 2rem;
+  width: 12rem;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  align-items: center;
 }

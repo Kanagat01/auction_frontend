@@ -57,63 +57,69 @@ export const CreateOrderStage = () => {
       />
       <Modal show={show} onHide={changeShow} className="gradient-modal">
         <Modal.Body>
-          <ModalTitle>Поставка</ModalTitle>
-          <InputContainer
-            name="stage"
-            label="Тип этапа"
-            variant="bootstrap-select"
-            options={[
-              ["load", "Погрузка"],
-              ["unload", "Выгрузка"],
-            ]}
-            defaultValue={initialOrderStage}
-            {...stageInputProps}
-          />
-          {Object.entries(OrderStageTranslations).map(([name, label]) => {
-            return (
-              <>
-                <InputContainer
-                  key={name}
-                  name={name}
-                  label={label}
-                  value={orderStage[name as keyof typeof orderStage]}
-                  onChange={(e: any) => updateStageField(name, e.target.value)}
-                  variant={name === "comments" ? "textarea" : "input"}
-                  type={name === "date" ? "date" : "text"}
-                  {...baseInputProps}
-                />
-                {name === "date" ? (
-                  <div style={timeDivStyle}>
-                    {[
-                      ["time_start", "С"],
-                      ["time_end", "По"],
-                    ].map(([name, label]) => (
-                      <InputContainer
-                        name={name}
-                        label={label}
-                        variant="input"
-                        value={orderStage[name as keyof typeof orderStage]}
-                        onChange={(e) => updateStageField(name, e.target.value)}
-                        {...timeInputProps}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  ""
-                )}
-              </>
-            );
-          })}
-          <div style={modalButtonsStyle}>
-            {[
-              { text: "Сохранить", onClick: createOrderStage },
-              { text: "Отмена", onClick: changeShow },
-            ].map(({ text, onClick }) => (
-              <OutlineButton style={modalBtnStyle} onClick={onClick}>
-                {text}
-              </OutlineButton>
-            ))}
-          </div>
+          <form onSubmit={createOrderStage} onReset={changeShow}>
+            <ModalTitle>Поставка</ModalTitle>
+            <InputContainer
+              name="stage"
+              label="Тип этапа"
+              variant="bootstrap-select"
+              options={[
+                ["load", "Погрузка"],
+                ["unload", "Выгрузка"],
+              ]}
+              defaultValue={initialOrderStage}
+              {...stageInputProps}
+            />
+            {Object.entries(OrderStageTranslations).map(([name, label]) => {
+              return (
+                <>
+                  <InputContainer
+                    key={name}
+                    name={name}
+                    label={label}
+                    value={orderStage[name as keyof typeof orderStage]}
+                    onChange={(e: any) =>
+                      updateStageField(name, e.target.value)
+                    }
+                    variant={name === "comments" ? "textarea" : "input"}
+                    type={name === "date" ? "date" : "text"}
+                    {...baseInputProps}
+                  />
+                  {name === "date" ? (
+                    <div style={timeDivStyle}>
+                      {[
+                        ["time_start", "С"],
+                        ["time_end", "По"],
+                      ].map(([name, label]) => (
+                        <InputContainer
+                          name={name}
+                          label={label}
+                          variant="input"
+                          value={orderStage[name as keyof typeof orderStage]}
+                          onChange={(e) =>
+                            updateStageField(name, e.target.value)
+                          }
+                          {...timeInputProps}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </>
+              );
+            })}
+            <div style={modalButtonsStyle}>
+              {["Сохранить", "Отмена"].map((text, idx) => (
+                <OutlineButton
+                  style={modalBtnStyle}
+                  type={idx === 0 ? "submit" : "reset"}
+                >
+                  {text}
+                </OutlineButton>
+              ))}
+            </div>
+          </form>
         </Modal.Body>
       </Modal>
     </>

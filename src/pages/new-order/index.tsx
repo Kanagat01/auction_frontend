@@ -137,16 +137,26 @@ export default function NewOrder() {
               <Col md={12} lg={8}>
                 <OrderStagesTable />
               </Col>
-              <Col className="d-flex justify-content-between" md={12} lg={4}>
-                <div className="d-flex flex-column align-items-start">
+              <Col md={12} lg={4}>
+                <div className={styles.gridContainer}>
                   <InputContainer
                     name=""
                     label="№ Поставки"
                     variant="input"
                     label_style={{ color: "var(--default-font-color)" }}
-                    className={styles.input}
+                    container_style={{ justifySelf: "start", width: "15rem" }}
                   />
-                  <div className="d-flex">
+                  <OutlineButton
+                    className={styles.button}
+                    style={{ justifySelf: "end" }}
+                    type="submit"
+                  >
+                    Сохранить
+                  </OutlineButton>
+                  <div
+                    className={`d-flex justify-content-between`}
+                    style={{ justifySelf: "start", width: "15rem" }}
+                  >
                     {[
                       CreateOrderStage,
                       LuCopyPlus,
@@ -165,19 +175,13 @@ export default function NewOrder() {
                       </OutlineButton>
                     ))}
                   </div>
-                </div>
-                <div
-                  className="d-flex flex-column align-items-end"
-                  style={{ width: "10rem" }}
-                >
-                  {["Сохранить", "Отмена"].map((text, idx) => (
-                    <OutlineButton
-                      className={styles.button}
-                      type={idx === 0 ? "submit" : "button"}
-                    >
-                      {text}
-                    </OutlineButton>
-                  ))}
+                  <OutlineButton
+                    className={styles.button}
+                    style={{ justifySelf: "end" }}
+                    type="reset"
+                  >
+                    Отмена
+                  </OutlineButton>
                 </div>
               </Col>
             </Row>

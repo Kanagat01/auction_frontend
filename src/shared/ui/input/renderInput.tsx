@@ -19,7 +19,7 @@ export const renderInput = (
       return (
         <select {...props}>
           {props.options.map(([value, option]) => (
-            <option value={value} key={value}>
+            <option key={value} value={value}>
               {option}
             </option>
           ))}
@@ -29,7 +29,7 @@ export const renderInput = (
       return (
         <Form.Select {...props}>
           {props.options.map(([value, option]) => (
-            <option value={value} key={value}>
+            <option key={value} value={value}>
               {option}
             </option>
           ))}

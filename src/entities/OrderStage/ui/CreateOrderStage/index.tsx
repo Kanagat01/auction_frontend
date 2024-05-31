@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, Fragment, useState } from "react";
 import { useUnit } from "effector-react";
 import { Modal } from "react-bootstrap";
 import { ReactSVG } from "react-svg";
@@ -43,8 +43,14 @@ export const CreateOrderStage = () => {
     setOrderStage((prevState) => ({ ...prevState, [field]: value }));
   };
 
-  const createOrderStage = () => {
+  const createOrderStage = (e: FormEvent) => {
+    e.preventDefault();
+
     addOrderStage({ stageName: initialOrderStage, ...orderStage });
+    setOrderStage(initialState);
+    changeShow();
+  };
+  const onReset = () => {
     setOrderStage(initialState);
     changeShow();
   };
@@ -57,7 +63,7 @@ export const CreateOrderStage = () => {
       />
       <Modal show={show} onHide={changeShow} className="gradient-modal">
         <Modal.Body>
-          <form onSubmit={createOrderStage} onReset={changeShow}>
+          <form onSubmit={createOrderStage} onReset={onReset}>
             <ModalTitle>Поставка</ModalTitle>
             <InputContainer
               name="stage"
@@ -72,9 +78,8 @@ export const CreateOrderStage = () => {
             />
             {Object.entries(OrderStageTranslations).map(([name, label]) => {
               return (
-                <>
+                <Fragment key={name}>
                   <InputContainer
-                    key={name}
                     name={name}
                     label={label}
                     value={orderStage[name as keyof typeof orderStage]}
@@ -92,6 +97,7 @@ export const CreateOrderStage = () => {
                         ["time_end", "По"],
                       ].map(([name, label]) => (
                         <InputContainer
+                          key={name}
                           name={name}
                           label={label}
                           variant="input"
@@ -106,12 +112,13 @@ export const CreateOrderStage = () => {
                   ) : (
                     ""
                   )}
-                </>
+                </Fragment>
               );
             })}
             <div style={modalButtonsStyle}>
               {["Сохранить", "Отмена"].map((text, idx) => (
                 <OutlineButton
+                  key={idx}
                   style={modalBtnStyle}
                   type={idx === 0 ? "submit" : "reset"}
                 >

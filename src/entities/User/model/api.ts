@@ -7,7 +7,6 @@ export const getMainDataFx = createEffect<void, GetMainDataResponse>(
   async () => {
     try {
       const response = await apiInstance.get("/user/common/get_user/");
-      console.log(response.data.message);
       return response.data.message;
     } catch (error) {
       logger.error(error);

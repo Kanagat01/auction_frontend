@@ -3,7 +3,7 @@ aside {
   flex-direction: column;
   gap: 5px;
   margin: 16rem 1.4rem;
-  width: 6rem;
+  width: min-content;
 }
 
 aside a {

@@ -83,9 +83,9 @@ export const CreateOrderStage = () => {
                     name={name}
                     label={label}
                     value={orderStage[name as keyof typeof orderStage]}
-                    onChange={(e: any) =>
-                      updateStageField(name, e.target.value)
-                    }
+                    onChange={(
+                      e: any // TODO
+                    ) => updateStageField(name, e.target.value)}
                     variant={name === "comments" ? "textarea" : "input"}
                     type={name === "date" ? "date" : "text"}
                     {...baseInputProps}

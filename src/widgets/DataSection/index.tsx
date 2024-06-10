@@ -1,57 +1,95 @@
 import { Col, Row } from "react-bootstrap";
 import { OrderModel } from "~/entities/Order";
+import { logger } from "~/shared/config";
 import { InputContainer, RoundedTable, TitleSm } from "~/shared/ui";
 
 export function DataSection({ order }: { order: OrderModel }) {
+  logger.log(order);
   const inputs = [
     [
-      ["id", "№ Транспортировки", order ? order.id.toString() : ""],
-      ["contact_person", "Контактное лицо", "Имя"],
+      {
+        name: "transportation_number",
+        label: "№ Транспортировки",
+      },
+      {
+        name: "customer_manager",
+        label: "Заказчик",
+      },
     ],
     [
-      ["weight", "Вес", "000000"],
-      ["volume", "Обьем", "000000"],
-      ["ts", "ТС, м3", "000000"],
+      {
+        name: "comments_for_transporter",
+        label: "Комментарий для перевозчиков",
+      },
+      {
+        name: "additional_requirements",
+        label: "Доп. требования",
+      },
     ],
     [
-      ["length", "Длина", "000000"],
-      ["width", "Ширина", "000000"],
-      ["height", "Высота", "000000"],
+      {
+        name: "transport_body_height",
+        label: "Высота кузова",
+      },
+      {
+        name: "transport_body_length",
+        label: "Длина кузова",
+      },
+      {
+        name: "transport_body_width",
+        label: "Ширина кузова",
+      },
     ],
+  ];
+  const tableData = [
+    ["Стартовая цена", order.start_price],
+    ["Шаг цены", order.price_step],
+    [
+      "Способ погрузки",
+      typeof order.transport_load_type === "number"
+        ? order.transport_load_type
+        : order.transport_load_type.name,
+    ],
+    [
+      "Способ выгрузки",
+      typeof order.transport_unload_type === "number"
+        ? order.transport_unload_type
+        : order.transport_unload_type.name,
+    ],
+    ["ТС, м3", order.transport_volume],
+    ["Темп. режим", order.temp_mode],
+    ["ADR [шт.]", order.adr],
   ];
   return (
     <>
       {inputs.map((arr, key) => (
         <div
           key={key}
-          className="d-flex align-items-center"
+          className="d-flex align-items-end"
           style={{ gap: "1rem" }}
         >
-          {arr.map(([name, label, value]) => (
+          {arr.map(({ name, label }) => (
             <InputContainer
               key={name}
-              {...{ name, label, value }}
-              variant="input"
+              name={name}
+              label={label}
+              //@ts-ignore
+              value={order[name]}
+              variant={key === 1 ? "textarea" : "input"}
               label_style={{
                 color: "var(--default-font-color)",
               }}
-              container_style={{ width: "100%" }}
-              className="w-100 mb-2"
+              container_style={{
+                width: "100%",
+                marginBottom: "1rem",
+              }}
+              className="w-100"
             />
           ))}
         </div>
       ))}
       <TitleSm>Таблица</TitleSm>
-      <RoundedTable
-        data={[
-          ["Стартовая цена", "10000"],
-          ["Шаг цены", "0000"],
-          ["Способ погрузки", "0000"],
-          ["Способ выгрузки", "0000"],
-          ["Темп.режим", "0000"],
-          ["ADR", "0000"],
-        ]}
-      />
+      <RoundedTable data={tableData} />
       <div className="gray-bg">
         <Row>
           <Col>
@@ -70,7 +108,7 @@ export function DataSection({ order }: { order: OrderModel }) {
                 ["2023-03-15"],
               ]}
             />
-            <TitleSm className="mt-2 mb-2" style={{ fontWeight: 600 }}>
+            <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
               Параметры груза
             </TitleSm>
             <div className="gray-line"></div>
@@ -99,7 +137,7 @@ export function DataSection({ order }: { order: OrderModel }) {
                 ["2023-03-15"],
               ]}
             />
-            <TitleSm className="mt-2 mb-2" style={{ fontWeight: 600 }}>
+            <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
               Комментарии к поставке
             </TitleSm>
             <div className="gray-line mb-2"></div>

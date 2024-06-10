@@ -1,10 +1,14 @@
 import { CustomerManager } from "~/entities/User";
 import { TransporterManager } from "~/entities/Company";
 import {
+  OrderStages,
   OrderTransportBodyType,
   OrderTransportLoadType,
   OrderTransportUnloadType,
 } from "~/entities/OrderStage";
+import { OrderDocument } from "~/entities/Document";
+import { OrderOffer } from "~/entities/Offer";
+import { OrderTrackingGeoPoint } from "./order_tracking";
 
 export enum OrderStatus {
   unpublished = "Не опубликован",
@@ -40,10 +44,7 @@ export type OrderModel = {
   transport_body_height: number;
 };
 
-export const orderTranslations: Record<
-  Exclude<keyof OrderModel, "id">,
-  string
-> = {
+export const orderTranslations = {
   transportation_number: "№ Транспортировки",
   customer_manager: "Менеджер Заказчика",
   transporter_manager: "Менеджер Перевозчика",
@@ -64,4 +65,18 @@ export const orderTranslations: Record<
   transport_body_width: "Ширина кузова",
   transport_body_length: "Длина кузова",
   transport_body_height: "Высота кузова",
+  documents: "Документы",
+  offers: "Предложения",
+  tracking: "Геоточки",
+  stages: "Поставки",
+};
+
+export type TGetOrder = OrderModel & {
+  offers: OrderOffer[];
+  tracking: OrderTrackingGeoPoint[] | null;
+  documents: OrderDocument[];
+  stages: {
+    load_stage: OrderStages;
+    unload_stage: OrderStages;
+  }[];
 };

@@ -34,7 +34,6 @@ export default function OrdersPage() {
     const orderStatus = routes[currentRoute];
     const orders = useUnit($orders);
     const { title, ...pageData } = getPageData(orderStatus);
-
     useEffect(() => {
       getOrdersFx(orderStatus);
     }, [orderStatus]);

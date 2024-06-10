@@ -1,20 +1,21 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { Dispatch, SetStateAction } from "react";
 import {
-  OrderModel,
   OrderStatus,
+  TGetOrder,
   TOrderStatus,
   orderTranslations,
 } from "../types";
 import { IndeterminateCheckbox } from "~/shared/ui";
+import { unixDateToString } from "~/shared/lib";
 
 type TgetColumns = {
-  setSelectedOrder: Dispatch<SetStateAction<OrderModel | null>>;
+  setSelectedOrder: Dispatch<SetStateAction<TGetOrder | null>>;
   changeModal: () => void;
 };
 
 export const getColumns = ({ setSelectedOrder, changeModal }: TgetColumns) => {
-  const columnHelper = createColumnHelper<OrderModel>();
+  const columnHelper = createColumnHelper<TGetOrder>();
   const keys = [
     "transportation_number",
     "customer_manager",
@@ -26,7 +27,7 @@ export const getColumns = ({ setSelectedOrder, changeModal }: TgetColumns) => {
     "additional_requirements",
     "created_at",
     "updated_at",
-  ] as Array<Partial<Exclude<keyof OrderModel, "id">>>;
+  ] as Array<Partial<Exclude<keyof TGetOrder, "id">>>;
 
   return keys.map((key) =>
     columnHelper.accessor(key, {
@@ -56,15 +57,7 @@ export const getColumns = ({ setSelectedOrder, changeModal }: TgetColumns) => {
             </div>
           );
         else if (["updated_at", "created_at"].includes(key)) {
-          if (value) {
-            const parts = value
-              .toString()
-              .replace("T", " ")
-              .replace("Z", "")
-              .split(":");
-            return parts && parts[0] + ":" + parts[1];
-          }
-          return "-";
+          return value ? unixDateToString(value as Date | string) : "-";
         } else if (key === "status") {
           const value = info.getValue()?.toString() as TOrderStatus;
           return OrderStatus[value];

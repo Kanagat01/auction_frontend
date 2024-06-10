@@ -50,5 +50,10 @@ $border-color: map-get($colors, "default-font-color");
   .rounded-input {
     width: 100%;
     box-sizing: border-box;
+
+    &::-ms-reveal,
+    &::-webkit-reveal {
+      display: none;
+    }
   }
 }

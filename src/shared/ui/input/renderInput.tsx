@@ -12,12 +12,13 @@ export const renderInput = (
 ): ReactNode => {
   switch (props.variant) {
     case "input":
-      return <input type="text" {...props} />;
+      return <input {...props} />;
     case "textarea":
       return <textarea {...props}></textarea>;
     case "select":
       return (
         <select {...props}>
+          <option hidden disabled></option>
           {props.options.map(([value, option]) => (
             <option key={value} value={value}>
               {option}

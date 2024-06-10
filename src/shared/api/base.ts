@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setAuth } from "~/features/authorization";
 import { API_URL } from "~/shared/config";
 
 export const apiInstance = axios.create({
@@ -12,3 +13,15 @@ apiInstance.interceptors.request.use(async (config) => {
   }
   return config;
 });
+
+apiInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      setAuth(false);
+    }
+    return Promise.reject(error);
+  }
+);

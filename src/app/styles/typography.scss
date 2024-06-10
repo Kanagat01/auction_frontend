@@ -36,6 +36,8 @@ $font-color: map-get($colors, "default-font-color");
 .link {
   color: var(--link-color);
   text-decoration: underline;
+  overflow: hidden;
+  width: 100%;
 }
 
 .modal-title {

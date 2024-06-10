@@ -23,6 +23,7 @@ export let API_URL: string;
 
 /** Режим запуска программы */
 export const NODE_ENV = getEnvVar("VITE_NODE_ENV");
+export const YANDEX_MAPS_API_KEY = getEnvVar("VITE_YANDEX_MAPS_API_KEY");
 
 if (NODE_ENV === "development") {
   /** Режим разработки */

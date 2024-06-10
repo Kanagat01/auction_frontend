@@ -7,15 +7,15 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { OrderModel, OrderSections, getColumns } from "~/entities/Order";
+import { OrderSections, TGetOrder, getColumns } from "~/entities/Order";
 import { MainTable } from "~/shared/ui";
 import { useModalState } from "~/shared/lib";
 
-export function OrdersList({ orders }: { orders: OrderModel[] }) {
+export function OrdersList({ orders }: { orders: TGetOrder[] }) {
   const paginator = { size: 11, currentPage: 2 };
 
   const [modal, changeModal] = useModalState(false);
-  const [selectedOrder, setSelectedOrder] = useState<OrderModel | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<TGetOrder | null>(null);
   const [rowSelection, setRowSelection] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
 

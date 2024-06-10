@@ -1,5 +1,5 @@
 import { Effect, attach } from "effector";
-import { OrderModel, TOrderStatus } from "~/entities/Order";
+import { OrderModel, TGetOrder, TOrderStatus } from "~/entities/Order";
 import { RequestParams, apiRequestFx } from "~/shared/api";
 import {
   CancelOrderRequest,
@@ -21,7 +21,7 @@ enum OrderStatusUrls {
 }
 
 // get orders
-export const getOrdersFx: Effect<TOrderStatus, OrderModel[]> = attach({
+export const getOrdersFx: Effect<TOrderStatus, TGetOrder[]> = attach({
   effect: apiRequestFx,
   mapParams: (status: TOrderStatus): RequestParams => ({
     method: "get",

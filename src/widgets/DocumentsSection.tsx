@@ -1,8 +1,26 @@
 import { FaRegTrashCan } from "react-icons/fa6";
-import { OutlineButton, RoundedTable, TextCenter, TitleMd } from "~/shared/ui";
 import { LuCopyPlus } from "react-icons/lu";
+import { OrderDocument } from "~/entities/Document";
+import { OutlineButton, RoundedTable, TextCenter, TitleMd } from "~/shared/ui";
+import { unixDateToString } from "~/shared/lib";
+import { API_URL } from "~/shared/config";
 
-export function DocumentsSection() {
+export function DocumentsSection({
+  documents,
+}: {
+  documents: OrderDocument[];
+}) {
+  const docsData = documents.map((doc) => [
+    <TextCenter>
+      <a className="link" target="_blank" href={API_URL + doc.file}>
+        Заявка №{doc.id} <br />
+        Документ {decodeURIComponent(doc.file).replace("/media/documents/", "")}
+      </a>
+      <br />
+      {unixDateToString(doc.created_at)}
+    </TextCenter>,
+    <TextCenter>ФИО пользователя</TextCenter>,
+  ]);
   return (
     <>
       <div
@@ -32,18 +50,7 @@ export function DocumentsSection() {
           </TextCenter>,
           <TextCenter>Роль</TextCenter>,
         ]}
-        data={[
-          [
-            <TextCenter>
-              <a className="link" href="#">
-                Заявка №24 отабонента 3443.pdf
-              </a>
-              <br />
-              15.02.2023 15:30
-            </TextCenter>,
-            <TextCenter>ФИО пользователя</TextCenter>,
-          ],
-        ]}
+        data={docsData}
       />
     </>
   );

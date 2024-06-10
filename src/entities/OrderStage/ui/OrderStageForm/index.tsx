@@ -13,7 +13,11 @@ export function OrderStageForm() {
         variant="input"
         type="number"
         label_style={{ color: "var(--default-font-color)" }}
-        container_style={{ justifySelf: "start", width: "15rem" }}
+        container_style={{
+          justifySelf: "start",
+          width: "15rem",
+          marginBottom: "1.5rem",
+        }}
       />
       <OutlineButton
         className={styles.button}

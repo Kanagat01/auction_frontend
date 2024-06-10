@@ -1,16 +1,16 @@
 import { DataSection, DocumentsSection, MapSection } from "~/widgets";
 import { OutlineButton } from "~/shared/ui";
 import { useState } from "react";
-import { OrderModel } from "~/entities/Order";
+import { TGetOrder } from "~/entities/Order";
 
-export function OrderSections({ order }: { order: OrderModel }) {
+export function OrderSections({ order }: { order: TGetOrder }) {
   const [currentSection, setCurrentSection] = useState<string>("data");
   const RenderSection = () => {
     switch (currentSection) {
       case "documents":
-        return <DocumentsSection />;
+        return <DocumentsSection documents={order.documents ?? []} />;
       case "map":
-        return <MapSection />;
+        return <MapSection tracking={order.tracking} />;
       default:
         return <DataSection order={order} />;
     }

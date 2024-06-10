@@ -17,6 +17,7 @@ export const InputContainer: FC<
         {props.label}
       </label>
       {renderInput(props)}
+      {props.error && <div className={styles["error-text"]}>{props.error}</div>}
     </div>
   );
 };

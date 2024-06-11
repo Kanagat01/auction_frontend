@@ -1,32 +1,21 @@
 import { ChangeEvent, FormEvent } from "react";
+import toast from "react-hot-toast";
+import { Col } from "react-bootstrap";
 import { useStoreMap } from "effector-react";
 import { createStore, createEvent, sample } from "effector";
-import { Col } from "react-bootstrap";
+
 import { $mainData } from "~/entities/User";
 import { createOrderFx, orderTranslations } from "~/entities/Order";
-import { InputContainer } from "~/shared/ui";
-import styles from "./styles.module.scss";
 import { TStages } from "~/entities/OrderStage";
-import toast from "react-hot-toast";
+import { InputContainer } from "~/shared/ui";
 
-export type TInputs = {
-  customer_manager: string;
-  start_price: number;
-  price_step: number;
-  transportation_number: number;
-  comments_for_transporter: string;
-  additional_requirements: string;
-  transport_volume: number;
-  temp_mode: string;
-  adr: number;
-  transport_body_width: number;
-  transport_body_length: number;
-  transport_body_height: number;
-
-  transport_body_type: number;
-  transport_load_type: number;
-  transport_unload_type: number;
-};
+import styles from "./styles.module.scss";
+import {
+  FieldProps,
+  FieldUpdatePayload,
+  SelectFieldProps,
+  TInputs,
+} from "./types";
 
 const fieldTypes: { [K in keyof TInputs]: "number" | "text" } = {
   customer_manager: "text",
@@ -47,10 +36,9 @@ const fieldTypes: { [K in keyof TInputs]: "number" | "text" } = {
 };
 
 const mainData = $mainData.getState();
-
-const $form = createStore<TInputs & { stages: TStages[] }>({
+export const $form = createStore<TInputs & { stages: TStages[] }>({
   //@ts-ignore TODO change data
-  customer_manager: mainData.company.company_name ?? "",
+  customer_manager: mainData.user.full_name ?? "",
   start_price: 0,
   price_step: 0,
   transportation_number: Number(Date.now()),
@@ -68,17 +56,6 @@ const $form = createStore<TInputs & { stages: TStages[] }>({
   transport_unload_type: 0,
   stages: [],
 });
-
-type FieldUpdatePayload = {
-  key: keyof TInputs;
-  value: string | number;
-};
-const fieldUpdate = createEvent<FieldUpdatePayload>();
-
-$form.on(fieldUpdate, (form, { key, value }) => ({
-  ...form,
-  [key]: value,
-}));
 
 export const formSubmitted = createEvent<FormEvent>();
 formSubmitted.watch((e: FormEvent) => {
@@ -113,6 +90,13 @@ sample({
   target: createOrderFx,
 });
 
+const fieldUpdate = createEvent<FieldUpdatePayload>();
+
+$form.on(fieldUpdate, (form, { key, value }) => ({
+  ...form,
+  [key]: value,
+}));
+
 const handleChange = fieldUpdate.prepend(
   (
     event: ChangeEvent<
@@ -125,18 +109,13 @@ const handleChange = fieldUpdate.prepend(
     } as FieldUpdatePayload)
 );
 
-type SelectFieldProps = {
-  name: keyof TInputs;
-  label: string;
-  options: [string, string][];
-};
-
-export const SelectField = ({ name, label, options }: SelectFieldProps) => {
+export const SelectField = ({ name, options }: SelectFieldProps) => {
   const value = useStoreMap({
     store: $form,
     keys: [name],
     fn: (values) => values[name] || "",
   });
+  const label = orderTranslations[name];
   return (
     <Col md={4} className="p-0">
       <InputContainer
@@ -152,19 +131,13 @@ export const SelectField = ({ name, label, options }: SelectFieldProps) => {
   );
 };
 
-type FieldProps = {
-  name: keyof TInputs;
-  label: string;
-  colNum: 1 | 2 | 3;
-  type?: "number" | "string";
-};
-
-export const Field = ({ name, label, colNum }: FieldProps) => {
+export const Field = ({ name, colNum }: FieldProps) => {
   const value = useStoreMap({
     store: $form,
     keys: [name],
     fn: (values) => values[name] || "",
   });
+  const label = orderTranslations[name];
   switch (colNum) {
     case 1:
       return (

@@ -1,3 +1,3 @@
 export * from "./OrderStagesTable";
-export * from "./CreateOrderStage";
+export * from "./CreateOrderStageCouple";
 export * from "./OrderStageForm";

@@ -1,7 +1,7 @@
 import { InputContainer, OutlineButton } from "~/shared/ui";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { CreateOrderStage } from "../CreateOrderStage";
+import { CreateOrderStageCouple } from "../CreateOrderStageCouple";
 import styles from "./styles.module.scss";
 
 export function OrderStageForm() {
@@ -13,9 +13,9 @@ export function OrderStageForm() {
         variant="input"
         type="number"
         label_style={{ color: "var(--default-font-color)" }}
+        className="w-100"
         container_style={{
           justifySelf: "start",
-          width: "15rem",
           marginBottom: "1.5rem",
         }}
       />
@@ -30,11 +30,12 @@ export function OrderStageForm() {
         className={`d-flex justify-content-between`}
         style={{ justifySelf: "start", width: "15rem" }}
       >
-        {[CreateOrderStage, LuCopyPlus, LuPenSquare, FaRegTrashCan].map(
+        {[CreateOrderStageCouple, LuCopyPlus, LuPenSquare, FaRegTrashCan].map(
           (Icon, idx) => (
             <OutlineButton
               key={idx}
               className="px-2 py-0 me-2"
+              type="button"
               style={{
                 fontSize: "2rem",
                 border: "1px solid gray",

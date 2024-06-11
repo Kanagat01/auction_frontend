@@ -1,4 +1,4 @@
-import { Effect, attach, createEvent, createStore } from "effector";
+import { Effect, attach } from "effector";
 import { OrderModel } from "~/entities/Order";
 import { RequestParams, apiRequestFx } from "~/shared/api";
 import {
@@ -6,27 +6,6 @@ import {
   EditOrderStageRequest,
   PreCreateOrderResponse,
 } from "./api_types";
-import { OrderStages } from "../types";
-
-type NotCreatedOrderStage = Omit<OrderStages, "id"> & {
-  stageName: "load" | "unload";
-};
-
-export const $createOrderStages = createStore<NotCreatedOrderStage[]>([]);
-
-export const addOrderStage = createEvent<NotCreatedOrderStage>();
-export const removeOrderStage = createEvent<number>();
-export const updateOrderStage = createEvent<{
-  index: number;
-  newStage: NotCreatedOrderStage;
-}>();
-
-$createOrderStages
-  .on(addOrderStage, (state, orderStage) => [...state, orderStage])
-  .on(removeOrderStage, (state, index) => state.filter((_, i) => i !== index))
-  .on(updateOrderStage, (state, { index, newStage }) =>
-    state.map((item, i) => (i === index ? newStage : item))
-  );
 
 // add order stage
 export const addOrderStageFx: Effect<AddOrderStageRequest, OrderModel> = attach(

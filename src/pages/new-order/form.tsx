@@ -17,28 +17,9 @@ import {
   TInputs,
 } from "./types";
 
-const fieldTypes: { [K in keyof TInputs]: "number" | "text" } = {
-  customer_manager: "text",
-  start_price: "number",
-  price_step: "number",
-  transportation_number: "number",
-  comments_for_transporter: "text",
-  additional_requirements: "text",
-  transport_volume: "number",
-  temp_mode: "text",
-  adr: "number",
-  transport_body_width: "number",
-  transport_body_length: "number",
-  transport_body_height: "number",
-  transport_body_type: "number",
-  transport_load_type: "number",
-  transport_unload_type: "number",
-};
-
 const mainData = $mainData.getState();
-export const $form = createStore<TInputs & { stages: TStages[] }>({
-  //@ts-ignore TODO change data
-  customer_manager: mainData.user.full_name ?? "",
+const initialState = {
+  customer_manager: mainData?.user.full_name ?? "",
   start_price: 0,
   price_step: 0,
   transportation_number: Number(Date.now()),
@@ -55,14 +36,15 @@ export const $form = createStore<TInputs & { stages: TStages[] }>({
   transport_load_type: 0,
   transport_unload_type: 0,
   stages: [],
-});
+};
+
+export const $form = createStore<TInputs & { stages: TStages[] }>(initialState);
 
 export const formSubmitted = createEvent<FormEvent>();
 formSubmitted.watch((e: FormEvent) => {
   e.preventDefault();
   const formValues = $form.getState();
   let notFilledIn = [];
-
   for (const key in formValues) {
     if (
       !formValues[key as keyof typeof formValues] ||
@@ -143,7 +125,7 @@ export const Field = ({ name, colNum }: FieldProps) => {
       return (
         <InputContainer
           {...{ name, label, value, onChange: handleChange }}
-          type={fieldTypes[name]}
+          type={typeof initialState[name] === "number" ? "number" : "string"}
           variant="input"
           className={`${styles.input} w-100 mb-3`}
           label_style={{ color: "var(--default-font-color)" }}
@@ -163,7 +145,7 @@ export const Field = ({ name, colNum }: FieldProps) => {
         <Col md={4} className="p-0 mt-4">
           <InputContainer
             {...{ name, label, value, onChange: handleChange }}
-            type={fieldTypes[name]}
+            type={typeof initialState[name] === "number" ? "number" : "string"}
             variant="input"
             label_style={{
               color: "var(--default-font-color)",

@@ -22,6 +22,21 @@ export type OrderStages = {
   comments: string;
 };
 
+export type TOrderStageKey = keyof Omit<OrderStages, "id">;
+
+export const OrderStageTranslations: Record<TOrderStageKey, string> = {
+  date: "Дата",
+  company: "Компания",
+  address: "Адрес",
+  contact_person: "Контактное лицо",
+  cargo: "Груз",
+  weight: "Вес",
+  volume: "Обьем",
+  comments: "Комментарий к поставке",
+  time_start: "С",
+  time_end: "По",
+};
+
 export type OrderLoadStage = {
   id: number;
   order_couple: OrderStageCouple;
@@ -33,6 +48,8 @@ export type TStages = {
   load_stage: Omit<OrderStages, "id">;
   unload_stage: Omit<OrderStages, "id">;
 };
+
+export type TStage = "load_stage" | "unload_stage";
 
 type NameType = {
   id: number;

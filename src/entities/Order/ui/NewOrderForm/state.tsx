@@ -1,6 +1,6 @@
 import { FormEvent } from "react";
 import toast from "react-hot-toast";
-import { createStore, createEvent, sample } from "effector";
+import { createStore, createEvent } from "effector";
 import { createOrderFx, orderTranslations } from "~/entities/Order";
 import { TStages } from "~/entities/OrderStage";
 import { FieldUpdatePayload, TInputs } from "./types";
@@ -68,12 +68,6 @@ formSubmitted.watch((e: FormEvent) => {
       },
     });
   }
-});
-
-sample({
-  clock: formSubmitted,
-  source: $newOrder,
-  target: createOrderFx,
 });
 
 export const clearForm = createEvent<FormEvent | void>();

@@ -8,11 +8,13 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
     <table className={styles.table}>
       <thead>
         <tr>
-          {["Этап", "Дата время", "Компания", "Адрес"].map((text, idx) => (
-            <th key={idx} rowSpan={2}>
-              {text}
-            </th>
-          ))}
+          {["№ Поставки", "Этап", "Дата время", "Компания", "Адрес"].map(
+            (text, idx) => (
+              <th key={idx} rowSpan={2}>
+                {text}
+              </th>
+            )
+          )}
           <th colSpan={2}>Груз</th>
           <th rowSpan={2}>Контактное лицо</th>
         </tr>
@@ -23,13 +25,14 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
       </thead>
       <tbody>
         {orderStages.length !== 0 ? (
-          orderStages.map(({ load_stage, unload_stage }) =>
+          orderStages.map(({ order_stage_number, load_stage, unload_stage }) =>
             [
               { stageName: "load", ...load_stage },
               { stageName: "unload", ...unload_stage },
             ].map(({ stageName, ...stageData }, key) => (
               <Fragment key={key}>
                 <tr>
+                  {key === 0 ? <td rowSpan={4}>{order_stage_number}</td> : ""}
                   <td rowSpan={2}>
                     {stageName === "load" ? "Погрузка" : "Выгрузка"}
                   </td>
@@ -50,7 +53,7 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
           )
         ) : (
           <tr>
-            <td colSpan={7}>
+            <td colSpan={8}>
               <TitleMd className="p-4">
                 <TextCenter>Нет данных для отображения</TextCenter>
               </TitleMd>

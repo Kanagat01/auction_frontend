@@ -45,6 +45,7 @@ export type OrderLoadStage = {
 export type OrderUnloadStage = OrderLoadStage;
 
 export type TStages = {
+  order_stage_number: number;
   load_stage: Omit<OrderStages, "id">;
   unload_stage: Omit<OrderStages, "id">;
 };

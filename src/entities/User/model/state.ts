@@ -1,7 +1,8 @@
-import { createEffect } from "effector";
+import { createStore, createEffect } from "effector";
 import { apiInstance } from "~/shared/api";
 import { logger } from "~/shared/config";
 import { GetMainDataResponse } from "./api_types";
+import { fieldUpdate as newOrderFieldUpdate } from "~/entities/Order";
 
 export const getMainDataFx = createEffect<void, GetMainDataResponse>(
   async () => {
@@ -13,3 +14,14 @@ export const getMainDataFx = createEffect<void, GetMainDataResponse>(
     }
   }
 );
+
+export const $mainData = createStore<GetMainDataResponse | null>(null).on(
+  getMainDataFx.doneData,
+  (_, payload) => payload
+);
+$mainData.watch((mainData) => {
+  newOrderFieldUpdate({
+    key: "customer_manager",
+    value: mainData?.user.full_name ?? "",
+  });
+});

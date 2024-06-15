@@ -1,14 +1,17 @@
 import { useUnit } from "effector-react";
 import { Col, Row } from "react-bootstrap";
+import { OrderStageForm } from "~/widgets";
 import {
-  getOrderStagesFx,
-  OrderStageForm,
-  OrderStagesTable,
-} from "~/entities/OrderStage";
+  $newOrder,
+  Field,
+  SelectField,
+  clearForm,
+  formSubmitted,
+} from "~/entities/Order";
+import { getOrderStagesFx, OrderStagesTable } from "~/entities/OrderStage";
 import { RoundedWhiteBox, TitleLg } from "~/shared/ui";
 import { renderPromise } from "~/shared/api";
 import { logger } from "~/shared/config";
-import { $form, Field, SelectField, formSubmitted } from "./form";
 import styles from "./styles.module.scss";
 
 function mapResponseToOptions(responseProperty: any[]): [string, string][] {
@@ -16,7 +19,7 @@ function mapResponseToOptions(responseProperty: any[]): [string, string][] {
 }
 
 export default function NewOrder() {
-  const form = useUnit($form);
+  const newOrder = useUnit($newOrder);
   return (
     <RoundedWhiteBox>
       {renderPromise(getOrderStagesFx, {
@@ -30,7 +33,7 @@ export default function NewOrder() {
         },
         success: (response) => {
           return (
-            <form onSubmit={formSubmitted}>
+            <form onSubmit={formSubmitted} onReset={clearForm}>
               <Row className="p-4">
                 <Col md={6} lg={3} className="mb-4">
                   <div className={styles.title}>Заказчик</div>
@@ -78,7 +81,7 @@ export default function NewOrder() {
                   </Row>
                 </Col>
                 <Col md={12} lg={8}>
-                  <OrderStagesTable orderStages={form.stages} />
+                  <OrderStagesTable orderStages={newOrder.stages} />
                 </Col>
                 <Col md={12} lg={4}>
                   <OrderStageForm />

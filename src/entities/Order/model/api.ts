@@ -32,7 +32,7 @@ export const getOrdersFx: Effect<TOrderStatus, TGetOrder[]> = attach({
 // create order
 export const createOrderFx: Effect<CreateOrderRequest, OrderModel> = attach({
   effect: apiRequestFx,
-  mapParams: (data): RequestParams => ({
+  mapParams: (data: CreateOrderRequest): RequestParams => ({
     method: "post",
     url: "/auction/customer/create_order/",
     data,
@@ -42,7 +42,7 @@ export const createOrderFx: Effect<CreateOrderRequest, OrderModel> = attach({
 // edit order
 export const editOrderFx: Effect<EditOrderRequest, OrderModel> = attach({
   effect: apiRequestFx,
-  mapParams: (data): RequestParams => ({
+  mapParams: (data: EditOrderRequest): RequestParams => ({
     method: "post",
     url: "/auction/customer/edit_order/",
     data,
@@ -52,7 +52,7 @@ export const editOrderFx: Effect<EditOrderRequest, OrderModel> = attach({
 // cancel order
 export const cancelOrderFx: Effect<CancelOrderRequest, OrderModel> = attach({
   effect: apiRequestFx,
-  mapParams: (data): RequestParams => ({
+  mapParams: (data: CancelOrderRequest): RequestParams => ({
     method: "post",
     url: "/auction/customer/cancel_order/",
     data,
@@ -63,7 +63,7 @@ export const cancelOrderFx: Effect<CancelOrderRequest, OrderModel> = attach({
 export const unpublishOrderFx: Effect<UnpublishOrderRequest, OrderModel> =
   attach({
     effect: apiRequestFx,
-    mapParams: (data): RequestParams => ({
+    mapParams: (data: UnpublishOrderRequest): RequestParams => ({
       method: "post",
       url: "/auction/customer/unpublish_order/",
       data,
@@ -73,7 +73,7 @@ export const unpublishOrderFx: Effect<UnpublishOrderRequest, OrderModel> =
 // publish order
 export const publishOrderFx: Effect<PublishOrderRequest, OrderModel> = attach({
   effect: apiRequestFx,
-  mapParams: (data): RequestParams => ({
+  mapParams: (data: PublishOrderRequest): RequestParams => ({
     method: "post",
     url: "/auction/customer/publish_order/",
     data,
@@ -84,7 +84,7 @@ export const publishOrderFx: Effect<PublishOrderRequest, OrderModel> = attach({
 export const completeOrderFx: Effect<CompleteOrderRequest, OrderModel> = attach(
   {
     effect: apiRequestFx,
-    mapParams: (data): RequestParams => ({
+    mapParams: (data: CompleteOrderRequest): RequestParams => ({
       method: "post",
       url: "/auction/customer/complete_order/",
       data,

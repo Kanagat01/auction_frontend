@@ -4,10 +4,21 @@ import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
 import { FaRegTrashCan } from "react-icons/fa6";
 
 import { Assign } from "~/widgets";
-import { CopyOrder, TOrderStatus } from "~/entities/Order";
+import {
+  CopyOrder,
+  TOrderStatus,
+  cancelOrder,
+  unpublishOrder,
+} from "~/entities/Order";
 import { FolderPlus } from "~/shared/assets";
 import { NEW_ORDER_ROUTE } from "~/shared/routes";
 import { OutlineButton, PrimaryButton } from "~/shared/ui";
+
+const iconActionProps = {
+  className: "outline-btn px-2 py-0 me-2",
+  style: { fontSize: "2rem" },
+};
+const textActionProps = { className: "me-2 px-3 py-2" };
 
 // unpublished
 const unpublishedOrdersData = {
@@ -34,17 +45,16 @@ const unpublishedOrdersData = {
         <NavLink
           key={idx}
           to={NEW_ORDER_ROUTE}
-          className="outline-btn px-2 py-0 me-2"
-          style={{ fontSize: "2rem" }}
           onClick={onClick}
+          {...iconActionProps}
         >
           {icon}
         </NavLink>
       ))}
-      <OutlineButton className="px-2 py-0 me-2" style={{ fontSize: "2rem" }}>
+      <OutlineButton {...iconActionProps}>
         <LuPenSquare />
       </OutlineButton>
-      <OutlineButton className="px-2 py-0 me-2" style={{ fontSize: "2rem" }}>
+      <OutlineButton {...iconActionProps} onClick={cancelOrder as () => void}>
         <FaRegTrashCan />
       </OutlineButton>
     </>
@@ -52,7 +62,7 @@ const unpublishedOrdersData = {
   textActions: (
     <>
       {["В аукцион", "На торги"].map((buttonText) => (
-        <PrimaryButton key={buttonText} className="me-2 px-3 py-2">
+        <PrimaryButton key={buttonText} {...textActionProps}>
           {buttonText}
         </PrimaryButton>
       ))}
@@ -97,9 +107,13 @@ const inAuctionOrdersData = {
   ],
   textActions: (
     <>
-      {["Принять", "Вернуть в заказы", "Отменить"].map((buttonText) => (
-        <PrimaryButton key={buttonText} className="me-2 px-3 py-2">
-          {buttonText}
+      {[
+        { text: "Принять", onClick: () => {} },
+        { text: "Вернуть в заказы", onClick: () => {} },
+        { text: "Отменить", onClick: cancelOrder as () => void },
+      ].map(({ text, onClick }) => (
+        <PrimaryButton key={text} onClick={onClick} {...textActionProps}>
+          {text}
         </PrimaryButton>
       ))}
     </>
@@ -124,9 +138,13 @@ const inBiddingOrdersData = {
   ],
   textActions: (
     <>
-      {["Принять", "Вернуть в заказы", "Отменить"].map((buttonText) => (
-        <PrimaryButton key={buttonText} className="me-2 px-3 py-2">
-          {buttonText}
+      {[
+        { text: "Принять", onClick: () => {} },
+        { text: "Вернуть в заказы", onClick: () => {} },
+        { text: "Отменить", onClick: cancelOrder as () => void },
+      ].map(({ text, onClick }) => (
+        <PrimaryButton key={text} onClick={onClick} {...textActionProps}>
+          {text}
         </PrimaryButton>
       ))}
     </>
@@ -151,9 +169,12 @@ const inDirectOrdersData = {
   ],
   textActions: (
     <>
-      {["Вернуть в заказы", "Отменить"].map((buttonText) => (
-        <PrimaryButton key={buttonText} className="me-2 px-3 py-2">
-          {buttonText}
+      {[
+        { text: "Вернуть в заказы", onClick: () => {} },
+        { text: "Отменить", onClick: cancelOrder as () => void },
+      ].map(({ text, onClick }) => (
+        <PrimaryButton key={text} onClick={onClick} {...textActionProps}>
+          {text}
         </PrimaryButton>
       ))}
     </>
@@ -178,9 +199,13 @@ const beingExecutedOrdersData = {
   ],
   textActions: (
     <>
-      {["Завершить", "Отменить", "Вернуть в заказы"].map((buttonText) => (
-        <PrimaryButton key={buttonText} className="me-2 px-3 py-2">
-          {buttonText}
+      {[
+        { text: "Завершить", onClick: () => {} },
+        { text: "Отменить", onClick: cancelOrder as () => void },
+        { text: "Вернуть в заказы", onClick: unpublishOrder as () => void },
+      ].map(({ text, onClick }) => (
+        <PrimaryButton key={text} onClick={onClick} {...textActionProps}>
+          {text}
         </PrimaryButton>
       ))}
     </>

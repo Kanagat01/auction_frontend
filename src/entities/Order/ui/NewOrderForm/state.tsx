@@ -1,16 +1,19 @@
 import toast from "react-hot-toast";
 import { FormEvent } from "react";
-import { createStore, createEvent } from "effector";
+import { createStore, createEvent, sample } from "effector";
 import {
   $orders,
-  $selectedOrders,
+  $selectedOrder,
   createOrderFx,
+  deselectOrder,
   orderTranslations,
 } from "~/entities/Order";
 import { TStages } from "~/entities/OrderStage";
 import { FieldUpdatePayload, TInputs } from "./types";
+import { $mainData } from "~/entities/User";
 
 export const initialOrder = {
+  transportation_number: 0,
   customer_manager: "",
   start_price: 0,
   price_step: 0,
@@ -37,38 +40,35 @@ export const $newOrder = createStore<TInputs & { stages: TStages[] }>({
 export const CopyOrder = createEvent<React.MouseEvent<HTMLAnchorElement>>();
 //@ts-ignore TODO change types
 $newOrder.on(CopyOrder, (state, event) => {
-  const orders = $selectedOrders.getState();
-  if (orders.length > 1) {
-    event.preventDefault();
-    toast.error("Выберите только 1 заказ для копирования");
-    return state;
-  } else if (orders.length < 1) {
+  const orderId = $selectedOrder.getState();
+  const order = $orders.getState().find((order) => order.id === orderId);
+  if (!order) {
     event.preventDefault();
     toast.error("Выберите заказ для копирования");
     return state;
-  } else {
-    const order = $orders
-      .getState()
-      .find((order) => order.transportation_number === orders[0]);
-    if (!order) return state;
-
-    let newState: Partial<TInputs & { stages: TStages[] }> = {
-      transportation_number: Math.ceil(Date.now() / 1000),
-    };
-    Object.keys(initialOrder).map((key) => {
-      if (key === "stages") {
-        newState.stages = order.stages.map((stage, idx) => ({
-          ...stage,
-          order_stage_number: Math.ceil(Date.now() / 1000) + idx,
-        }));
-      } else {
-        //@ts-ignore TODO
-        newState[key] = order[key];
-      }
-      return;
-    });
-    return newState;
   }
+  let newState: Partial<TInputs & { stages: TStages[] }> = {
+    transportation_number: Math.ceil(Date.now() / 1000),
+    customer_manager: $mainData.getState()?.user.full_name ?? "",
+  };
+  Object.keys(initialOrder).map((key) => {
+    if (key === "stages") {
+      newState.stages = order.stages.map((stage, idx) => ({
+        ...stage,
+        order_stage_number: Math.ceil(Date.now() / 1000) + idx,
+      }));
+    } else if (["transportation_number", "customer_manager"].includes(key)) {
+    } else {
+      //@ts-ignore TODO
+      newState[key] = order[key];
+    }
+    return;
+  });
+  sample({
+    clock: $newOrder,
+    target: deselectOrder,
+  });
+  return newState;
 });
 
 export const formSubmitted = createEvent<FormEvent>();

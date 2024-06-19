@@ -9,7 +9,8 @@ import {
   TOrderStatus,
   orderTranslations,
 } from "../types";
-import { OrderSections, deselectOrder, selectOrder } from "..";
+import { $selectedOrder, OrderSections, deselectOrder, selectOrder } from "..";
+import { useUnit } from "effector-react";
 
 export const getColumns = () => {
   const columnHelper = createColumnHelper<TGetOrder>();
@@ -33,9 +34,9 @@ export const getColumns = () => {
         const value = info.getValue();
         if (key === "transportation_number") {
           const [modal, changeModal] = useModalState(false);
-          const canSelect = row.getCanSelect(),
-            checked = row.getIsSelected();
-          const tr_number = row.original.transportation_number;
+          const selectedOrder = useUnit($selectedOrder);
+          const orderId = row.original.id;
+          const checked = selectedOrder === orderId;
           return (
             <>
               <div className="d-flex align-items-center">
@@ -43,15 +44,13 @@ export const getColumns = () => {
                   className="mr-3"
                   {...{
                     checked: checked,
-                    disabled: !canSelect,
+                    disabled: !row.getCanSelect(),
                     indeterminate: row.getIsSomeSelected()
                       ? row.getIsSomeSelected()
                       : undefined,
-                    onChange: row.getToggleSelectedHandler(),
+                    onChange: () =>
+                      !checked ? selectOrder(orderId) : deselectOrder(),
                   }}
-                  onClick={() =>
-                    !checked ? selectOrder(tr_number) : deselectOrder(tr_number)
-                  }
                 />
                 <button onClick={changeModal}>
                   {value ? value.toString() : "-"}

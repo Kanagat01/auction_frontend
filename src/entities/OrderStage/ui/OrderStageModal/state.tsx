@@ -62,8 +62,6 @@ const stageCoupleValidation = (func: (state: TStages) => void) => {
       style: { fontSize: "1.4rem" },
     });
   } else {
-    console.log("satge", state);
-
     func(state);
     clearStages();
   }

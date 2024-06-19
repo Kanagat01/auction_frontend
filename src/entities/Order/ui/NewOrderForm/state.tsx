@@ -1,7 +1,12 @@
-import { FormEvent } from "react";
 import toast from "react-hot-toast";
+import { FormEvent } from "react";
 import { createStore, createEvent } from "effector";
-import { createOrderFx, orderTranslations } from "~/entities/Order";
+import {
+  $orders,
+  $selectedOrders,
+  createOrderFx,
+  orderTranslations,
+} from "~/entities/Order";
 import { TStages } from "~/entities/OrderStage";
 import { FieldUpdatePayload, TInputs } from "./types";
 
@@ -29,6 +34,43 @@ export const $newOrder = createStore<TInputs & { stages: TStages[] }>({
   transportation_number: Math.ceil(Date.now() / 1000),
 });
 
+export const CopyOrder = createEvent<React.MouseEvent<HTMLAnchorElement>>();
+//@ts-ignore TODO change types
+$newOrder.on(CopyOrder, (state, event) => {
+  const orders = $selectedOrders.getState();
+  if (orders.length > 1) {
+    event.preventDefault();
+    toast.error("Выберите только 1 заказ для копирования");
+    return state;
+  } else if (orders.length < 1) {
+    event.preventDefault();
+    toast.error("Выберите заказ для копирования");
+    return state;
+  } else {
+    const order = $orders
+      .getState()
+      .find((order) => order.transportation_number === orders[0]);
+    if (!order) return state;
+
+    let newState: Partial<TInputs & { stages: TStages[] }> = {
+      transportation_number: Math.ceil(Date.now() / 1000),
+    };
+    Object.keys(initialOrder).map((key) => {
+      if (key === "stages") {
+        newState.stages = order.stages.map((stage, idx) => ({
+          ...stage,
+          order_stage_number: Math.ceil(Date.now() / 1000) + idx,
+        }));
+      } else {
+        //@ts-ignore TODO
+        newState[key] = order[key];
+      }
+      return;
+    });
+    return newState;
+  }
+});
+
 export const formSubmitted = createEvent<FormEvent>();
 formSubmitted.watch((e: FormEvent) => {
   e.preventDefault();
@@ -44,7 +86,6 @@ formSubmitted.watch((e: FormEvent) => {
       );
     }
   }
-  console.log(formValues);
   if (notFilledIn.length > 0) {
     toast(<span>Заполните обязательные поля: {notFilledIn.join(", ")}</span>, {
       position: "top-right",
@@ -78,7 +119,7 @@ $newOrder.on(clearForm, (state, _payload) => ({
 }));
 
 export const fieldUpdate = createEvent<FieldUpdatePayload>();
-$newOrder.on(fieldUpdate, (newOrder, { key, value }) => ({
-  ...newOrder,
+$newOrder.on(fieldUpdate, (state, { key, value }) => ({
+  ...state,
   [key]: value,
 }));

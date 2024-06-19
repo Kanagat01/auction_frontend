@@ -7,7 +7,8 @@ export const RoundedWhiteBox: FC<
     style={{
       background: "#fff",
       borderRadius: "30px",
-      flex: 1,
+      width: "100%",
+      overflowX: "auto",
     }}
     {...props}
   >

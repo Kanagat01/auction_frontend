@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { setAuth } from "~/features/authorization";
-import { API_URL } from "~/shared/config";
+import { API_URL, logger } from "~/shared/config";
 
 export const apiInstance = axios.create({
   baseURL: API_URL,
@@ -22,6 +22,7 @@ apiInstance.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       setAuth(false);
     }
+    logger.log(error);
     return Promise.reject(error);
   }
 );

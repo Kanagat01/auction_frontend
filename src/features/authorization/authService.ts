@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "~/shared/config";
+import { API_URL, logger } from "~/shared/config";
 import { setAuth } from "./authStore";
 
 export const login = async (
@@ -15,7 +15,7 @@ export const login = async (
     setAuth(true);
     return response.data.status;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     if (axios.isAxiosError(error)) {
       switch (error.response?.status) {
         case 400:

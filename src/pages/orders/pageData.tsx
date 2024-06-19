@@ -4,7 +4,7 @@ import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
 import { FaRegTrashCan } from "react-icons/fa6";
 
 import { Assign } from "~/widgets";
-import { TOrderStatus } from "~/entities/Order";
+import { CopyOrder, TOrderStatus } from "~/entities/Order";
 import { FolderPlus } from "~/shared/assets";
 import { NEW_ORDER_ROUTE } from "~/shared/routes";
 import { OutlineButton, PrimaryButton } from "~/shared/ui";
@@ -27,22 +27,26 @@ const unpublishedOrdersData = {
   ],
   iconActions: (
     <>
-      <NavLink
-        to={NEW_ORDER_ROUTE}
-        className="outline-btn px-2 py-0 me-2"
-        style={{ fontSize: "2rem" }}
-      >
-        <ReactSVG src={FolderPlus} />
-      </NavLink>
-      {[LuCopyPlus, LuPenSquare, FaRegTrashCan].map((Icon, idx) => (
-        <OutlineButton
+      {[
+        { icon: <ReactSVG src={FolderPlus} />, onClick: () => {} },
+        { icon: <LuCopyPlus />, onClick: CopyOrder },
+      ].map(({ icon, onClick }, idx) => (
+        <NavLink
           key={idx}
-          className="px-2 py-0 me-2"
+          to={NEW_ORDER_ROUTE}
+          className="outline-btn px-2 py-0 me-2"
           style={{ fontSize: "2rem" }}
+          onClick={onClick}
         >
-          <Icon />
-        </OutlineButton>
+          {icon}
+        </NavLink>
       ))}
+      <OutlineButton className="px-2 py-0 me-2" style={{ fontSize: "2rem" }}>
+        <LuPenSquare />
+      </OutlineButton>
+      <OutlineButton className="px-2 py-0 me-2" style={{ fontSize: "2rem" }}>
+        <FaRegTrashCan />
+      </OutlineButton>
     </>
   ),
   textActions: (

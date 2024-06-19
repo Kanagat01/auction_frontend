@@ -1,9 +1,9 @@
 import { Table, flexRender } from "@tanstack/react-table";
 import { RxTriangleUp, RxTriangleDown } from "react-icons/rx";
 import { RiArrowRightSLine } from "react-icons/ri";
+import { NavLink } from "react-router-dom";
 import { TextCenter, TitleMd } from "~/shared/ui";
 import styles from "./styles.module.scss";
-import { NavLink } from "react-router-dom";
 
 type MainTableProps = {
   table: Table<any>;
@@ -28,89 +28,104 @@ export function MainTable({ table, paginator }: MainTableProps) {
     }
   }
   return (
-    <table className={styles.table}>
-      <thead>
-        {headerGroups.map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <th
-                key={header.id}
-                className={
-                  header.column.getCanSort() ? styles.cursorPointer : ""
-                }
-                onClick={header.column.getToggleSortingHandler()}
-              >
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                {{
-                  asc: <RxTriangleUp className={styles.sortingIcon} />,
-                  desc: <RxTriangleDown className={styles.sortingIcon} />,
-                }[header.column.getIsSorted() as string] ??
-                  (header.column.getCanSort() ? (
-                    <div className={styles.columnCanSort}>
-                      <RxTriangleUp />
-                      <RxTriangleDown />
-                    </div>
-                  ) : null)}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody>
-        {rows.length !== 0 ? (
-          rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))
-        ) : (
-          <tr>
-            <td colSpan={headerGroups[0].headers.length}>
-              <TitleMd className="p-4">
-                <TextCenter>Нет данных для отображения</TextCenter>
-              </TitleMd>
-            </td>
-          </tr>
-        )}
-      </tbody>
-      {paginator && (
-        <tfoot>
-          <tr>
-            <td colSpan={headerGroups[0].headers.length}>
-              <div className={styles.pagination}>
-                {pages.map((page) => (
-                  <NavLink
-                    to="#"
-                    key={page}
+    <>
+      <div style={{ overflowX: "auto" }}>
+        <table
+          className={styles.table}
+          style={{ width: table.getCenterTotalSize() }}
+        >
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
                     className={
-                      paginator.currentPage === page ? styles.activePage : ""
+                      header.column.getCanSort() ? styles.cursorPointer : ""
                     }
-                    onClick={(e) => {
-                      if (paginator.currentPage === page) {
-                        e.preventDefault();
-                      }
-                    }}
+                    onClick={header.column.getToggleSortingHandler()}
+                    style={{ width: header.getSize() }}
                   >
-                    {page}
-                  </NavLink>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                    {{
+                      asc: <RxTriangleUp className={styles.sortingIcon} />,
+                      desc: <RxTriangleDown className={styles.sortingIcon} />,
+                    }[header.column.getIsSorted() as string] ??
+                      (header.column.getCanSort() ? (
+                        <div className={styles.columnCanSort}>
+                          <RxTriangleUp />
+                          <RxTriangleDown />
+                        </div>
+                      ) : null)}
+                    <div
+                      {...{
+                        onDoubleClick: () => header.column.resetSize(),
+                        onMouseDown: header.getResizeHandler(),
+                        onTouchStart: header.getResizeHandler(),
+                        className: `${styles.resizer} ${
+                          header.column.getIsResizing() ? styles.isResizing : ""
+                        }`,
+                      }}
+                    />
+                  </th>
                 ))}
-                <NavLink to="#">
-                  <RiArrowRightSLine />
-                </NavLink>
-              </div>
-            </td>
-          </tr>
-        </tfoot>
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {rows.length !== 0 ? (
+              rows.map((row) => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} style={{ width: cell.column.getSize() }}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={headerGroups[0].headers.length}>
+                  <TitleMd className="p-4">
+                    <TextCenter>Нет данных для отображения</TextCenter>
+                  </TitleMd>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      {paginator && (
+        <div className={styles.pagination}>
+          {pages.map((page) => (
+            <NavLink
+              to="#"
+              key={page}
+              className={
+                paginator.currentPage === page ? styles.activePage : ""
+              }
+              onClick={(e) => {
+                if (paginator.currentPage === page) {
+                  e.preventDefault();
+                }
+              }}
+            >
+              {page}
+            </NavLink>
+          ))}
+          <NavLink to="#">
+            <RiArrowRightSLine />
+          </NavLink>
+        </div>
       )}
-    </table>
+    </>
   );
 }

@@ -1,10 +1,10 @@
 import { CustomerManager } from "~/entities/User";
 import { TransporterManager } from "~/entities/Company";
 import {
-  OrderStages,
   OrderTransportBodyType,
   OrderTransportLoadType,
   OrderTransportUnloadType,
+  TStages,
 } from "~/entities/OrderStage";
 import { OrderDocument } from "~/entities/Document";
 import { OrderOffer } from "~/entities/Offer";
@@ -25,8 +25,8 @@ export type OrderModel = {
   id: number;
   customer_manager: CustomerManager | number;
   transporter_manager: TransporterManager | number | null;
-  created_at: Date | string;
-  updated_at: Date | string;
+  created_at: string;
+  updated_at: string;
   status: TOrderStatus;
   transportation_number: number;
   start_price: number;
@@ -75,8 +75,5 @@ export type TGetOrder = OrderModel & {
   offers: OrderOffer[];
   tracking: OrderTrackingGeoPoint[] | null;
   documents: OrderDocument[];
-  stages: {
-    load_stage: OrderStages;
-    unload_stage: OrderStages;
-  }[];
+  stages: TStages[];
 };

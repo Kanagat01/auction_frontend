@@ -25,13 +25,6 @@ $border-color: rgba(0, 0, 0, 0.1);
     border-right: 1px solid $border-color;
     padding: 1rem;
   }
-
-  .paginator {
-    color: var(--default-font-color);
-    font-size: 1.6rem;
-    font-weight: 400;
-    line-height: 1.9rem;
-  }
 }
 
 .cursorPointer {
@@ -54,6 +47,22 @@ $border-color: rgba(0, 0, 0, 0.1);
   svg:nth-child(2) {
     margin-top: -0.8rem;
   }
+}
+
+.resizer {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 2px;
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+  // column resize direction: ltr
+  right: 0;
+}
+
+.resizer.isResizing {
+  background: var(--primary);
 }
 
 .pagination {

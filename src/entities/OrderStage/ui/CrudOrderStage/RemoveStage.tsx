@@ -1,5 +1,11 @@
 import { Modal } from "react-bootstrap";
-import { OutlineButton, PrimaryButton, TextCenter, TitleMd } from "~/shared/ui";
+import {
+  BlueText,
+  OutlineButton,
+  PrimaryButton,
+  TextCenter,
+  TitleMd,
+} from "~/shared/ui";
 import { removeStage } from "../OrderStageModal";
 
 type ModalProps = {
@@ -28,10 +34,7 @@ export function RemoveStageModal({
           <TextCenter>
             <TitleMd style={{ fontSize: "1.7rem" }}>
               Вы уверены, что хотите удалить поставку{" "}
-              <span style={{ color: "var(--primary)" }}>
-                №{orderStageNumber}
-              </span>{" "}
-              ?
+              <BlueText>№{orderStageNumber}</BlueText>?
             </TitleMd>
           </TextCenter>
         </Modal.Body>

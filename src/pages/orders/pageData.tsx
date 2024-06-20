@@ -1,14 +1,14 @@
 import { ReactSVG } from "react-svg";
 import { NavLink } from "react-router-dom";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
-import { FaRegTrashCan } from "react-icons/fa6";
 
 import { Assign } from "~/widgets";
 import {
+  CancelOrder,
   CopyOrder,
+  PublishOrder,
   TOrderStatus,
-  cancelOrder,
-  unpublishOrder,
+  UnpublishOrder,
 } from "~/entities/Order";
 import { FolderPlus } from "~/shared/assets";
 import { NEW_ORDER_ROUTE } from "~/shared/routes";
@@ -38,34 +38,22 @@ const unpublishedOrdersData = {
   ],
   iconActions: (
     <>
-      {[
-        { icon: <ReactSVG src={FolderPlus} />, onClick: () => {} },
-        { icon: <LuCopyPlus />, onClick: CopyOrder },
-      ].map(({ icon, onClick }, idx) => (
-        <NavLink
-          key={idx}
-          to={NEW_ORDER_ROUTE}
-          onClick={onClick}
-          {...iconActionProps}
-        >
-          {icon}
-        </NavLink>
-      ))}
+      <NavLink to={NEW_ORDER_ROUTE} {...iconActionProps}>
+        <ReactSVG src={FolderPlus} />
+      </NavLink>
+      <NavLink to={NEW_ORDER_ROUTE} onClick={CopyOrder} {...iconActionProps}>
+        <LuCopyPlus />
+      </NavLink>
       <OutlineButton {...iconActionProps}>
         <LuPenSquare />
       </OutlineButton>
-      <OutlineButton {...iconActionProps} onClick={cancelOrder as () => void}>
-        <FaRegTrashCan />
-      </OutlineButton>
+      <CancelOrder variant="icon" {...iconActionProps} />
     </>
   ),
   textActions: (
     <>
-      {["В аукцион", "На торги"].map((buttonText) => (
-        <PrimaryButton key={buttonText} {...textActionProps}>
-          {buttonText}
-        </PrimaryButton>
-      ))}
+      <PublishOrder publishTo="in_auction" {...textActionProps} />
+      <PublishOrder publishTo="in_bidding" {...textActionProps} />
       <Assign />
     </>
   ),
@@ -107,15 +95,9 @@ const inAuctionOrdersData = {
   ],
   textActions: (
     <>
-      {[
-        { text: "Принять", onClick: () => {} },
-        { text: "Вернуть в заказы", onClick: () => {} },
-        { text: "Отменить", onClick: cancelOrder as () => void },
-      ].map(({ text, onClick }) => (
-        <PrimaryButton key={text} onClick={onClick} {...textActionProps}>
-          {text}
-        </PrimaryButton>
-      ))}
+      <PrimaryButton {...textActionProps}>Принять</PrimaryButton>
+      <UnpublishOrder {...textActionProps} />
+      <CancelOrder variant="text" {...textActionProps} />
     </>
   ),
 };
@@ -138,15 +120,9 @@ const inBiddingOrdersData = {
   ],
   textActions: (
     <>
-      {[
-        { text: "Принять", onClick: () => {} },
-        { text: "Вернуть в заказы", onClick: () => {} },
-        { text: "Отменить", onClick: cancelOrder as () => void },
-      ].map(({ text, onClick }) => (
-        <PrimaryButton key={text} onClick={onClick} {...textActionProps}>
-          {text}
-        </PrimaryButton>
-      ))}
+      <PrimaryButton {...textActionProps}>Принять</PrimaryButton>
+      <UnpublishOrder {...textActionProps} />
+      <CancelOrder variant="text" {...textActionProps} />
     </>
   ),
 };
@@ -169,14 +145,8 @@ const inDirectOrdersData = {
   ],
   textActions: (
     <>
-      {[
-        { text: "Вернуть в заказы", onClick: () => {} },
-        { text: "Отменить", onClick: cancelOrder as () => void },
-      ].map(({ text, onClick }) => (
-        <PrimaryButton key={text} onClick={onClick} {...textActionProps}>
-          {text}
-        </PrimaryButton>
-      ))}
+      <UnpublishOrder {...textActionProps} />
+      <CancelOrder variant="text" {...textActionProps} />
     </>
   ),
 };
@@ -199,15 +169,9 @@ const beingExecutedOrdersData = {
   ],
   textActions: (
     <>
-      {[
-        { text: "Завершить", onClick: () => {} },
-        { text: "Отменить", onClick: cancelOrder as () => void },
-        { text: "Вернуть в заказы", onClick: unpublishOrder as () => void },
-      ].map(({ text, onClick }) => (
-        <PrimaryButton key={text} onClick={onClick} {...textActionProps}>
-          {text}
-        </PrimaryButton>
-      ))}
+      <PrimaryButton {...textActionProps}>Завершить</PrimaryButton>
+      <CancelOrder variant="text" {...textActionProps} />
+      <UnpublishOrder {...textActionProps} />
     </>
   ),
 };

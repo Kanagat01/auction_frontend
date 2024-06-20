@@ -1,4 +1,4 @@
-import { OrderModel, OrderStatus } from "~/entities/Order";
+import { OrderModel } from "~/entities/Order";
 import { TStages } from "~/entities/OrderStage";
 
 export type CreateOrderRequest = Omit<
@@ -29,8 +29,5 @@ export type UnpublishOrderRequest = { order_id: number };
 export type CompleteOrderRequest = { order_id: number };
 export type PublishOrderRequest = {
   order_id: number;
-  publish_to:
-    | OrderStatus.in_auction
-    | OrderStatus.in_bidding
-    | OrderStatus.in_direct;
+  publish_to: "in_auction" | "in_bidding" | "in_direct";
 };

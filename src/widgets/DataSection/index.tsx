@@ -1,10 +1,17 @@
-import { Col, Row } from "react-bootstrap";
-import { OrderModel } from "~/entities/Order";
-import { logger } from "~/shared/config";
+import { CSSProperties, ChangeEvent, useState } from "react";
+import { TGetOrder } from "~/entities/Order";
 import { InputContainer, RoundedTable, TitleSm } from "~/shared/ui";
 
-export function DataSection({ order }: { order: OrderModel }) {
-  logger.log(order);
+const gridContainer: CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: "repeat(2, 1fr)",
+  gridAutoRows: "max-content",
+  columnGap: "10px",
+  marginBottom: "1rem",
+};
+
+export function DataSection({ order }: { order: TGetOrder }) {
+  const [stageIdx, setStageIdx] = useState(0);
   const inputs = [
     [
       {
@@ -73,8 +80,7 @@ export function DataSection({ order }: { order: OrderModel }) {
               key={name}
               name={name}
               label={label}
-              //@ts-ignore
-              value={order[name]}
+              defaultValue={order[name as keyof TGetOrder] as string | number}
               variant={key === 1 ? "textarea" : "input"}
               label_style={{
                 color: "var(--default-font-color)",
@@ -84,6 +90,7 @@ export function DataSection({ order }: { order: OrderModel }) {
                 marginBottom: "1rem",
               }}
               className="w-100"
+              disabled
             />
           ))}
         </div>
@@ -91,59 +98,96 @@ export function DataSection({ order }: { order: OrderModel }) {
       <TitleSm>Таблица</TitleSm>
       <RoundedTable data={tableData} />
       <div className="gray-bg">
-        <Row>
-          <Col>
-            <TitleSm className="ms-2 mb-2" style={{ fontWeight: 600 }}>
-              Поставка <span className="gray-text">1/1</span>
-            </TitleSm>
-            <TitleSm className="ms-2 mb-2" style={{ fontWeight: 600 }}>
-              Место загрузки
-            </TitleSm>
-            <RoundedTable
-              data={[
-                [
-                  "ООО “ТрансКомпани” \nИНН 1649020481 \nтер.промплощ. “Алабуга” ул.13 \nRU-423600 Елабуга г",
-                ],
-                ["+7-987-410-59-05"],
-                ["2023-03-15"],
-              ]}
-            />
-            <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
-              Параметры груза
-            </TitleSm>
-            <div className="gray-line"></div>
-            <div className="d-flex justify-content-between mt-2">
-              <TitleSm className="gray-text">Вес</TitleSm>
-              <TitleSm>4 604,79kg</TitleSm>
+        {[order.stages[stageIdx]].map(
+          ({ load_stage, unload_stage, order_stage_number }, idx) => (
+            <div key={idx} style={gridContainer}>
+              {[1, 2].map((colNum) => (
+                <TitleSm className="ms-2 mb-2" style={{ fontWeight: 600 }}>
+                  {colNum === 1 ? (
+                    <div className="d-flex align-items-center justify-content-between">
+                      Поставка{" "}
+                      <span className="gray-text">
+                        <InputContainer
+                          variant="select"
+                          label=""
+                          name=""
+                          value={stageIdx}
+                          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                            setStageIdx(Number(e.target.value))
+                          }
+                          options={order.stages.map((_, idx) => [
+                            idx,
+                            `${idx + 1}/${order.stages.length}`,
+                          ])}
+                          style={{ width: "fit-content", padding: "2px" }}
+                        />
+                      </span>
+                    </div>
+                  ) : (
+                    <>
+                      № Поставки:{" "}
+                      <span className="gray-text">{order_stage_number}</span>
+                    </>
+                  )}
+                </TitleSm>
+              ))}
+              {["Погрузка", "Выгрузка"].map((text) => (
+                <TitleSm className="ms-2 mb-2" style={{ fontWeight: 600 }}>
+                  {text}
+                </TitleSm>
+              ))}
+              {[load_stage, unload_stage].map((stage) => (
+                <RoundedTable
+                  data={[
+                    [`${stage.company}\n${stage.address}`],
+                    [stage.contact_person],
+                    [
+                      <>
+                        {new Date(stage.date).toLocaleDateString("ru", {
+                          year: "numeric",
+                          month: "numeric",
+                          day: "numeric",
+                        })}{" "}
+                        <br />
+                        {stage.time_start.slice(0, 5)}-
+                        {stage.time_end.slice(0, 5)}
+                      </>,
+                    ],
+                  ]}
+                />
+              ))}
+              {[load_stage, unload_stage].map((stage) => (
+                <div className="d-flex flex-column justify-content-between">
+                  <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
+                    Параметры груза - {stage.cargo}
+                  </TitleSm>
+                  <div className="gray-line" />
+                </div>
+              ))}
+              {[load_stage, unload_stage].map((stage) => (
+                <div>
+                  <div className="d-flex justify-content-between mt-2">
+                    <TitleSm className="gray-text">Вес</TitleSm>
+                    <TitleSm>{stage.weight} kg</TitleSm>
+                  </div>
+                  <div className="d-flex justify-content-between mt-1">
+                    <TitleSm className="gray-text">Обьем</TitleSm>
+                    <TitleSm>{stage.volume} cbm</TitleSm>
+                  </div>
+                </div>
+              ))}
+              {[load_stage, unload_stage].map((stage) => (
+                <div>
+                  <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
+                    Комментарии к поставке
+                  </TitleSm>
+                  <div className="gray-line mb-2" />
+                  <TitleSm>{stage.comments}</TitleSm>
+                </div>
+              ))}
             </div>
-            <div className="d-flex justify-content-between mt-1">
-              <TitleSm className="gray-text">Обьем</TitleSm>
-              <TitleSm>116,76 cbm</TitleSm>
-            </div>
-          </Col>
-          <Col>
-            <TitleSm className="ms-2 mb-2" style={{ fontWeight: 600 }}>
-              Пост.: <span className="gray-text">000000</span>
-            </TitleSm>
-            <TitleSm className="ms-2 mb-2" style={{ fontWeight: 600 }}>
-              Место разгрузки
-            </TitleSm>
-            <RoundedTable
-              data={[
-                [
-                  "ООО “ТрансКомпани” \nИНН 1649020481 \nтер.промплощ. “Алабуга” ул.13 \nRU-423600 Елабуга г",
-                ],
-                ["+7-987-410-59-05"],
-                ["2023-03-15"],
-              ]}
-            />
-            <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
-              Комментарии к поставке
-            </TitleSm>
-            <div className="gray-line mb-2"></div>
-            <TitleSm>«+7 919 327 83 15-Константин»</TitleSm>
-          </Col>
-        </Row>
+          )
+        )}
       </div>
     </>
   );

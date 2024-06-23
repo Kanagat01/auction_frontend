@@ -26,12 +26,12 @@ export type TextAreaProps = BaseProp &
 
 export type SelectProps = BaseProp &
   SelectHTMLAttributes<HTMLSelectElement> & {
-    options: Array<[string, string]>;
+    options: Array<[string | number, string | number]>;
     variant: "select";
   };
 
 export type BootstrapSelectProps = BaseProp &
   FormSelectProps & {
-    options: Array<[string, string]>;
+    options: Array<[string | number, string | number]>;
     variant: "bootstrap-select";
   };

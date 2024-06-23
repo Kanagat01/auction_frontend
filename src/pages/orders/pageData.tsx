@@ -2,13 +2,14 @@ import { ReactSVG } from "react-svg";
 import { NavLink } from "react-router-dom";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
 
-import { Assign } from "~/widgets";
 import {
   CancelOrder,
   CopyOrder,
   PublishOrder,
   TOrderStatus,
   UnpublishOrder,
+  PublishOrderInDirect,
+  CompleteOrder,
 } from "~/entities/Order";
 import { FolderPlus } from "~/shared/assets";
 import { NEW_ORDER_ROUTE } from "~/shared/routes";
@@ -54,7 +55,7 @@ const unpublishedOrdersData = {
     <>
       <PublishOrder publishTo="in_auction" {...textActionProps} />
       <PublishOrder publishTo="in_bidding" {...textActionProps} />
-      <Assign />
+      <PublishOrderInDirect />
     </>
   ),
 };
@@ -169,7 +170,7 @@ const beingExecutedOrdersData = {
   ],
   textActions: (
     <>
-      <PrimaryButton {...textActionProps}>Завершить</PrimaryButton>
+      <CompleteOrder {...textActionProps} />
       <CancelOrder variant="text" {...textActionProps} />
       <UnpublishOrder {...textActionProps} />
     </>

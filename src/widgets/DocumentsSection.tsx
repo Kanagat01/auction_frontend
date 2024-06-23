@@ -2,7 +2,6 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { LuCopyPlus } from "react-icons/lu";
 import { OrderDocument } from "~/entities/Document";
 import { OutlineButton, RoundedTable, TextCenter, TitleMd } from "~/shared/ui";
-import { unixDateToString } from "~/shared/lib";
 import { API_URL } from "~/shared/config";
 
 export function DocumentsSection({
@@ -17,7 +16,13 @@ export function DocumentsSection({
         Документ {decodeURIComponent(doc.file).replace("/media/documents/", "")}
       </a>
       <br />
-      {unixDateToString(doc.created_at)}
+      {new Date(doc.created_at).toLocaleDateString("ru", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      })}
     </TextCenter>,
     <TextCenter>ФИО пользователя</TextCenter>,
   ]);

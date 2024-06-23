@@ -1,4 +1,5 @@
 import { FC, HTMLAttributes, ReactNode } from "react";
+import { TextCenter } from "~/shared/ui";
 import styles from "./styles.module.scss";
 
 type RoundedTableProps = HTMLAttributes<HTMLTableElement> & {
@@ -34,13 +35,21 @@ export const RoundedTable: FC<RoundedTableProps> = ({
         ""
       )}
       <tbody>
-        {data.map((arr, key1) => (
-          <tr key={key1}>
-            {arr.map((value, key2) => (
-              <td key={key2}>{value}</td>
-            ))}
+        {data.length !== 0 ? (
+          data.map((arr, key1) => (
+            <tr key={key1}>
+              {arr.map((value, key2) => (
+                <td key={key2}>{value}</td>
+              ))}
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={columns?.length}>
+              <TextCenter>Нет данных для отображения</TextCenter>
+            </td>
           </tr>
-        ))}
+        )}
       </tbody>
     </table>
   </div>

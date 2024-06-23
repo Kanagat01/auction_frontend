@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { Modal } from "react-bootstrap";
 import { Checkbox } from "~/shared/ui";
-import { unixDateToString, useModalState } from "~/shared/lib";
+import { useModalState } from "~/shared/lib";
 import {
   OrderModel,
   OrderStatus,
@@ -68,7 +68,15 @@ export const getColumns = () => {
             </>
           );
         } else if (["updated_at", "created_at"].includes(key)) {
-          return value ? unixDateToString(value as Date | string) : "-";
+          return value
+            ? new Date(value as string | Date).toLocaleDateString("ru", {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+              })
+            : "-";
         } else if (key === "status") {
           const value = info.getValue()?.toString() as TOrderStatus;
           return OrderStatus[value];

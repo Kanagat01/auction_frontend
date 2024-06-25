@@ -2,7 +2,6 @@ import { ButtonHTMLAttributes, ReactNode } from "react";
 import { useUnit } from "effector-react";
 import { Modal, ModalTitle } from "react-bootstrap";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { $mainData } from "~/entities/User";
 import {
   OutlineButton,
   PrimaryButton,

@@ -4,6 +4,5 @@ export * from "./Settings";
 export * from "./DataSection";
 export * from "./MapSection";
 export * from "./MenuProfile";
-export * from "./DocumentsSection";
 export * from "./ControlPanel";
 export * from "./OrderStageForm";

@@ -5,6 +5,7 @@ import { useUnit } from "effector-react";
 import { ControlPanel } from "~/widgets";
 import {
   $orders,
+  OrderSections,
   OrdersList,
   TOrderStatus,
   getOrdersFx,
@@ -45,6 +46,7 @@ export default function OrdersPage() {
           <ControlPanel {...pageData} />
         </div>
         <OrdersList orders={orders} />
+        <OrderSections />
       </RoundedWhiteBox>
     );
   }

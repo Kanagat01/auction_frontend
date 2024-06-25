@@ -12,7 +12,7 @@ $default-font-color: map-get($colors, "default-font-color");
 }
 
 .table {
-  width: 100%;
+  table-layout: fixed;
   height: 100%;
   font-size: 1.2rem;
   th,
@@ -21,6 +21,7 @@ $default-font-color: map-get($colors, "default-font-color");
     padding: 0.5rem 1rem;
     border: 1px solid rgba($default-font-color, 0.5);
     border-radius: 5px;
+    word-wrap: break-word;
   }
   tr {
     td:first-child,

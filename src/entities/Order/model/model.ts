@@ -12,6 +12,16 @@ import { OrderModel, OrderStatus, TGetOrder } from "../types";
 export const $orders = createStore<TGetOrder[]>([]);
 $orders.on(getOrdersFx.doneData, (_, payload) => payload);
 
+export const updateOrder = createEvent<{
+  orderId: number;
+  newData: Partial<TGetOrder>;
+}>();
+$orders.on(updateOrder, (state, { orderId, newData }) => {
+  return state.map((order) =>
+    order.id === orderId ? { ...order, ...newData } : order
+  );
+});
+
 export const removeOrder = createEvent<number>();
 $orders.on(removeOrder, (state, orderId) =>
   state.filter((order) => order.id !== orderId)

@@ -12,6 +12,8 @@ const gridContainer: CSSProperties = {
 
 export function DataSection({ order }: { order: TGetOrder }) {
   const [stageIdx, setStageIdx] = useState(0);
+  const { load_stage, unload_stage, order_stage_number } =
+    order.stages[stageIdx];
   const inputs = [
     [
       {
@@ -98,96 +100,93 @@ export function DataSection({ order }: { order: TGetOrder }) {
       <TitleSm>Таблица</TitleSm>
       <RoundedTable data={tableData} />
       <div className="gray-bg">
-        {[order.stages[stageIdx]].map(
-          ({ load_stage, unload_stage, order_stage_number }, idx) => (
-            <div key={idx} style={gridContainer}>
-              {[1, 2].map((colNum) => (
-                <TitleSm className="ms-2 mb-2" style={{ fontWeight: 600 }}>
-                  {colNum === 1 ? (
-                    <div className="d-flex align-items-center justify-content-between">
-                      Поставка{" "}
-                      <span className="gray-text">
-                        <InputContainer
-                          variant="select"
-                          label=""
-                          name=""
-                          value={stageIdx}
-                          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                            setStageIdx(Number(e.target.value))
-                          }
-                          options={order.stages.map((_, idx) => [
-                            idx,
-                            `${idx + 1}/${order.stages.length}`,
-                          ])}
-                          style={{ width: "fit-content", padding: "2px" }}
-                        />
-                      </span>
-                    </div>
-                  ) : (
-                    <>
-                      № Поставки:{" "}
-                      <span className="gray-text">{order_stage_number}</span>
-                    </>
-                  )}
-                </TitleSm>
-              ))}
-              {["Погрузка", "Выгрузка"].map((text) => (
-                <TitleSm className="ms-2 mb-2" style={{ fontWeight: 600 }}>
-                  {text}
-                </TitleSm>
-              ))}
-              {[load_stage, unload_stage].map((stage) => (
-                <RoundedTable
-                  data={[
-                    [`${stage.company}\n${stage.address}`],
-                    [stage.contact_person],
-                    [
-                      <>
-                        {new Date(stage.date).toLocaleDateString("ru", {
-                          year: "numeric",
-                          month: "numeric",
-                          day: "numeric",
-                        })}{" "}
-                        <br />
-                        {stage.time_start.slice(0, 5)}-
-                        {stage.time_end.slice(0, 5)}
-                      </>,
-                    ],
-                  ]}
+        <div style={gridContainer}>
+          <TitleSm className="ms-2 mb-2" style={{ fontWeight: 600 }}>
+            <div className="d-flex align-items-center justify-content-between">
+              Поставка{" "}
+              <span className="gray-text">
+                <InputContainer
+                  variant="select"
+                  label=""
+                  name=""
+                  value={stageIdx}
+                  onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                    setStageIdx(Number(e.target.value))
+                  }
+                  options={order.stages.map((_, idx) => [
+                    idx,
+                    `${idx + 1}/${order.stages.length}`,
+                  ])}
+                  style={{ width: "fit-content", padding: "2px" }}
                 />
-              ))}
-              {[load_stage, unload_stage].map((stage) => (
-                <div className="d-flex flex-column justify-content-between">
-                  <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
-                    Параметры груза - {stage.cargo}
-                  </TitleSm>
-                  <div className="gray-line" />
-                </div>
-              ))}
-              {[load_stage, unload_stage].map((stage) => (
-                <div>
-                  <div className="d-flex justify-content-between mt-2">
-                    <TitleSm className="gray-text">Вес</TitleSm>
-                    <TitleSm>{stage.weight} kg</TitleSm>
-                  </div>
-                  <div className="d-flex justify-content-between mt-1">
-                    <TitleSm className="gray-text">Обьем</TitleSm>
-                    <TitleSm>{stage.volume} cbm</TitleSm>
-                  </div>
-                </div>
-              ))}
-              {[load_stage, unload_stage].map((stage) => (
-                <div>
-                  <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
-                    Комментарии к поставке
-                  </TitleSm>
-                  <div className="gray-line mb-2" />
-                  <TitleSm>{stage.comments}</TitleSm>
-                </div>
-              ))}
+              </span>
             </div>
-          )
-        )}
+          </TitleSm>
+          <TitleSm className="ms-2 mb-2" style={{ fontWeight: 600 }}>
+            № Поставки: <span className="gray-text">{order_stage_number}</span>
+          </TitleSm>
+          {["Погрузка", "Выгрузка"].map((text) => (
+            <TitleSm
+              key={text}
+              className="ms-2 mb-2"
+              style={{ fontWeight: 600 }}
+            >
+              {text}
+            </TitleSm>
+          ))}
+          {[load_stage, unload_stage].map((stage, key) => (
+            <RoundedTable
+              key={key}
+              data={[
+                [`${stage.company}\n${stage.address}`],
+                [stage.contact_person],
+                [
+                  <>
+                    {new Date(stage.date).toLocaleDateString("ru", {
+                      year: "numeric",
+                      month: "numeric",
+                      day: "numeric",
+                    })}{" "}
+                    <br />
+                    {stage.time_start.slice(0, 5)}-{stage.time_end.slice(0, 5)}
+                  </>,
+                ],
+              ]}
+            />
+          ))}
+          {[load_stage, unload_stage].map((stage, key) => (
+            <div
+              key={key}
+              className="d-flex flex-column justify-content-between"
+            >
+              <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
+                Параметры груза - {stage.cargo}
+              </TitleSm>
+              <div className="gray-line" />
+            </div>
+          ))}
+          {[load_stage, unload_stage].map((stage, key) => (
+            <div key={key}>
+              <div className="d-flex justify-content-between mt-2">
+                <TitleSm className="gray-text">Вес</TitleSm>
+                <TitleSm>{stage.weight} kg</TitleSm>
+              </div>
+              <div className="d-flex justify-content-between mt-1">
+                <TitleSm className="gray-text">Обьем</TitleSm>
+                <TitleSm>{stage.volume} cbm</TitleSm>
+              </div>
+            </div>
+          ))}
+          {[load_stage, unload_stage].map((stage, key) => (
+            <div key={key}>
+              <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
+                Комментарии к поставке
+              </TitleSm>
+              <div className="gray-line mb-2" />
+              <TitleSm>{stage.comments}</TitleSm>
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );

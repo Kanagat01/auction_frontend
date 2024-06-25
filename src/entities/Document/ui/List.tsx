@@ -1,19 +1,17 @@
-import { FaRegTrashCan } from "react-icons/fa6";
-import { LuCopyPlus } from "react-icons/lu";
-import { OrderDocument } from "~/entities/Document";
-import { OutlineButton, RoundedTable, TextCenter, TitleMd } from "~/shared/ui";
+import {
+  AddDocument,
+  DeleteDocument,
+  OrderDocument,
+} from "~/entities/Document";
+import { RoundedTable, TextCenter, TitleMd } from "~/shared/ui";
 import { API_URL } from "~/shared/config";
 
-export function DocumentsSection({
-  documents,
-}: {
-  documents: OrderDocument[];
-}) {
+export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
   const docsData = documents.map((doc) => [
     <TextCenter>
       <a className="link" target="_blank" href={API_URL + doc.file}>
-        Заявка №{doc.id} <br />
-        Документ {decodeURIComponent(doc.file).replace("/media/documents/", "")}
+        Документ №{doc.id} <br />
+        {decodeURIComponent(doc.file).replace("/media/documents/", "")}
       </a>
       <br />
       {new Date(doc.created_at).toLocaleDateString("ru", {
@@ -26,6 +24,7 @@ export function DocumentsSection({
     </TextCenter>,
     <TextCenter>ФИО пользователя</TextCenter>,
   ]);
+  const btnProps = { className: "px-2 py-0 me-2", style: { fontSize: "2rem" } };
   return (
     <>
       <div
@@ -35,15 +34,8 @@ export function DocumentsSection({
         <TitleMd>Мои документы</TitleMd>
 
         <div className="d-inline-flex h-100">
-          {[LuCopyPlus, FaRegTrashCan].map((Icon, idx) => (
-            <OutlineButton
-              key={idx}
-              className="px-2 py-0 me-2"
-              style={{ fontSize: "2rem" }}
-            >
-              <Icon />
-            </OutlineButton>
-          ))}
+          <AddDocument {...btnProps} />
+          <DeleteDocument documents={documents} {...btnProps} />
         </div>
       </div>
       <RoundedTable

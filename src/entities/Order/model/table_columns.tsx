@@ -1,7 +1,7 @@
+import { createEvent, createStore } from "effector";
+import { useUnit } from "effector-react";
 import { createColumnHelper } from "@tanstack/react-table";
-import { Modal } from "react-bootstrap";
 import { Checkbox } from "~/shared/ui";
-import { useModalState } from "~/shared/lib";
 import {
   OrderModel,
   OrderStatus,
@@ -9,8 +9,21 @@ import {
   TOrderStatus,
   orderTranslations,
 } from "../types";
-import { $selectedOrder, OrderSections, deselectOrder, selectOrder } from "..";
-import { useUnit } from "effector-react";
+import { $selectedOrder, deselectOrder, selectOrder, updateOrder } from "..";
+
+export const changeOrderModal = createEvent();
+export const $orderModal = createStore<boolean>(false).on(
+  changeOrderModal,
+  (state) => !state
+);
+export const setCurrentOrder = createEvent<TGetOrder>();
+export const $currentOrder = createStore<TGetOrder | null>(null).on(
+  setCurrentOrder,
+  (_, newState) => newState
+);
+$currentOrder.on(updateOrder, (state, { newData }) => {
+  return state ? { ...state, ...newData } : null;
+});
 
 export const getColumns = () => {
   const columnHelper = createColumnHelper<TGetOrder>();
@@ -33,39 +46,31 @@ export const getColumns = () => {
         const row = info.row;
         const value = info.getValue();
         if (key === "transportation_number") {
-          const [modal, changeModal] = useModalState(false);
           const selectedOrder = useUnit($selectedOrder);
           const orderId = row.original.id;
           const checked = selectedOrder === orderId;
+          const onClick = () => {
+            changeOrderModal();
+            setCurrentOrder(row.original);
+          };
           return (
-            <>
-              <div className="d-flex align-items-center">
-                <Checkbox
-                  className="mr-3"
-                  {...{
-                    checked: checked,
-                    disabled: !row.getCanSelect(),
-                    indeterminate: row.getIsSomeSelected()
-                      ? row.getIsSomeSelected()
-                      : undefined,
-                    onChange: () =>
-                      !checked ? selectOrder(orderId) : deselectOrder(),
-                  }}
-                />
-                <button onClick={changeModal}>
-                  {value ? value.toString() : "-"}
-                </button>
-              </div>
-              <Modal
-                show={modal}
-                onHide={changeModal}
-                className="rounded-modal"
-              >
-                <Modal.Body>
-                  <OrderSections order={row.original} />
-                </Modal.Body>
-              </Modal>
-            </>
+            <div className="d-flex align-items-center">
+              <Checkbox
+                className="mr-3"
+                {...{
+                  checked: checked,
+                  disabled: !row.getCanSelect(),
+                  indeterminate: row.getIsSomeSelected()
+                    ? row.getIsSomeSelected()
+                    : undefined,
+                  onChange: () =>
+                    !checked ? selectOrder(orderId) : deselectOrder(),
+                }}
+              />
+              <button onClick={onClick}>
+                {value ? value.toString() : "-"}
+              </button>
+            </div>
           );
         } else if (["updated_at", "created_at"].includes(key)) {
           return value

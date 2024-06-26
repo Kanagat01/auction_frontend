@@ -1,6 +1,6 @@
 import { createEvent, createStore } from "effector";
 import toast from "react-hot-toast";
-import { $newOrder } from "~/entities/Order";
+import { $orderForm } from "~/entities/Order";
 import { OrderStageTranslations, TStage, TStages } from "~/entities/OrderStage";
 
 export const $stageType = createStore<TStage>("load_stage");
@@ -69,14 +69,14 @@ const stageCoupleValidation = (func: (state: TStages) => void) => {
 };
 
 const addStage = createEvent<TStages>();
-$newOrder.on(addStage, (state, stage) => ({
+$orderForm.on(addStage, (state, stage) => ({
   ...state,
   stages: [...state.stages, stage],
 }));
 export const addStageCouple = () => stageCoupleValidation(addStage);
 
 export const removeStage = createEvent<number>();
-$newOrder.on(removeStage, (state, order_stage_number) => ({
+$orderForm.on(removeStage, (state, order_stage_number) => ({
   ...state,
   stages: state.stages.filter(
     (stage) => stage.order_stage_number !== order_stage_number
@@ -84,12 +84,12 @@ $newOrder.on(removeStage, (state, order_stage_number) => ({
 }));
 
 export const getStage = (order_stage_number: number) =>
-  $newOrder
+  $orderForm
     .getState()
     .stages.find((stage) => stage.order_stage_number === order_stage_number);
 
 const editStage = createEvent<TStages>();
-$newOrder.on(editStage, (state, newStageData) => ({
+$orderForm.on(editStage, (state, newStageData) => ({
   ...state,
   stages: state.stages.map((stage) =>
     stage.order_stage_number === newStageData.order_stage_number

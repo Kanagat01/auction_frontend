@@ -1,11 +1,4 @@
-import { CustomerManager } from "~/entities/User";
-import { TransporterManager } from "~/entities/Company";
-import {
-  OrderTransportBodyType,
-  OrderTransportLoadType,
-  OrderTransportUnloadType,
-  TStages,
-} from "~/entities/OrderStage";
+import { TStages } from "~/entities/OrderStage";
 import { OrderDocument } from "~/entities/Document";
 import { OrderOffer } from "~/entities/Offer";
 import { OrderTrackingGeoPoint } from "./order_tracking";
@@ -23,8 +16,8 @@ export type TOrderStatus = keyof typeof OrderStatus;
 
 export type OrderModel = {
   id: number;
-  customer_manager: CustomerManager | number;
-  transporter_manager: TransporterManager | number | null;
+  customer_manager: number | string;
+  transporter_manager: number | null;
   created_at: string;
   updated_at: string;
   status: TOrderStatus;
@@ -33,9 +26,9 @@ export type OrderModel = {
   price_step: number;
   comments_for_transporter: string;
   additional_requirements: string;
-  transport_body_type: OrderTransportBodyType | number;
-  transport_load_type: OrderTransportLoadType | number;
-  transport_unload_type: OrderTransportUnloadType | number;
+  transport_body_type: number;
+  transport_load_type: number;
+  transport_unload_type: number;
   transport_volume: number;
   temp_mode: string;
   adr: number;
@@ -45,6 +38,7 @@ export type OrderModel = {
 };
 
 export const orderTranslations = {
+  id: "id",
   transportation_number: "№ Транспортировки",
   customer_manager: "Менеджер Заказчика",
   transporter_manager: "Менеджер Перевозчика",

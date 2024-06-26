@@ -10,47 +10,49 @@ export function OrderSections() {
   const orderModal = useUnit($orderModal);
   const order = useUnit($currentOrder);
   const [currentSection, setCurrentSection] = useState<string>("data");
+  const Section = () => {
+    if (order) {
+      switch (currentSection) {
+        case "documents":
+          return <DocumentsList documents={order.documents ?? []} />;
+        case "map":
+          return <MapSection tracking={order.tracking} />;
+        case "data":
+          return <DataSection order={order} />;
+      }
+    } else return "";
+  };
   useEffect(() => {
-    if (!orderModal) {
-      setCurrentSection("data");
-    }
-  }, [orderModal]);
+    setCurrentSection(order ? "data" : "");
+  }, [order]);
   return (
-    order && (
-      <Modal
-        show={orderModal}
-        onHide={changeOrderModal}
-        className="rounded-modal"
-      >
-        <Modal.Body>
-          <div className="d-flex align-items-center justify-content-between my-4">
-            {[
-              ["Данные", "data"],
-              ["Трекинг", "map"],
-              ["Документы", "documents"],
-            ].map(([text, section], key) => (
-              <OutlineButton
-                key={key}
-                style={{
-                  padding: "0.5rem 2rem",
-                  fontSize: "1.4rem",
-                }}
-                onClick={() => setCurrentSection(section)}
-                className={currentSection === section ? "active" : ""}
-              >
-                {text}
-              </OutlineButton>
-            ))}
-          </div>
-          {currentSection === "documents" ? (
-            <DocumentsList documents={order.documents ?? []} />
-          ) : currentSection === "map" ? (
-            <MapSection tracking={order.tracking} />
-          ) : (
-            <DataSection order={order} />
-          )}
-        </Modal.Body>
-      </Modal>
-    )
+    <Modal
+      show={orderModal}
+      onHide={changeOrderModal}
+      className="rounded-modal"
+    >
+      <Modal.Body>
+        <div className="d-flex align-items-center justify-content-between my-4">
+          {[
+            ["Данные", "data"],
+            ["Трекинг", "map"],
+            ["Документы", "documents"],
+          ].map(([text, section], key) => (
+            <OutlineButton
+              key={key}
+              style={{
+                padding: "0.5rem 2rem",
+                fontSize: "1.4rem",
+              }}
+              onClick={() => setCurrentSection(section)}
+              className={currentSection === section ? "active" : ""}
+            >
+              {text}
+            </OutlineButton>
+          ))}
+        </div>
+        <Section />
+      </Modal.Body>
+    </Modal>
   );
 }

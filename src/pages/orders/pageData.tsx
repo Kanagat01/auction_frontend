@@ -10,10 +10,11 @@ import {
   UnpublishOrder,
   PublishOrderInDirect,
   CompleteOrder,
+  EditOrder,
 } from "~/entities/Order";
 import { FolderPlus } from "~/shared/assets";
-import { NEW_ORDER_ROUTE } from "~/shared/routes";
-import { OutlineButton, PrimaryButton } from "~/shared/ui";
+import { EDIT_ORDER_ROUTE, NEW_ORDER_ROUTE } from "~/shared/routes";
+import { PrimaryButton } from "~/shared/ui";
 
 const iconActionProps = {
   className: "outline-btn px-2 py-0 me-2",
@@ -45,9 +46,9 @@ const unpublishedOrdersData = {
       <NavLink to={NEW_ORDER_ROUTE} onClick={CopyOrder} {...iconActionProps}>
         <LuCopyPlus />
       </NavLink>
-      <OutlineButton {...iconActionProps}>
+      <NavLink to={EDIT_ORDER_ROUTE} onClick={EditOrder} {...iconActionProps}>
         <LuPenSquare />
-      </OutlineButton>
+      </NavLink>
       <CancelOrder variant="icon" {...iconActionProps} />
     </>
   ),

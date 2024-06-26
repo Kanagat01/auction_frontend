@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { ButtonHTMLAttributes, useState } from "react";
+import { ButtonHTMLAttributes, ChangeEvent, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { useModalState } from "~/shared/lib";
@@ -25,12 +25,18 @@ export function DeleteDocument({
   const [show, changeShow] = useModalState(false);
   const [documentId, setDocumentId] = useState<number | null>(null);
 
+  const onChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setDocumentId((value) =>
+      value !== Number(e.target.value) ? Number(e.target.value) : null
+    );
+
   const onReset = () => {
     setDocumentId(null);
     changeShow();
   };
   const onSubmit = () => {
     if (documentId) deleteDocument({ document_id: documentId, reset: onReset });
+    else toast.error("Выберите документ для удаления");
   };
   return (
     <>
@@ -44,7 +50,7 @@ export function DeleteDocument({
       >
         <FaRegTrashCan />
       </OutlineButton>
-      <Modal show={show} onHide={changeShow} className="rounded-modal">
+      <Modal show={show} onHide={changeShow} className="gradient-modal">
         <Modal.Body>
           <ModalTitle>Удалить документ</ModalTitle>
           <RoundedTable
@@ -60,11 +66,12 @@ export function DeleteDocument({
               <TextCenter className="p-1">
                 <Checkbox
                   value={doc.id}
-                  onChange={(e) => setDocumentId(Number(e.target.value))}
+                  onChange={onChange}
                   checked={doc.id === documentId}
                 />
               </TextCenter>,
             ])}
+            lightBorderMode
           />
           <div className={styles["dropzone-actions"]}>
             <OutlineButton onClick={onReset}>Отмена</OutlineButton>

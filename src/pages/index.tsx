@@ -1,4 +1,4 @@
-import { ComponentType, lazy } from "react";
+import { ReactNode, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import * as routes from "~/shared/routes";
 import { PrivateRoute } from "./PrivateRoute";
@@ -6,7 +6,7 @@ import { PrivateRoute } from "./PrivateRoute";
 const Login = lazy(() => import("./login"));
 const ForgotPassword = lazy(() => import("./forgot-password"));
 const OrdersPage = lazy(() => import("./orders"));
-const NewOrder = lazy(() => import("./new-order"));
+const OrderPage = lazy(() => import("./order-page"));
 const Cabinet = lazy(() => import("./cabinet"));
 
 export const Routing = () => {
@@ -17,12 +17,13 @@ export const Routing = () => {
     routes.ORDERS_IN_DIRECT,
     routes.CANCELLED_ORDERS,
     routes.UNPUBLISHED_ORDERS,
-  ].map((route): [string, ComponentType] => [route, OrdersPage]);
+  ].map((route): [string, ReactNode] => [route, <OrdersPage />]);
 
-  const private_routes: Array<[string, ComponentType]> = [
+  const private_routes: Array<[string, ReactNode]> = [
     ...order_pages,
-    [routes.NEW_ORDER_ROUTE, NewOrder],
-    [routes.PROFILE_ROUTE, Cabinet],
+    [routes.NEW_ORDER_ROUTE, <OrderPage />],
+    [routes.EDIT_ORDER_ROUTE, <OrderPage />],
+    [routes.PROFILE_ROUTE, <Cabinet />],
     // [routes.CARGO_PLAN_ROUTE, CargoPlan],
   ];
 
@@ -31,8 +32,8 @@ export const Routing = () => {
       <Route path={routes.LOGIN_ROUTE} element={<Login />} />
       <Route path={routes.FORGOT_PASSWORD_ROUTE} element={<ForgotPassword />} />
       <Route element={<PrivateRoute />}>
-        {private_routes.map(([path, Component]) => (
-          <Route key={path} path={path} element={<Component />} />
+        {private_routes.map(([path, element]) => (
+          <Route key={path} path={path} element={element} />
         ))}
       </Route>
       <Route

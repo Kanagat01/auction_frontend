@@ -1,8 +1,6 @@
 import { ChangeEvent } from "react";
 import { Col } from "react-bootstrap";
-import { useStoreMap } from "effector-react";
 import {
-  $newOrder,
   FieldProps,
   FieldUpdatePayload,
   SelectFieldProps,
@@ -25,12 +23,7 @@ const handleChange = fieldUpdate.prepend(
     } as FieldUpdatePayload)
 );
 
-export const SelectField = ({ name, options }: SelectFieldProps) => {
-  const value = useStoreMap({
-    store: $newOrder,
-    keys: [name],
-    fn: (values) => values[name] || "",
-  });
+export const SelectField = ({ name, value, options }: SelectFieldProps) => {
   const label = orderTranslations[name];
   return (
     <Col md={4} className="p-0">
@@ -47,19 +40,14 @@ export const SelectField = ({ name, options }: SelectFieldProps) => {
   );
 };
 
-export const Field = ({ name, colNum }: FieldProps) => {
-  const value = useStoreMap({
-    store: $newOrder,
-    keys: [name],
-    fn: (values) => values[name] || "",
-  });
+export const Field = ({ name, value, colNum }: FieldProps) => {
   const label = orderTranslations[name];
+  const type = typeof initialOrder[name] === "number" ? "number" : "string";
   switch (colNum) {
     case 1:
       return (
         <InputContainer
-          {...{ name, label, value, onChange: handleChange }}
-          type={typeof initialOrder[name] === "number" ? "number" : "string"}
+          {...{ name, label, value, onChange: handleChange, type }}
           variant="input"
           className={`${styles.input} w-100 mb-3`}
           label_style={{ color: "var(--default-font-color)" }}
@@ -78,8 +66,7 @@ export const Field = ({ name, colNum }: FieldProps) => {
       return (
         <Col md={4} className="p-0 mt-4">
           <InputContainer
-            {...{ name, label, value, onChange: handleChange }}
-            type={typeof initialOrder[name] === "number" ? "number" : "string"}
+            {...{ name, label, value, onChange: handleChange, type }}
             variant="input"
             label_style={{
               color: "var(--default-font-color)",

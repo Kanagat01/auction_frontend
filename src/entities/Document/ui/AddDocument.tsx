@@ -59,7 +59,7 @@ export function AddDocument(props: ButtonHTMLAttributes<HTMLButtonElement>) {
       <OutlineButton {...props} onClick={changeShow}>
         <LuCopyPlus />
       </OutlineButton>
-      <Modal show={show} onHide={changeShow}>
+      <Modal show={show} onHide={changeShow} className="gradient-modal">
         <Modal.Body>
           <form onSubmit={onSubmit} onReset={onReset}>
             <ModalTitle>Загрузите документ</ModalTitle>

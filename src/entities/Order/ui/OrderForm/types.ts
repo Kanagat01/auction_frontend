@@ -24,11 +24,13 @@ export type FieldUpdatePayload = {
 
 export type SelectFieldProps = {
   name: keyof TInputs;
+  value: string | number;
   options: [string, string][];
 };
 
 export type FieldProps = {
   name: keyof TInputs;
+  value: number | string;
   colNum: 1 | 2 | 3;
   type?: "number" | "string";
 };

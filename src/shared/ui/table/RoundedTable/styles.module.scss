@@ -12,7 +12,9 @@ $default-font-color: map-get($colors, "default-font-color");
 }
 
 .table {
+  border: none;
   table-layout: fixed;
+  width: 100%;
   height: 100%;
   font-size: 1.2rem;
   th,

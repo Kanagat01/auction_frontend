@@ -30,10 +30,7 @@ export function MainTable({ table, paginator }: MainTableProps) {
   return (
     <>
       <div style={{ overflowX: "auto" }}>
-        <table
-          className={styles.table}
-          style={{ width: table.getCenterTotalSize() }}
-        >
+        <table className={styles.table}>
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr key={headerGroup.id}>

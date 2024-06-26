@@ -1,26 +1,47 @@
 import { useUnit } from "effector-react";
 import { Col, Row } from "react-bootstrap";
+import { Navigate } from "react-router-dom";
 import { OrderStageForm } from "~/widgets";
 import {
-  $newOrder,
+  $orderForm,
   Field,
   SelectField,
+  TInputs,
   clearForm,
-  formSubmitted,
+  orderFormSubmitted,
 } from "~/entities/Order";
 import { getOrderStagesFx, OrderStagesTable } from "~/entities/OrderStage";
 import { RoundedWhiteBox, TitleLg } from "~/shared/ui";
+import { UNPUBLISHED_ORDERS } from "~/shared/routes";
 import { renderPromise } from "~/shared/api";
 import { logger } from "~/shared/config";
 import styles from "./styles.module.scss";
 
-function mapResponseToOptions(responseProperty: any[]): [string, string][] {
+function mapResponseToOptions(
+  responseProperty: { id: number; name: string }[]
+): [string, string][] {
   return responseProperty.map((el) => [el.id.toString(), el.name]);
 }
 
-export default function NewOrder() {
-  const newOrder = useUnit($newOrder);
-  return (
+const inputNamesCol1: (keyof TInputs)[] = [
+  "customer_manager",
+  "transportation_number",
+  "start_price",
+  "price_step",
+];
+
+const inputNamesCol3: (keyof TInputs)[] = [
+  "transport_volume",
+  "temp_mode",
+  "adr",
+  "transport_body_width",
+  "transport_body_length",
+  "transport_body_height",
+];
+
+export default function OrderPage() {
+  const order = useUnit($orderForm);
+  return order ? (
     <RoundedWhiteBox>
       {renderPromise(getOrderStagesFx, {
         error: (err) => {
@@ -33,20 +54,35 @@ export default function NewOrder() {
         },
         success: (response) => {
           return (
-            <form onSubmit={formSubmitted} onReset={clearForm}>
+            <form
+              onSubmit={orderFormSubmitted}
+              onReset={clearForm as () => void}
+            >
               <Row className="p-4">
                 <Col md={6} lg={3} className="mb-4">
                   <div className={styles.title}>Заказчик</div>
-                  <Field name="customer_manager" colNum={1} />
-                  <Field name="start_price" colNum={1} />
-                  <Field name="price_step" colNum={1} />
-                  <Field name="transportation_number" colNum={1} />
+                  {inputNamesCol1.map((name) => (
+                    <Field
+                      key={name}
+                      name={name}
+                      value={order[name] as string | number}
+                      colNum={1}
+                    />
+                  ))}
                 </Col>
                 <Col md={6} lg={4} className="mb-4">
                   <div className={styles.title}>Дополнительно</div>
                   <div className={styles.secondCol}>
-                    <Field name="comments_for_transporter" colNum={2} />
-                    <Field name="additional_requirements" colNum={2} />
+                    <Field
+                      name="comments_for_transporter"
+                      value={order.comments_for_transporter}
+                      colNum={2}
+                    />
+                    <Field
+                      name="additional_requirements"
+                      value={order.additional_requirements}
+                      colNum={2}
+                    />
                   </div>
                 </Col>
                 <Col md={12} lg={5} className="mb-4">
@@ -54,34 +90,39 @@ export default function NewOrder() {
                   <Row>
                     <SelectField
                       name="transport_body_type"
+                      value={order.transport_body_type as number}
                       options={mapResponseToOptions(
                         response.transport_body_types
                       )}
                     />
                     <SelectField
                       name="transport_load_type"
+                      value={order.transport_load_type as number}
                       options={mapResponseToOptions(
                         response.transport_load_types
                       )}
                     />
                     <SelectField
                       name="transport_unload_type"
+                      value={order.transport_unload_type as number}
                       options={mapResponseToOptions(
                         response.transport_unload_types
                       )}
                     />
                   </Row>
                   <Row>
-                    <Field name="transport_volume" colNum={3} />
-                    <Field name="temp_mode" colNum={3} />
-                    <Field name="adr" colNum={3} />
-                    <Field name="transport_body_width" colNum={3} />
-                    <Field name="transport_body_length" colNum={3} />
-                    <Field name="transport_body_height" colNum={3} />
+                    {inputNamesCol3.map((name) => (
+                      <Field
+                        key={name}
+                        name={name}
+                        value={order[name] as string | number}
+                        colNum={3}
+                      />
+                    ))}
                   </Row>
                 </Col>
                 <Col md={12} lg={8}>
-                  <OrderStagesTable orderStages={newOrder.stages} />
+                  <OrderStagesTable orderStages={order.stages} />
                 </Col>
                 <Col md={12} lg={4}>
                   <OrderStageForm />
@@ -92,5 +133,7 @@ export default function NewOrder() {
         },
       })}
     </RoundedWhiteBox>
+  ) : (
+    <Navigate to={UNPUBLISHED_ORDERS} replace />
   );
 }

@@ -1,4 +1,4 @@
 export * from "./sections";
 export * from "./table";
-export * from "./NewOrderForm";
+export * from "./OrderForm";
 export * from "./ChangeOrderStatus";

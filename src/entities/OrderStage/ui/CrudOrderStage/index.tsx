@@ -30,8 +30,12 @@ export function CrudOrderStage({
       const stage = getStage(orderStageNumber);
       if (!stage) toast.error("Поставка не найдена", { duration: 5000 });
       else {
+        const { load_stage, unload_stage } = stage;
+        const { id, ...newLoadStage } = load_stage;
+        const { id: unloadId, ...newUnloadStage } = unload_stage;
         updateStages({
-          ...stage,
+          load_stage: newLoadStage,
+          unload_stage: newUnloadStage,
           order_stage_number: Math.ceil(Date.now() / 1000),
         });
         changeShow();

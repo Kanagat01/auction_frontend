@@ -28,7 +28,8 @@ export const SelectField = ({ name, value, options }: SelectFieldProps) => {
   return (
     <Col md={4} className="p-0">
       <InputContainer
-        {...{ name, label, options, value, onChange: handleChange }}
+        {...{ name, label, options, onChange: handleChange }}
+        value={value !== 0 ? value : undefined}
         variant="select"
         label_style={{
           color: "var(--default-font-color)",

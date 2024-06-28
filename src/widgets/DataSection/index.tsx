@@ -53,18 +53,8 @@ export function DataSection({ order }: { order: TGetOrder }) {
   const tableData = [
     ["Стартовая цена", order.start_price],
     ["Шаг цены", order.price_step],
-    [
-      "Способ погрузки",
-      typeof order.transport_load_type === "number"
-        ? order.transport_load_type
-        : order.transport_load_type.name,
-    ],
-    [
-      "Способ выгрузки",
-      typeof order.transport_unload_type === "number"
-        ? order.transport_unload_type
-        : order.transport_unload_type.name,
-    ],
+    ["Способ погрузки", order.transport_load_type],
+    ["Способ выгрузки", order.transport_unload_type],
     ["ТС, м3", order.transport_volume],
     ["Темп. режим", order.temp_mode],
     ["ADR [шт.]", order.adr],

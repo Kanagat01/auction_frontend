@@ -1,7 +1,7 @@
 import { TStages } from "~/entities/OrderStage";
 import { OrderDocument } from "~/entities/Document";
 import { OrderOffer } from "~/entities/Offer";
-import { OrderTrackingGeoPoint } from "./order_tracking";
+import { OrderTracking } from "./order_tracking";
 
 export enum OrderStatus {
   unpublished = "Не опубликован",
@@ -67,7 +67,7 @@ export const orderTranslations = {
 
 export type TGetOrder = OrderModel & {
   offers: OrderOffer[];
-  tracking: OrderTrackingGeoPoint[] | null;
+  tracking: OrderTracking | null;
   documents: OrderDocument[];
   stages: TStages[];
 };

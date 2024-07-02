@@ -15,11 +15,8 @@ export const login = async (
     setAuth(true);
     return response.data.status;
   } catch (error) {
-    logger.error(error);
     if (axios.isAxiosError(error)) {
       switch (error.response?.status) {
-        case 400:
-          throw "Неверный запрос";
         case 401:
           throw "Неверные учетные данные";
         case 403:
@@ -28,10 +25,15 @@ export const login = async (
           throw "Пользователь не найден";
         case 500:
           throw "Внутренняя ошибка сервера";
-        default:
-          throw "Неизвестная ошибка";
+      }
+      switch (error.response?.data.message) {
+        case "invalid_credentials":
+          throw "Неверный логин или пароль";
+        case "user_blocked":
+          throw "Пользователь заблокирован";
       }
     }
+    logger.error(error);
     throw "Неизвестная ошибка";
   }
 };

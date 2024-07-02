@@ -1,11 +1,11 @@
 import { ReactNode, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import * as routes from "~/shared/routes";
-import { PrivateRoute } from "./PrivateRoute";
+import OrdersPage from "./orders";
+import { PrivateRoute } from "./auth-routes";
 
 const Login = lazy(() => import("./login"));
 const ForgotPassword = lazy(() => import("./forgot-password"));
-const OrdersPage = lazy(() => import("./orders"));
 const OrderPage = lazy(() => import("./order-page"));
 const Cabinet = lazy(() => import("./cabinet"));
 
@@ -38,7 +38,7 @@ export const Routing = () => {
       </Route>
       <Route
         path="*"
-        element={<Navigate to={routes.UNPUBLISHED_ORDERS} replace />}
+        element={<Navigate to={routes.ORDERS_BEING_EXECUTED} replace />}
       />
     </Routes>
   );

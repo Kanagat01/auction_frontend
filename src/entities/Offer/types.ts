@@ -1,4 +1,4 @@
-import { TransporterManager } from "~/entities/Company";
+import { TransporterManager } from "~/entities/User";
 import { OrderModel } from "~/entities/Order";
 
 export type OrderOffer = {

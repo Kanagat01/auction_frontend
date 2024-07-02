@@ -10,6 +10,7 @@ import {
   UnpublishOrderRequest,
 } from "./api_types";
 
+//@ts-ignore
 enum OrderStatusUrls {
   unpublished = "get_unpublished_orders",
   cancelled = "get_cancelled_orders",
@@ -25,7 +26,7 @@ export const getOrdersFx: Effect<TOrderStatus, TGetOrder[]> = attach({
   effect: apiRequestFx,
   mapParams: (status: TOrderStatus): RequestParams => ({
     method: "get",
-    url: `/auction/customer/${OrderStatusUrls[status]}/`,
+    url: `/auction/customer/get_orders/?status=${status}`,
   }),
 });
 

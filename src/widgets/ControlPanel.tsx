@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { InputContainer, InputProps } from "~/shared/ui";
 
-type ControlPanelProps = {
+export type ControlPanelProps = {
   inputs?: Omit<InputProps, "variant">[];
   iconActions?: ReactNode;
   textActions?: ReactNode;

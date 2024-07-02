@@ -1,13 +1,3 @@
-import { OrderModel } from "~/entities/Order";
-
-export type OrderStageCouple = {
-  id: number;
-  order: OrderModel;
-  created_at: Date;
-  updated_at: Date;
-  order_stage_number: number;
-};
-
 export type OrderStages = {
   id: number;
   date: string;
@@ -36,13 +26,6 @@ export const OrderStageTranslations: Record<TOrderStageKey, string> = {
   time_start: "С",
   time_end: "По",
 };
-
-export type OrderLoadStage = {
-  id: number;
-  order_couple: OrderStageCouple;
-};
-
-export type OrderUnloadStage = OrderLoadStage;
 
 export type TStages = {
   order_stage_number: number;

@@ -5,10 +5,11 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { FaTruckMoving } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 import { MdDownload } from "react-icons/md";
+import { useUnit } from "effector-react";
 
+import { $mainData } from "~/entities/User";
 import { Hammer, ThreeHouses } from "~/shared/assets";
 import { TooltipOnHover } from "~/shared/ui";
-import styles from "./styles.module.scss";
 import {
   CANCELLED_ORDERS,
   ORDERS_BEING_EXECUTED,
@@ -17,9 +18,10 @@ import {
   ORDERS_IN_DIRECT,
   UNPUBLISHED_ORDERS,
 } from "~/shared/routes";
+import styles from "./styles.module.scss";
 
 export function Sidebar() {
-  const role: "customer" | "transporter" = "customer";
+  const mainData = useUnit($mainData);
   const sections: Array<[ReactNode, string, string]> = [
     [
       <FaTruckMoving className={styles.icon} />,
@@ -53,7 +55,11 @@ export function Sidebar() {
     ],
   ];
 
-  if (role === "customer") {
+  if (
+    ["customer_company", "customer_manager"].includes(
+      mainData?.user.user_type ?? ""
+    )
+  ) {
     sections.splice(1, 0, [
       <ImNewspaper className={styles.icon} />,
       "Заказы",

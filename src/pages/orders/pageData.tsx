@@ -21,23 +21,24 @@ const iconActionProps = {
   style: { fontSize: "2rem" },
 };
 const textActionProps = { className: "me-2 px-3 py-2" };
+const defaultInputs = [
+  {
+    name: "transportation_number",
+    label: "№ Транспортировки",
+    placeholder: "00000000",
+  },
+  { name: "city_from", label: "Город-старт", placeholder: "Москва" },
+  {
+    name: "city_to",
+    label: "Город-место назначения",
+    placeholder: "Балашиха",
+  },
+];
 
 // unpublished
-const unpublishedOrdersData = {
+const unpublishedOrdersCustomer = {
   title: "Заказы",
-  inputs: [
-    {
-      name: "transportation_number",
-      label: "№ Транспортировки",
-      placeholder: "00000000",
-    },
-    { name: "city_from", label: "Город-старт", placeholder: "Москва" },
-    {
-      name: "city_to",
-      label: "Город-место назначения",
-      placeholder: "Балашиха",
-    },
-  ],
+  inputs: defaultInputs,
   iconActions: (
     <>
       <NavLink to={NEW_ORDER_ROUTE} {...iconActionProps}>
@@ -62,64 +63,46 @@ const unpublishedOrdersData = {
 };
 
 // cancelled
-const cancelledOrdersData = {
+const cancelledOrders = {
   title: "Отмененные",
-  inputs: [
-    {
-      name: "transportation_number",
-      label: "№ Транспортировки",
-      placeholder: "00000000",
-    },
-    { name: "city_from", label: "Город-старт", placeholder: "Москва" },
-    {
-      name: "city_to",
-      label: "Город-место назначения",
-      placeholder: "Балашиха",
-    },
-  ],
+  inputs: defaultInputs,
 };
 
 // in auction
-const inAuctionOrdersData = {
+const inAuctionOrdersCustomer = {
   title: "Аукционы",
-  inputs: [
-    {
-      name: "transportation_number",
-      label: "№ Транспортировки",
-      placeholder: "00000000",
-    },
-    { name: "city_from", label: "Город-старт", placeholder: "Москва" },
-    {
-      name: "city_to",
-      label: "Город-место назначения",
-      placeholder: "Балашиха",
-    },
-  ],
+  inputs: defaultInputs,
   textActions: (
     <>
       <PrimaryButton {...textActionProps}>Принять</PrimaryButton>
       <UnpublishOrder {...textActionProps} />
       <CancelOrder variant="text" {...textActionProps} />
+    </>
+  ),
+};
+
+const inAuctionOrdersTransporter = {
+  title: "Аукционы",
+  inputs: [
+    ...defaultInputs,
+    { name: "price", label: "Актуальная цена", placeholder: "72 000" },
+    {
+      name: "price_step",
+      label: "Шаг цены",
+      placeholder: "72 000",
+    },
+  ],
+  textActions: (
+    <>
+      <PrimaryButton {...textActionProps}>Сделать ставку</PrimaryButton>
     </>
   ),
 };
 
 // in bidding
-const inBiddingOrdersData = {
+const inBiddingOrdersCustomer = {
   title: "Торги",
-  inputs: [
-    {
-      name: "transportation_number",
-      label: "№ Транспортировки",
-      placeholder: "00000000",
-    },
-    { name: "city_from", label: "Город-старт", placeholder: "Москва" },
-    {
-      name: "city_to",
-      label: "Город-место назначения",
-      placeholder: "Балашиха",
-    },
-  ],
+  inputs: defaultInputs,
   textActions: (
     <>
       <PrimaryButton {...textActionProps}>Принять</PrimaryButton>
@@ -129,22 +112,20 @@ const inBiddingOrdersData = {
   ),
 };
 
+const inBiddingOrdersTransporter = {
+  title: "Аукционы",
+  inputs: defaultInputs,
+  textActions: (
+    <>
+      <PrimaryButton {...textActionProps}>Сделать ставку</PrimaryButton>
+    </>
+  ),
+};
+
 // in direct
-const inDirectOrdersData = {
+const inDirectOrdersCustomer = {
   title: "Назначенные",
-  inputs: [
-    {
-      name: "transportation_number",
-      label: "№ Транспортировки",
-      placeholder: "00000000",
-    },
-    { name: "city_from", label: "Город-старт", placeholder: "Москва" },
-    {
-      name: "city_to",
-      label: "Город-место назначения",
-      placeholder: "Балашиха",
-    },
-  ],
+  inputs: defaultInputs,
   textActions: (
     <>
       <UnpublishOrder {...textActionProps} />
@@ -153,22 +134,21 @@ const inDirectOrdersData = {
   ),
 };
 
+const inDirectOrdersTransporter = {
+  title: "Назначенные",
+  inputs: defaultInputs,
+  textActions: (
+    <>
+      <PrimaryButton {...textActionProps}>Принять</PrimaryButton>
+      <PrimaryButton {...textActionProps}>Отказаться</PrimaryButton>
+    </>
+  ),
+};
+
 // being executed
-const beingExecutedOrdersData = {
+const beingExecutedOrdersCustomer = {
   title: "Журнал перевозок",
-  inputs: [
-    {
-      name: "transportation_number",
-      label: "№ Транспортировки",
-      placeholder: "00000000",
-    },
-    { name: "city_from", label: "Город-старт", placeholder: "Москва" },
-    {
-      name: "city_to",
-      label: "Город-место назначения",
-      placeholder: "Балашиха",
-    },
-  ],
+  inputs: defaultInputs,
   textActions: (
     <>
       <CompleteOrder {...textActionProps} />
@@ -178,21 +158,36 @@ const beingExecutedOrdersData = {
   ),
 };
 
-export const getPageData = (order_status: TOrderStatus) => {
+const beingExecutedOrdersTransporter = {
+  title: "Журнал перевозок",
+  inputs: defaultInputs,
+  textActions: (
+    <>
+      <PrimaryButton {...textActionProps}>Подать данные</PrimaryButton>
+    </>
+  ),
+};
+
+const forbidden = { title: 403 };
+
+export const getPageData = (
+  order_status: Exclude<TOrderStatus, "completed">,
+  role: "customer" | "transporter"
+) => {
+  const _or = (first: any, second: any) =>
+    role === "customer" ? first : second;
   switch (order_status) {
     case "unpublished":
-      return unpublishedOrdersData;
+      return _or(unpublishedOrdersCustomer, forbidden);
     case "cancelled":
-      return cancelledOrdersData;
+      return cancelledOrders;
     case "in_auction":
-      return inAuctionOrdersData;
+      return _or(inAuctionOrdersCustomer, inAuctionOrdersTransporter);
     case "in_bidding":
-      return inBiddingOrdersData;
+      return _or(inBiddingOrdersCustomer, inBiddingOrdersTransporter);
     case "in_direct":
-      return inDirectOrdersData;
+      return _or(inDirectOrdersCustomer, inDirectOrdersTransporter);
     case "being_executed":
-      return beingExecutedOrdersData;
-    default:
-      return { title: "" };
+      return _or(beingExecutedOrdersCustomer, beingExecutedOrdersTransporter);
   }
 };

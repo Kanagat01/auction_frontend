@@ -1,27 +1,44 @@
 import { createStore, createEffect } from "effector";
 import { apiInstance } from "~/shared/api";
 import { logger } from "~/shared/config";
-import { GetMainDataResponse } from "./api_types";
 import { fieldUpdate as orderFormFieldUpdate } from "~/entities/Order";
+import {
+  CustomerCompany,
+  CustomerManager,
+  TUserType,
+  TransporterCompany,
+  TransporterManager,
+} from "../types";
 
-export const getMainDataFx = createEffect<void, GetMainDataResponse>(
-  async () => {
-    try {
-      const response = await apiInstance.get("/user/common/get_user/");
-      return response.data.message;
-    } catch (error) {
-      logger.error(error);
-    }
+type TMainData =
+  | CustomerCompany
+  | CustomerManager
+  | TransporterCompany
+  | TransporterManager;
+
+export const getMainDataFx = createEffect<void, TMainData>(async () => {
+  try {
+    const response = await apiInstance.get("/user/common/get_user/");
+    return response.data.message;
+  } catch (error) {
+    logger.error(error);
   }
+});
+
+export const $userType = createStore<TUserType | null>(null).on(
+  getMainDataFx.doneData,
+  (_, payload) => payload.user.user_type
 );
 
-export const $mainData = createStore<GetMainDataResponse | null>(null).on(
+export const $mainData = createStore<TMainData | null>(null).on(
   getMainDataFx.doneData,
   (_, payload) => payload
 );
 $mainData.watch((mainData) => {
-  orderFormFieldUpdate({
-    key: "customer_manager",
-    value: mainData?.user.full_name ?? "",
-  });
+  mainData
+    ? orderFormFieldUpdate({
+        key: "customer_manager",
+        value: mainData.user.full_name,
+      })
+    : null;
 });

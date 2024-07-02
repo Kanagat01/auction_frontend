@@ -10,43 +10,53 @@ import {
   TOrderStatus,
   getOrdersFx,
 } from "~/entities/Order";
-import { MainTitle, RoundedWhiteBox, TitleLg } from "~/shared/ui";
-import {
-  CANCELLED_ORDERS,
-  ORDERS_BEING_EXECUTED,
-  ORDERS_IN_AUCTION,
-  ORDERS_IN_BIDDING,
-  ORDERS_IN_DIRECT,
-  UNPUBLISHED_ORDERS,
-} from "~/shared/routes";
+import { $userType } from "~/entities/User";
+import { MainTitle, RoundedWhiteBox, TextCenter, TitleLg } from "~/shared/ui";
+import * as urls from "~/shared/routes";
 import { getPageData } from "./pageData";
 
 export default function OrdersPage() {
   const currentRoute = useLocation().pathname;
-  const routes: Record<string, TOrderStatus> = {
-    [ORDERS_IN_AUCTION]: "in_auction",
-    [ORDERS_IN_BIDDING]: "in_bidding",
-    [ORDERS_IN_DIRECT]: "in_direct",
-    [ORDERS_BEING_EXECUTED]: "being_executed",
-    [CANCELLED_ORDERS]: "cancelled",
-    [UNPUBLISHED_ORDERS]: "unpublished",
+  const routes: Record<string, Exclude<TOrderStatus, "completed">> = {
+    [urls.ORDERS_IN_AUCTION]: "in_auction",
+    [urls.ORDERS_IN_BIDDING]: "in_bidding",
+    [urls.ORDERS_IN_DIRECT]: "in_direct",
+    [urls.ORDERS_BEING_EXECUTED]: "being_executed",
+    [urls.CANCELLED_ORDERS]: "cancelled",
+    [urls.UNPUBLISHED_ORDERS]: "unpublished",
   };
   if (currentRoute in routes) {
-    const orderStatus = routes[currentRoute];
+    const userType = useUnit($userType);
+    const role = ["customer_manager", "customer_company"].includes(
+      userType ?? ""
+    )
+      ? "customer"
+      : "transporter";
     const orders = useUnit($orders);
-    const { title, ...pageData } = getPageData(orderStatus);
+    const orderStatus = routes[currentRoute];
+    const { title, ...pageData } = getPageData(orderStatus, role);
     useEffect(() => {
-      getOrdersFx(orderStatus);
+      if (title !== 403) getOrdersFx(orderStatus);
     }, [orderStatus]);
 
     return (
       <RoundedWhiteBox>
-        <div className="p-5">
-          <MainTitle>{title}</MainTitle>
-          <ControlPanel {...pageData} />
-        </div>
-        <OrdersList orders={orders} />
-        <OrderSections />
+        {title === 403 ? (
+          <TextCenter className="p-5 mt-5">
+            <MainTitle style={{ fontSize: "2.5rem", fontWeight: 500 }}>
+              У вас нет прав для просмотра данной страницы
+            </MainTitle>
+          </TextCenter>
+        ) : (
+          <>
+            <div className="p-5">
+              <MainTitle>{title}</MainTitle>
+              <ControlPanel {...pageData} />
+            </div>
+            <OrdersList orders={orders} />
+            <OrderSections />
+          </>
+        )}
       </RoundedWhiteBox>
     );
   }

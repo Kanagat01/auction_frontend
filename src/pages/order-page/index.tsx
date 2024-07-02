@@ -12,7 +12,7 @@ import {
 } from "~/entities/Order";
 import { getOrderStagesFx, OrderStagesTable } from "~/entities/OrderStage";
 import { RoundedWhiteBox, TitleLg } from "~/shared/ui";
-import { UNPUBLISHED_ORDERS } from "~/shared/routes";
+import { ORDERS_BEING_EXECUTED } from "~/shared/routes";
 import { renderPromise } from "~/shared/api";
 import { logger } from "~/shared/config";
 import styles from "./styles.module.scss";
@@ -134,6 +134,6 @@ export default function OrderPage() {
       })}
     </RoundedWhiteBox>
   ) : (
-    <Navigate to={UNPUBLISHED_ORDERS} replace />
+    <Navigate to={ORDERS_BEING_EXECUTED} replace />
   );
 }

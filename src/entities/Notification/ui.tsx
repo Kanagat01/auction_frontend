@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ReactSVG } from "react-svg";
 import { FaAngleRight } from "react-icons/fa";
@@ -27,7 +26,6 @@ export const NotificationCard = (props: TNotification) => {
 
 export function Notifications() {
   const [show, changeShow] = useModalState(false);
-  const [activeSection, setActiveSection] = useState("Информация");
   const notifications: TNotification[] = [
     {
       date: "23 ноября",
@@ -56,15 +54,7 @@ export function Notifications() {
             <FaAngleRight className="avg-icon" />
           </div>
           <div className="d-flex mb-4" style={{ gap: "1rem" }}>
-            {["Информация", "Финансы"].map((text) => (
-              <SectionButton
-                key={text}
-                onClick={() => setActiveSection(text)}
-                className={activeSection === text ? "active" : ""}
-              >
-                {text}
-              </SectionButton>
-            ))}
+            <SectionButton className="active">Информация</SectionButton>
           </div>
           {notifications.map((el, idx) => (
             <NotificationCard key={idx} {...el} />

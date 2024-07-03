@@ -9,6 +9,7 @@ import {
   PublishOrderRequest,
   UnpublishOrderRequest,
 } from "./api_types";
+import { $userType } from "~/entities/User";
 
 //@ts-ignore
 enum OrderStatusUrls {
@@ -26,7 +27,9 @@ export const getOrdersFx: Effect<TOrderStatus, TGetOrder[]> = attach({
   effect: apiRequestFx,
   mapParams: (status: TOrderStatus): RequestParams => ({
     method: "get",
-    url: `/auction/customer/get_orders/?status=${status}`,
+    url: `/auction/${
+      $userType.getState()?.split("_")[0]
+    }/get_orders/?status=${status}`,
   }),
 });
 
@@ -55,7 +58,7 @@ export const cancelOrderFx: Effect<CancelOrderRequest, OrderModel> = attach({
   effect: apiRequestFx,
   mapParams: (data: CancelOrderRequest): RequestParams => ({
     method: "post",
-    url: "/auction/customer/cancel_order/",
+    url: `/auction/${$userType.getState()?.split("_")[0]}/cancel_order/`,
     data,
   }),
 });
@@ -76,7 +79,7 @@ export const publishOrderFx: Effect<PublishOrderRequest, OrderModel> = attach({
   effect: apiRequestFx,
   mapParams: (data: PublishOrderRequest): RequestParams => ({
     method: "post",
-    url: "/auction/customer/publish_order/",
+    url: `/auction/${$userType.getState()?.split("_")[0]}/publish_order/`,
     data,
   }),
 });
@@ -87,7 +90,7 @@ export const completeOrderFx: Effect<CompleteOrderRequest, OrderModel> = attach(
     effect: apiRequestFx,
     mapParams: (data: CompleteOrderRequest): RequestParams => ({
       method: "post",
-      url: "/auction/customer/complete_order/",
+      url: `/auction/${$userType.getState()?.split("_")[0]}/complete_order/`,
       data,
     }),
   }

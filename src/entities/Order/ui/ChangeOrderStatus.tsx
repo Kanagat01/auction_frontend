@@ -233,10 +233,7 @@ export function PublishOrderInDirect() {
               ],
             ]}
           />
-          <div
-            className="d-flex align-items-center mt-4"
-            style={{ gap: "3rem" }}
-          >
+          <div className="buttons">
             <OutlineButton style={btnStyle}>Назначить</OutlineButton>
             <OutlineButton style={btnStyle}>Отмена</OutlineButton>
           </div>

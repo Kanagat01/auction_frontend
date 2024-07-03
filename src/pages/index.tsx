@@ -17,7 +17,10 @@ export const Routing = () => {
     routes.ORDERS_IN_DIRECT,
     routes.CANCELLED_ORDERS,
     routes.UNPUBLISHED_ORDERS,
-  ].map((route): [string, ReactNode] => [route, <OrdersPage />]);
+  ].map((route): [string, ReactNode] => [
+    route,
+    <OrdersPage currentRoute={route} />,
+  ]);
 
   const private_routes: Array<[string, ReactNode]> = [
     ...order_pages,

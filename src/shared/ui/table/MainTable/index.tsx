@@ -118,7 +118,7 @@ export function MainTable({ table, paginator }: MainTableProps) {
               {page}
             </NavLink>
           ))}
-          <NavLink to="#">
+          <NavLink to="#" style={{ marginTop: "-3px" }}>
             <RiArrowRightSLine />
           </NavLink>
         </div>

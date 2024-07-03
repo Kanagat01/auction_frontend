@@ -15,6 +15,7 @@ import {
 import { FolderPlus } from "~/shared/assets";
 import { EDIT_ORDER_ROUTE, NEW_ORDER_ROUTE } from "~/shared/routes";
 import { PrimaryButton } from "~/shared/ui";
+import { MakeOfferButton } from "~/entities/Offer/ui";
 
 const iconActionProps = {
   className: "outline-btn px-2 py-0 me-2",
@@ -94,7 +95,7 @@ const inAuctionOrdersTransporter = {
   ],
   textActions: (
     <>
-      <PrimaryButton {...textActionProps}>Сделать ставку</PrimaryButton>
+      <MakeOfferButton {...textActionProps} />
     </>
   ),
 };
@@ -117,7 +118,7 @@ const inBiddingOrdersTransporter = {
   inputs: defaultInputs,
   textActions: (
     <>
-      <PrimaryButton {...textActionProps}>Сделать ставку</PrimaryButton>
+      <MakeOfferButton {...textActionProps} />
     </>
   ),
 };

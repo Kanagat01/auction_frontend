@@ -1,29 +1,28 @@
-import { ReactNode, lazy } from "react";
+import { ReactNode } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import * as routes from "~/shared/routes";
-import OrdersPage from "./orders";
 import { PrivateRoute } from "./auth-routes";
-
-const Login = lazy(() => import("./login"));
-const ForgotPassword = lazy(() => import("./forgot-password"));
-const OrderPage = lazy(() => import("./order-page"));
-const Cabinet = lazy(() => import("./cabinet"));
+import {
+  UnpublishedOrders,
+  CancelledOrders,
+  OrdersInBidding,
+  OrdersInAuction,
+  OrdersBeingExecuted,
+  OrdersInDirect,
+} from "./orders";
+import OrderPage from "./order-page";
+import Cabinet from "./cabinet";
+import Login from "./login";
+import ForgotPassword from "./forgot-password";
 
 export const Routing = () => {
-  const order_pages = [
-    routes.ORDERS_BEING_EXECUTED,
-    routes.ORDERS_IN_AUCTION,
-    routes.ORDERS_IN_BIDDING,
-    routes.ORDERS_IN_DIRECT,
-    routes.CANCELLED_ORDERS,
-    routes.UNPUBLISHED_ORDERS,
-  ].map((route): [string, ReactNode] => [
-    route,
-    <OrdersPage currentRoute={route} />,
-  ]);
-
   const private_routes: Array<[string, ReactNode]> = [
-    ...order_pages,
+    [routes.ORDERS_BEING_EXECUTED, <OrdersBeingExecuted />],
+    [routes.ORDERS_IN_AUCTION, <OrdersInAuction />],
+    [routes.ORDERS_IN_BIDDING, <OrdersInBidding />],
+    [routes.ORDERS_IN_DIRECT, <OrdersInDirect />],
+    [routes.CANCELLED_ORDERS, <CancelledOrders />],
+    [routes.UNPUBLISHED_ORDERS, <UnpublishedOrders />],
     [routes.NEW_ORDER_ROUTE, <OrderPage />],
     [routes.EDIT_ORDER_ROUTE, <OrderPage />],
     [routes.PROFILE_ROUTE, <Cabinet />],

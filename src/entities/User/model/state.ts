@@ -25,7 +25,7 @@ export const getMainDataFx = createEffect<void, TMainData>(async () => {
   }
 });
 
-export const $userType = createStore<TUserType | null>(null).on(
+export const $userType = createStore<TUserType | "">("").on(
   getMainDataFx.doneData,
   (_, payload) => payload.user.user_type
 );

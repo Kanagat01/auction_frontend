@@ -2,7 +2,6 @@ import toast from "react-hot-toast";
 import { FormEvent, MouseEvent } from "react";
 import { createStore, createEvent, sample } from "effector";
 import {
-  $orders,
   $selectedOrder,
   TGetOrder,
   createOrderFx,
@@ -53,8 +52,7 @@ export const $orderForm = createStore<TNewOrder & { id?: number }>({
 export const CopyOrder = createEvent<MouseEvent<HTMLAnchorElement>>();
 //@ts-ignore TODO change types
 $orderForm.on(CopyOrder, (state, event) => {
-  const orderId = $selectedOrder.getState();
-  const order = $orders.getState().find((order) => order.id === orderId);
+  const order = $selectedOrder.getState();
   if (!order) {
     event.preventDefault();
     toast.error("Выберите заказ для копирования");
@@ -141,8 +139,7 @@ orderFormSubmitted.watch((e: FormEvent) => {
 
 export const EditOrder = createEvent<MouseEvent<HTMLAnchorElement>>();
 $orderForm.on(EditOrder, (state, event) => {
-  const orderId = $selectedOrder.getState();
-  const order = $orders.getState().find((order) => order.id === orderId);
+  const order = $selectedOrder.getState();
   if (!order) {
     event.preventDefault();
     toast.error("Выберите заказ для редактирования");

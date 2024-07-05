@@ -1,28 +1,65 @@
+import { useUnit } from "effector-react";
 import { ReactNode } from "react";
+import { $selectedOrder } from "~/entities/Order";
 import { InputContainer, InputProps } from "~/shared/ui";
 
 export type ControlPanelProps = {
   inputs?: Omit<InputProps, "variant">[];
   iconActions?: ReactNode;
   textActions?: ReactNode;
+  priceInputs?: boolean;
 };
 
+const defaultInputs = [
+  {
+    name: "transportation_number",
+    label: "№ Транспортировки",
+    placeholder: "00000000",
+  },
+  { name: "city_from", label: "Город-старт", placeholder: "Москва" },
+  {
+    name: "city_to",
+    label: "Город-место назначения",
+    placeholder: "Балашиха",
+  },
+];
+
 export function ControlPanel({
-  inputs,
+  inputs = defaultInputs,
   iconActions,
   textActions,
+  priceInputs = false,
 }: ControlPanelProps) {
+  const order = useUnit($selectedOrder);
+  if (priceInputs) {
+    inputs = [
+      ...inputs,
+      {
+        name: "price",
+        label: "Актуальная цена",
+        defaultValue: order?.offers
+          ? order?.offers[0].price
+          : order?.start_price,
+        readOnly: true,
+      },
+      {
+        name: "price_step",
+        label: "Шаг цены",
+        defaultValue: order?.price_step,
+        readOnly: true,
+      },
+    ];
+  }
   return (
     <div className="control-panel">
-      {inputs &&
-        inputs.map((props, idx) => (
-          <InputContainer
-            key={idx}
-            {...props}
-            variant="input"
-            style={{ width: "100%", height: "-webkit-fill-available" }}
-          />
-        ))}
+      {inputs.map((props, idx) => (
+        <InputContainer
+          key={idx}
+          {...props}
+          variant="input"
+          style={{ width: "100%", height: "-webkit-fill-available" }}
+        />
+      ))}
       <div className="actions">
         {iconActions && <span className="actions-title">Действия</span>}
         <div className="d-flex">

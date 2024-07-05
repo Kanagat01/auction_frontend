@@ -1,6 +1,7 @@
 export * from "./input";
 export * from "./table";
 export * from "./typography";
+export * from "./modal";
 export * from "./TooltipOnHover";
 export * from "./RoundedWhiteBox";
 export * from "./Button";

@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { Effect, createEvent, createStore } from "effector";
+import { Effect, createEvent, createStore, sample } from "effector";
 import {
   cancelOrderFx,
   completeOrderFx,
@@ -27,26 +27,38 @@ $orders.on(removeOrder, (state, orderId) =>
   state.filter((order) => order.id !== orderId)
 );
 
-export const $selectedOrder = createStore<number | null>(null);
-
+export const $selectedOrder = createStore<TGetOrder | null>(null);
 export const selectOrder = createEvent<number>();
-$selectedOrder.on(selectOrder, (_, payload) => payload);
+$selectedOrder.on(selectOrder, (_, orderId) =>
+  $orders.getState().find((order) => order.id === orderId)
+);
 
 export const deselectOrder = createEvent();
 $selectedOrder.on(deselectOrder, (_) => null);
 
+export const updateSelectedOrder = createEvent();
+$selectedOrder.on(updateSelectedOrder, (state) => {
+  if (state)
+    return $orders.getState().find((order) => order.id === state.id) ?? null;
+  return null;
+});
 export const isOrderSelected = (func: Function) => {
   const order_id = $selectedOrder.getState();
   if (!order_id) toast.error("Выберите заказ");
   else func();
 };
 
+sample({
+  clock: $orders,
+  target: updateSelectedOrder,
+});
+
 export function handleOrderAction(
   actionFx: Effect<any, OrderModel>,
   actionMessage: { loading: string; success: string },
   actionProps?: Record<string, any>
 ) {
-  const order_id = $selectedOrder.getState();
+  const order_id = $selectedOrder.getState()?.id;
   if (order_id)
     toast.promise(actionFx({ order_id, ...actionProps }), {
       loading: actionMessage.loading,
@@ -60,12 +72,6 @@ export function handleOrderAction(
 }
 
 export const cancelOrder = createEvent();
-export const publishOrder = createEvent<
-  "in_auction" | "in_bidding" | "in_direct"
->();
-export const unpublishOrder = createEvent();
-export const completeOrder = createEvent();
-
 cancelOrder.watch(() =>
   handleOrderAction(cancelOrderFx, {
     loading: "Отменяем заказ...",
@@ -73,17 +79,22 @@ cancelOrder.watch(() =>
   })
 );
 
-publishOrder.watch((publish_to) =>
+export const publishOrder = createEvent<
+  | { publish_to: "in_auction" | "in_bidding" }
+  | { publish_to: "in_direct"; transporter_company_id: number; price: number }
+>();
+publishOrder.watch(({ publish_to, ...data }) =>
   handleOrderAction(
     publishOrderFx,
     {
       loading: "Публикуем заказ...",
       success: `Статус заказа изменен на "${OrderStatus[publish_to]}"`,
     },
-    { publish_to }
+    { publish_to, ...data }
   )
 );
 
+export const unpublishOrder = createEvent();
 unpublishOrder.watch(() =>
   handleOrderAction(unpublishOrderFx, {
     loading: "Возвращаем в заказы...",
@@ -91,6 +102,7 @@ unpublishOrder.watch(() =>
   })
 );
 
+export const completeOrder = createEvent();
 completeOrder.watch(() =>
   handleOrderAction(completeOrderFx, {
     loading: "Завершаем заказ...",

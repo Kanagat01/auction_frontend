@@ -1,42 +1,33 @@
-import { Effect, attach, createEvent } from "effector";
-import { OrderModel } from "~/entities/Order";
-import { RequestParams, apiRequestFx } from "~/shared/api";
+import toast from "react-hot-toast";
+import { createEvent } from "effector";
+import { $orders, removeOrder, updateOrder } from "~/entities/Order";
 import {
   AcceptOfferRequest,
   CreateOfferRequest,
   RejectOfferRequest,
 } from "./api_types";
-import toast from "react-hot-toast";
+import {
+  acceptOfferFx,
+  acceptOfferTransporterFx,
+  createOfferFx,
+  getOffersFx,
+  rejectOfferFx,
+  rejectOfferTransporterFx,
+} from "./api";
 
 // get offers
-const getOffersFx: Effect<void, OrderModel> = attach({
-  effect: apiRequestFx,
-  mapParams: (data): RequestParams => ({
-    method: "post",
-    url: "/auction/transporter/get_offers/",
-    data,
-  }),
-});
 export const getOffers = createEvent();
 getOffers.watch(() => getOffersFx());
 
 // create offer
-const createOfferFx: Effect<CreateOfferRequest, OrderModel> = attach({
-  effect: apiRequestFx,
-  mapParams: (data): RequestParams => ({
-    method: "post",
-    url: "/auction/transporter/add_order_offer/",
-    data,
-  }),
-});
 export const createOffer = createEvent<
-  CreateOfferRequest & { changeShow: () => void }
+  CreateOfferRequest & { onReset: () => void }
 >();
-createOffer.watch(({ changeShow, ...data }) =>
+createOffer.watch(({ onReset, ...data }) =>
   toast.promise(createOfferFx(data), {
     loading: "Создаем предложение...",
     success: () => {
-      changeShow();
+      onReset();
       return "Предложение успешно создано";
     },
     error: (err) => {
@@ -65,26 +56,83 @@ createOffer.watch(({ changeShow, ...data }) =>
   })
 );
 
+type TransportationNumber = { transportation_number: number };
+
 // accept offer
-const acceptOfferFx: Effect<AcceptOfferRequest, OrderModel> = attach({
-  effect: apiRequestFx,
-  mapParams: (data): RequestParams => ({
-    method: "post",
-    url: "/auction/customer/accept_offer/",
-    data,
-  }),
-});
-export const acceptOffer = createEvent<AcceptOfferRequest>();
-acceptOffer.watch((data) => acceptOfferFx(data));
+export const acceptOffer = createEvent<
+  AcceptOfferRequest & TransportationNumber & { isBestOffer: boolean }
+>();
+acceptOffer.watch(({ isBestOffer, transportation_number, ...data }) =>
+  toast.promise(acceptOfferFx(data), {
+    loading: isBestOffer
+      ? "Принимаем лучшее предложение..."
+      : `Принимаем предложение #${data.order_offer_id}...`,
+    success: () => {
+      const order = $orders
+        .getState()
+        .find((order) => order.transportation_number === transportation_number);
+      if (order) removeOrder(order.id);
+      if (isBestOffer)
+        toast.success(`Предложение #${data.order_offer_id} принят`);
+      return `Заказ №${transportation_number} принят`;
+    },
+    error: (err) => `Произошла ошибка: ${err.response.data.message}`,
+  })
+);
 
 // reject offer
-const rejectOfferFx: Effect<RejectOfferRequest, OrderModel> = attach({
-  effect: apiRequestFx,
-  mapParams: (data): RequestParams => ({
-    method: "post",
-    url: "/auction/customer/reject_offer/",
-    data,
-  }),
-});
-export const rejectOffer = createEvent<RejectOfferRequest>();
-rejectOffer.watch((data) => rejectOfferFx(data));
+export const rejectOffer = createEvent<
+  RejectOfferRequest & { orderId: number }
+>();
+rejectOffer.watch(({ orderId, order_offer_id, ...data }) =>
+  toast.promise(rejectOfferFx({ order_offer_id, ...data }), {
+    loading: "Отклоняем заказ...",
+    success: () => {
+      const order = $orders.getState().find((order) => order.id === orderId);
+      if (order) {
+        const newData = {
+          offers: order.offers?.filter((offer) => offer.id !== order_offer_id),
+        };
+        updateOrder({ orderId, newData });
+      }
+      return `Предложение #${order_offer_id} отклонен`;
+    },
+    error: (err) => `Произошла ошибка: ${err.response.data.message}`,
+  })
+);
+
+// accept offer
+export const acceptOfferTransporter = createEvent<
+  AcceptOfferRequest & TransportationNumber
+>();
+acceptOfferTransporter.watch(({ transportation_number, ...data }) =>
+  toast.promise(acceptOfferTransporterFx(data), {
+    loading: "Принимаем заказ...",
+    success: () => {
+      const order = $orders
+        .getState()
+        .find((order) => order.transportation_number === transportation_number);
+      if (order) removeOrder(order.id);
+      return `Заказ №${transportation_number} принят`;
+    },
+    error: (err) => `Произошла ошибка: ${err.response.data.message}`,
+  })
+);
+
+// reject offer
+export const rejectOfferTransporter = createEvent<
+  RejectOfferRequest & TransportationNumber
+>();
+rejectOfferTransporter.watch(({ transportation_number, ...data }) =>
+  toast.promise(rejectOfferTransporterFx(data), {
+    loading: "Отклоняем заказ...",
+    success: () => {
+      const order = $orders
+        .getState()
+        .find((order) => order.transportation_number === transportation_number);
+      if (order) removeOrder(order.id);
+      return `Заказ №${transportation_number} отклонен`;
+    },
+    error: (err) => `Произошла ошибка: ${err.response.data.message}`,
+  })
+);

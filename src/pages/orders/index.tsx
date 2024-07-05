@@ -1,70 +1,199 @@
 import { useUnit } from "effector-react";
-import { ControlPanel } from "~/widgets";
+import { NavLink } from "react-router-dom";
+import { ReactSVG } from "react-svg";
+import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
+import { $userType } from "~/entities/User";
 import {
-  OrderSections,
-  OrdersList,
-  TOrderStatus,
+  AcceptBestOffer,
+  MakeOffer,
+  AcceptOfferTransporter,
+  RejectOfferTransporter,
+} from "~/entities/Offer";
+import {
+  CancelOrder,
+  CompleteOrder,
+  CopyOrder,
+  EditOrder,
+  PublishOrder,
+  PublishOrderInDirect,
+  UnpublishOrder,
   getOrdersFx,
 } from "~/entities/Order";
-import { $userType } from "~/entities/User";
-import { MainTitle, RoundedWhiteBox, TextCenter } from "~/shared/ui";
-import { renderPromise } from "~/shared/api";
-import * as urls from "~/shared/routes";
-import { getPageData } from "./pageData";
+import { EDIT_ORDER_ROUTE, NEW_ORDER_ROUTE } from "~/shared/routes";
+import { FolderPlus } from "~/shared/assets";
+import { PrimaryButton } from "~/shared/ui";
+import {
+  OrdersPage,
+  getRole,
+  iconActionProps,
+  textActionProps,
+} from "./helpers";
 
-const routes: Record<string, Exclude<TOrderStatus, "completed">> = {
-  [urls.ORDERS_IN_AUCTION]: "in_auction",
-  [urls.ORDERS_IN_BIDDING]: "in_bidding",
-  [urls.ORDERS_IN_DIRECT]: "in_direct",
-  [urls.ORDERS_BEING_EXECUTED]: "being_executed",
-  [urls.CANCELLED_ORDERS]: "cancelled",
-  [urls.UNPUBLISHED_ORDERS]: "unpublished",
-};
-
-export default function OrdersPage({ currentRoute }: { currentRoute: string }) {
-  if (currentRoute in routes) {
-    const userType = useUnit($userType);
-    const role = ["customer_manager", "customer_company"].includes(
-      userType ?? ""
-    )
-      ? "customer"
-      : "transporter";
-    const orderStatus = routes[currentRoute];
-    const { title, ...pageData } = getPageData(orderStatus, role);
-
-    return (
-      <RoundedWhiteBox>
-        {title === 403 ? (
-          <TextCenter className="p-5 mt-5">
-            <MainTitle style={{ fontSize: "2.5rem", fontWeight: 500 }}>
-              У вас нет прав для просмотра данной страницы
-            </MainTitle>
-          </TextCenter>
-        ) : (
-          <>
-            <div className="p-5">
-              <MainTitle>{title}</MainTitle>
-              <ControlPanel {...pageData} />
-            </div>
-            {renderPromise(() => getOrdersFx(orderStatus), {
-              success: (orders) => <OrdersList orders={orders} />,
-              error: (err) => (
-                <TextCenter className="p-5 mt-5">
-                  <MainTitle style={{ fontSize: "2.5rem", fontWeight: 500 }}>
-                    Произошла ошибка: {err.message}
-                  </MainTitle>
-                </TextCenter>
-              ),
-            })}
-            <OrderSections />
-          </>
-        )}
-      </RoundedWhiteBox>
-    );
-  }
+export function UnpublishedOrders() {
+  const userType = useUnit($userType);
+  const pageData = {
+    iconActions: (
+      <>
+        <NavLink to={NEW_ORDER_ROUTE} {...iconActionProps}>
+          <ReactSVG src={FolderPlus} />
+        </NavLink>
+        <NavLink to={NEW_ORDER_ROUTE} onClick={CopyOrder} {...iconActionProps}>
+          <LuCopyPlus />
+        </NavLink>
+        <NavLink to={EDIT_ORDER_ROUTE} onClick={EditOrder} {...iconActionProps}>
+          <LuPenSquare />
+        </NavLink>
+        <CancelOrder variant="icon" {...iconActionProps} />
+      </>
+    ),
+    textActions: (
+      <>
+        <PublishOrder publishTo="in_auction" {...textActionProps} />
+        <PublishOrder publishTo="in_bidding" {...textActionProps} />
+        <PublishOrderInDirect />
+      </>
+    ),
+  };
   return (
-    <div style={{ margin: "10rem 0 0 10rem", fontSize: "4rem" }}>
-      404 Страница не найдена
-    </div>
+    <OrdersPage
+      title={getRole(userType) === "customer" ? "Заказы" : "forbidden"}
+      pageData={pageData}
+      promise={() => getOrdersFx("unpublished")}
+    />
+  );
+}
+
+export function CancelledOrders() {
+  return (
+    <OrdersPage
+      title="Отмененные"
+      pageData={{}}
+      promise={() => getOrdersFx("cancelled")}
+    />
+  );
+}
+
+export function OrdersInAuction() {
+  const userType = useUnit($userType);
+  const customerPageData = {
+    textActions: (
+      <>
+        <AcceptBestOffer {...textActionProps} />
+        <UnpublishOrder {...textActionProps} />
+        <CancelOrder variant="text" {...textActionProps} />
+      </>
+    ),
+  };
+  const transporterPageData = {
+    priceInputs: true,
+    textActions: (
+      <>
+        <MakeOffer inAuction={true} {...textActionProps} />
+      </>
+    ),
+  };
+  return (
+    <OrdersPage
+      title="Аукционы"
+      pageData={
+        getRole(userType) === "customer"
+          ? customerPageData
+          : transporterPageData
+      }
+      promise={() => getOrdersFx("in_auction")}
+    />
+  );
+}
+
+export function OrdersInBidding() {
+  const userType = useUnit($userType);
+  const customerPageData = {
+    textActions: (
+      <>
+        <AcceptBestOffer {...textActionProps} />
+        <UnpublishOrder {...textActionProps} />
+        <CancelOrder variant="text" {...textActionProps} />
+      </>
+    ),
+  };
+  const transporterPageData = {
+    textActions: (
+      <>
+        <MakeOffer {...textActionProps} />
+      </>
+    ),
+  };
+  return (
+    <OrdersPage
+      title="Торги"
+      pageData={
+        getRole(userType) === "customer"
+          ? customerPageData
+          : transporterPageData
+      }
+      promise={() => getOrdersFx("in_bidding")}
+    />
+  );
+}
+
+export function OrdersInDirect() {
+  const userType = useUnit($userType);
+  const customerPageData = {
+    textActions: (
+      <>
+        <UnpublishOrder {...textActionProps} />
+        <CancelOrder variant="text" {...textActionProps} />
+      </>
+    ),
+  };
+  const transporterPageData = {
+    textActions: (
+      <>
+        <AcceptOfferTransporter {...textActionProps} />
+        <RejectOfferTransporter {...textActionProps} />
+      </>
+    ),
+  };
+  return (
+    <OrdersPage
+      title="Назначенные"
+      pageData={
+        getRole(userType) === "customer"
+          ? customerPageData
+          : transporterPageData
+      }
+      promise={() => getOrdersFx("in_direct")}
+    />
+  );
+}
+
+export function OrdersBeingExecuted() {
+  const userType = useUnit($userType);
+  const customerPageData = {
+    textActions: (
+      <>
+        <CompleteOrder {...textActionProps} />
+        <CancelOrder variant="text" {...textActionProps} />
+        <UnpublishOrder {...textActionProps} />
+      </>
+    ),
+  };
+  const transporterPageData = {
+    textActions: (
+      <>
+        <PrimaryButton {...textActionProps}>Подать данные</PrimaryButton>
+      </>
+    ),
+  };
+  return (
+    <OrdersPage
+      title="Журнал перевозок"
+      pageData={
+        getRole(userType) === "customer"
+          ? customerPageData
+          : transporterPageData
+      }
+      promise={() => getOrdersFx("being_executed")}
+    />
   );
 }

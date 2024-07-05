@@ -10,6 +10,7 @@ import {
   orderTranslations,
 } from "../types";
 import { $selectedOrder, deselectOrder, selectOrder, updateOrder } from "..";
+import { TUser } from "~/entities/User";
 
 export const changeOrderModal = createEvent();
 export const $orderModal = createStore<boolean>(false).on(
@@ -48,7 +49,7 @@ export const getColumns = () => {
         if (key === "transportation_number") {
           const selectedOrder = useUnit($selectedOrder);
           const orderId = row.original.id;
-          const checked = selectedOrder === orderId;
+          const checked = selectedOrder?.id === orderId;
           const onClick = () => {
             changeOrderModal();
             setCurrentOrder(row.original);
@@ -85,8 +86,9 @@ export const getColumns = () => {
         } else if (key === "status") {
           const value = info.getValue()?.toString() as TOrderStatus;
           return OrderStatus[value];
-        }
-        return value ? value.toString() : "-";
+        } else if (["transporter_manager", "customer_manager"].includes(key))
+          return value ? (value as { user: TUser }).user.full_name : "-";
+        else return value ? value.toString() : "-";
       },
       header: () => orderTranslations[key],
       sortDescFirst: false,

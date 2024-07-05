@@ -27,7 +27,14 @@ export type EditOrderRequest = { order_id: number } & Partial<
 export type CancelOrderRequest = { order_id: number };
 export type UnpublishOrderRequest = { order_id: number };
 export type CompleteOrderRequest = { order_id: number };
-export type PublishOrderRequest = {
-  order_id: number;
-  publish_to: "in_auction" | "in_bidding" | "in_direct";
-};
+export type PublishOrderRequest =
+  | {
+      order_id: number;
+      publish_to: "in_bidding" | "in_direct";
+    }
+  | {
+      order_id: number;
+      publish_to: "in_auction";
+      transporter_company_id: number;
+      price: number;
+    };

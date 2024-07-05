@@ -30,4 +30,5 @@ export interface CustomerManager {
     CustomerCompany,
     "allowed_transporter_companies" | "managers" | "user"
   >;
+  allowed_transporter_companies: TransporterCompany[];
 }

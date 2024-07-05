@@ -30,6 +30,7 @@ export const AcceptBestOffer = (
           onHide={changeShow}
           onConfirm={() => {
             acceptOffer({
+              isBestOffer: true,
               transportation_number: order?.transportation_number,
               order_offer_id: bestOffer.id,
             });

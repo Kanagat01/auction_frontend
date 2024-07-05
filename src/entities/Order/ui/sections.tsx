@@ -16,7 +16,7 @@ export function OrderSections() {
         case "documents":
           return <DocumentsList documents={order.documents ?? []} />;
         case "map":
-          return <MapSection tracking={order.tracking} />;
+          return <MapSection tracking={order.tracking ?? null} />;
         case "data":
           return <DataSection order={order} />;
       }

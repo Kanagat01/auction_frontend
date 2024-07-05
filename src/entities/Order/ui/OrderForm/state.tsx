@@ -35,6 +35,7 @@ export const initialOrder = {
 type TNewOrder = Omit<
   TGetOrder,
   | "id"
+  | "customer_manager"
   | "transporter_manager"
   | "created_at"
   | "updated_at"
@@ -42,7 +43,7 @@ type TNewOrder = Omit<
   | "offers"
   | "tracking"
   | "documents"
->;
+> & { customer_manager: string };
 
 export const $orderForm = createStore<TNewOrder & { id?: number }>({
   ...initialOrder,
@@ -151,6 +152,7 @@ $orderForm.on(EditOrder, (state, event) => {
     target: deselectOrder,
   });
   const {
+    customer_manager,
     transporter_manager,
     created_at,
     updated_at,
@@ -160,7 +162,10 @@ $orderForm.on(EditOrder, (state, event) => {
     documents,
     ...newOrderForm
   } = order;
-  return newOrderForm;
+  return {
+    customer_manager: $mainData.getState()?.user.full_name ?? "",
+    ...newOrderForm,
+  };
 });
 
 export const clearForm = createEvent();

@@ -85,12 +85,15 @@ export function OrdersInAuction() {
     ),
   };
   const transporterPageData = {
-    priceInputs: true,
-    textActions: (
-      <>
-        <MakeOffer inAuction={true} {...textActionProps} />
-      </>
-    ),
+    priceInputs: userType === "transporter_manager",
+    textActions:
+      userType === "transporter_manager" ? (
+        <>
+          <MakeOffer inAuction={true} {...textActionProps} />
+        </>
+      ) : (
+        ""
+      ),
   };
   return (
     <OrdersPage
@@ -117,11 +120,14 @@ export function OrdersInBidding() {
     ),
   };
   const transporterPageData = {
-    textActions: (
-      <>
-        <MakeOffer {...textActionProps} />
-      </>
-    ),
+    textActions:
+      userType === "transporter_manager" ? (
+        <>
+          <MakeOffer {...textActionProps} />
+        </>
+      ) : (
+        ""
+      ),
   };
   return (
     <OrdersPage
@@ -147,12 +153,15 @@ export function OrdersInDirect() {
     ),
   };
   const transporterPageData = {
-    textActions: (
-      <>
-        <AcceptOfferTransporter {...textActionProps} />
-        <RejectOfferTransporter {...textActionProps} />
-      </>
-    ),
+    textActions:
+      userType === "transporter_manager" ? (
+        <>
+          <AcceptOfferTransporter {...textActionProps} />
+          <RejectOfferTransporter {...textActionProps} />
+        </>
+      ) : (
+        ""
+      ),
   };
   return (
     <OrdersPage
@@ -179,11 +188,14 @@ export function OrdersBeingExecuted() {
     ),
   };
   const transporterPageData = {
-    textActions: (
-      <>
-        <PrimaryButton {...textActionProps}>Подать данные</PrimaryButton>
-      </>
-    ),
+    textActions:
+      userType === "transporter_manager" ? (
+        <>
+          <PrimaryButton {...textActionProps}>Подать данные</PrimaryButton>
+        </>
+      ) : (
+        ""
+      ),
   };
   return (
     <OrdersPage

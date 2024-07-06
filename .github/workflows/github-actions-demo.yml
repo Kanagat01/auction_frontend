@@ -18,6 +18,7 @@ jobs:
             cd ${{ secrets.PROJECT_FOLDER }};
             git pull;
             cd ${{ secrets.DOCKER_FOLDER }};
+            docker rm $(docker ps -aq)
             docker compose build ${{ secrets.CONTAINER_NAME }} && docker compose up -d --force-recreate ${{ secrets.CONTAINER_NAME }}
 
       - run: echo "💡 The server code has been updated"

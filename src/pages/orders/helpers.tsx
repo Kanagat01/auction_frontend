@@ -31,7 +31,7 @@ export function OrdersPage({ title, pageData, promise }: TOrdersPage) {
   const orders = useUnit($orders);
   return (
     <>
-      <RoundedWhiteBox>
+      <RoundedWhiteBox style={{ width: "90%" }}>
         {title === "forbidden" ? (
           <TextCenter className="p-5 mt-5">
             <MainTitle style={{ fontSize: "2.5rem", fontWeight: 500 }}>

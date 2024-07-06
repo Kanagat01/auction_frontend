@@ -7,3 +7,4 @@ export * from "./RoundedWhiteBox";
 export * from "./Button";
 export * from "./Preloader";
 export * from "./ScheduleCard";
+export * from "./CollapsableSidebar";

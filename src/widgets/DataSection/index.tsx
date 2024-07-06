@@ -19,34 +19,41 @@ export function DataSection({ order }: { order: TGetOrder }) {
       {
         name: "transportation_number",
         label: "№ Транспортировки",
+        defaultValue: order.transportation_number,
       },
       {
         name: "customer_manager",
         label: "Заказчик",
+        defaultValue: order.customer_manager.user.full_name,
       },
     ],
     [
       {
         name: "comments_for_transporter",
         label: "Комментарий для перевозчиков",
+        defaultValue: order.comments_for_transporter,
       },
       {
         name: "additional_requirements",
         label: "Доп. требования",
+        defaultValue: order.additional_requirements,
       },
     ],
     [
       {
         name: "transport_body_height",
         label: "Высота кузова",
+        defaultValue: order.transport_body_height,
       },
       {
         name: "transport_body_length",
         label: "Длина кузова",
+        defaultValue: order.transport_body_length,
       },
       {
         name: "transport_body_width",
         label: "Ширина кузова",
+        defaultValue: order.transport_body_width,
       },
     ],
   ];
@@ -67,12 +74,10 @@ export function DataSection({ order }: { order: TGetOrder }) {
           className="d-flex align-items-end"
           style={{ gap: "1rem" }}
         >
-          {arr.map(({ name, label }) => (
+          {arr.map((props) => (
             <InputContainer
-              key={name}
-              name={name}
-              label={label}
-              defaultValue={order[name as keyof TGetOrder] as string | number}
+              key={props.name}
+              {...props}
               variant={key === 1 ? "textarea" : "input"}
               label_style={{
                 color: "var(--default-font-color)",

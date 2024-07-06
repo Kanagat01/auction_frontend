@@ -1,5 +1,5 @@
 import { Col, Row } from "react-bootstrap";
-import { FaPen } from "react-icons/fa6";
+import { FaPen, FaLocationDot } from "react-icons/fa6";
 import {
   EditField,
   PrimaryButton,
@@ -7,9 +7,8 @@ import {
   RoundedWhiteBox,
   TitleLg,
 } from "~/shared/ui";
-import { Ava, LocationIcon } from "~/shared/assets";
+import { Ava } from "~/shared/assets";
 import "./style.scss";
-import { ReactSVG } from "react-svg";
 
 export default function Cabinet() {
   return (
@@ -33,7 +32,7 @@ export default function Cabinet() {
             </div>
             <div className="profile-name mb-2">Иван Иванов</div>
             <div className="profile-location mb-2">
-              <ReactSVG src={LocationIcon} style={{ lineHeight: "1.4rem" }} />
+              <FaLocationDot />
               <span style={{ lineHeight: "2.4rem" }}>Москва</span>
             </div>
             <EditField

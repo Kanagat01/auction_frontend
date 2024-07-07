@@ -45,6 +45,10 @@ body {
   }
 }
 
+.selected-row {
+  background: rgba(172, 207, 248, 0.6);
+}
+
 .company-logo {
   background: var(--company-logo-bg);
   color: rgb(255, 255, 255);

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useUnit } from "effector-react";
 import { DataSection, MapSection } from "~/widgets";
-import { $currentOrder } from "~/entities/Order";
+import { $selectedOrder } from "~/entities/Order";
 import { DocumentsList } from "~/entities/Document";
 import { OutlineButton, TitleLg } from "~/shared/ui";
 
 export function OrderSections() {
-  const order = useUnit($currentOrder);
+  const order = useUnit($selectedOrder);
   const [currentSection, setCurrentSection] = useState<string>("data");
   const Section = () => {
     if (order) {

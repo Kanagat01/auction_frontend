@@ -1,90 +1,89 @@
-import { Table, flexRender } from "@tanstack/react-table";
-import { RxTriangleUp, RxTriangleDown } from "react-icons/rx";
-import { RiArrowRightSLine } from "react-icons/ri";
-import { NavLink } from "react-router-dom";
+import { HTMLAttributes } from "react";
+import { Table } from "@tanstack/react-table";
+
+import {
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+
 import { TextCenter, TitleMd } from "~/shared/ui";
+import { Paginator } from "./Paginator";
 import styles from "./styles.module.scss";
+import {
+  horizontalListSortingStrategy,
+  SortableContext,
+} from "@dnd-kit/sortable";
+import {
+  DragAlongCell,
+  DraggableTableHeader,
+  handleDragEnd,
+} from "./dragFunctions";
+import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
 
 type MainTableProps = {
   table: Table<any>;
   paginator?: { size: number; currentPage: number };
+  getRowProps?: (id: number) => HTMLAttributes<HTMLTableRowElement>;
+  columnOrder: string[];
+  setColumnOrder: (order: string[]) => void;
 };
 
-export function MainTable({ table, paginator }: MainTableProps) {
+export function MainTable({
+  table,
+  paginator,
+  getRowProps = (_id: number) => ({}),
+  columnOrder,
+  setColumnOrder,
+}: MainTableProps) {
   const headerGroups = table.getHeaderGroups();
   const rows = table.getRowModel().rows;
 
-  let pages = [];
-  if (paginator) {
-    const { size, currentPage } = paginator;
-    if (size <= 10) {
-      for (let i = 1; i <= size; i++) pages.push(i);
-    } else if (currentPage - 5 <= 0) {
-      for (let i = 1; i <= 10; i++) pages.push(i);
-    } else if (size - currentPage <= 5) {
-      for (let i = size - 10; i <= size; i++) pages.push(i);
-    } else {
-      for (let i = currentPage - 5; i <= currentPage + 5; i++) pages.push(i);
-    }
-  }
+  const sensors = useSensors(
+    useSensor(MouseSensor, {}),
+    useSensor(TouchSensor, {}),
+    useSensor(KeyboardSensor, {})
+  );
   return (
-    <>
+    <DndContext
+      collisionDetection={closestCenter}
+      modifiers={[restrictToHorizontalAxis]}
+      onDragEnd={(event: DragEndEvent) => handleDragEnd(event, setColumnOrder)}
+      sensors={sensors}
+    >
       <div style={{ overflowX: "auto" }}>
         <table className={styles.table}>
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className={
-                      header.column.getCanSort() ? styles.cursorPointer : ""
-                    }
-                    onClick={header.column.getToggleSortingHandler()}
-                    style={{ width: header.getSize() }}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    {{
-                      asc: <RxTriangleUp className={styles.sortingIcon} />,
-                      desc: <RxTriangleDown className={styles.sortingIcon} />,
-                    }[header.column.getIsSorted() as string] ??
-                      (header.column.getCanSort() ? (
-                        <div className={styles.columnCanSort}>
-                          <RxTriangleUp />
-                          <RxTriangleDown />
-                        </div>
-                      ) : null)}
-                    <div
-                      {...{
-                        onDoubleClick: () => header.column.resetSize(),
-                        onMouseDown: header.getResizeHandler(),
-                        onTouchStart: header.getResizeHandler(),
-                        className: `${styles.resizer} ${
-                          header.column.getIsResizing() ? styles.isResizing : ""
-                        }`,
-                      }}
-                    />
-                  </th>
-                ))}
+                <SortableContext
+                  items={columnOrder}
+                  strategy={horizontalListSortingStrategy}
+                >
+                  {headerGroup.headers.map((header) => (
+                    <DraggableTableHeader key={header.id} header={header} />
+                  ))}
+                </SortableContext>
               </tr>
             ))}
           </thead>
           <tbody>
             {rows.length !== 0 ? (
               rows.map((row) => (
-                <tr key={row.id}>
+                <tr key={row.id} {...getRowProps(row.original.id)}>
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} style={{ width: cell.column.getSize() }}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
+                    <SortableContext
+                      key={cell.id}
+                      items={columnOrder}
+                      strategy={horizontalListSortingStrategy}
+                    >
+                      <DragAlongCell key={cell.id} cell={cell} />
+                    </SortableContext>
                   ))}
                 </tr>
               ))
@@ -100,29 +99,7 @@ export function MainTable({ table, paginator }: MainTableProps) {
           </tbody>
         </table>
       </div>
-      {paginator && (
-        <div className={styles.pagination}>
-          {pages.map((page) => (
-            <NavLink
-              to="#"
-              key={page}
-              className={
-                paginator.currentPage === page ? styles.activePage : ""
-              }
-              onClick={(e) => {
-                if (paginator.currentPage === page) {
-                  e.preventDefault();
-                }
-              }}
-            >
-              {page}
-            </NavLink>
-          ))}
-          <NavLink to="#" style={{ marginTop: "-3px" }}>
-            <RiArrowRightSLine />
-          </NavLink>
-        </div>
-      )}
-    </>
+      {paginator && <Paginator {...paginator} />}
+    </DndContext>
   );
 }

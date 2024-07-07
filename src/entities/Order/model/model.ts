@@ -28,6 +28,10 @@ $orders.on(removeOrder, (state, orderId) =>
 );
 
 export const $selectedOrder = createStore<TGetOrder | null>(null);
+$selectedOrder.on(updateOrder, (state, { newData }) => {
+  return state ? { ...state, ...newData } : null;
+});
+
 export const selectOrder = createEvent<number>();
 $selectedOrder.on(selectOrder, (_, orderId) =>
   $orders.getState().find((order) => order.id === orderId)

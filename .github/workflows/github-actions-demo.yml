@@ -18,7 +18,5 @@ jobs:
             cd ${{ secrets.PROJECT_FOLDER }};
             git pull;
             cd ${{ secrets.DOCKER_FOLDER }};
-            docker compose stop;
-            docker rm $(docker ps -aq)
             docker compose up -d --build ${{ secrets.CONTAINER_NAME }};
       - run: echo "💡 The server code has been updated"

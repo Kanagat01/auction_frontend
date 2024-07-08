@@ -26,7 +26,7 @@ export const Routing = () => {
     [routes.NEW_ORDER_ROUTE, <OrderPage />],
     [routes.EDIT_ORDER_ROUTE, <OrderPage />],
     [routes.PROFILE_ROUTE, <Cabinet />],
-    // [routes.CARGO_PLAN_ROUTE, CargoPlan],
+    // [routes.CARGO_PLAN_ROUTE, <CargoPlan />],
   ];
 
   return (

@@ -1,11 +1,13 @@
 import { ReactNode } from "react";
 import { ReactSVG } from "react-svg";
+import { useUnit } from "effector-react";
 import { NavLink, useLocation } from "react-router-dom";
+
 import { RiDeleteBin5Line } from "react-icons/ri";
+// import { TbBoxMultiple } from "react-icons/tb";
 import { FaTruckMoving } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 import { MdDownload } from "react-icons/md";
-import { useUnit } from "effector-react";
 
 import { $mainData } from "~/entities/User";
 import { Hammer, ThreeHouses } from "~/shared/assets";

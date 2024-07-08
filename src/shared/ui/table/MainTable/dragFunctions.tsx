@@ -85,14 +85,16 @@ export const DragAlongCell = ({ cell }: { cell: Cell<any, unknown> }) => {
 
 export function handleDragEnd(
   event: DragEndEvent,
-  setColumnOrder: Dispatch<SetStateAction<any>>
+  setColumnOrder: Dispatch<SetStateAction<string[]>>
 ) {
   const { active, over } = event;
   if (active && over && active.id !== over.id) {
-    setColumnOrder((columnOrder: any) => {
+    setColumnOrder((columnOrder: string[]) => {
       const oldIndex = columnOrder.indexOf(active.id as string);
       const newIndex = columnOrder.indexOf(over.id as string);
-      return arrayMove(columnOrder, oldIndex, newIndex);
+      return active.id !== "column_0"
+        ? arrayMove(columnOrder, oldIndex, newIndex)
+        : columnOrder;
     });
   }
 }

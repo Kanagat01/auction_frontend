@@ -1,5 +1,5 @@
 import { Effect, attach } from "effector";
-import { $userType, DriverProfile } from "~/entities/User";
+import { $userType, DriverProfile, getRole } from "~/entities/User";
 import { OrderModel, TGetOrder, TOrderStatus } from "~/entities/Order";
 import { RequestParams, apiRequestFx } from "~/shared/api";
 import {
@@ -28,9 +28,9 @@ export const getOrdersFx: Effect<TOrderStatus, TGetOrder[]> = attach({
   effect: apiRequestFx,
   mapParams: (status: TOrderStatus): RequestParams => ({
     method: "get",
-    url: `/auction/${
-      $userType.getState()?.split("_")[0]
-    }/get_orders/?status=${status}`,
+    url: `/auction/${getRole(
+      $userType.getState()
+    )}/get_orders/?status=${status}`,
   }),
 });
 
@@ -59,7 +59,7 @@ export const cancelOrderFx: Effect<CancelOrderRequest, OrderModel> = attach({
   effect: apiRequestFx,
   mapParams: (data: CancelOrderRequest): RequestParams => ({
     method: "post",
-    url: `/auction/${$userType.getState()?.split("_")[0]}/cancel_order/`,
+    url: `/auction/${getRole($userType.getState())}/cancel_order/`,
     data,
   }),
 });
@@ -80,7 +80,7 @@ export const publishOrderFx: Effect<PublishOrderRequest, OrderModel> = attach({
   effect: apiRequestFx,
   mapParams: (data: PublishOrderRequest): RequestParams => ({
     method: "post",
-    url: `/auction/${$userType.getState()?.split("_")[0]}/publish_order/`,
+    url: `/auction/${getRole($userType.getState())}/publish_order/`,
     data,
   }),
 });
@@ -91,7 +91,7 @@ export const completeOrderFx: Effect<CompleteOrderRequest, OrderModel> = attach(
     effect: apiRequestFx,
     mapParams: (data: CompleteOrderRequest): RequestParams => ({
       method: "post",
-      url: `/auction/${$userType.getState()?.split("_")[0]}/complete_order/`,
+      url: `/auction/${getRole($userType.getState())}/complete_order/`,
       data,
     }),
   }

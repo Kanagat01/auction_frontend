@@ -1,14 +1,15 @@
 import { Effect, attach } from "effector";
-import { DeleteDocumentRequest } from "./api_types";
 import { OrderModel } from "~/entities/Order";
+import { $userType, getRole } from "~/entities/User";
 import { RequestParams, apiRequestFx } from "~/shared/api";
+import { DeleteDocumentRequest } from "./api_types";
 
 // add document
 export const addDocumentFx: Effect<FormData, OrderModel> = attach({
   effect: apiRequestFx,
   mapParams: (data: FormData): RequestParams => ({
     method: "post",
-    url: "/auction/customer/add_document/",
+    url: `/auction/${getRole($userType.getState())}/add_document/`,
     data,
   }),
 });

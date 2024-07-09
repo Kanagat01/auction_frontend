@@ -16,3 +16,8 @@ export type TUser = {
   user_type: TUserType;
   full_name: string;
 };
+
+export const getRole = (userType: TUserType | "") =>
+  ["customer_manager", "customer_company"].includes(userType)
+    ? "customer"
+    : "transporter";

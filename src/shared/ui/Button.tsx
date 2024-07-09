@@ -46,3 +46,8 @@ export const SectionButton: FC<
     {children}
   </button>
 );
+
+export const documentButtonProps = {
+  className: "px-2 py-0 me-3 h-100",
+  style: { fontSize: "2rem" },
+};

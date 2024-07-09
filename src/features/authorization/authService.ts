@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_URL, logger } from "~/shared/config";
 import { setAuth } from "./authStore";
+import { setMainData } from "~/entities/User";
 
 export const login = async (
   email: string,
@@ -40,5 +41,6 @@ export const login = async (
 
 export const logout = () => {
   localStorage.removeItem("token");
+  setMainData(null);
   setAuth(false);
 };

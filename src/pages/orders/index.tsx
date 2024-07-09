@@ -2,7 +2,7 @@ import { useUnit } from "effector-react";
 import { NavLink } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
-import { $userType } from "~/entities/User";
+import { $userType, getRole } from "~/entities/User";
 import {
   AcceptBestOffer,
   MakeOffer,
@@ -22,12 +22,7 @@ import {
 } from "~/entities/Order";
 import { EDIT_ORDER_ROUTE, NEW_ORDER_ROUTE } from "~/shared/routes";
 import { FolderPlus } from "~/shared/assets";
-import {
-  OrdersPage,
-  getRole,
-  iconActionProps,
-  textActionProps,
-} from "./helpers";
+import { OrdersPage, iconActionProps, textActionProps } from "./helpers";
 
 export function UnpublishedOrders() {
   const userType = useUnit($userType);

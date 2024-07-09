@@ -1,6 +1,7 @@
-import { ButtonHTMLAttributes, ChangeEvent, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Modal } from "react-bootstrap";
 import { useUnit } from "effector-react";
+import { ButtonHTMLAttributes, ChangeEvent, useEffect, useState } from "react";
 import { $selectedOrder, isOrderSelected } from "~/entities/Order";
 import { createOffer } from "~/entities/Offer";
 import { useModalState } from "~/shared/lib";
@@ -11,7 +12,6 @@ import {
   OutlineButton,
   PrimaryButton,
 } from "~/shared/ui";
-import toast from "react-hot-toast";
 
 const btnStyle = {
   width: "100%",

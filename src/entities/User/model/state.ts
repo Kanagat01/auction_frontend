@@ -1,4 +1,4 @@
-import { createStore, createEffect } from "effector";
+import { createStore, createEffect, createEvent } from "effector";
 import { apiInstance } from "~/shared/api";
 import { logger } from "~/shared/config";
 import { fieldUpdate as orderFormFieldUpdate } from "~/entities/Order";
@@ -25,20 +25,24 @@ export const getMainDataFx = createEffect<void, TMainData>(async () => {
   }
 });
 
-export const $userType = createStore<TUserType | "">("").on(
-  getMainDataFx.doneData,
-  (_, payload) => payload.user.user_type
-);
+export const $userType = createStore<TUserType | "">("");
+export const setUserType = createEvent<TUserType | "">();
+$userType.on(setUserType, (_, newState) => newState);
 
 export const $mainData = createStore<TMainData | null>(null).on(
   getMainDataFx.doneData,
   (_, payload) => payload
 );
+
+export const setMainData = createEvent<TMainData | null>();
+$mainData.on(setMainData, (_, newState) => newState);
+
 $mainData.watch((mainData) => {
-  mainData
-    ? orderFormFieldUpdate({
-        key: "customer_manager",
-        value: mainData.user.full_name,
-      })
-    : null;
+  if (!mainData) return null;
+
+  orderFormFieldUpdate({
+    key: "customer_manager",
+    value: mainData.user.full_name,
+  });
+  setUserType(mainData.user.user_type);
 });

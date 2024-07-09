@@ -72,9 +72,7 @@ acceptOffer.watch(({ isBestOffer, transportation_number, ...data }) =>
         .getState()
         .find((order) => order.transportation_number === transportation_number);
       if (order) removeOrder(order.id);
-      if (isBestOffer)
-        toast.success(`Предложение #${data.order_offer_id} принят`);
-      return `Заказ №${transportation_number} принят`;
+      return `Предложение #${data.order_offer_id} принят \nЗаказ №${transportation_number} принят`;
     },
     error: (err) => `Произошла ошибка: ${err.response.data.message}`,
   })

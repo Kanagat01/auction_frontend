@@ -3,10 +3,27 @@ import {
   DeleteDocument,
   OrderDocument,
 } from "~/entities/Document";
-import { RoundedTable, TextCenter, TitleMd } from "~/shared/ui";
+import {
+  documentButtonProps,
+  RoundedTable,
+  TextCenter,
+  TitleMd,
+} from "~/shared/ui";
 import { API_URL } from "~/shared/config";
+import { $userType, getRole } from "~/entities/User";
+import { useUnit } from "effector-react";
+import { useLocation } from "react-router-dom";
+import { ORDERS_IN_AUCTION, ORDERS_IN_BIDDING } from "~/shared/routes";
 
 export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
+  const userType = useUnit($userType);
+  const role = getRole(userType);
+  const currentRoute = useLocation().pathname;
+  const showButtons = !(
+    role === "customer" &&
+    [ORDERS_IN_BIDDING, ORDERS_IN_AUCTION].includes(currentRoute)
+  );
+
   const docsData = documents.map((doc) => [
     <TextCenter>
       <a className="link" target="_blank" href={API_URL + doc.file}>
@@ -24,18 +41,21 @@ export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
     </TextCenter>,
     <TextCenter>ФИО пользователя</TextCenter>,
   ]);
-  const btnProps = { className: "px-2 py-0 me-2", style: { fontSize: "2rem" } };
   return (
     <>
       <div
-        className="d-flex align-items-end justify-content-between mb-3"
+        className="d-flex align-items-center justify-content-between mb-3"
         style={{ height: "3rem" }}
       >
         <TitleMd>Мои документы</TitleMd>
 
-        <div className="d-inline-flex h-100">
-          <AddDocument {...btnProps} />
-          <DeleteDocument documents={documents} {...btnProps} />
+        <div className={`${showButtons ? "d-inline-flex" : "d-none"} h-100`}>
+          <AddDocument {...documentButtonProps} />
+          {role === "customer" ? (
+            <DeleteDocument documents={documents} {...documentButtonProps} />
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <RoundedTable

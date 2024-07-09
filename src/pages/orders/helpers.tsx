@@ -1,6 +1,6 @@
 import { useUnit } from "effector-react";
-import { ControlPanel, ControlPanelProps } from "~/widgets";
-import { $orders, OrderSections, OrdersList } from "~/entities/Order";
+import { ControlPanel, ControlPanelProps, OrderSections } from "~/widgets";
+import { $orders, OrdersList } from "~/entities/Order";
 import {
   CollapsableSidebar,
   MainTitle,
@@ -8,11 +8,6 @@ import {
   TextCenter,
 } from "~/shared/ui";
 import { renderPromise } from "~/shared/api";
-
-export const getRole = (userType: string) =>
-  ["customer_manager", "customer_company"].includes(userType)
-    ? "customer"
-    : "transporter";
 
 export const iconActionProps = {
   className: "outline-btn px-2 py-0 me-2",

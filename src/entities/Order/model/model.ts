@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import { Effect, createEvent, createStore, sample } from "effector";
 import {
+  addDriverDataFx,
   cancelOrderFx,
   completeOrderFx,
   getOrdersFx,
@@ -8,6 +9,8 @@ import {
   unpublishOrderFx,
 } from "./api";
 import { OrderModel, OrderStatus, TGetOrder } from "../types";
+import { AddDriverDataRequest } from ".";
+import { DriverProfileTranslations } from "~/entities/User";
 
 export const $orders = createStore<TGetOrder[]>([]);
 $orders.on(getOrdersFx.doneData, (_, payload) => payload);
@@ -113,3 +116,53 @@ completeOrder.watch(() =>
     success: 'Статус заказа изменен на "Завершенные"',
   })
 );
+
+const isDriverDataValid = (data: Omit<AddDriverDataRequest, "order_id">) => {
+  let isValid = true;
+  const regex = /^\+?1?\d{9,15}$/;
+  let notFilledIn = [];
+  if (data.full_name === "")
+    notFilledIn.push(DriverProfileTranslations.full_name);
+  if (data.machine_data === "")
+    notFilledIn.push(DriverProfileTranslations.machine_data);
+  if (data.machine_number === "")
+    notFilledIn.push(DriverProfileTranslations.machine_number);
+  if (isNaN(Number(data.passport_number))) {
+    toast.error("Неправильный номер паспорта");
+    isValid = false;
+  }
+  if (!regex.test(data.phone_number)) {
+    toast.error("Неправильный номер телефона");
+    isValid = false;
+  }
+
+  if (notFilledIn.length > 0) {
+    toast.error(`Заполните обязательные поля: ${notFilledIn.join(", ")}`);
+    isValid = false;
+  }
+  return isValid;
+};
+
+export const addDriverData = createEvent<
+  Omit<AddDriverDataRequest, "order_id"> & { onReset: () => void }
+>();
+addDriverData.watch(({ onReset, ...data }) => {
+  const order_id = $selectedOrder.getState()?.id;
+  if (!order_id) return;
+  if (!isDriverDataValid(data)) return;
+
+  toast.promise(addDriverDataFx({ order_id, ...data }), {
+    loading: "Отправляем данные о водителе...",
+    success: (driver) => {
+      updateOrder({ orderId: order_id, newData: { driver } });
+      deselectOrder();
+      onReset();
+      return "Данные отправлены";
+    },
+    error: (err) => {
+      if (err === "This order already have a driver")
+        return "Данные о водителе уже существуют";
+      return `Произошла ошибка: ${err}`;
+    },
+  });
+});

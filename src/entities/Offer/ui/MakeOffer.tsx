@@ -6,6 +6,7 @@ import { createOffer } from "~/entities/Offer";
 import { useModalState } from "~/shared/lib";
 import {
   InputContainer,
+  modalInputProps,
   ModalTitle,
   OutlineButton,
   PrimaryButton,
@@ -68,13 +69,7 @@ export const MakeOffer = ({
             }
             variant="input"
             type="number"
-            label_style={{
-              color: "var(--default-font-color)",
-              fontSize: "1.4rem",
-              marginBottom: "0.5rem",
-            }}
-            className="w-100 mb-2 px-4 py-3"
-            style={{ border: "none", borderRadius: "10px" }}
+            {...modalInputProps}
             readOnly={inAuction}
           />
           <div className="buttons">

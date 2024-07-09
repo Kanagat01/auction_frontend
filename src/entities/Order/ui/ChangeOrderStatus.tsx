@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { ButtonHTMLAttributes, ChangeEvent, useState } from "react";
 import { useUnit } from "effector-react";
 import { Modal, ModalTitle } from "react-bootstrap";
@@ -12,6 +13,7 @@ import {
   Checkbox,
   ConfirmationModal,
   InputContainer,
+  modalInputProps,
 } from "~/shared/ui";
 import { useModalState } from "~/shared/lib";
 import {
@@ -22,7 +24,6 @@ import {
   publishOrder,
   unpublishOrder,
 } from "..";
-import toast from "react-hot-toast";
 
 export const CancelOrder = ({
   variant,
@@ -172,14 +173,7 @@ export function PublishOrderInDirect() {
             }
             variant="input"
             type="number"
-            className="w-100 mb-4 px-4 py-3"
-            label_style={{
-              color: "var(--default-font-color)",
-              fontSize: "1.4rem",
-              marginBottom: "0.5rem",
-            }}
-            container_style={{ marginRight: 0 }}
-            style={{ border: "none" }}
+            {...modalInputProps}
           />
           <RoundedTable
             lightBorderMode={true}

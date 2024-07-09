@@ -66,6 +66,17 @@ export function DataSection({ order }: { order: TGetOrder }) {
     ["Темп. режим", order.temp_mode],
     ["ADR [шт.]", order.adr],
   ];
+  if (order.driver) {
+    tableData.push(
+      ...[
+        ["Телефон", order.driver.phone_number],
+        ["ФИО водителя", order.driver.user_or_fullname.full_name],
+        ["Номер паспорта", order.driver.passport_number],
+        ["Данные авто", order.driver.machine_data],
+        ["Номер авто", order.driver.machine_number],
+      ]
+    );
+  }
   return (
     <>
       {inputs.map((arr, key) => (

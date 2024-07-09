@@ -10,6 +10,7 @@ import {
   RejectOfferTransporter,
 } from "~/entities/Offer";
 import {
+  AddDriverData,
   CancelOrder,
   CompleteOrder,
   CopyOrder,
@@ -21,7 +22,6 @@ import {
 } from "~/entities/Order";
 import { EDIT_ORDER_ROUTE, NEW_ORDER_ROUTE } from "~/shared/routes";
 import { FolderPlus } from "~/shared/assets";
-import { PrimaryButton } from "~/shared/ui";
 import {
   OrdersPage,
   getRole,
@@ -191,7 +191,7 @@ export function OrdersBeingExecuted() {
     textActions:
       userType === "transporter_manager" ? (
         <>
-          <PrimaryButton {...textActionProps}>Подать данные</PrimaryButton>
+          <AddDriverData {...textActionProps} />
         </>
       ) : (
         ""

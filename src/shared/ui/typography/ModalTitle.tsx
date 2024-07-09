@@ -1,5 +1,11 @@
-import { ReactNode } from "react";
+import { HTMLAttributes, ReactNode } from "react";
 
-export const ModalTitle = ({ children }: { children: ReactNode }) => (
-  <div className="modal-title">{children}</div>
+type ModalTitleProps = HTMLAttributes<HTMLDivElement> & {
+  children: ReactNode;
+};
+
+export const ModalTitle = ({ children, ...props }: ModalTitleProps) => (
+  <div {...props} className={`modal-title ${props.className ?? ""}`}>
+    {children}
+  </div>
 );

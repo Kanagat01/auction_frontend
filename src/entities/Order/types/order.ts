@@ -2,7 +2,11 @@ import { TStages } from "~/entities/OrderStage";
 import { OrderDocument } from "~/entities/Document";
 import { OrderOffer } from "~/entities/Offer";
 import { OrderTracking } from "./order_tracking";
-import { CustomerManager, TransporterManager } from "~/entities/User";
+import {
+  CustomerManager,
+  DriverProfile,
+  TransporterManager,
+} from "~/entities/User";
 
 export enum OrderStatus {
   unpublished = "Не опубликован",
@@ -18,7 +22,8 @@ export type TOrderStatus = keyof typeof OrderStatus;
 export type OrderModel = {
   id: number;
   customer_manager: CustomerManager;
-  transporter_manager: TransporterManager;
+  transporter_manager?: TransporterManager;
+  driver?: DriverProfile;
   created_at: string;
   updated_at: string;
   status: TOrderStatus;
@@ -43,6 +48,7 @@ export const orderTranslations = {
   transportation_number: "№ Транспортировки",
   customer_manager: "Менеджер Заказчика",
   transporter_manager: "Менеджер Перевозчика",
+  driver: "Водитель",
   status: "Статус заказа",
   start_price: "Стартовая цена",
   price_step: "Шаг цены",

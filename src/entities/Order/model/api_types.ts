@@ -1,5 +1,6 @@
 import { OrderModel } from "~/entities/Order";
 import { TStages } from "~/entities/OrderStage";
+import { DriverProfile } from "~/entities/User";
 
 export type CreateOrderRequest = Omit<
   OrderModel,
@@ -38,3 +39,11 @@ export type PublishOrderRequest =
       transporter_company_id: number;
       price: number;
     };
+
+export type AddDriverDataRequest = {
+  order_id: number;
+  full_name: string;
+} & Omit<
+  DriverProfile,
+  "driver_id" | "user_or_fullname" | "companies" | "birth_date"
+>;

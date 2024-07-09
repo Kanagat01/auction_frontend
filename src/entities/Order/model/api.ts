@@ -1,7 +1,9 @@
 import { Effect, attach } from "effector";
+import { $userType, DriverProfile } from "~/entities/User";
 import { OrderModel, TGetOrder, TOrderStatus } from "~/entities/Order";
 import { RequestParams, apiRequestFx } from "~/shared/api";
 import {
+  AddDriverDataRequest,
   CancelOrderRequest,
   CompleteOrderRequest,
   CreateOrderRequest,
@@ -9,7 +11,6 @@ import {
   PublishOrderRequest,
   UnpublishOrderRequest,
 } from "./api_types";
-import { $userType } from "~/entities/User";
 
 //@ts-ignore
 enum OrderStatusUrls {
@@ -95,3 +96,14 @@ export const completeOrderFx: Effect<CompleteOrderRequest, OrderModel> = attach(
     }),
   }
 );
+
+// add driver data to order
+export const addDriverDataFx: Effect<AddDriverDataRequest, DriverProfile> =
+  attach({
+    effect: apiRequestFx,
+    mapParams: (data: AddDriverDataRequest): RequestParams => ({
+      method: "post",
+      url: `/auction/transporter/add_driver_data/`,
+      data,
+    }),
+  });

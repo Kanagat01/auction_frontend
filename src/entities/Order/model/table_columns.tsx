@@ -1,5 +1,6 @@
 import { useUnit } from "effector-react";
 import { createColumnHelper } from "@tanstack/react-table";
+import { DriverProfile, TUser } from "~/entities/User";
 import { Checkbox } from "~/shared/ui";
 import {
   OrderModel,
@@ -9,7 +10,6 @@ import {
   orderTranslations,
 } from "../types";
 import { $selectedOrder, deselectOrder, selectOrder } from "..";
-import { TUser } from "~/entities/User";
 
 export const getColumns = () => {
   const columnHelper = createColumnHelper<TGetOrder>();
@@ -17,6 +17,7 @@ export const getColumns = () => {
     "transportation_number",
     "customer_manager",
     "transporter_manager",
+    "driver",
     "status",
     "start_price",
     "price_step",
@@ -68,6 +69,10 @@ export const getColumns = () => {
           return OrderStatus[value];
         } else if (["transporter_manager", "customer_manager"].includes(key))
           return value ? (value as { user: TUser }).user.full_name : "-";
+        else if (key === "driver")
+          return value
+            ? (value as DriverProfile).user_or_fullname.full_name
+            : "-";
         else return value ? value.toString() : "-";
       },
       header: () => orderTranslations[key],

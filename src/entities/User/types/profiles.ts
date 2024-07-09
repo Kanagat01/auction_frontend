@@ -23,7 +23,7 @@ export type CustomerCompany = {
   allowed_transporter_companies: TransporterCompany[];
 };
 
-export interface CustomerManager {
+export type CustomerManager = {
   customer_manager_id: number;
   user: TUser;
   company: Omit<
@@ -31,4 +31,28 @@ export interface CustomerManager {
     "allowed_transporter_companies" | "managers" | "user"
   >;
   allowed_transporter_companies: TransporterCompany[];
-}
+};
+
+export type DriverProfile = {
+  driver_id: number;
+  user_or_fullname: TUser | { full_name: string };
+  companies: Omit<TransporterCompany, "managers" | "user">[];
+  birth_date: string;
+  passport_number: string;
+  phone_number: string;
+  machine_data: string;
+  machine_number: string;
+};
+
+export const DriverProfileTranslations: Record<
+  keyof Omit<DriverProfile, "user_or_fullname" | "companies"> | "full_name",
+  string
+> = {
+  driver_id: "ID",
+  birth_date: "Дата рождения",
+  full_name: "ФИО водителя",
+  passport_number: "Номер паспорта",
+  phone_number: "Телефон",
+  machine_data: "Данные авто",
+  machine_number: "Номер авто",
+};

@@ -15,9 +15,10 @@ export const apiRequestFx = createEffect<RequestParams, any, Error>(
       return response.data.message;
     } catch (error) {
       if (error instanceof AxiosError) {
-        throw error;
+        if (error.response?.status! > 499) throw "Ошибка на сервере";
+        throw error.response?.data.message;
       } else {
-        throw new Error("Неизвестная ошибка");
+        throw "Неизвестная ошибка";
       }
     }
   }

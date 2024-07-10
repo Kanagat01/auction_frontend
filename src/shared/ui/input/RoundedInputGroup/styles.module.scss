@@ -9,7 +9,7 @@ $border-color: map-get($colors, "default-font-color");
 }
 
 .input-group {
-  width: 40rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
   border: 1px solid rgba($border-color, 0.5);
@@ -17,25 +17,34 @@ $border-color: map-get($colors, "default-font-color");
 }
 
 .rounded-input {
-  width: 100%;
-  border-radius: var(--default-border-radius);
-  border: none;
-  padding: 2rem;
-
-  color: var(--default-font-color);
-  font-size: 2rem;
-  font-weight: 600;
-
-  &:-webkit-autofill,
-  &:-webkit-autofill:hover,
-  &:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0px 1000px white inset;
+  border-bottom: 1px solid rgba($border-color, 0.5);
+  &:last-child {
+    border-bottom: none;
   }
 
-  &:focus,
-  &:focus-visible {
-    outline: none;
+  input,
+  select {
+    width: 100%;
+    border-radius: var(--default-border-radius);
     border: none;
+    padding: 2rem;
+
+    color: var(--default-font-color);
+    font-size: 2rem;
+    font-weight: 600;
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0px 1000px white inset;
+    }
+
+    &:focus,
+    &:focus-visible {
+      outline: none;
+      border: none;
+      box-shadow: none;
+    }
   }
 }
 
@@ -45,10 +54,10 @@ $border-color: map-get($colors, "default-font-color");
   position: relative;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  border-top: 1px solid rgba($border-color, 0.5);
 
   .rounded-input {
     width: 100%;
+    border-bottom: none;
     box-sizing: border-box;
 
     &::-ms-reveal,

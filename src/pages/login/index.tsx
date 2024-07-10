@@ -1,37 +1,34 @@
 import { FormEvent } from "react";
-import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router";
 import { NavLink } from "react-router-dom";
 
 import { login } from "~/features/authorization";
 import { useTextInputState } from "~/shared/lib";
-import { FORGOT_PASSWORD_ROUTE, HOME_ROUTE } from "~/shared/routes";
+import {
+  FORGOT_PASSWORD_ROUTE,
+  HOME_ROUTE,
+  REGISTER_ROUTE,
+} from "~/shared/routes";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
 
-function Login() {
+export default function Login() {
   const [email, onChangeEmail] = useTextInputState("");
   const [password, onChangePassword] = useTextInputState("");
 
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from || HOME_ROUTE;
+  const navigateFunc = () => navigate(from);
 
-  async function handleSubmit(e: FormEvent) {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    toast.promise(login(email, password), {
-      loading: "Авторизуемся...",
-      success: () => {
-        navigate(from);
-        return "Вы успешно авторизованы";
-      },
-      error: (err) => `Произошла ошибка: ${err}`,
-    });
+    login({ email, password, navigateFunc });
   }
 
   return (
     <div className="login-page">
       <form className="login-form" onSubmit={handleSubmit}>
-        <span className={"login-title"}>Kargonika</span>
+        <span className="login-title">Kargonika</span>
         <RoundedInputGroup>
           <RoundedInputGroup.Input
             value={email}
@@ -47,9 +44,11 @@ function Login() {
           />
         </RoundedInputGroup>
         <PrimaryButton type="submit">Войти</PrimaryButton>
-        <NavLink to={FORGOT_PASSWORD_ROUTE}>Забыли пароль?</NavLink>
+        <NavLink to={REGISTER_ROUTE}>Регистрация</NavLink>
+        <NavLink to={FORGOT_PASSWORD_ROUTE} className="mt-2">
+          Забыли пароль?
+        </NavLink>
       </form>
     </div>
   );
 }
-export default Login;

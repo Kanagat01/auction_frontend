@@ -1,6 +1,7 @@
 import { FC, InputHTMLAttributes, ReactNode, useState } from "react";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import styles from "./styles.module.scss";
+import { Form, FormSelectProps } from "react-bootstrap";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
@@ -8,8 +9,26 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const RoundedInput: FC<InputProps> = (props) => {
   return (
-    <div className="w-100">
-      <input type="text" className={styles["rounded-input"]} {...props} />
+    <div className={styles["rounded-input"]}>
+      <input type="text" {...props} />
+    </div>
+  );
+};
+
+const RoundedSelect: FC<
+  FormSelectProps & {
+    options: Array<[string | number, string | number]>;
+  }
+> = (props) => {
+  return (
+    <div className={styles["rounded-input"]}>
+      <Form.Select {...props}>
+        {props.options.map(([value, option]) => (
+          <option key={value} value={value}>
+            {option}
+          </option>
+        ))}
+      </Form.Select>
     </div>
   );
 };
@@ -35,20 +54,14 @@ const PasswordInput: FC<InputProps> = (props) => {
   );
 };
 
-interface GroupProps {
-  children: ReactNode;
-}
-
-const Group: FC<GroupProps> = ({ children }) => {
+export const RoundedInputGroup: FC<{ children: ReactNode }> & {
+  Input: typeof RoundedInput;
+  Select: typeof RoundedSelect;
+  PasswordInput: typeof PasswordInput;
+} = ({ children }) => {
   return <div className={styles["input-group"]}>{children}</div>;
 };
 
-export const RoundedInputGroup: FC<GroupProps> & {
-  Input: typeof RoundedInput;
-  PasswordInput: typeof PasswordInput;
-} = ({ children }) => {
-  return <Group>{children}</Group>;
-};
-
 RoundedInputGroup.Input = RoundedInput;
+RoundedInputGroup.Select = RoundedSelect;
 RoundedInputGroup.PasswordInput = PasswordInput;

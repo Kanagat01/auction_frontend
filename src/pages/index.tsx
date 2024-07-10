@@ -13,6 +13,7 @@ import {
 import OrderPage from "./order-page";
 import Cabinet from "./cabinet";
 import Login from "./login";
+import Register from "./register";
 import ForgotPassword from "./forgot-password";
 
 export const Routing = () => {
@@ -32,6 +33,7 @@ export const Routing = () => {
   return (
     <Routes>
       <Route path={routes.LOGIN_ROUTE} element={<Login />} />
+      <Route path={routes.REGISTER_ROUTE} element={<Register />} />
       <Route path={routes.FORGOT_PASSWORD_ROUTE} element={<ForgotPassword />} />
       <Route element={<PrivateRoute />}>
         {private_routes.map(([path, element]) => (

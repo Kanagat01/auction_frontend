@@ -7,9 +7,10 @@
   margin: auto;
 
   button {
-    padding: 1.2rem 17rem;
-    border-radius: var(--default-border-radius);
+    width: 100%;
+    padding: 1.2rem;
     margin-top: 2rem;
+    border-radius: var(--default-border-radius);
     font-size: 2rem;
     font-weight: 500;
   }
@@ -20,12 +21,17 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  width: 45rem;
 
-  a {
+  a,
+  span.link-text {
     margin-top: 2rem;
-    color: var(--primary);
     font-size: 2rem;
     font-weight: 500;
+  }
+
+  a {
+    color: var(--primary);
   }
 }
 
@@ -35,7 +41,7 @@
   margin-bottom: 3.2rem;
 }
 
-.forgot-password-text {
+.login-subtitle {
   font-size: 2rem;
   font-weight: 400;
   text-align: center;

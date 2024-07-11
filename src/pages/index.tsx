@@ -12,9 +12,12 @@ import {
 } from "./orders";
 import OrderPage from "./order-page";
 import Cabinet from "./cabinet";
-import Login from "./login";
-import Register from "./register";
-import ForgotPassword from "./forgot-password";
+import {
+  Login,
+  ForgotPassword,
+  Register,
+  ResetPasswordConfirm,
+} from "./auth-pages";
 
 export const Routing = () => {
   const private_routes: Array<[string, ReactNode]> = [
@@ -35,6 +38,10 @@ export const Routing = () => {
       <Route path={routes.LOGIN_ROUTE} element={<Login />} />
       <Route path={routes.REGISTER_ROUTE} element={<Register />} />
       <Route path={routes.FORGOT_PASSWORD_ROUTE} element={<ForgotPassword />} />
+      <Route
+        path={routes.RESET_PASSWORD_CONFIRM_ROUTE}
+        element={<ResetPasswordConfirm />}
+      />
       <Route element={<PrivateRoute />}>
         {private_routes.map(([path, element]) => (
           <Route key={path} path={path} element={element} />

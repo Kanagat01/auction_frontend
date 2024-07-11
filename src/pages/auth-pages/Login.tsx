@@ -11,7 +11,7 @@ import {
 } from "~/shared/routes";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
 
-export default function Login() {
+export function Login() {
   const [email, onChangeEmail] = useTextInputState("");
   const [password, onChangePassword] = useTextInputState("");
 

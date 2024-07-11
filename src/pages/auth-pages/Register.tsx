@@ -7,7 +7,7 @@ import {
 import { HOME_ROUTE, LOGIN_ROUTE } from "~/shared/routes";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
 
-export default function Register() {
+export function Register() {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from || HOME_ROUTE;

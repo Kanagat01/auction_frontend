@@ -54,6 +54,11 @@ $border-color: map-get($colors, "default-font-color");
   position: relative;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+  border-bottom: 1px solid rgba($border-color, 0.5);
+
+  &:last-child {
+    border-bottom: none;
+  }
 
   .rounded-input {
     width: 100%;

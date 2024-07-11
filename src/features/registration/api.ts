@@ -4,31 +4,12 @@ import { createEffect, createEvent } from "effector";
 import { apiInstance } from "~/shared/api";
 import { setAuth } from "../authorization";
 import { API_URL } from "~/shared/config";
-
-export type RegisterCompanyRequest = {
-  email: string;
-  password: string;
-  full_name: string;
-  company_name: string;
-  user_type: "customer" | "transporter";
-};
-
-export type RegisterManagerRequest = Omit<
+import { isValidEmail, validatePassword } from "~/shared/lib";
+import {
   RegisterCompanyRequest,
-  "company_name" | "user_type"
->;
-
-export type RegisterResponse = { token: string };
-
-const validatePassword = (password: string): string => {
-  if (password.length < 8) return "Пароль должен быть не менее 8 символов";
-  if (!/[a-z]/.test(password) || !/[A-Z]/.test(password)) {
-    return "Пароль должен состоять из больших и маленьких букв";
-  }
-  if (!/\d/.test(password) || !/[@$!%*?&]/.test(password))
-    return "Пароль должен содержать хотя бы одну цифру и специальный знак";
-  return "";
-};
+  RegisterManagerRequest,
+  RegisterResponse,
+} from ".";
 
 // register company
 const registerCompanyFx = createEffect<
@@ -61,8 +42,7 @@ export const registerCompany = createEvent<
 >();
 registerCompany.watch(({ navigateFunc, ...data }) => {
   const errorsList: string[] = [];
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
-    errorsList.push("Неправильный email");
+  if (!isValidEmail(data.email)) errorsList.push("Неправильный email");
 
   const passwordError = validatePassword(data.password);
   if (passwordError !== "") errorsList.push(passwordError);

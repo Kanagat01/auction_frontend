@@ -1,6 +1,7 @@
 export const LOGIN_ROUTE = "/login";
 export const REGISTER_ROUTE = "/register";
 export const FORGOT_PASSWORD_ROUTE = "/forgot-password";
+export const RESET_PASSWORD_CONFIRM_ROUTE = "/reset-password-confirm/:token";
 
 export const HOME_ROUTE = "/";
 export const NEW_ORDER_ROUTE = "/new-order";

@@ -78,6 +78,15 @@ editUser.watch(({ setIsEditing, ...data }) => {
     toast.error("Неправильный формат email");
     return;
   }
+  const state = $mainData.getState();
+  if (
+    data.email === state?.user.email &&
+    data.full_name === state.user.full_name &&
+    (!("company_name" in state) || state.company_name === data.company_name)
+  ) {
+    toast.error("Вы не изменили ни одно поле");
+    return;
+  }
   toast.promise(editUserFx(data), {
     loading: "Обновляем данные...",
     success: () => {

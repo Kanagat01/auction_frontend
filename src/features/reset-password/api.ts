@@ -42,7 +42,7 @@ export const forgotPassword = createEvent<
 >();
 forgotPassword.watch(({ email, setSuccess }) => {
   if (!isValidEmail(email)) {
-    toast.error("Неправильный email");
+    toast.error("Неправильный формат email");
     return;
   }
   toast.promise(forgotPasswordFx({ email }), {

@@ -49,7 +49,7 @@ $default-font-color: map-get($colors, "default-font-color");
 
   label {
     color: rgba($default-font-color, 0.2);
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 500;
     line-height: 1.5rem;
   }
@@ -57,7 +57,7 @@ $default-font-color: map-get($colors, "default-font-color");
   input,
   textarea {
     width: 100%;
-    padding: 0.5rem 0;
+    padding: 0.8rem 0;
     color: $default-font-color;
     font-size: 1.6rem;
     font-weight: 500;

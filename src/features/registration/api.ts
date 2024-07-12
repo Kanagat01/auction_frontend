@@ -42,7 +42,7 @@ export const registerCompany = createEvent<
 >();
 registerCompany.watch(({ navigateFunc, ...data }) => {
   const errorsList: string[] = [];
-  if (!isValidEmail(data.email)) errorsList.push("Неправильный email");
+  if (!isValidEmail(data.email)) errorsList.push("Неправильный формат email");
 
   const passwordError = validatePassword(data.password);
   if (passwordError !== "") errorsList.push(passwordError);

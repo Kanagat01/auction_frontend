@@ -1,23 +1,51 @@
-import { Modal } from "react-bootstrap";
 import { ReactSVG } from "react-svg";
-import { FaAngleRight } from "react-icons/fa";
-import { useModalState } from "~/shared/lib";
+import { Modal } from "react-bootstrap";
+import { useUnit } from "effector-react";
+
 import { Bell } from "~/shared/assets";
-import { SectionButton } from "~/shared/ui";
-import { TNotification } from "./model";
+import { $websocket, renderPromise } from "~/shared/api";
+import { SectionButton, TitleLg } from "~/shared/ui";
+import { useModalState } from "~/shared/lib";
+
+import {
+  $notifications,
+  addNotification,
+  getNotificationsFx,
+  removeNotification,
+  TNotification,
+} from "./model";
 import styles from "./styles.module.scss";
 
-export const NotificationCard = (props: TNotification) => {
+export const NotificationCard = (notification: TNotification) => {
+  const datetime = new Date(notification.created_at);
+  const date = datetime.toLocaleDateString("ru", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const time = datetime
+    .toLocaleDateString("ru", {
+      hour: "numeric",
+      minute: "numeric",
+    })
+    .split(" ")[1];
   return (
     <>
-      <span className={`${styles.notificationDate} mb-3`}>{props.date}</span>
+      <span className={`${styles.notificationDate} mb-3`}>{date}</span>
       <div className={styles.notificationCard}>
-        <span className={styles.notificationType}>{props.type}</span>
-        <span className={styles.notificationTitle}>{props.title}</span>
-        <div className={styles.notificationText}>{props.text}</div>
-        <div className="d-flex justify-content-between w-100">
-          <a className={styles.readMore}>Подробнее</a>
-          <span className={styles.notificationTime}>{props.time}</span>
+        {/* <span className={styles.notificationType}>{notification.type}</span> */}
+        <span className={styles.notificationTitle}>{notification.title}</span>
+        <div className={styles.notificationText}>
+          {notification.description}
+        </div>
+        <div className="d-flex w-100">
+          <button
+            className={styles.readMore}
+            onClick={() => removeNotification(notification)}
+          >
+            Прочитано
+          </button>
+          <span className={styles.notificationTime}>{time}</span>
         </div>
       </div>
     </>
@@ -26,39 +54,48 @@ export const NotificationCard = (props: TNotification) => {
 
 export function Notifications() {
   const [show, changeShow] = useModalState(false);
-  const notifications: TNotification[] = [
-    {
-      date: "23 ноября",
-      time: "23:48",
-      type: "Новость",
-      title: "Межбанковские платежи в выходные",
-      text: "26 ноября с 11:00 до 16:00 по Москве мы будем отправлять и зачислять платежи в рублях",
-    },
-    {
-      date: "23 ноября",
-      time: "23:48",
-      type: "Новость",
-      title: "Межбанковские платежи в выходные",
-      text: "26 ноября с 11:00 до 16:00 по Москве мы будем отправлять и зачислять платежи в рублях",
-    },
-  ];
+  const notifications = useUnit($notifications);
+  const websocket = useUnit($websocket);
+  websocket.onmessage = (ev) => {
+    const data = JSON.parse(ev.data);
+    if ("new_notification" in data) addNotification(data["new_notification"]);
+  };
   return (
     <>
-      <a href="#" onClick={changeShow}>
+      <a href="#" onClick={changeShow} className={styles.notificationBell}>
         <ReactSVG src={Bell} />
+        {notifications.length > 0 && (
+          <span className={styles.notificationCount}>
+            {notifications.length}
+          </span>
+        )}
       </a>
 
       <Modal show={show} onHide={changeShow} className="rounded-modal">
         <Modal.Body>
-          <div className="d-flex justify-content-end mb-2">
-            <FaAngleRight className="avg-icon" />
-          </div>
-          <div className="d-flex mb-4" style={{ gap: "1rem" }}>
-            <SectionButton className="active">Информация</SectionButton>
-          </div>
-          {notifications.map((el, idx) => (
-            <NotificationCard key={idx} {...el} />
-          ))}
+          {renderPromise(getNotificationsFx, {
+            success: (_) => (
+              <>
+                <div className="d-flex mb-4" style={{ gap: "1rem" }}>
+                  <SectionButton className="active">Информация</SectionButton>
+                </div>
+                {notifications.length > 0 ? (
+                  notifications.map((el, idx) => (
+                    <NotificationCard key={idx} {...el} />
+                  ))
+                ) : (
+                  <div className="ms-2 mt-5" style={{ fontSize: "1.6rem" }}>
+                    Уведомлений нет
+                  </div>
+                )}
+              </>
+            ),
+            error: (err) => (
+              <TitleLg>
+                {err.name} {err.message}
+              </TitleLg>
+            ),
+          })}
         </Modal.Body>
       </Modal>
     </>

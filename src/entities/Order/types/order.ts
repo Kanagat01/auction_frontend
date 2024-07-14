@@ -13,7 +13,7 @@ export enum OrderStatus {
   cancelled = "Отменен",
   in_auction = "В аукционе",
   in_bidding = "В торгах",
-  in_direct = "В напрямую",
+  in_direct = "Назначенные",
   being_executed = "Выполняется",
   completed = "Завершен",
 }

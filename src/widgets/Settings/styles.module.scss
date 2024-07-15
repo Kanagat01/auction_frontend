@@ -6,6 +6,13 @@ $default-font-color: map-get($colors, "default-font-color");
   font-size: 1.8rem;
   font-weight: 600;
   line-height: 2rem;
+  word-wrap: break-word;
+}
+.settingOption {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
 }
 .settingOptionTitle {
   color: $default-font-color;
@@ -18,4 +25,8 @@ $default-font-color: map-get($colors, "default-font-color");
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 1.4rem;
+}
+.goBackButton {
+  width: 3rem;
+  height: 3rem;
 }

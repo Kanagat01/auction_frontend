@@ -6,8 +6,9 @@ export const CompanyCard = (comp: TransporterCompany) => {
     <div className="d-flex align-items-center">
       <div className="rounded-block company-logo">{comp.company_name[0]}</div>
       <div className="d-flex flex-column ms-3">
-        <span className={styles.companyName}>{comp.company_name}</span>
-        {/* <span className={styles.companyRole}>{comp.role}</span> */}
+        <span className={styles.companyName}>
+          {comp.company_name} ({comp.transporter_company_id})
+        </span>
       </div>
     </div>
   );

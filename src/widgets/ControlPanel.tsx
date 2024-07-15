@@ -58,6 +58,7 @@ export function ControlPanel({
           {...props}
           variant="input"
           style={{ width: "100%", height: "-webkit-fill-available" }}
+          autoComplete="off"
         />
       ))}
       <div className="actions">

@@ -9,7 +9,7 @@ import { FaTruckMoving } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 import { MdDownload } from "react-icons/md";
 
-import { $notifications } from "~/entities/Notification";
+// import { $notifications } from "~/entities/Notification";
 import { $userType, getRole } from "~/entities/User";
 import { Hammer, ThreeHouses } from "~/shared/assets";
 import { TooltipOnHover } from "~/shared/ui";
@@ -25,7 +25,7 @@ import styles from "./styles.module.scss";
 
 export function Sidebar() {
   const userType = useUnit($userType);
-  const notifications = useUnit($notifications);
+  // const notifications = useUnit($notifications);
   const currentRoute = useLocation().pathname;
   const sections: Array<[ReactNode, string, string]> = [
     [

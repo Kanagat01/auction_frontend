@@ -13,7 +13,7 @@ import {
   getNotificationsFx,
   removeNotification,
   TNotification,
-} from "./model";
+} from ".";
 import styles from "./styles.module.scss";
 
 export const NotificationCard = (notification: TNotification) => {

@@ -22,7 +22,7 @@ import toast from "react-hot-toast";
 export function CompaniesList({
   companies,
 }: {
-  companies: TransporterCompany[];
+  companies: Omit<TransporterCompany, "managers" | "user">[];
 }) {
   const [show, changeShow] = useModalState(false);
   const [visible, setVisible] = useState<boolean>(true);

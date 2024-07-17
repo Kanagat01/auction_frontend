@@ -1,7 +1,9 @@
 import styles from "./styles.module.scss";
 import { TransporterCompany } from "~/entities/User";
 
-export const CompanyCard = (comp: TransporterCompany) => {
+export const CompanyCard = (
+  comp: Omit<TransporterCompany, "managers" | "user">
+) => {
   return (
     <div className="d-flex align-items-center mb-4">
       <div className="rounded-block company-logo">{comp.company_name[0]}</div>

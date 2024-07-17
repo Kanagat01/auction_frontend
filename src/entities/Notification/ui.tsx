@@ -41,7 +41,7 @@ export const NotificationCard = (notification: TNotification) => {
         <div className="d-flex w-100">
           <button
             className={styles.readMore}
-            onClick={() => removeNotification(notification)}
+            onClick={() => removeNotification(notification.id)}
           >
             Прочитано
           </button>

@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { FormEvent, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { FiPlus } from "react-icons/fi";
@@ -8,16 +9,9 @@ import {
   getTransportersFx,
   addTransportToAllowed,
 } from "~/entities/User";
-import {
-  DatalistInput,
-  ModalTitle,
-  OutlineButton,
-  TextCenter,
-  TitleMd,
-} from "~/shared/ui";
+import { DatalistInput, ModalTitle, OutlineButton } from "~/shared/ui";
 import { useModalState } from "~/shared/lib";
 import styles from "./styles.module.scss";
-import toast from "react-hot-toast";
 
 export function CompaniesList({
   companies,
@@ -94,15 +88,18 @@ export function CompaniesList({
               <div className={`${styles.yourCompanies} mb-4`}>
                 Ваши перевозчики
               </div>
-              {companies.length !== 0 ? (
-                companies.map((comp, idx) => (
-                  <CompanyCard key={idx} {...comp} />
-                ))
-              ) : (
-                <TitleMd className="p-4">
-                  <TextCenter>Нет добавленных перевозчиков</TextCenter>
-                </TitleMd>
-              )}
+              {
+                companies.length !== 0
+                  ? companies.map((comp, idx) => (
+                      <CompanyCard key={idx} {...comp} />
+                    ))
+                  : ""
+                // <div
+                //   className={`${styles.yourCompanies} mb-4`}
+                // >
+                //   Нет добавленных перевозчиков
+                // </div>
+              }
               <button
                 className="d-inline-flex align-items-center px-0"
                 style={{ gap: "1rem" }}

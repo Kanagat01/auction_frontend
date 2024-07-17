@@ -20,7 +20,10 @@ export type CustomerCompany = {
   user: TUser;
   company_name: string;
   subscription: CustomerSubscriptions;
-  allowed_transporter_companies: TransporterCompany[];
+  allowed_transporter_companies: Omit<
+    TransporterCompany,
+    "managers" | "user"
+  >[];
 };
 
 export type CustomerManager = {

@@ -9,6 +9,7 @@ import { FaTruckMoving } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 import { MdDownload } from "react-icons/md";
 
+import { $notifications } from "~/entities/Notification";
 import { $userType, getRole } from "~/entities/User";
 import { Hammer, ThreeHouses } from "~/shared/assets";
 import { TooltipOnHover } from "~/shared/ui";
@@ -24,27 +25,61 @@ import styles from "./styles.module.scss";
 
 export function Sidebar() {
   const userType = useUnit($userType);
+  const notifications = useUnit($notifications);
+  const currentRoute = useLocation().pathname;
   const sections: Array<[ReactNode, string, string]> = [
     [
-      <FaTruckMoving className={styles.icon} />,
+      <>
+        <span
+          className={
+            ORDERS_BEING_EXECUTED !== currentRoute ? styles["blue-circle"] : ""
+          }
+        />
+        <FaTruckMoving className={styles.icon} />
+      </>,
       "Журнал",
       ORDERS_BEING_EXECUTED,
     ],
     [
-      <ReactSVG src={Hammer} className={styles.icon} />,
+      <>
+        <span
+          className={
+            ORDERS_IN_AUCTION !== currentRoute ? styles["blue-circle"] : ""
+          }
+        />
+        <ReactSVG src={Hammer} className={styles.icon} />
+      </>,
       "Аукцион",
       ORDERS_IN_AUCTION,
     ],
     [
-      <ReactSVG
-        src={ThreeHouses}
-        className={styles.icon}
-        style={{ fontSize: "3.5rem", lineHeight: "3rem" }}
-      />,
+      <>
+        <span
+          className={
+            ORDERS_IN_BIDDING !== currentRoute ? styles["blue-circle"] : ""
+          }
+        />
+        <ReactSVG
+          src={ThreeHouses}
+          className={styles.icon}
+          style={{ fontSize: "3.5rem", lineHeight: "3rem" }}
+        />
+      </>,
       "Торги",
       ORDERS_IN_BIDDING,
     ],
-    [<MdDownload className={styles.icon} />, "Назначенные", ORDERS_IN_DIRECT],
+    [
+      <>
+        <span
+          className={
+            ORDERS_IN_DIRECT !== currentRoute ? styles["blue-circle"] : ""
+          }
+        />
+        <MdDownload className={styles.icon} />
+      </>,
+      "Назначенные",
+      ORDERS_IN_DIRECT,
+    ],
     // [
     //   <TbBoxMultiple className={styles.icon} />,
     //   "План погрузки",
@@ -64,7 +99,6 @@ export function Sidebar() {
       UNPUBLISHED_ORDERS,
     ]);
   }
-  const currentRoute = useLocation().pathname;
   return (
     <aside className={styles.aside}>
       {sections.map(([icon, title, route], index) => (
@@ -77,7 +111,7 @@ export function Sidebar() {
           <NavLink
             to={route}
             className={route === currentRoute ? styles.active : ""}
-            style={title === "Торги" ? { padding: "0.5rem" } : {}} // TODO: поменять иконку ThreeHouses и убрать проверку
+            style={title === "Торги" ? { padding: "0.5rem" } : {}}
           >
             {icon}
           </NavLink>

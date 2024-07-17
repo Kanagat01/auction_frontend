@@ -1,9 +1,24 @@
-import { createEvent, createEffect, attach, Effect } from "effector";
-import { RequestParams, apiInstance, apiRequestFx } from "~/shared/api";
-import { logger } from "~/shared/config";
+import toast from "react-hot-toast";
+import { createEvent, attach, Effect } from "effector";
+import { RequestParams, apiRequestFx } from "~/shared/api";
+import { CustomerCompany, TransporterCompany } from "../types";
+import { $mainData, setMainData } from "./state";
 
-// TODO: change type any
-const addToAllowedFx: Effect<{ transporter_company_id: number }, any> = attach({
+export const getTransportersFx: Effect<
+  void,
+  Omit<TransporterCompany, "user" | "managers">[]
+> = attach({
+  effect: apiRequestFx,
+  mapParams: (): RequestParams => ({
+    method: "get",
+    url: "/user/customer/get_transporter_companies/",
+  }),
+});
+
+const addToAllowedFx: Effect<
+  { transporter_company_id: number },
+  Omit<TransporterCompany, "managers" | "user">
+> = attach({
   effect: apiRequestFx,
   mapParams: (data): RequestParams => ({
     method: "post",
@@ -12,26 +27,40 @@ const addToAllowedFx: Effect<{ transporter_company_id: number }, any> = attach({
   }),
 });
 
-const deleteFromAllowedFx = createEffect(
-  async (transporter_company_id: number) => {
-    try {
-      const response = await apiInstance.post(
-        "/user/customer/delete_transporter_from_allowed_companies/",
-        { transporter_company_id }
-      );
-      return response.data.message;
-    } catch (error) {
-      logger.error(error);
-    }
-  }
-);
-
-export const addTransportToAllowed = createEvent<number>();
-addTransportToAllowed.watch((transporter_company_id) => {
-  addToAllowedFx({ transporter_company_id });
+export const addTransportToAllowed = createEvent<{
+  transporter_company_id: number;
+  onReset: () => void;
+}>();
+addTransportToAllowed.watch(({ transporter_company_id, onReset }) => {
+  toast.promise(addToAllowedFx({ transporter_company_id }), {
+    loading: "Добавляем в Ваши перевозчики...",
+    success: (transporter) => {
+      const prevState = $mainData.getState() as CustomerCompany;
+      setMainData({
+        ...prevState,
+        allowed_transporter_companies: [
+          ...prevState.allowed_transporter_companies,
+          transporter,
+        ],
+      });
+      onReset();
+      return `Перевозчик #${transporter.transporter_company_id} успешно добавлен`;
+    },
+    error: (err) => `Произошла ошибка: ${err}`,
+  });
 });
+
+const deleteFromAllowedFx: Effect<{ transporter_company_id: number }, string> =
+  attach({
+    effect: apiRequestFx,
+    mapParams: (data): RequestParams => ({
+      method: "post",
+      url: "/user/customer/delete_transporter_from_allowed_companies/",
+      data,
+    }),
+  });
 
 export const deleteTransportFromAllowed = createEvent<number>();
 deleteTransportFromAllowed.watch((transporter_company_id) => {
-  deleteFromAllowedFx(transporter_company_id);
+  deleteFromAllowedFx({ transporter_company_id });
 });

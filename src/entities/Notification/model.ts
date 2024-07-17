@@ -1,12 +1,6 @@
 import { attach, createEvent, createStore, Effect } from "effector";
 import { apiRequestFx, RequestParams } from "~/shared/api";
-
-export type TNotification = {
-  id: number;
-  title: string;
-  description: string;
-  created_at: string;
-};
+import { TNotification } from "./types";
 
 export const getNotificationsFx: Effect<void, TNotification[]> = attach({
   effect: apiRequestFx,

@@ -1,8 +1,13 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { FiPlus } from "react-icons/fi";
 import { FaAngleDown } from "react-icons/fa";
-import { TransporterCompany, CompanyCard } from "~/entities/User";
+import {
+  TransporterCompany,
+  CompanyCard,
+  getTransportersFx,
+  addTransportToAllowed,
+} from "~/entities/User";
 import {
   DatalistInput,
   ModalTitle,
@@ -12,6 +17,7 @@ import {
 } from "~/shared/ui";
 import { useModalState } from "~/shared/lib";
 import styles from "./styles.module.scss";
+import toast from "react-hot-toast";
 
 export function CompaniesList({
   companies,
@@ -21,7 +27,22 @@ export function CompaniesList({
   const [show, changeShow] = useModalState(false);
   const [visible, setVisible] = useState<boolean>(true);
   const [section, setSection] = useState<"list" | "add">("list");
-  const [transporterCompanyId, setTransporterCompanyId] = useState<number>(0);
+
+  const [transporter_company_id, setTransporterCompanyId] = useState<number>(0);
+
+  const [transporters, setTransporters] = useState<
+    Omit<TransporterCompany, "user" | "managers">[]
+  >([]);
+  const options = transporters.map(
+    ({ transporter_company_id: id, company_name: value }) => ({
+      id,
+      value,
+    })
+  );
+
+  useEffect(() => {
+    getTransportersFx().then((res) => setTransporters(res));
+  }, []);
 
   const changeSection = (newSection: "list" | "add") => {
     setVisible(false);
@@ -32,9 +53,29 @@ export function CompaniesList({
   };
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(transporterCompanyId);
+    let alreadyExists = false;
+    companies.forEach(({ transporter_company_id: id }) => {
+      if (id === transporter_company_id) alreadyExists = true;
+    });
+    if (alreadyExists) {
+      toast.error("Эта компания уже добавлена в Ваши перевозчики");
+      return;
+    }
+
+    let foundOne = false;
+    options.forEach(({ id }) => {
+      if (id === transporter_company_id) foundOne = true;
+    });
+
+    if (!foundOne) toast.error("Компании Перевозчика с таким id не существует");
+    else
+      addTransportToAllowed({
+        transporter_company_id,
+        onReset: () => onReset(e),
+      });
   };
-  const onReset = () => {
+  const onReset = (e: FormEvent) => {
+    e.preventDefault();
     setTransporterCompanyId(0);
     changeSection("list");
   };
@@ -63,7 +104,7 @@ export function CompaniesList({
                 </TitleMd>
               )}
               <button
-                className="d-inline-flex align-items-center mt-4 px-0"
+                className="d-inline-flex align-items-center px-0"
                 style={{ gap: "1rem" }}
                 onClick={() => changeSection("add")}
               >
@@ -80,15 +121,11 @@ export function CompaniesList({
                 label="ID перевозчика"
                 name="transporter_company_id"
                 type="number"
-                value={transporterCompanyId}
+                value={transporter_company_id}
                 onChange={(e) =>
                   setTransporterCompanyId(Number(e.target.value))
                 }
-                options={[
-                  { id: 1, value: "Company 1" },
-                  { id: 2, value: "Company 2" },
-                  { id: 3, value: "Company 3" },
-                ]}
+                options={options}
                 className="w-100 mb-0 px-4 py-3"
                 label_style={{
                   color: "var(--default-font-color)",
@@ -98,7 +135,6 @@ export function CompaniesList({
                 container_style={{ marginRight: 0, gap: 0 }}
                 style={{ borderRadius: "10px" }}
               />
-
               <div
                 className="d-flex align-items-center mt-4"
                 style={{ gap: "3rem" }}

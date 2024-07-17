@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useUnit } from "effector-react";
+import { useLocation } from "react-router-dom";
 import { DataSection, MapSection } from "~/widgets";
+import { AcceptOffer, OffersList } from "~/entities/Offer";
 import { $userType, getRole } from "~/entities/User";
 import { $selectedOrder } from "~/entities/Order";
-import { AcceptOffer, OffersList } from "~/entities/Offer";
 import {
   AddDocument,
   DeleteDocument,
@@ -12,6 +12,13 @@ import {
 } from "~/entities/Document";
 import { documentButtonProps, OutlineButton, TitleLg } from "~/shared/ui";
 import { ORDERS_IN_AUCTION, ORDERS_IN_BIDDING } from "~/shared/routes";
+
+type TSection = "documents" | "map" | "data" | "offers";
+const sections: [string, TSection][] = [
+  ["Данные", "data"],
+  ["Трекинг", "map"],
+  ["Документы", "documents"],
+];
 
 export function OrderSections() {
   const userType = useUnit($userType);
@@ -22,14 +29,14 @@ export function OrderSections() {
     getRole(userType) === "customer" &&
     [ORDERS_IN_BIDDING, ORDERS_IN_AUCTION].includes(currentRoute);
 
-  const [currentSection, setCurrentSection] = useState<string>("data");
+  const [currentSection, setCurrentSection] = useState<TSection>("data");
   const Section = () => {
     if (order) {
       switch (currentSection) {
         case "documents":
           return <DocumentsList documents={order.documents ?? []} />;
         case "map":
-          return <MapSection tracking={order.tracking ?? null} />;
+          return <MapSection tracking={order!.tracking ?? null} />;
         case "data":
           return <DataSection order={order} />;
         case "offers":
@@ -44,17 +51,13 @@ export function OrderSections() {
   };
 
   useEffect(() => {
-    setCurrentSection(order ? "data" : "");
+    if (order) setCurrentSection("data");
   }, [order]);
 
   return (
     <>
       <div className="d-flex align-items-center justify-content-between my-4">
-        {[
-          ["Данные", "data"],
-          ["Трекинг", "map"],
-          ["Документы", "documents"],
-        ].map(([text, section], key) => (
+        {sections.map(([text, section], key) => (
           <OutlineButton
             key={key}
             style={{

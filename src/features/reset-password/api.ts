@@ -1,15 +1,15 @@
 import toast from "react-hot-toast";
 import axios, { AxiosError } from "axios";
 import { createEffect, createEvent } from "effector";
-import { API_URL } from "~/shared/config";
+import { setAuth } from "~/features/authorization";
 import { isValidEmail, validatePassword } from "~/shared/lib";
+import { HOME_ROUTE } from "~/shared/routes";
+import { API_URL } from "~/shared/config";
 import {
   ForgotPasswordRequest,
   ResetPasswordConfirmRequest,
   ResetPasswordConfirmResponse,
 } from ".";
-import { setAuth } from "../authorization";
-import { HOME_ROUTE } from "~/shared/routes";
 
 const forgotPasswordFx = createEffect<ForgotPasswordRequest, string>(
   async (data) => {

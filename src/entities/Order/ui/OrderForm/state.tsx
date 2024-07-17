@@ -12,7 +12,20 @@ import {
 import { $mainData } from "~/entities/User";
 import { FieldUpdatePayload } from "./types";
 
-export const initialOrder = {
+type TNewOrder = Omit<
+  TGetOrder,
+  | "id"
+  | "customer_manager"
+  | "transporter_manager"
+  | "created_at"
+  | "updated_at"
+  | "status"
+  | "offers"
+  | "tracking"
+  | "documents"
+> & { customer_manager: string };
+
+export const initialOrder: TNewOrder = {
   transportation_number: 0,
   customer_manager: "",
   start_price: 0,
@@ -32,26 +45,12 @@ export const initialOrder = {
   stages: [],
 };
 
-type TNewOrder = Omit<
-  TGetOrder,
-  | "id"
-  | "customer_manager"
-  | "transporter_manager"
-  | "created_at"
-  | "updated_at"
-  | "status"
-  | "offers"
-  | "tracking"
-  | "documents"
-> & { customer_manager: string };
-
 export const $orderForm = createStore<TNewOrder & { id?: number }>({
   ...initialOrder,
   transportation_number: Math.ceil(Date.now() / 1000),
 });
 
 export const CopyOrder = createEvent<MouseEvent<HTMLAnchorElement>>();
-//@ts-ignore TODO change types
 $orderForm.on(CopyOrder, (state, event) => {
   const order = $selectedOrder.getState();
   if (!order) {
@@ -71,7 +70,7 @@ $orderForm.on(CopyOrder, (state, event) => {
       }));
     } else if (["transportation_number", "customer_manager"].includes(key)) {
     } else {
-      //@ts-ignore TODO
+      // @ts-ignore
       newState[key] = order[key];
     }
     return;
@@ -80,7 +79,7 @@ $orderForm.on(CopyOrder, (state, event) => {
     clock: $orderForm,
     target: deselectOrder,
   });
-  return newState;
+  return newState as TNewOrder;
 });
 
 export const orderFormSubmitted = createEvent<FormEvent>();

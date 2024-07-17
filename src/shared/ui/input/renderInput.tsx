@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Form } from "react-bootstrap";
 import {
   BootstrapSelectProps,
@@ -6,11 +6,28 @@ import {
   SelectProps,
   TextAreaProps,
 } from "./types";
+import styles from "./styles.module.scss";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 export const renderInput = (
   props: InputProps | TextAreaProps | SelectProps | BootstrapSelectProps
 ): ReactNode => {
   switch (props.variant) {
+    case "password-input":
+      const [showPassword, setShowPassword] = useState<boolean>(false);
+      return (
+        <div className={styles["password-input"]}>
+          <input {...props} type={showPassword ? "text" : "password"} />
+          <span
+            className={styles.hidePasswordBtn}
+            onClick={() => {
+              setShowPassword(!showPassword);
+            }}
+          >
+            {showPassword ? <BsEyeSlash /> : <BsEye />}
+          </span>
+        </div>
+      );
     case "input":
       return <input {...props} />;
     case "textarea":

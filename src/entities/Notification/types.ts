@@ -1,4 +1,4 @@
-type NotificationType =
+export type NotificationType =
   | "info"
   | "new_order_in_auction"
   | "new_order_in_bidding"

@@ -16,7 +16,7 @@ export type BaseProp = {
 
 export type InputProps = BaseProp &
   InputHTMLAttributes<HTMLInputElement> & {
-    variant: "input";
+    variant: "input" | "password-input";
   };
 
 export type TextAreaProps = BaseProp &

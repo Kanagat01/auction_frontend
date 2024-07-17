@@ -7,6 +7,7 @@ $default-font-color: map-get($colors, "default-font-color");
   font-weight: 600;
   line-height: 2rem;
   word-wrap: break-word;
+  text-align: center;
 }
 .settingOption {
   display: flex;

@@ -140,7 +140,7 @@ export function CompaniesList({
                 style={{ gap: "3rem" }}
               >
                 <OutlineButton
-                  onClick={onSubmit}
+                  type="submit"
                   style={{
                     width: "100%",
                     padding: "0.5rem 2rem",
@@ -150,7 +150,7 @@ export function CompaniesList({
                   Назначить
                 </OutlineButton>
                 <OutlineButton
-                  onClick={onReset}
+                  type="reset"
                   style={{
                     width: "100%",
                     padding: "0.5rem 2rem",

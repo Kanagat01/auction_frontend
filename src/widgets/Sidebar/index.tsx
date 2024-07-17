@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { ReactSVG } from "react-svg";
 import { useUnit } from "effector-react";
 import { NavLink, useLocation } from "react-router-dom";
@@ -9,7 +9,11 @@ import { FaTruckMoving } from "react-icons/fa";
 import { ImNewspaper } from "react-icons/im";
 import { MdDownload } from "react-icons/md";
 
-// import { $notifications } from "~/entities/Notification";
+import {
+  $notifications,
+  NotificationType,
+  removeNotification,
+} from "~/entities/Notification";
 import { $userType, getRole } from "~/entities/User";
 import { Hammer, ThreeHouses } from "~/shared/assets";
 import { TooltipOnHover } from "~/shared/ui";
@@ -25,16 +29,40 @@ import styles from "./styles.module.scss";
 
 export function Sidebar() {
   const userType = useUnit($userType);
-  // const notifications = useUnit($notifications);
+  const notifications = useUnit($notifications);
+
+  const notificationsDict: Record<string, NotificationType> = {
+    [ORDERS_BEING_EXECUTED]: "new_order_being_executed",
+    [ORDERS_IN_AUCTION]: "new_order_in_auction",
+    [ORDERS_IN_BIDDING]: "new_order_in_bidding",
+    [ORDERS_IN_DIRECT]: "new_order_in_direct",
+  };
   const currentRoute = useLocation().pathname;
+
+  useEffect(() => {
+    if (currentRoute in notificationsDict) {
+      notifications
+        .filter(
+          (notification) =>
+            notification.type === notificationsDict[currentRoute]
+        )
+        .map(({ id }) => removeNotification(id));
+    }
+  }, [currentRoute]);
+
+  const NotificationDot = (route: string) => {
+    const notification = notifications.find(
+      (el) => el.type === notificationsDict[route]
+    );
+    return (
+      route !== currentRoute &&
+      notification && <span className={styles["blue-circle"]} />
+    );
+  };
   const sections: Array<[ReactNode, string, string]> = [
     [
       <>
-        <span
-          className={
-            ORDERS_BEING_EXECUTED !== currentRoute ? styles["blue-circle"] : ""
-          }
-        />
+        {NotificationDot(ORDERS_BEING_EXECUTED)}
         <FaTruckMoving className={styles.icon} />
       </>,
       "Журнал",
@@ -42,11 +70,7 @@ export function Sidebar() {
     ],
     [
       <>
-        <span
-          className={
-            ORDERS_IN_AUCTION !== currentRoute ? styles["blue-circle"] : ""
-          }
-        />
+        {NotificationDot(ORDERS_IN_AUCTION)}
         <ReactSVG src={Hammer} className={styles.icon} />
       </>,
       "Аукцион",
@@ -54,11 +78,7 @@ export function Sidebar() {
     ],
     [
       <>
-        <span
-          className={
-            ORDERS_IN_BIDDING !== currentRoute ? styles["blue-circle"] : ""
-          }
-        />
+        {NotificationDot(ORDERS_IN_BIDDING)}
         <ReactSVG
           src={ThreeHouses}
           className={styles.icon}
@@ -70,11 +90,7 @@ export function Sidebar() {
     ],
     [
       <>
-        <span
-          className={
-            ORDERS_IN_DIRECT !== currentRoute ? styles["blue-circle"] : ""
-          }
-        />
+        {NotificationDot(ORDERS_IN_DIRECT)}
         <MdDownload className={styles.icon} />
       </>,
       "Назначенные",

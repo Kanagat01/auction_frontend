@@ -1,9 +1,15 @@
 import toast from "react-hot-toast";
 import axios, { AxiosError } from "axios";
-import { createEffect, createEvent } from "effector";
-import { apiInstance } from "~/shared/api";
-import { setAuth } from "../authorization";
+import { attach, createEffect, createEvent, Effect } from "effector";
+import { setAuth } from "~/features/authorization";
+import {
+  $mainData,
+  setMainData,
+  CustomerCompany,
+  CustomerManager,
+} from "~/entities/User";
 import { API_URL } from "~/shared/config";
+import { apiRequestFx, RequestParams } from "~/shared/api";
 import { isValidEmail, validatePassword } from "~/shared/lib";
 import {
   RegisterCompanyRequest,
@@ -64,14 +70,45 @@ registerCompany.watch(({ navigateFunc, ...data }) => {
 });
 
 // register manager
-export const registerManagerFx = createEffect<
+const registerManagerFx: Effect<
   RegisterManagerRequest,
-  RegisterResponse,
-  AxiosError
->(async (data: RegisterManagerRequest) => {
-  const response = await apiInstance.post(
-    "/user/common/register_manager/",
-    data
-  );
-  return response.data.token;
+  Omit<CustomerManager, "company">
+> = attach({
+  effect: apiRequestFx,
+  mapParams: (data: RegisterManagerRequest): RequestParams => ({
+    method: "post",
+    url: "/user/common/register_manager/",
+    data,
+  }),
+});
+
+export const registerManager = createEvent<
+  RegisterManagerRequest & { repeat_password: string; onSuccess: () => void }
+>();
+registerManager.watch(({ repeat_password, onSuccess, ...data }) => {
+  const passwordValidation = validatePassword(data.password);
+  if (passwordValidation !== "") {
+    toast.error(passwordValidation);
+    return;
+  } else if (data.password !== repeat_password) {
+    toast.error("Пароли не совпадают");
+    return;
+  } else if (!isValidEmail(data.email)) {
+    toast.error("Неправильный формат email");
+    return;
+  }
+  toast.promise(registerManagerFx(data), {
+    loading: "Регистрируем менеджера",
+    success: (manager) => {
+      const prevState = $mainData.getState() as CustomerCompany;
+      setMainData({ ...prevState, managers: [...prevState.managers, manager] });
+      onSuccess();
+      return "Менеджер успешно зарегистрирован";
+    },
+    error: (err) => {
+      if (err.email && err.email[0] === "user_already_exists")
+        return "Пользователь с таким email уже существует";
+      return `Произошла ошибка: ${err}`;
+    },
+  });
 });

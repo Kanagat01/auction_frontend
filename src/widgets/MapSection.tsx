@@ -12,8 +12,6 @@ export function MapSection({ tracking }: { tracking: OrderTracking | null }) {
       <TitleMd>Карта</TitleMd>
       <div className="w-100 h-100">
         {tracking && tracking.geopoints.length !== 0 ? (
-          // TODO is that safe?
-          // TODO how to stop re-rendering every time?
           <YMaps query={{ apikey: YANDEX_MAPS_API_KEY, lang: "en_RU" }}>
             <Map
               defaultState={{

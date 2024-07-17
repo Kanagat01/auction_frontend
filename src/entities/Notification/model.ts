@@ -21,9 +21,9 @@ const removeNotificationFx: Effect<{ notification_id: number }, string> =
   });
 
 export const addNotification = createEvent<TNotification>();
-export const removeNotification = createEvent<TNotification>();
-removeNotification.watch((notification) =>
-  removeNotificationFx({ notification_id: notification.id })
+export const removeNotification = createEvent<number>();
+removeNotification.watch((notification_id) =>
+  removeNotificationFx({ notification_id })
 );
 
 export const $notifications = createStore<TNotification[]>([]);
@@ -32,6 +32,6 @@ $notifications.on(addNotification, (state, notification) => [
   notification,
   ...state,
 ]);
-$notifications.on(removeNotification, (state, notification) => {
-  return state.filter((el) => el.id !== notification.id);
+$notifications.on(removeNotification, (state, notification_id) => {
+  return state.filter((el) => el.id !== notification_id);
 });

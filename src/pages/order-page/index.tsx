@@ -12,9 +12,9 @@ import {
 } from "~/entities/Order";
 import { getOrderStagesFx, OrderStagesTable } from "~/entities/OrderStage";
 import { RoundedWhiteBox, TitleLg } from "~/shared/ui";
-import { ORDERS_BEING_EXECUTED } from "~/shared/routes";
 import { renderPromise } from "~/shared/api";
 import { logger } from "~/shared/config";
+import Routes from "~/shared/routes";
 import styles from "./styles.module.scss";
 
 function mapResponseToOptions(
@@ -134,6 +134,6 @@ export default function OrderPage() {
       })}
     </RoundedWhiteBox>
   ) : (
-    <Navigate to={ORDERS_BEING_EXECUTED} replace />
+    <Navigate to={Routes.ORDERS_BEING_EXECUTED} replace />
   );
 }

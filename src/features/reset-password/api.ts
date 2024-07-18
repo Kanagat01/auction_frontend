@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 import { createEffect, createEvent } from "effector";
 import { setAuth } from "~/features/authorization";
 import { isValidEmail, validatePassword } from "~/shared/lib";
-import { HOME_ROUTE } from "~/shared/routes";
+import Routes from "~/shared/routes";
 import { API_URL } from "~/shared/config";
 import {
   ForgotPasswordRequest,
@@ -112,7 +112,7 @@ resetPasswordConfirm.watch(({ navigate, ...data }) => {
     success: ({ token }) => {
       localStorage.setItem("token", token);
       setAuth(true);
-      navigate(HOME_ROUTE);
+      navigate(Routes.HOME);
       return "Ваш пароль обновлен";
     },
     error: (err) => `Произошла ошибка: ${err}`,

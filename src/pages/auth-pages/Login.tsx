@@ -4,12 +4,8 @@ import { NavLink } from "react-router-dom";
 
 import { login } from "~/features/authorization";
 import { useTextInputState } from "~/shared/lib";
-import {
-  FORGOT_PASSWORD_ROUTE,
-  HOME_ROUTE,
-  REGISTER_ROUTE,
-} from "~/shared/routes";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
+import Routes from "~/shared/routes";
 
 export function Login() {
   const [email, onChangeEmail] = useTextInputState("");
@@ -17,7 +13,7 @@ export function Login() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from || HOME_ROUTE;
+  const from = location.state?.from || Routes.HOME;
   const navigateFunc = () => navigate(from);
 
   function handleSubmit(e: FormEvent) {
@@ -44,8 +40,8 @@ export function Login() {
           />
         </RoundedInputGroup>
         <PrimaryButton type="submit">Войти</PrimaryButton>
-        <NavLink to={REGISTER_ROUTE}>Регистрация</NavLink>
-        <NavLink to={FORGOT_PASSWORD_ROUTE} className="mt-2">
+        <NavLink to={Routes.REGISTER}>Регистрация</NavLink>
+        <NavLink to={Routes.FORGOT_PASSWORD} className="mt-2">
           Забыли пароль?
         </NavLink>
       </form>

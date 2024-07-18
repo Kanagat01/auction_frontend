@@ -17,14 +17,7 @@ import {
 import { $userType, getRole } from "~/entities/User";
 import { Hammer, ThreeHouses } from "~/shared/assets";
 import { TooltipOnHover } from "~/shared/ui";
-import {
-  CANCELLED_ORDERS,
-  ORDERS_BEING_EXECUTED,
-  ORDERS_IN_AUCTION,
-  ORDERS_IN_BIDDING,
-  ORDERS_IN_DIRECT,
-  UNPUBLISHED_ORDERS,
-} from "~/shared/routes";
+import Routes from "~/shared/routes";
 import styles from "./styles.module.scss";
 
 export function Sidebar() {
@@ -32,10 +25,10 @@ export function Sidebar() {
   const notifications = useUnit($notifications);
 
   const notificationsDict: Record<string, NotificationType> = {
-    [ORDERS_BEING_EXECUTED]: "new_order_being_executed",
-    [ORDERS_IN_AUCTION]: "new_order_in_auction",
-    [ORDERS_IN_BIDDING]: "new_order_in_bidding",
-    [ORDERS_IN_DIRECT]: "new_order_in_direct",
+    [Routes.ORDERS_BEING_EXECUTED]: "new_order_being_executed",
+    [Routes.ORDERS_IN_AUCTION]: "new_order_in_auction",
+    [Routes.ORDERS_IN_BIDDING]: "new_order_in_bidding",
+    [Routes.ORDERS_IN_DIRECT]: "new_order_in_direct",
   };
   const currentRoute = useLocation().pathname;
 
@@ -62,23 +55,23 @@ export function Sidebar() {
   const sections: Array<[ReactNode, string, string]> = [
     [
       <>
-        {NotificationDot(ORDERS_BEING_EXECUTED)}
+        {NotificationDot(Routes.ORDERS_BEING_EXECUTED)}
         <FaTruckMoving className={styles.icon} />
       </>,
       "Журнал",
-      ORDERS_BEING_EXECUTED,
+      Routes.ORDERS_BEING_EXECUTED,
     ],
     [
       <>
-        {NotificationDot(ORDERS_IN_AUCTION)}
+        {NotificationDot(Routes.ORDERS_IN_AUCTION)}
         <ReactSVG src={Hammer} className={styles.icon} />
       </>,
       "Аукцион",
-      ORDERS_IN_AUCTION,
+      Routes.ORDERS_IN_AUCTION,
     ],
     [
       <>
-        {NotificationDot(ORDERS_IN_BIDDING)}
+        {NotificationDot(Routes.ORDERS_IN_BIDDING)}
         <ReactSVG
           src={ThreeHouses}
           className={styles.icon}
@@ -86,25 +79,25 @@ export function Sidebar() {
         />
       </>,
       "Торги",
-      ORDERS_IN_BIDDING,
+      Routes.ORDERS_IN_BIDDING,
     ],
     [
       <>
-        {NotificationDot(ORDERS_IN_DIRECT)}
+        {NotificationDot(Routes.ORDERS_IN_DIRECT)}
         <MdDownload className={styles.icon} />
       </>,
       "Назначенные",
-      ORDERS_IN_DIRECT,
+      Routes.ORDERS_IN_DIRECT,
     ],
     // [
     //   <TbBoxMultiple className={styles.icon} />,
     //   "План погрузки",
-    //   CARGO_PLAN_ROUTE,
+    //   Routes.CARGO_PLAN,
     // ],
     [
       <RiDeleteBin5Line className={styles.icon} />,
       "Отмененные",
-      CANCELLED_ORDERS,
+      Routes.CANCELLED_ORDERS,
     ],
   ];
 
@@ -112,7 +105,7 @@ export function Sidebar() {
     sections.splice(1, 0, [
       <ImNewspaper className={styles.icon} />,
       "Заказы",
-      UNPUBLISHED_ORDERS,
+      Routes.UNPUBLISHED_ORDERS,
     ]);
   }
   return (

@@ -2,6 +2,7 @@ import { useUnit } from "effector-react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DriverProfile, TUser } from "~/entities/User";
 import { Checkbox } from "~/shared/ui";
+import Routes from "~/shared/routes";
 import {
   OrderModel,
   OrderStatus,
@@ -11,22 +12,45 @@ import {
 } from "../types";
 import { $selectedOrder, deselectOrder, selectOrder } from "..";
 
-export const getColumns = () => {
-  const columnHelper = createColumnHelper<TGetOrder>();
-  const keys = [
-    "transportation_number",
-    "customer_manager",
-    "transporter_manager",
-    "driver",
-    "status",
-    "start_price",
-    "price_step",
-    "comments_for_transporter",
-    "additional_requirements",
-    "created_at",
-    "updated_at",
-  ] as Exclude<keyof OrderModel, "id">[];
+const defaultKeys = [
+  "transportation_number",
+  "customer_manager",
+  "transporter_manager",
+  "driver",
+  "status",
+  "start_price",
+  "price_step",
+  "comments_for_transporter",
+  "additional_requirements",
+  "created_at",
+  "updated_at",
+] as Exclude<keyof OrderModel, "id">[];
 
+const keysCustomer: Partial<Record<Routes, Exclude<keyof OrderModel, "id">[]>> =
+  {
+    [Routes.ORDERS_BEING_EXECUTED]: defaultKeys,
+    [Routes.UNPUBLISHED_ORDERS]: defaultKeys,
+    [Routes.ORDERS_IN_AUCTION]: defaultKeys,
+    [Routes.ORDERS_IN_BIDDING]: defaultKeys,
+    [Routes.ORDERS_IN_DIRECT]: defaultKeys,
+    [Routes.CANCELLED_ORDERS]: defaultKeys,
+  };
+
+const keysTransporter: Partial<
+  Record<Routes, Exclude<keyof OrderModel, "id">[]>
+> = {
+  [Routes.ORDERS_BEING_EXECUTED]: defaultKeys,
+  [Routes.ORDERS_IN_AUCTION]: defaultKeys,
+  [Routes.ORDERS_IN_BIDDING]: defaultKeys,
+  [Routes.ORDERS_IN_DIRECT]: defaultKeys,
+  [Routes.CANCELLED_ORDERS]: defaultKeys,
+};
+
+export const getColumns = (route: Routes, role: "transporter" | "customer") => {
+  const keys =
+    role === "customer" ? keysCustomer[route] : keysTransporter[route];
+  const columnHelper = createColumnHelper<TGetOrder>();
+  if (!keys) throw "This route not in the dict";
   return keys.map((key, index) =>
     columnHelper.accessor(key, {
       id: `column_${index}`,

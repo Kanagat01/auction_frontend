@@ -11,7 +11,7 @@ import {
   DocumentsList,
 } from "~/entities/Document";
 import { documentButtonProps, OutlineButton, TitleLg } from "~/shared/ui";
-import { ORDERS_IN_AUCTION, ORDERS_IN_BIDDING } from "~/shared/routes";
+import Routes from "~/shared/routes";
 
 type TSection = "documents" | "map" | "data" | "offers";
 const sections: [string, TSection][] = [
@@ -27,7 +27,9 @@ export function OrderSections() {
   const currentRoute = useLocation().pathname;
   const showOffers =
     getRole(userType) === "customer" &&
-    [ORDERS_IN_BIDDING, ORDERS_IN_AUCTION].includes(currentRoute);
+    ([Routes.ORDERS_IN_BIDDING, Routes.ORDERS_IN_AUCTION] as string[]).includes(
+      currentRoute
+    );
 
   const [currentSection, setCurrentSection] = useState<TSection>("data");
   const Section = () => {

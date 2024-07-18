@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import * as routes from "~/shared/routes";
+import urls from "~/shared/routes";
 import { PrivateRoute } from "./auth-routes";
 import {
   UnpublishedOrders,
@@ -21,25 +21,25 @@ import {
 
 export const Routing = () => {
   const private_routes: Array<[string, ReactNode]> = [
-    [routes.ORDERS_BEING_EXECUTED, <OrdersBeingExecuted />],
-    [routes.ORDERS_IN_AUCTION, <OrdersInAuction />],
-    [routes.ORDERS_IN_BIDDING, <OrdersInBidding />],
-    [routes.ORDERS_IN_DIRECT, <OrdersInDirect />],
-    [routes.CANCELLED_ORDERS, <CancelledOrders />],
-    [routes.UNPUBLISHED_ORDERS, <UnpublishedOrders />],
-    [routes.NEW_ORDER_ROUTE, <OrderPage />],
-    [routes.EDIT_ORDER_ROUTE, <OrderPage />],
-    [routes.PROFILE_ROUTE, <Cabinet />],
-    // [routes.CARGO_PLAN_ROUTE, <CargoPlan />],
+    [urls.ORDERS_BEING_EXECUTED, <OrdersBeingExecuted />],
+    [urls.ORDERS_IN_AUCTION, <OrdersInAuction />],
+    [urls.ORDERS_IN_BIDDING, <OrdersInBidding />],
+    [urls.ORDERS_IN_DIRECT, <OrdersInDirect />],
+    [urls.CANCELLED_ORDERS, <CancelledOrders />],
+    [urls.UNPUBLISHED_ORDERS, <UnpublishedOrders />],
+    [urls.NEW_ORDER, <OrderPage />],
+    [urls.EDIT_ORDER, <OrderPage />],
+    [urls.PROFILE, <Cabinet />],
+    // [urls.CARGO_PLAN, <CargoPlan />],
   ];
 
   return (
     <Routes>
-      <Route path={routes.LOGIN_ROUTE} element={<Login />} />
-      <Route path={routes.REGISTER_ROUTE} element={<Register />} />
-      <Route path={routes.FORGOT_PASSWORD_ROUTE} element={<ForgotPassword />} />
+      <Route path={urls.LOGIN} element={<Login />} />
+      <Route path={urls.REGISTER} element={<Register />} />
+      <Route path={urls.FORGOT_PASSWORD} element={<ForgotPassword />} />
       <Route
-        path={routes.RESET_PASSWORD_CONFIRM_ROUTE}
+        path={urls.RESET_PASSWORD_CONFIRM}
         element={<ResetPasswordConfirm />}
       />
       <Route element={<PrivateRoute />}>
@@ -49,7 +49,7 @@ export const Routing = () => {
       </Route>
       <Route
         path="*"
-        element={<Navigate to={routes.ORDERS_BEING_EXECUTED} replace />}
+        element={<Navigate to={urls.ORDERS_BEING_EXECUTED} replace />}
       />
     </Routes>
   );

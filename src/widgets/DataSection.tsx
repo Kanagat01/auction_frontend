@@ -134,7 +134,10 @@ export function DataSection({ order }: { order: TGetOrder }) {
             </div>
           </TitleSm>
           <TitleSm className="ms-2 mb-2" style={{ fontWeight: 600 }}>
-            № Поставки: <span className="gray-text">{order_stage_number}</span>
+            № Поставки:{" "}
+            <span className="gray-text">
+              {copyOnClickWrapper(order_stage_number)}
+            </span>
           </TitleSm>
           {["Погрузка", "Выгрузка"].map((text) => (
             <TitleSm

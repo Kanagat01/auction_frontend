@@ -1,3 +1,6 @@
+import { useUnit } from "effector-react";
+import { useLocation } from "react-router-dom";
+import { $userType, getRole } from "~/entities/User";
 import {
   AddDocument,
   DeleteDocument,
@@ -10,19 +13,20 @@ import {
   TitleMd,
 } from "~/shared/ui";
 import { API_URL } from "~/shared/config";
-import { $userType, getRole } from "~/entities/User";
-import { useUnit } from "effector-react";
-import { useLocation } from "react-router-dom";
-import { ORDERS_IN_AUCTION, ORDERS_IN_BIDDING } from "~/shared/routes";
+import Routes from "~/shared/routes";
 
 export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
   const userType = useUnit($userType);
   const role = getRole(userType);
   const currentRoute = useLocation().pathname;
-  const showButtons = !(
-    role === "customer" &&
-    [ORDERS_IN_BIDDING, ORDERS_IN_AUCTION].includes(currentRoute)
-  );
+
+  const showButtons =
+    !(
+      role === "customer" &&
+      (
+        [Routes.ORDERS_IN_BIDDING, Routes.ORDERS_IN_AUCTION] as string[]
+      ).includes(currentRoute)
+    ) && currentRoute !== Routes.CANCELLED_ORDERS;
 
   const docsData = documents.map((doc) => [
     <TextCenter>

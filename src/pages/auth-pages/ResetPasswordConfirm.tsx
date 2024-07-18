@@ -1,9 +1,9 @@
 import { FormEvent, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { resetPasswordConfirm } from "~/features/reset-password";
-import { useTextInputState } from "~/shared/lib";
-import { FORGOT_PASSWORD_ROUTE, LOGIN_ROUTE } from "~/shared/routes";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
+import { useTextInputState } from "~/shared/lib";
+import Routes from "~/shared/routes";
 
 export function ResetPasswordConfirm() {
   const { token } = useParams<{ token: string }>();
@@ -51,7 +51,7 @@ export function ResetPasswordConfirm() {
             </RoundedInputGroup>
             <PrimaryButton type="submit">Сбросить</PrimaryButton>
             <span className="link-text">
-              Уже есть аккаунт? <NavLink to={LOGIN_ROUTE}>Войти</NavLink>
+              Уже есть аккаунт? <NavLink to={Routes.LOGIN}>Войти</NavLink>
             </span>
           </>
         ) : (
@@ -59,7 +59,7 @@ export function ResetPasswordConfirm() {
             <span className="login-subtitle">
               Неправильный адрес. Возможно ссылка для сброса пароля истекла
             </span>
-            <NavLink to={FORGOT_PASSWORD_ROUTE}>Забыли пароль?</NavLink>
+            <NavLink to={Routes.FORGOT_PASSWORD}>Забыли пароль?</NavLink>
           </>
         )}
       </form>

@@ -2,8 +2,8 @@ import { FormEvent, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { forgotPassword } from "~/features/reset-password";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
-import { LOGIN_ROUTE } from "~/shared/routes";
 import { useTextInputState } from "~/shared/lib";
+import Routes from "~/shared/routes";
 
 export function ForgotPassword() {
   const [success, setSuccess] = useState<boolean>(false);
@@ -38,7 +38,7 @@ export function ForgotPassword() {
             </RoundedInputGroup>
             <PrimaryButton type="submit">Восстановить</PrimaryButton>
             <span className="link-text">
-              Уже есть аккаунт? <NavLink to={LOGIN_ROUTE}>Войти</NavLink>
+              Уже есть аккаунт? <NavLink to={Routes.LOGIN}>Войти</NavLink>
             </span>
           </>
         ) : (

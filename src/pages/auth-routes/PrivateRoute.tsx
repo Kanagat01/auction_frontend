@@ -1,11 +1,11 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useUnit } from "effector-react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 import { Header, Sidebar } from "~/widgets";
 import { $isAuthenticated } from "~/features/authorization";
 import { $mainData } from "~/entities/User";
-import { LOGIN_ROUTE } from "~/shared/routes";
 import { Preloader } from "~/shared/ui";
+import Routes from "~/shared/routes";
 
 export function PrivateRoute() {
   const isAuthenticated = useUnit($isAuthenticated);
@@ -13,7 +13,7 @@ export function PrivateRoute() {
   const mainData = useUnit($mainData);
 
   if (!isAuthenticated)
-    return <Navigate to={LOGIN_ROUTE} state={{ from: location }} replace />;
+    return <Navigate to={Routes.LOGIN} state={{ from: location }} replace />;
 
   return mainData ? (
     <div className="main-bg">

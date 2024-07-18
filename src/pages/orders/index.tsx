@@ -20,8 +20,8 @@ import {
   UnpublishOrder,
   getOrdersFx,
 } from "~/entities/Order";
-import { EDIT_ORDER_ROUTE, NEW_ORDER_ROUTE } from "~/shared/routes";
 import { FolderPlus } from "~/shared/assets";
+import Routes from "~/shared/routes";
 import { OrdersPage, iconActionProps, textActionProps } from "./helpers";
 
 function usePageFromSearchParams(): number | undefined {
@@ -36,13 +36,17 @@ export function UnpublishedOrders() {
   const pageData = {
     iconActions: (
       <>
-        <NavLink to={NEW_ORDER_ROUTE} {...iconActionProps}>
+        <NavLink to={Routes.NEW_ORDER} {...iconActionProps}>
           <ReactSVG src={FolderPlus} />
         </NavLink>
-        <NavLink to={NEW_ORDER_ROUTE} onClick={CopyOrder} {...iconActionProps}>
+        <NavLink to={Routes.NEW_ORDER} onClick={CopyOrder} {...iconActionProps}>
           <LuCopyPlus />
         </NavLink>
-        <NavLink to={EDIT_ORDER_ROUTE} onClick={EditOrder} {...iconActionProps}>
+        <NavLink
+          to={Routes.EDIT_ORDER}
+          onClick={EditOrder}
+          {...iconActionProps}
+        >
           <LuPenSquare />
         </NavLink>
         <CancelOrder variant="icon" {...iconActionProps} />

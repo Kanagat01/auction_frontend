@@ -4,13 +4,13 @@ import {
   registerCompany,
   RegisterCompanyRequest,
 } from "~/features/registration";
-import { HOME_ROUTE, LOGIN_ROUTE } from "~/shared/routes";
+import Routes from "~/shared/routes";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
 
 export function Register() {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from || HOME_ROUTE;
+  const from = location.state?.from || Routes.HOME;
   const navigateFunc = () => navigate(from);
 
   const [data, setData] = useState<RegisterCompanyRequest>({
@@ -77,7 +77,7 @@ export function Register() {
         </RoundedInputGroup>
         <PrimaryButton type="submit">Регистрация</PrimaryButton>
         <span className="link-text">
-          Уже есть аккаунт? <NavLink to={LOGIN_ROUTE}>Войти</NavLink>
+          Уже есть аккаунт? <NavLink to={Routes.LOGIN}>Войти</NavLink>
         </span>
       </form>
     </div>

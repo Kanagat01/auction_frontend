@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 import { useUnit } from "effector-react";
 import {
   SortingState,
@@ -13,7 +14,9 @@ import {
   getColumns,
   selectOrder,
 } from "~/entities/Order";
+import { $userType, getRole } from "~/entities/User";
 import { MainTable, TPaginator } from "~/shared/ui";
+import Routes from "~/shared/routes";
 
 export function OrdersList({
   orders,
@@ -26,7 +29,8 @@ export function OrdersList({
   useEffect(() => setData(orders), [orders]);
 
   const [sorting, setSorting] = useState<SortingState>([]);
-  const columns = getColumns();
+  const role = getRole(useUnit($userType));
+  const columns = getColumns(useLocation().pathname as Routes, role);
   const [columnOrder, setColumnOrder] = useState<string[]>(
     columns.map((c) => c.id!)
   );

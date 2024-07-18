@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes, ReactNode } from "react";
-import { TextCenter } from "~/shared/ui";
+import { TextCenter, TitleMd } from "~/shared/ui";
 import styles from "./styles.module.scss";
 
 type RoundedTableProps = HTMLAttributes<HTMLTableElement> & {
@@ -46,7 +46,9 @@ export const RoundedTable: FC<RoundedTableProps> = ({
         ) : (
           <tr>
             <td colSpan={columns?.length}>
-              <TextCenter>Нет данных для отображения</TextCenter>
+              <TextCenter>
+                <TitleMd className="p-3">Нет данных для отображения</TitleMd>
+              </TextCenter>
             </td>
           </tr>
         )}

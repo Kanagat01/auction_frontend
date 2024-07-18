@@ -1,6 +1,17 @@
-import { OrderModel } from "~/entities/Order";
+import { OrderModel, TGetOrder, TOrderStatus } from "~/entities/Order";
 import { TStages } from "~/entities/OrderStage";
 import { DriverProfile } from "~/entities/User";
+import { TPaginator } from "~/shared/ui";
+
+export type GetOrdersRequest = {
+  status: TOrderStatus;
+  page?: number;
+};
+
+export type GetOrdersResponse = {
+  pagination: TPaginator;
+  orders: TGetOrder[];
+};
 
 export type CreateOrderRequest = Omit<
   OrderModel,

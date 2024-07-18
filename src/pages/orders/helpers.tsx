@@ -1,6 +1,6 @@
 import { useUnit } from "effector-react";
 import { ControlPanel, ControlPanelProps, OrderSections } from "~/widgets";
-import { $orders, OrdersList } from "~/entities/Order";
+import { $orders, $ordersPagination, OrdersList } from "~/entities/Order";
 import {
   CollapsableSidebar,
   MainTitle,
@@ -24,6 +24,7 @@ type TOrdersPage = {
 
 export function OrdersPage({ title, pageData, promise }: TOrdersPage) {
   const orders = useUnit($orders);
+  const paginator = useUnit($ordersPagination);
   return (
     <>
       <RoundedWhiteBox style={{ width: "90%" }}>
@@ -40,7 +41,12 @@ export function OrdersPage({ title, pageData, promise }: TOrdersPage) {
               <ControlPanel {...pageData} />
             </div>
             {renderPromise(promise, {
-              success: () => <OrdersList orders={orders} />,
+              success: (
+                <OrdersList
+                  orders={orders}
+                  paginator={paginator ?? undefined}
+                />
+              ),
               error: (err) => (
                 <TextCenter className="p-5 mt-5">
                   <MainTitle style={{ fontSize: "2.5rem", fontWeight: 500 }}>

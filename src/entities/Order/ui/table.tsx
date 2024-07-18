@@ -13,9 +13,15 @@ import {
   getColumns,
   selectOrder,
 } from "~/entities/Order";
-import { MainTable } from "~/shared/ui";
+import { MainTable, TPaginator } from "~/shared/ui";
 
-export function OrdersList({ orders }: { orders: TGetOrder[] }) {
+export function OrdersList({
+  orders,
+  paginator,
+}: {
+  orders: TGetOrder[];
+  paginator?: TPaginator;
+}) {
   const [data, setData] = useState(orders);
   useEffect(() => setData(orders), [orders]);
 
@@ -38,7 +44,6 @@ export function OrdersList({ orders }: { orders: TGetOrder[] }) {
     isMultiSortEvent: (_e) => true,
   });
 
-  const paginator = { size: 11, currentPage: 2 };
   const selectedOrder = useUnit($selectedOrder);
   const getRowProps = (id: number) => ({
     className: id === selectedOrder?.id ? "selected-row" : "",

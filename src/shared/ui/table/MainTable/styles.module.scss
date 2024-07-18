@@ -75,11 +75,10 @@ $border-color: rgba(0, 0, 0, 0.1);
   margin-right: 3rem;
   gap: 1rem;
 
-  a {
-    font-size: 1.8rem;
-    cursor: pointer;
+  a,
+  span {
+    font-size: 2rem;
     font-weight: 400;
-    list-style: none;
 
     &.activePage {
       cursor: default;

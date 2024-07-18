@@ -26,9 +26,11 @@ import {
 } from "./dragFunctions";
 import styles from "./styles.module.scss";
 
+export type TPaginator = { pages_total: number; current_page: number };
+
 type MainTableProps = {
   table: Table<any>;
-  paginator?: { size: number; currentPage: number };
+  paginator?: TPaginator;
   getRowProps?: (id: number) => HTMLAttributes<HTMLTableRowElement>;
   columnOrder?: string[];
   setColumnOrder?: Dispatch<SetStateAction<string[]>>;

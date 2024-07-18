@@ -1,6 +1,6 @@
 import { Effect, attach } from "effector";
 import { $userType, DriverProfile, getRole } from "~/entities/User";
-import { OrderModel, TGetOrder, TOrderStatus } from "~/entities/Order";
+import { OrderModel } from "~/entities/Order";
 import { RequestParams, apiRequestFx } from "~/shared/api";
 import {
   AddDriverDataRequest,
@@ -8,6 +8,8 @@ import {
   CompleteOrderRequest,
   CreateOrderRequest,
   EditOrderRequest,
+  GetOrdersRequest,
+  GetOrdersResponse,
   PublishOrderRequest,
   UnpublishOrderRequest,
 } from "./api_types";
@@ -24,13 +26,13 @@ enum OrderStatusUrls {
 }
 
 // get orders
-export const getOrdersFx: Effect<TOrderStatus, TGetOrder[]> = attach({
+export const getOrdersFx: Effect<GetOrdersRequest, GetOrdersResponse> = attach({
   effect: apiRequestFx,
-  mapParams: (status: TOrderStatus): RequestParams => ({
+  mapParams: ({ status, page }: GetOrdersRequest): RequestParams => ({
     method: "get",
     url: `/auction/${getRole(
       $userType.getState()
-    )}/get_orders/?status=${status}`,
+    )}/get_orders/?status=${status}${page ? "&page=" + page : ""}`,
   }),
 });
 

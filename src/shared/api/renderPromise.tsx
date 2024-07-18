@@ -11,7 +11,7 @@ const CenteredPreloader = () => {
 
 type Handlers<T, E> = {
   loading?: ReactNode;
-  success: (data: T) => ReactNode;
+  success: ((data: T) => ReactNode) | ReactNode;
   error: ((error: E) => ReactNode) | ReactNode;
 };
 
@@ -41,7 +41,7 @@ export function renderPromise<T, E = Error>(
   if (state.loading) {
     return loading;
   } else if (state.data) {
-    return success(state.data);
+    return typeof success === "function" ? success(state.data) : success;
   } else {
     if (state.error)
       return typeof error === "function" ? error(state.error) : error;

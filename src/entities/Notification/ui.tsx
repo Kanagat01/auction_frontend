@@ -74,7 +74,7 @@ export function Notifications() {
       <Modal show={show} onHide={changeShow} className="rounded-modal">
         <Modal.Body>
           {renderPromise(getNotificationsFx, {
-            success: (_) => (
+            success: (
               <>
                 <div className="d-flex mb-4" style={{ gap: "1rem" }}>
                   <SectionButton className="active">Информация</SectionButton>

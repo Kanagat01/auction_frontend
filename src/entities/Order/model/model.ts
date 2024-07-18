@@ -1,5 +1,7 @@
 import toast from "react-hot-toast";
 import { Effect, createEvent, createStore, sample } from "effector";
+import { DriverProfileTranslations } from "~/entities/User";
+import { TPaginator } from "~/shared/ui";
 import {
   addDriverDataFx,
   cancelOrderFx,
@@ -10,10 +12,12 @@ import {
 } from "./api";
 import { OrderModel, OrderStatus, TGetOrder } from "../types";
 import { AddDriverDataRequest } from ".";
-import { DriverProfileTranslations } from "~/entities/User";
 
 export const $orders = createStore<TGetOrder[]>([]);
-$orders.on(getOrdersFx.doneData, (_, payload) => payload);
+$orders.on(getOrdersFx.doneData, (_, payload) => payload.orders);
+
+export const $ordersPagination = createStore<TPaginator | null>(null);
+$ordersPagination.on(getOrdersFx.doneData, (_, payload) => payload.pagination);
 
 export const updateOrder = createEvent<{
   orderId: number;

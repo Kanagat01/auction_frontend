@@ -1,5 +1,5 @@
 import { useUnit } from "effector-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
 import { $userType, getRole } from "~/entities/User";
@@ -24,8 +24,15 @@ import { EDIT_ORDER_ROUTE, NEW_ORDER_ROUTE } from "~/shared/routes";
 import { FolderPlus } from "~/shared/assets";
 import { OrdersPage, iconActionProps, textActionProps } from "./helpers";
 
+function usePageFromSearchParams(): number | undefined {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  return Number(searchParams.get("page")) || undefined;
+}
+
 export function UnpublishedOrders() {
   const userType = useUnit($userType);
+  const page = usePageFromSearchParams();
   const pageData = {
     iconActions: (
       <>
@@ -53,23 +60,25 @@ export function UnpublishedOrders() {
     <OrdersPage
       title={getRole(userType) === "customer" ? "Заказы" : "forbidden"}
       pageData={pageData}
-      promise={() => getOrdersFx("unpublished")}
+      promise={() => getOrdersFx({ status: "unpublished", page })}
     />
   );
 }
 
 export function CancelledOrders() {
+  const page = usePageFromSearchParams();
   return (
     <OrdersPage
       title="Отмененные"
       pageData={{}}
-      promise={() => getOrdersFx("cancelled")}
+      promise={() => getOrdersFx({ status: "cancelled", page })}
     />
   );
 }
 
 export function OrdersInAuction() {
   const userType = useUnit($userType);
+  const page = usePageFromSearchParams();
   const customerPageData = {
     textActions: (
       <>
@@ -98,13 +107,14 @@ export function OrdersInAuction() {
           ? customerPageData
           : transporterPageData
       }
-      promise={() => getOrdersFx("in_auction")}
+      promise={() => getOrdersFx({ status: "in_auction", page })}
     />
   );
 }
 
 export function OrdersInBidding() {
   const userType = useUnit($userType);
+  const page = usePageFromSearchParams();
   const customerPageData = {
     textActions: (
       <>
@@ -132,13 +142,14 @@ export function OrdersInBidding() {
           ? customerPageData
           : transporterPageData
       }
-      promise={() => getOrdersFx("in_bidding")}
+      promise={() => getOrdersFx({ status: "in_bidding", page })}
     />
   );
 }
 
 export function OrdersInDirect() {
   const userType = useUnit($userType);
+  const page = usePageFromSearchParams();
   const customerPageData = {
     textActions: (
       <>
@@ -166,13 +177,14 @@ export function OrdersInDirect() {
           ? customerPageData
           : transporterPageData
       }
-      promise={() => getOrdersFx("in_direct")}
+      promise={() => getOrdersFx({ status: "in_direct", page })}
     />
   );
 }
 
 export function OrdersBeingExecuted() {
   const userType = useUnit($userType);
+  const page = usePageFromSearchParams();
   const customerPageData = {
     textActions: (
       <>
@@ -200,7 +212,7 @@ export function OrdersBeingExecuted() {
           ? customerPageData
           : transporterPageData
       }
-      promise={() => getOrdersFx("being_executed")}
+      promise={() => getOrdersFx({ status: "being_executed", page })}
     />
   );
 }

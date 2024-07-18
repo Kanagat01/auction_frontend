@@ -12,9 +12,9 @@ export const handleClick = (
   else text = target.textContent as string;
   navigator.clipboard.writeText(text).then(() => {
     const parent = target.closest(".position-relative");
-    let toast = parent!.querySelector(".toast-copied") as HTMLElement | null;
+    let toast = parent!.querySelector(".toast-copied") as HTMLElement;
     if (!toast) {
-      toast = document.createElement("div");
+      toast = document.createElement("div") as HTMLElement;
       toast.className = "toast-copied";
       if (!("value" in target)) {
         toast.style.top = "-30px";

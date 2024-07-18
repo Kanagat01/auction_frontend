@@ -1,3 +1,6 @@
+@import "~/app/styles/colors.scss";
+$default-font-color: map-get($colors, "default-font-color");
+
 html,
 body {
   padding: 0;
@@ -9,6 +12,10 @@ body {
 
 .custom-toaster {
   font-size: 1.8rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .main-bg {
@@ -75,14 +82,12 @@ body {
   opacity: 0;
   transform: translateX(-30px);
   transition: opacity 0.5s ease, transform 0.5s ease;
-}
-.slide-animation.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
 
-@import "~/app/styles/colors.scss";
-$default-font-color: map-get($colors, "default-font-color");
+  &.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
 .control-panel {
   margin-top: 2rem;

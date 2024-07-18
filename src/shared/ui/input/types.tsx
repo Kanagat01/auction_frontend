@@ -11,7 +11,6 @@ export type BaseProp = {
   label: string;
   label_style?: CSSProperties;
   container_style?: CSSProperties;
-  error?: string;
 };
 
 export type InputProps = BaseProp &

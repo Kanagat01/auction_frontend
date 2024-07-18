@@ -1,0 +1,87 @@
+.copy-text {
+  display: flex;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+
+  input,
+  textarea {
+    border-radius: 10px;
+    border: none;
+    outline: none;
+  }
+
+  button {
+    position: relative;
+    background: #fff;
+    color: var(--primary);
+    font-size: 1.8rem;
+    border: 1px solid var(--primary);
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+    height: fit-content;
+    padding: 0 0.5rem;
+
+    &:active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    &:before,
+    &:after {
+      display: block;
+      background: var(--primary);
+      position: absolute;
+    }
+    &:before {
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 1rem;
+
+      content: "Скопировано";
+      top: -30px;
+      left: -5px;
+      z-index: 2;
+    }
+
+    &:after {
+      transform: rotate(45deg);
+      content: "";
+      top: -13px;
+      left: 15px;
+      width: 10px;
+      height: 10px;
+      z-index: 1;
+    }
+  }
+
+  &.active button::before,
+  &.active button::after {
+    display: block;
+  }
+}
+
+.toast-copied {
+  position: absolute;
+  top: -7px;
+  left: 10px;
+
+  display: block;
+  width: fit-content;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 1rem;
+
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

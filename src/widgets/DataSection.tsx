@@ -1,5 +1,6 @@
-import { CSSProperties, ChangeEvent, useState } from "react";
+import { CSSProperties, ChangeEvent, useState, ReactNode } from "react";
 import { TGetOrder } from "~/entities/Order";
+import { copyOnClickWrapper, handleClick } from "~/features/copyOnClick";
 import { InputContainer, RoundedTable, TitleSm } from "~/shared/ui";
 
 const gridContainer: CSSProperties = {
@@ -57,7 +58,7 @@ export function DataSection({ order }: { order: TGetOrder }) {
       },
     ],
   ];
-  const tableData = [
+  let tableData: [ReactNode, ReactNode][] = [
     ["Стартовая цена", order.start_price],
     ["Шаг цены", order.price_step],
     ["Способ погрузки", order.transport_load_type],
@@ -68,15 +69,19 @@ export function DataSection({ order }: { order: TGetOrder }) {
   ];
   if (order.driver) {
     tableData.push(
-      ...[
+      ...([
         ["Телефон", order.driver.phone_number],
         ["ФИО водителя", order.driver.user_or_fullname.full_name],
         ["Номер паспорта", order.driver.passport_number],
         ["Данные авто", order.driver.machine_data],
         ["Номер авто", order.driver.machine_number],
-      ]
+      ] as [ReactNode, ReactNode][])
     );
   }
+  tableData = tableData.map(([field, value]) => [
+    field,
+    copyOnClickWrapper(value),
+  ]);
   return (
     <>
       {inputs.map((arr, key) => (
@@ -87,7 +92,6 @@ export function DataSection({ order }: { order: TGetOrder }) {
         >
           {arr.map((props) => (
             <InputContainer
-              key={props.name}
               {...props}
               variant={key === 1 ? "textarea" : "input"}
               label_style={{
@@ -98,7 +102,8 @@ export function DataSection({ order }: { order: TGetOrder }) {
                 marginBottom: "1rem",
               }}
               className="w-100"
-              disabled
+              onClick={handleClick}
+              readOnly
             />
           ))}
         </div>
@@ -134,7 +139,7 @@ export function DataSection({ order }: { order: TGetOrder }) {
           {["Погрузка", "Выгрузка"].map((text) => (
             <TitleSm
               key={text}
-              className="ms-2 mb-2"
+              className="position-relative ms-2 mb-2"
               style={{ fontWeight: 600 }}
             >
               {text}
@@ -144,18 +149,21 @@ export function DataSection({ order }: { order: TGetOrder }) {
             <RoundedTable
               key={key}
               data={[
-                [`${stage.company}\n${stage.address}`],
-                [stage.contact_person],
+                [copyOnClickWrapper(`${stage.company}\n${stage.address}`)],
+                [copyOnClickWrapper(stage.contact_person)],
                 [
-                  <>
-                    {new Date(stage.date).toLocaleDateString("ru", {
-                      year: "numeric",
-                      month: "numeric",
-                      day: "numeric",
-                    })}{" "}
-                    <br />
-                    {stage.time_start.slice(0, 5)}-{stage.time_end.slice(0, 5)}
-                  </>,
+                  copyOnClickWrapper(
+                    <>
+                      {new Date(stage.date).toLocaleDateString("ru", {
+                        year: "numeric",
+                        month: "numeric",
+                        day: "numeric",
+                      })}{" "}
+                      <br />
+                      {stage.time_start.slice(0, 5)}-
+                      {stage.time_end.slice(0, 5)}
+                    </>
+                  ),
                 ],
               ]}
             />
@@ -166,7 +174,7 @@ export function DataSection({ order }: { order: TGetOrder }) {
               className="d-flex flex-column justify-content-between"
             >
               <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
-                Параметры груза - {stage.cargo}
+                Параметры груза - {copyOnClickWrapper(stage.cargo)}
               </TitleSm>
               <div className="gray-line" />
             </div>
@@ -175,11 +183,11 @@ export function DataSection({ order }: { order: TGetOrder }) {
             <div key={key}>
               <div className="d-flex justify-content-between mt-2">
                 <TitleSm className="gray-text">Вес</TitleSm>
-                <TitleSm>{stage.weight} kg</TitleSm>
+                <TitleSm>{copyOnClickWrapper(`${stage.weight} kg`)}</TitleSm>
               </div>
               <div className="d-flex justify-content-between mt-1">
                 <TitleSm className="gray-text">Обьем</TitleSm>
-                <TitleSm>{stage.volume} cbm</TitleSm>
+                <TitleSm>{copyOnClickWrapper(`${stage.volume} cbm`)}</TitleSm>
               </div>
             </div>
           ))}
@@ -189,7 +197,7 @@ export function DataSection({ order }: { order: TGetOrder }) {
                 Комментарии к поставке
               </TitleSm>
               <div className="gray-line mb-2" />
-              <TitleSm>{stage.comments}</TitleSm>
+              <TitleSm>{copyOnClickWrapper(stage.comments)}</TitleSm>
             </div>
           ))}
         </div>

@@ -1,5 +1,9 @@
 import { useState, ChangeEvent, KeyboardEvent } from "react";
+import { useUnit } from "effector-react";
+import { Modal } from "react-bootstrap";
 import { Header, OrderSections } from "~/widgets";
+import { $selectedOrder, getOrderFx, selectOrder } from "~/entities/Order";
+import { useModalState } from "~/shared/lib";
 import {
   MainTitle,
   Preloader,
@@ -7,10 +11,6 @@ import {
   SearchInput,
   TextCenter,
 } from "~/shared/ui";
-import { useUnit } from "effector-react";
-import { $selectedOrder, getOrderFx, selectOrder } from "~/entities/Order";
-import { Modal } from "react-bootstrap";
-import { useModalState } from "~/shared/lib";
 
 export default function FindCargo() {
   const order = useUnit($selectedOrder);

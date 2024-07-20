@@ -15,7 +15,7 @@ export function Header() {
       <div className={styles["logo"]}>
         <NavLink to={Routes.HOME}>Kargonika</NavLink>
       </div>
-      {isAuth ? (
+      {isAuth && (
         <div className={styles["left-side"]}>
           <MenuProfile />
           <div className={styles["menu-actions"]}>
@@ -27,8 +27,6 @@ export function Header() {
             <LogoutBtn />
           </div>
         </div>
-      ) : (
-        ""
       )}
     </header>
   );

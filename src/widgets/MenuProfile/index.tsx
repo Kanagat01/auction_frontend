@@ -27,10 +27,10 @@ export function MenuProfile() {
         <span className={styles["org-name"]}>+7 777 777 7777</span>
       </div>
       <div className="rounded-block company-logo">
-        {mainData!.user.full_name[0]}
+        {mainData?.user.full_name[0]}
       </div>
       <div className={styles["profile-main"]}>
-        <span className={styles["full-name"]}>{mainData!.user.full_name}</span>
+        <span className={styles["full-name"]}>{mainData?.user.full_name}</span>
         <span className={styles["org-name"]}>{orgName}</span>
       </div>
       {mainData?.user.user_type === "customer_company" ? (

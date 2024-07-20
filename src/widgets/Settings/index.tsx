@@ -16,8 +16,8 @@ export function SettingsModal() {
   const role = mainData?.user.user_type.split("_")[1];
   const currentCompany =
     role === "manager"
-      ? (mainData as CustomerManager).company.company_name
-      : (mainData as CustomerCompany).company_name;
+      ? (mainData as CustomerManager)?.company.company_name
+      : (mainData as CustomerCompany)?.company_name;
   const sectionDict: Record<TSection, string> = {
     main: currentCompany,
     company: "Ваши реквизиты",

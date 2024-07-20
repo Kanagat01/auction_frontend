@@ -2,12 +2,12 @@ import { ChangeEvent } from "react";
 import { Col } from "react-bootstrap";
 import {
   FieldProps,
-  FieldUpdatePayload,
-  SelectFieldProps,
   fieldUpdate,
+  FieldUpdatePayload,
   initialOrder,
-  orderTranslations,
-} from "~/entities/Order";
+  SelectFieldProps,
+} from "~/features/create-order";
+import { orderTranslations } from "~/entities/Order";
 import { InputContainer } from "~/shared/ui";
 import styles from "./styles.module.scss";
 

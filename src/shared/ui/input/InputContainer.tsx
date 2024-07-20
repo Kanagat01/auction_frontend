@@ -17,7 +17,7 @@ export const InputContainer: FC<
       style={container_style}
     >
       {props.label && (
-        <label htmlFor={props.name} style={label_style}>
+        <label htmlFor={props.id ? props.id : props.name} style={label_style}>
           {props.label}
         </label>
       )}

@@ -27,6 +27,9 @@ $border-color: rgba(0, 0, 0, 0.1);
     border-right: 1px solid $border-color;
     padding: 1rem;
   }
+  tr:last-child {
+    border-bottom: 1px solid $border-color;
+  }
 }
 
 .cursorPointer {
@@ -71,9 +74,8 @@ $border-color: rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: end;
-  margin-top: 1rem;
-  margin-right: 3rem;
   gap: 1rem;
+  margin: 2rem 3rem;
 
   a,
   span {

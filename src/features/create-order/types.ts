@@ -1,3 +1,19 @@
+import { TGetOrder } from "~/entities/Order";
+
+export type TNewOrder = Omit<
+  TGetOrder,
+  | "id"
+  | "customer_manager"
+  | "transporter_manager"
+  | "driver"
+  | "created_at"
+  | "updated_at"
+  | "status"
+  | "offers"
+  | "tracking"
+  | "documents"
+> & { customer_manager: string };
+
 export type TInputs = {
   customer_manager: string;
   start_price: number;

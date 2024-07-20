@@ -8,13 +8,19 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
     <table className={styles.table}>
       <thead>
         <tr>
-          {["№ Поставки", "Этап", "Дата время", "Компания", "Адрес"].map(
-            (text, idx) => (
-              <th key={idx} rowSpan={2}>
-                {text}
-              </th>
-            )
-          )}
+          {[
+            "№ Поставки",
+            "Этап",
+            "Дата время",
+            "Компания",
+            "Индекс",
+            "Город",
+            "Адрес",
+          ].map((text, idx) => (
+            <th key={idx} rowSpan={2}>
+              {text}
+            </th>
+          ))}
           <th colSpan={2}>Груз</th>
           <th rowSpan={2}>Контактное лицо</th>
         </tr>
@@ -40,6 +46,8 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
                     {stageData.date} {stageData.time_start}-{stageData.time_end}
                   </td>
                   <td rowSpan={2}>{stageData.company}</td>
+                  <td rowSpan={2}>{stageData.postal_code}</td>
+                  <td rowSpan={2}>{stageData.city}</td>
                   <td rowSpan={2}>{stageData.address}</td>
                   <td colSpan={2}>{stageData.cargo}</td>
                   <td rowSpan={2}>{stageData.contact_person}</td>
@@ -53,7 +61,7 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
           )
         ) : (
           <tr>
-            <td colSpan={8}>
+            <td colSpan={10}>
               <TitleMd className="p-4">
                 <TextCenter>Нет данных для отображения</TextCenter>
               </TitleMd>

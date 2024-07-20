@@ -6,7 +6,6 @@ import {
   attach,
   Effect,
 } from "effector";
-import { fieldUpdate as orderFormFieldUpdate } from "~/entities/Order";
 import { apiInstance, apiRequestFx, RequestParams } from "~/shared/api";
 import { logger } from "~/shared/config";
 import { isValidEmail } from "~/shared/lib";
@@ -47,11 +46,6 @@ $mainData.on(setMainData, (_, newState) => newState);
 
 $mainData.watch((mainData) => {
   if (!mainData) return null;
-
-  orderFormFieldUpdate({
-    key: "customer_manager",
-    value: mainData.user.full_name,
-  });
   setUserType(mainData.user.user_type);
 });
 
@@ -110,7 +104,7 @@ editUser.watch(({ setIsEditing, ...data }) => {
       return "Данные обновлены";
     },
     error: (err) => {
-      if (err.email) return "Неправильный email";
+      if (err?.email) return "Неправильный email";
       return `Произошла ошибка: ${err}`;
     },
   });

@@ -1,4 +1,5 @@
 import { useUnit } from "effector-react";
+import { useLocation } from "react-router-dom";
 import { ControlPanel, ControlPanelProps, OrderSections } from "~/widgets";
 import { $orders, $ordersPagination, OrdersList } from "~/entities/Order";
 import {
@@ -9,11 +10,16 @@ import {
 } from "~/shared/ui";
 import { renderPromise } from "~/shared/api";
 
+export function usePageFromSearchParams(): number | undefined {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  return Number(searchParams.get("page")) || undefined;
+}
+
 export const iconActionProps = {
   className: "outline-btn px-2 py-0 me-2",
   style: { fontSize: "2rem" },
 };
-
 export const textActionProps = { className: "me-2 px-3 py-2" };
 
 type TOrdersPage = {
@@ -50,7 +56,7 @@ export function OrdersPage({ title, pageData, promise }: TOrdersPage) {
               error: (err) => (
                 <TextCenter className="p-5 mt-5">
                   <MainTitle style={{ fontSize: "2.5rem", fontWeight: 500 }}>
-                    Произошла ошибка: {err.message}
+                    Произошла ошибка: {err?.message}
                   </MainTitle>
                 </TextCenter>
               ),

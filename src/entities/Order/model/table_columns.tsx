@@ -1,55 +1,102 @@
 import { useUnit } from "effector-react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DriverProfile, TUser } from "~/entities/User";
+import { OrderOfferStatus } from "~/entities/Offer";
+import {
+  findEarliestLoadStage,
+  findLatestUnloadStage,
+} from "~/entities/OrderStage";
 import { Checkbox } from "~/shared/ui";
 import Routes from "~/shared/routes";
 import {
-  OrderModel,
+  $selectedOrder,
+  deselectOrder,
+  selectOrder,
   OrderStatus,
-  TGetOrder,
   TOrderStatus,
   orderTranslations,
-} from "../types";
-import { $selectedOrder, deselectOrder, selectOrder } from "..";
+  TColumn,
+} from "..";
 
 const defaultKeys = [
   "transportation_number",
   "customer_manager",
-  "transporter_manager",
-  "driver",
-  "status",
-  "start_price",
-  "price_step",
-  "comments_for_transporter",
-  "additional_requirements",
-  "created_at",
-  "updated_at",
-] as Exclude<keyof OrderModel, "id">[];
+  "stages_cnt",
+  "city_from",
+  "postal_code",
+  "loading_date",
+  "loading_time",
+  "city_to",
+  "unloading_date",
+  "volume",
+  "weight",
+] as (keyof TColumn)[];
 
-const keysCustomer: Partial<Record<Routes, Exclude<keyof OrderModel, "id">[]>> =
-  {
-    [Routes.ORDERS_BEING_EXECUTED]: defaultKeys,
-    [Routes.UNPUBLISHED_ORDERS]: defaultKeys,
-    [Routes.ORDERS_IN_AUCTION]: defaultKeys,
-    [Routes.ORDERS_IN_BIDDING]: defaultKeys,
-    [Routes.ORDERS_IN_DIRECT]: defaultKeys,
-    [Routes.CANCELLED_ORDERS]: defaultKeys,
-  };
+const keysCustomer: Partial<Record<Routes, (keyof TColumn)[]>> = {
+  [Routes.ORDERS_BEING_EXECUTED]: [
+    ...defaultKeys,
+    "final_price",
+    "transporter",
+    "driver",
+    "application_type",
+    "comments_for_transporter",
+  ],
+  [Routes.UNPUBLISHED_ORDERS]: [...defaultKeys, "comments_for_transporter"],
+  [Routes.ORDERS_IN_AUCTION]: [
+    ...defaultKeys,
+    "start_price",
+    "best_offer_price",
+    "best_offer_company",
+    "comments_for_transporter",
+  ],
+  [Routes.ORDERS_IN_BIDDING]: [
+    ...defaultKeys,
+    "start_price",
+    "best_offer_price",
+    "best_offer_company",
+    "comments_for_transporter",
+  ],
+  [Routes.ORDERS_IN_DIRECT]: [
+    ...defaultKeys,
+    "comments_for_transporter",
+    "transporter",
+  ],
+  [Routes.CANCELLED_ORDERS]: [
+    ...defaultKeys,
+    "start_price",
+    "best_offer_price",
+    "transporter",
+    "driver",
+    "application_type",
+    "comments_for_transporter",
+  ],
+};
 
-const keysTransporter: Partial<
-  Record<Routes, Exclude<keyof OrderModel, "id">[]>
-> = {
-  [Routes.ORDERS_BEING_EXECUTED]: defaultKeys,
-  [Routes.ORDERS_IN_AUCTION]: defaultKeys,
-  [Routes.ORDERS_IN_BIDDING]: defaultKeys,
-  [Routes.ORDERS_IN_DIRECT]: defaultKeys,
-  [Routes.CANCELLED_ORDERS]: defaultKeys,
+const keysTransporter: Partial<Record<Routes, (keyof TColumn)[]>> = {
+  [Routes.ORDERS_BEING_EXECUTED]: [
+    ...defaultKeys,
+    "final_price",
+    "transporter",
+    "driver",
+    "application_type",
+  ],
+  [Routes.ORDERS_IN_AUCTION]: [...defaultKeys, "offer_price"],
+  [Routes.ORDERS_IN_BIDDING]: [...defaultKeys, "offer_price"],
+  [Routes.ORDERS_IN_DIRECT]: [...defaultKeys, "comments_for_transporter"],
+  [Routes.CANCELLED_ORDERS]: [
+    ...defaultKeys,
+    "start_price",
+    "best_offer_price",
+    "transporter",
+    "driver",
+    "application_type",
+  ],
 };
 
 export const getColumns = (route: Routes, role: "transporter" | "customer") => {
+  const columnHelper = createColumnHelper<TColumn>();
   const keys =
     role === "customer" ? keysCustomer[route] : keysTransporter[route];
-  const columnHelper = createColumnHelper<TGetOrder>();
   if (!keys) throw "This route not in the dict";
   return keys.map((key, index) =>
     columnHelper.accessor(key, {
@@ -66,6 +113,7 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
               <Checkbox
                 className="mr-3"
                 {...{
+                  name: orderId.toString(),
                   checked: checked,
                   disabled: !row.getCanSelect(),
                   indeterminate: row.getIsSomeSelected()
@@ -75,31 +123,134 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
                     !checked ? selectOrder(orderId) : deselectOrder(),
                 }}
               />
-              <span className="ms-3">{value ? value.toString() : "-"}</span>
+              <span className="ms-3">{value?.toString() ?? "-"}</span>
             </div>
           );
+        } else if (["volume", "weight"].includes(key)) {
+          let result = 0;
+          const typedKey = key as "volume" | "weight";
+          row.original.stages.map(({ load_stage, unload_stage }) => {
+            result += load_stage[typedKey] + unload_stage[typedKey];
+            return;
+          });
+          return result;
         } else if (["updated_at", "created_at"].includes(key)) {
-          return value
-            ? new Date(value as string | Date).toLocaleDateString("ru", {
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-              })
-            : "-";
+          if (!value) return "-";
+          return new Date(value as string | Date).toLocaleDateString("ru", {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          });
         } else if (key === "status") {
-          const value = info.getValue()?.toString() as TOrderStatus;
-          return OrderStatus[value];
-        } else if (["transporter_manager", "customer_manager"].includes(key))
+          if (!value) return "-";
+          return OrderStatus[value.toString() as TOrderStatus];
+        } else if (["transporter_manager", "customer_manager"].includes(key)) {
           return value ? (value as { user: TUser }).user.full_name : "-";
-        else if (key === "driver")
+        } else if (key === "driver") {
           return value
             ? (value as DriverProfile).user_or_fullname.full_name
             : "-";
-        else return value ? value.toString() : "-";
+        } else if (
+          [
+            "final_price",
+            "best_offer_price",
+            "best_offer_company",
+            "transporter",
+          ].includes(key)
+        ) {
+          // if role is transporter then key is final_price
+          if (role === "transporter") {
+            const priceData = row.original.price_data;
+            return priceData && "price" in priceData ? priceData.price : "-";
+          }
+          if (key === "final_price")
+            return (
+              row.original?.offers?.find(
+                (el) => el.status === OrderOfferStatus.accepted
+              ) ?? "-"
+            );
+
+          const bestOffer = row.original?.offers?.[0];
+          if (!bestOffer) return "-";
+          switch (key) {
+            case "best_offer_price":
+              return bestOffer.price;
+            case "best_offer_company":
+              return bestOffer.transporter_manager.company.company_name;
+            case "transporter":
+              return (
+                <span
+                  style={
+                    bestOffer.status == OrderOfferStatus.rejected
+                      ? { color: "#F40D0D" }
+                      : {}
+                  }
+                >
+                  {bestOffer.transporter_manager.company.company_name}
+                </span>
+              );
+          }
+        } else if (key === "offer_price") {
+          const priceData = row.original.price_data;
+          return priceData && "price" in priceData ? (
+            <span
+              style={
+                "is_best_offer" in priceData
+                  ? priceData.is_best_offer
+                    ? { color: "#1ED900", textDecoration: "underline" }
+                    : { color: "#F40D0D", textDecoration: "underline" }
+                  : {}
+              }
+            >
+              {priceData.price}
+            </span>
+          ) : (
+            "-"
+          );
+        } else if (key === "stages_cnt") return row.original.stages.length;
+        else if (
+          ["city_from", "postal_code", "loading_date", "loading_time"].includes(
+            key
+          )
+        ) {
+          const stage = findEarliestLoadStage(row.original.stages);
+          if (!stage) return "-";
+          switch (key) {
+            case "city_from":
+              return stage.city;
+            case "postal_code":
+              return stage.postal_code;
+            case "loading_date":
+              return stage.date;
+            case "loading_time":
+              return stage.time_start;
+          }
+        } else if (["city_to", "unloading_date"].includes(key)) {
+          const stage = findLatestUnloadStage(row.original.stages);
+          if (!stage) return "-";
+          return key === "city_to" ? stage.city : stage.date;
+        } else if (key === "application_type") {
+          const value = row.original.application_type;
+          switch (value) {
+            case "in_auction":
+              return "Аукцион";
+            case "in_bidding":
+              return "Торги";
+            case "in_direct":
+              return "Прямой заказ";
+            default:
+              return "-";
+          }
+        }
+        return value?.toString() ?? "-";
       },
-      header: () => orderTranslations[key],
+      header: () => {
+        if (!(key in orderTranslations))
+          throw `Add ${key} to orderTranslations`;
+        return orderTranslations[key as keyof typeof orderTranslations];
+      },
       sortDescFirst: false,
       enableSorting: key !== "status",
     })

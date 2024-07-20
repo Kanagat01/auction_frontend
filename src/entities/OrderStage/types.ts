@@ -1,9 +1,11 @@
 export type OrderStages = {
-  id: number;
+  id?: number;
   date: string;
   time_start: string;
   time_end: string;
   company: string;
+  postal_code: string;
+  city: string;
   address: string;
   contact_person: string;
   cargo: string;
@@ -17,6 +19,8 @@ export type TOrderStageKey = keyof Omit<OrderStages, "id">;
 export const OrderStageTranslations: Record<TOrderStageKey, string> = {
   date: "Дата",
   company: "Компания",
+  postal_code: "Индекс",
+  city: "Город",
   address: "Адрес",
   contact_person: "Контактное лицо",
   cargo: "Груз",
@@ -29,8 +33,8 @@ export const OrderStageTranslations: Record<TOrderStageKey, string> = {
 
 export type TStages = {
   order_stage_number: number;
-  load_stage: Omit<OrderStages, "id"> & { id?: number };
-  unload_stage: Omit<OrderStages, "id"> & { id?: number };
+  load_stage: OrderStages;
+  unload_stage: OrderStages;
 };
 
 export type TStage = "load_stage" | "unload_stage";

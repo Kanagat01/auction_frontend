@@ -31,15 +31,19 @@ export function ControlPanel({
   priceInputs = false,
 }: ControlPanelProps) {
   const order = useUnit($selectedOrder);
+  const priceData = order?.price_data;
   if (priceInputs) {
     inputs = [
       ...inputs,
       {
         name: "price",
         label: "Актуальная цена",
-        defaultValue: order?.offers
-          ? order?.offers[0].price
-          : order?.start_price,
+        defaultValue:
+          priceData && "current_price" in priceData
+            ? priceData.current_price
+            : priceData && "price" in priceData
+            ? priceData.price
+            : order?.start_price,
         readOnly: true,
       },
       {

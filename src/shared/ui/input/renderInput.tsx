@@ -17,7 +17,11 @@ export const renderInput = (
       const [showPassword, setShowPassword] = useState<boolean>(false);
       return (
         <div className={styles["password-input"]}>
-          <input {...props} type={showPassword ? "text" : "password"} />
+          <input
+            id={props.name}
+            {...props}
+            type={showPassword ? "text" : "password"}
+          />
           <span
             className={styles.hidePasswordBtn}
             onClick={() => {
@@ -29,12 +33,12 @@ export const renderInput = (
         </div>
       );
     case "input":
-      return <input {...props} />;
+      return <input id={props.name} {...props} />;
     case "textarea":
-      return <textarea {...props}></textarea>;
+      return <textarea id={props.name} {...props}></textarea>;
     case "select":
       return (
-        <select {...props}>
+        <select id={props.name} {...props}>
           <option hidden disabled></option>
           {props.options.map(([value, option]) => (
             <option key={value} value={value}>
@@ -45,7 +49,7 @@ export const renderInput = (
       );
     case "bootstrap-select":
       return (
-        <Form.Select {...props}>
+        <Form.Select id={props.name} {...props}>
           {props.options.map(([value, option]) => (
             <option key={value} value={value}>
               {option}

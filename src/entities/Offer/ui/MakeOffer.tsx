@@ -24,18 +24,17 @@ export const MakeOffer = ({
   ...props
 }: { inAuction?: boolean } & ButtonHTMLAttributes<HTMLButtonElement>) => {
   const order = useUnit($selectedOrder);
-  const price_max =
-    (order?.offers ? order.offers[0].price : order ? order.start_price : 0) -
-    (order && order.price_step ? order.price_step : 0);
+  const priceData = order?.price_data;
+
   const [price, setPrice] = useState<number>(0);
 
   const changePrice = (num: number) => {
-    if (inAuction && num <= 0 && num > price_max) return;
+    if (inAuction) return;
     setPrice(num);
   };
   const [show, changeShow] = useModalState(false);
   const onClick = () => {
-    if (order && order.price_data && order.price_data.by_you) {
+    if (order && priceData && "is_best_offer" in priceData) {
       toast.error("Вы уже сделали предложение");
       return;
     }
@@ -47,11 +46,16 @@ export const MakeOffer = ({
   };
 
   useEffect(() => {
-    if (inAuction) setPrice(price_max);
-    else if (order && order.price_data && order.price_data.by_you)
-      setPrice(order.price_data.price);
-  }, [order]);
+    let newPrice = price;
+    if (inAuction && order) {
+      if (priceData && "current_price" in priceData)
+        newPrice = priceData.current_price - order.price_step;
+      else newPrice = order.start_price - order.price_step;
+    } else if (order && priceData && "price" in priceData)
+      newPrice = priceData.price;
 
+    setPrice(newPrice);
+  }, [order]);
   return (
     <>
       <PrimaryButton {...props} onClick={onClick}>
@@ -67,16 +71,23 @@ export const MakeOffer = ({
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               changePrice(Number(e.target.value))
             }
+            min={1}
             variant="input"
             type="number"
             {...modalInputProps}
-            readOnly={inAuction}
           />
           <div className="buttons">
             <OutlineButton
               style={btnStyle}
               onClick={() =>
-                order ? createOffer({ order_id: order.id, price, onReset }) : ""
+                order
+                  ? createOffer({
+                      order_id: order.id,
+                      price,
+                      inAuction,
+                      onReset,
+                    })
+                  : ""
               }
             >
               Подтвердить

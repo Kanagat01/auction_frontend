@@ -1,6 +1,11 @@
 import toast from "react-hot-toast";
 import { createEvent } from "effector";
-import { $orders, removeOrder, updateOrder } from "~/entities/Order";
+import {
+  $orders,
+  removeOrder,
+  TPriceData,
+  updateOrder,
+} from "~/entities/Order";
 import {
   AcceptOfferRequest,
   CreateOfferRequest,
@@ -21,37 +26,45 @@ getOffers.watch(() => getOffersFx());
 
 // create offer
 export const createOffer = createEvent<
-  CreateOfferRequest & { onReset: () => void }
+  CreateOfferRequest & { inAuction: boolean; onReset: () => void }
 >();
-createOffer.watch(({ onReset, ...data }) =>
+createOffer.watch(({ inAuction, onReset, ...data }) =>
   toast.promise(createOfferFx(data), {
     loading: "Создаем предложение...",
     success: () => {
+      let price_data: TPriceData;
+      if (inAuction)
+        price_data = {
+          offer_id: 0,
+          price: data.price,
+          is_best_offer: true,
+        };
+      else
+        price_data = {
+          offer_id: 0,
+          price: data.price,
+        };
+      updateOrder({ orderId: data.order_id, newData: { price_data } });
       onReset();
       return "Предложение успешно создано";
     },
     error: (err) => {
-      if (err.response.status > 499)
-        return "Серверная ошибка. Код " + err.response.status;
+      const status = err?.response?.status;
+      const message = err?.response?.data?.message;
+      const priceError = err?.response?.data?.price?.[0];
+      const orderIdError = err?.response?.data?.order_id?.[0];
 
-      const err_message = err.response.data.message;
+      if (status > 499) return `Серверная ошибка. Код ${status}`;
       if (
-        typeof err_message === "string" &&
-        err_message.startsWith("not_valid_price. Price must be less than")
+        typeof message === "string" &&
+        message.startsWith("not_valid_price. Price must be less than")
       )
-        return "Цена должна быть меньше чем " + err_message.split(" ")[6];
-
-      if (
-        err_message.price &&
-        err_message.price[0] === "Price must be greater than 0"
-      )
+        return `Цена должна быть меньше чем ${message.split(" ")[6]}`;
+      if (priceError === "Price must be greater than 0")
         return "Цена должна быть больше нуля";
-      else if (
-        err_message.order_id &&
-        err_message.order_id[0] === "You have already offered"
-      )
+      if (orderIdError === "You have already offered")
         return "Вы уже сделали предложение";
-      return "Неизвестная ошибка: " + err_message;
+      return `Неизвестная ошибка: ${message || "Неизвестная ошибка"}`;
     },
   })
 );
@@ -74,7 +87,7 @@ acceptOffer.watch(({ isBestOffer, transportation_number, ...data }) =>
       if (order) removeOrder(order.id);
       return `Предложение #${data.order_offer_id} принят \nЗаказ №${transportation_number} принят`;
     },
-    error: (err) => `Произошла ошибка: ${err.response.data.message}`,
+    error: (err) => `Произошла ошибка: ${err?.response?.data?.message}`,
   })
 );
 
@@ -95,7 +108,7 @@ rejectOffer.watch(({ orderId, order_offer_id, ...data }) =>
       }
       return `Предложение #${order_offer_id} отклонен`;
     },
-    error: (err) => `Произошла ошибка: ${err.response.data.message}`,
+    error: (err) => `Произошла ошибка: ${err?.response?.data?.message}`,
   })
 );
 
@@ -113,7 +126,7 @@ acceptOfferTransporter.watch(({ transportation_number, ...data }) =>
       if (order) removeOrder(order.id);
       return `Заказ №${transportation_number} принят`;
     },
-    error: (err) => `Произошла ошибка: ${err.response.data.message}`,
+    error: (err) => `Произошла ошибка: ${err?.response?.data?.message}`,
   })
 );
 
@@ -131,6 +144,6 @@ rejectOfferTransporter.watch(({ transportation_number, ...data }) =>
       if (order) removeOrder(order.id);
       return `Заказ №${transportation_number} отклонен`;
     },
-    error: (err) => `Произошла ошибка: ${err.response.data.message}`,
+    error: (err) => `Произошла ошибка: ${err?.response?.data?.message}`,
   })
 );

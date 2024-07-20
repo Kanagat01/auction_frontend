@@ -106,7 +106,7 @@ registerManager.watch(({ repeat_password, onSuccess, ...data }) => {
       return "Менеджер успешно зарегистрирован";
     },
     error: (err) => {
-      if (err.email && err.email[0] === "user_already_exists")
+      if (err?.email?.[0] === "user_already_exists")
         return "Пользователь с таким email уже существует";
       return `Произошла ошибка: ${err}`;
     },

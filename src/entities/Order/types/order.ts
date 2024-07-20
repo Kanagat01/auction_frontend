@@ -43,7 +43,26 @@ export type OrderModel = {
   transport_body_height: number;
 };
 
-export const orderTranslations = {
+export type TColumn = TGetOrder & {
+  stages_cnt: number;
+  loading_time: string;
+  loading_date: string;
+  unloading_date: string;
+  city_from: string;
+  city_to: string;
+  postal_code: string;
+  weight: number;
+  volume: number;
+
+  offer_price: number;
+  final_price: number;
+
+  best_offer_price: number;
+  best_offer_company: string;
+  transporter: string;
+};
+
+export const orderTranslations: Record<keyof TColumn, string> = {
   id: "id",
   transportation_number: "№ Транспортировки",
   customer_manager: "Менеджер Заказчика",
@@ -66,16 +85,46 @@ export const orderTranslations = {
   transport_body_width: "Ширина кузова",
   transport_body_length: "Длина кузова",
   transport_body_height: "Высота кузова",
+
+  // TGetOrder
   documents: "Документы",
   offers: "Предложения",
   tracking: "Геоточки",
   stages: "Поставки",
+  price_data: "Данные о цене",
+
+  // table columns
+  stages_cnt: "Поставки, количество",
+  loading_time: "Время погрузки",
+  loading_date: "Дата погрузки",
+  unloading_date: "Дата выгрузки",
+  city_from: "Город-старт",
+  city_to: "Город-место назначения",
+  postal_code: "Индекс",
+  volume: "Обьем",
+  weight: "Вес",
+  offer_price: "Ставка",
+  final_price: "Стоимость перевозки",
+  application_type: "Тип заявки",
+  best_offer_price: "Лучшее предложение",
+  best_offer_company: "Компания с луч. предл.",
+  transporter: "Перевозчик",
 };
 
+export type TPriceData =
+  | { offer_id: number; price: number }
+  | { current_price: number }
+  | {
+      offer_id: number;
+      price: number;
+      is_best_offer: boolean;
+    };
+
 export type TGetOrder = OrderModel & {
-  price_data?: { offer_id: number; price: number; by_you: boolean };
   offers?: OrderOffer[];
   tracking?: OrderTracking | null;
   documents: OrderDocument[];
   stages: TStages[];
+  price_data?: TPriceData;
+  application_type?: "in_auction" | "in_bidding" | "in_direct";
 };

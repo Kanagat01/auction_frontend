@@ -92,6 +92,7 @@ export function DataSection({ order }: { order: TGetOrder }) {
         >
           {arr.map((props) => (
             <InputContainer
+              key={props.name}
               {...props}
               variant={key === 1 ? "textarea" : "input"}
               label_style={{
@@ -152,7 +153,17 @@ export function DataSection({ order }: { order: TGetOrder }) {
             <RoundedTable
               key={key}
               data={[
-                [copyOnClickWrapper(`${stage.company}\n${stage.address}`)],
+                [
+                  copyOnClickWrapper(
+                    <>
+                      {stage.company}
+                      <br />
+                      {stage.city}, {stage.postal_code}
+                      <br />
+                      {stage.address}
+                    </>
+                  ),
+                ],
                 [copyOnClickWrapper(stage.contact_person)],
                 [
                   copyOnClickWrapper(

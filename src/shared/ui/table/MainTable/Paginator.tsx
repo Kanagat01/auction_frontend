@@ -28,43 +28,45 @@ export const Paginator = (paginator: TPaginator) => {
     navigate(`${location.pathname}?${searchParams.toString()}`);
   };
   return (
-    <div className={styles.pagination}>
-      {current_page > 1 && (
-        <NavLink
-          to="#"
-          onClick={(e) => handlePageClick(e, current_page - 1)}
-          style={{
-            marginTop: "-5px",
-            marginRight: !pages.includes(1) ? "-1rem" : "",
-          }}
-        >
-          <FaAngleLeft />
-        </NavLink>
-      )}
-      {!pages.includes(1) && <span>...</span>}
-      {pages.map((page) => (
-        <NavLink
-          to="#"
-          key={page}
-          className={current_page === page ? styles.activePage : ""}
-          onClick={(e) => handlePageClick(e, page)}
-        >
-          {page}
-        </NavLink>
-      ))}
-      {!pages.includes(pages_total) && <span>...</span>}
-      {current_page < pages_total && (
-        <NavLink
-          to="#"
-          onClick={(e) => handlePageClick(e, current_page + 1)}
-          style={{
-            marginTop: "-5px",
-            marginLeft: !pages.includes(pages_total) ? "-1rem" : "",
-          }}
-        >
-          <FaAngleRight />
-        </NavLink>
-      )}
-    </div>
+    pages.length > 1 && (
+      <div className={styles.pagination}>
+        {current_page > 1 && (
+          <NavLink
+            to="#"
+            onClick={(e) => handlePageClick(e, current_page - 1)}
+            style={{
+              marginTop: "-5px",
+              marginRight: !pages.includes(1) ? "-1rem" : "",
+            }}
+          >
+            <FaAngleLeft />
+          </NavLink>
+        )}
+        {!pages.includes(1) && <span>...</span>}
+        {pages.map((page) => (
+          <NavLink
+            to="#"
+            key={page}
+            className={current_page === page ? styles.activePage : ""}
+            onClick={(e) => handlePageClick(e, page)}
+          >
+            {page}
+          </NavLink>
+        ))}
+        {!pages.includes(pages_total) && <span>...</span>}
+        {current_page < pages_total && (
+          <NavLink
+            to="#"
+            onClick={(e) => handlePageClick(e, current_page + 1)}
+            style={{
+              marginTop: "-5px",
+              marginLeft: !pages.includes(pages_total) ? "-1rem" : "",
+            }}
+          >
+            <FaAngleRight />
+          </NavLink>
+        )}
+      </div>
+    )
   );
 };

@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import { CrudOrderStage } from "~/entities/OrderStage";
+import { CrudOrderStage } from "~/features/create-order";
 import { InputContainer, OutlineButton } from "~/shared/ui";
 import styles from "./styles.module.scss";
 

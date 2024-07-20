@@ -31,7 +31,7 @@ export const editOrderStageFx: Effect<EditOrderStageRequest, OrderModel> =
   });
 
 // get order stages
-export const getOrderStagesFx: Effect<void, PreCreateOrderResponse> = attach({
+export const preCreateOrderFx: Effect<void, PreCreateOrderResponse> = attach({
   effect: apiRequestFx,
   mapParams: (): RequestParams => ({
     method: "get",

@@ -1,62 +1,32 @@
-import toast from "react-hot-toast";
+import { createEvent, sample } from "effector";
 import { FormEvent, MouseEvent } from "react";
-import { createStore, createEvent, sample } from "effector";
+import { $orderForm, initialOrder, setOrderForm, TNewOrder } from ".";
 import {
   $selectedOrder,
-  TGetOrder,
   createOrderFx,
   deselectOrder,
   editOrderFx,
   orderTranslations,
 } from "~/entities/Order";
 import { $mainData } from "~/entities/User";
-import { FieldUpdatePayload } from "./types";
+import toast from "react-hot-toast";
 
-type TNewOrder = Omit<
-  TGetOrder,
-  | "id"
-  | "customer_manager"
-  | "transporter_manager"
-  | "created_at"
-  | "updated_at"
-  | "status"
-  | "offers"
-  | "tracking"
-  | "documents"
-> & { customer_manager: string };
-
-export const initialOrder: TNewOrder = {
-  transportation_number: 0,
-  customer_manager: "",
-  start_price: 0,
-  price_step: 0,
-  comments_for_transporter: "",
-  additional_requirements: "",
-  transport_volume: 0,
-  temp_mode: "",
-  adr: 0,
-  transport_body_width: 0,
-  transport_body_length: 0,
-  transport_body_height: 0,
-
-  transport_body_type: 0,
-  transport_load_type: 0,
-  transport_unload_type: 0,
-  stages: [],
-};
-
-export const $orderForm = createStore<TNewOrder & { id?: number }>({
-  ...initialOrder,
-  transportation_number: Math.ceil(Date.now() / 1000),
-});
+export const clearForm = createEvent();
+clearForm.watch(() =>
+  setOrderForm({
+    ...initialOrder,
+    customer_manager: $orderForm.getState().customer_manager,
+    transportation_number: Math.ceil(Date.now() / 1000),
+  } as TNewOrder)
+);
 
 export const CopyOrder = createEvent<MouseEvent<HTMLAnchorElement>>();
-$orderForm.on(CopyOrder, (state, event) => {
+CopyOrder.watch((event) => {
   const order = $selectedOrder.getState();
   if (!order) {
     event.preventDefault();
     toast.error("Выберите заказ для копирования");
-    return state;
+    return;
   }
   let newState: Partial<TNewOrder> = {
     transportation_number: Math.ceil(Date.now() / 1000),
@@ -73,13 +43,12 @@ $orderForm.on(CopyOrder, (state, event) => {
       // @ts-ignore
       newState[key] = order[key];
     }
-    return;
   });
   sample({
     clock: $orderForm,
     target: deselectOrder,
   });
-  return newState as TNewOrder;
+  setOrderForm(newState as TNewOrder);
 });
 
 export const orderFormSubmitted = createEvent<FormEvent>();
@@ -112,7 +81,8 @@ orderFormSubmitted.watch((e: FormEvent) => {
         success: `Заказ #${id} успешно обновлен`,
         error: (err) => {
           if (
-            err.response.data.message === "transportation_number_must_be_unique"
+            err?.response?.data?.message ===
+            "transportation_number_must_be_unique"
           )
             return "№ Транспортировки должен быть уникальным";
           else return "Неизвестная ошибка";
@@ -127,7 +97,8 @@ orderFormSubmitted.watch((e: FormEvent) => {
         },
         error: (err) => {
           if (
-            err.response.data.message === "transportation_number_must_be_unique"
+            err?.response?.data?.message ===
+            "transportation_number_must_be_unique"
           )
             return "№ Транспортировки должен быть уникальным";
           else return "Неизвестная ошибка";
@@ -138,21 +109,23 @@ orderFormSubmitted.watch((e: FormEvent) => {
 });
 
 export const EditOrder = createEvent<MouseEvent<HTMLAnchorElement>>();
-$orderForm.on(EditOrder, (state, event) => {
+EditOrder.watch((event) => {
   const order = $selectedOrder.getState();
   if (!order) {
     event.preventDefault();
     toast.error("Выберите заказ для редактирования");
-    return state;
+    return;
   }
   toast.remove();
   sample({
     clock: $orderForm,
     target: deselectOrder,
   });
+
   const {
     customer_manager,
     transporter_manager,
+    driver,
     created_at,
     updated_at,
     status,
@@ -161,25 +134,8 @@ $orderForm.on(EditOrder, (state, event) => {
     documents,
     ...newOrderForm
   } = order;
-  return {
+  setOrderForm({
     customer_manager: $mainData.getState()?.user.full_name ?? "",
     ...newOrderForm,
-  };
+  });
 });
-
-export const clearForm = createEvent();
-$orderForm.on(
-  clearForm,
-  (state, _payload) =>
-    ({
-      ...initialOrder,
-      customer_manager: state.customer_manager,
-      transportation_number: Math.ceil(Date.now() / 1000),
-    } as TNewOrder)
-);
-
-export const fieldUpdate = createEvent<FieldUpdatePayload>();
-$orderForm.on(fieldUpdate, (state, { key, value }) => ({
-  ...state,
-  [key]: value,
-}));

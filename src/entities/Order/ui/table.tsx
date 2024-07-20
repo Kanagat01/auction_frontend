@@ -37,6 +37,7 @@ export function OrdersList({
 
   const table = useReactTable({
     data,
+    //@ts-ignore TODO
     columns,
     state: { sorting, columnOrder },
     columnResizeMode: "onChange",

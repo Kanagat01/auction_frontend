@@ -6,13 +6,25 @@ import {
   TOrderStageKey,
   TStage,
 } from "~/entities/OrderStage";
-import { InputContainer } from "~/shared/ui";
-import { $orderStages, $stageType, initialOrderStage } from "./state";
+import { InputContainer, OutlineButton } from "~/shared/ui";
+import { $orderStages, $stageType, initialOrderStage } from "..";
+import styles from "./styles.module.scss";
 
 type FieldUpdatePayload = {
   key: TOrderStageKey;
   value: string | number;
 };
+
+type FieldProps = { name: TOrderStageKey; stageType: TStage };
+
+type StageProps = {
+  stageType: TStage;
+  text1: string;
+  text2: string;
+  onClick1: () => void;
+  onClick2: () => void;
+};
+
 const fieldUpdate = createEvent<FieldUpdatePayload>();
 
 $orderStages.on(fieldUpdate, (state, { key, value }) => {
@@ -32,7 +44,7 @@ const handleChange = fieldUpdate.prepend(
     } as FieldUpdatePayload)
 );
 
-export const StageTypeInput = ({ value }: { value: TStage }) => {
+const StageTypeInput = ({ value }: { value: TStage }) => {
   return (
     <InputContainer
       name="stage"
@@ -52,9 +64,7 @@ export const StageTypeInput = ({ value }: { value: TStage }) => {
   );
 };
 
-type FieldProps = { name: TOrderStageKey; stageType: TStage };
-
-export const Field = ({ name, stageType }: FieldProps) => {
+const Field = ({ name, stageType }: FieldProps) => {
   const value = useStoreMap({
     store: $orderStages,
     keys: [name, stageType],
@@ -78,7 +88,7 @@ export const Field = ({ name, stageType }: FieldProps) => {
   );
 };
 
-export const TimeInput = ({ name, stageType }: FieldProps) => {
+const TimeInput = ({ name, stageType }: FieldProps) => {
   const value = useStoreMap({
     store: $orderStages,
     keys: [name, stageType],
@@ -100,5 +110,49 @@ export const TimeInput = ({ name, stageType }: FieldProps) => {
         marginBlock: "1rem",
       }}
     />
+  );
+};
+
+export const Stage = ({ stageType, ...props }: StageProps) => {
+  return (
+    <div style={{ width: "50%" }}>
+      <StageTypeInput value={stageType} />
+      <Field name="date" stageType={stageType} />
+      <div className={styles.timeBlock}>
+        <TimeInput name="time_start" stageType={stageType} />
+        <TimeInput name="time_end" stageType={stageType} />
+      </div>
+      {(
+        [
+          "company",
+          "postal_code",
+          "city",
+          "address",
+          "contact_person",
+          "cargo",
+          "weight",
+          "volume",
+          "comments",
+        ] as TOrderStageKey[]
+      ).map((name, idx) => (
+        <Field key={idx} name={name} stageType={stageType} />
+      ))}
+      <div className={styles.buttonsBlock}>
+        <OutlineButton
+          className={styles.modalBtn}
+          type="button"
+          onClick={props.onClick1}
+        >
+          {props.text1}
+        </OutlineButton>
+        <OutlineButton
+          className={styles.modalBtn}
+          type="button"
+          onClick={props.onClick2}
+        >
+          {props.text2}
+        </OutlineButton>
+      </div>
+    </div>
   );
 };

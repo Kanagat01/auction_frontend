@@ -6,6 +6,7 @@ import {
   addDriverDataFx,
   cancelOrderFx,
   completeOrderFx,
+  getOrderFx,
   getOrdersFx,
   publishOrderFx,
   unpublishOrderFx,
@@ -20,6 +21,7 @@ import { AddDriverDataRequest } from ".";
 
 export const $orders = createStore<TGetOrder[]>([]);
 $orders.on(getOrdersFx.doneData, (_, payload) => payload.orders);
+$orders.on(getOrderFx.doneData, (_, order) => [order]);
 
 export const $ordersPagination = createStore<TPaginator | null>(null);
 $ordersPagination.on(getOrdersFx.doneData, (_, payload) => payload.pagination);
@@ -59,8 +61,8 @@ $selectedOrder.on(updateSelectedOrder, (state) => {
   return null;
 });
 export const isOrderSelected = (func: Function) => {
-  const order_id = $selectedOrder.getState();
-  if (!order_id) toast.error("Выберите заказ");
+  const order = $selectedOrder.getState();
+  if (!order) toast.error("Выберите заказ");
   else func();
 };
 
@@ -181,8 +183,9 @@ addDriverData.watch(({ onReset, ...data }) => {
       return "Данные отправлены";
     },
     error: (err) => {
-      if (err === "This order already have a driver")
-        return "Данные о водителе уже существуют";
+      if (err === "Status should be being_executed") {
+        return 'Для добавления данных о водителе, статус заказа должен быть "Выполняется"';
+      }
       return `Произошла ошибка: ${err}`;
     },
   });

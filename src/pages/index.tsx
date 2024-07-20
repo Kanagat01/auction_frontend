@@ -2,6 +2,9 @@ import { ReactNode } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import urls from "~/shared/routes";
 import { PrivateRoute } from "./auth-routes";
+import FindCargo from "./find-cargo";
+import OrderPage from "./order-page";
+import Cabinet from "./cabinet";
 import {
   UnpublishedOrders,
   CancelledOrders,
@@ -10,8 +13,6 @@ import {
   OrdersBeingExecuted,
   OrdersInDirect,
 } from "./orders";
-import OrderPage from "./order-page";
-import Cabinet from "./cabinet";
 import {
   Login,
   ForgotPassword,
@@ -38,6 +39,7 @@ export const Routing = () => {
       <Route path={urls.LOGIN} element={<Login />} />
       <Route path={urls.REGISTER} element={<Register />} />
       <Route path={urls.FORGOT_PASSWORD} element={<ForgotPassword />} />
+      <Route path={urls.FIND_CARGO} element={<FindCargo />} />
       <Route
         path={urls.RESET_PASSWORD_CONFIRM}
         element={<ResetPasswordConfirm />}

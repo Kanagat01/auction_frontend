@@ -26,7 +26,9 @@ export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
       (
         [Routes.ORDERS_IN_BIDDING, Routes.ORDERS_IN_AUCTION] as string[]
       ).includes(currentRoute)
-    ) && currentRoute !== Routes.CANCELLED_ORDERS;
+    ) &&
+    currentRoute !== Routes.CANCELLED_ORDERS &&
+    currentRoute !== Routes.FIND_CARGO;
 
   const docsData = documents.map((doc) => [
     <TextCenter>
@@ -34,7 +36,8 @@ export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
         Документ №{doc.id} <br />
         {decodeURIComponent(doc.file).replace("/media/documents/", "")}
       </a>
-      <br />
+    </TextCenter>,
+    <TextCenter>
       {new Date(doc.created_at).toLocaleDateString("ru", {
         year: "numeric",
         month: "numeric",
@@ -43,7 +46,6 @@ export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
         minute: "numeric",
       })}
     </TextCenter>,
-    <TextCenter>ФИО пользователя</TextCenter>,
   ]);
   return (
     <>
@@ -64,12 +66,8 @@ export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
       </div>
       <RoundedTable
         columns={[
-          <TextCenter>
-            Название документа
-            <br />
-            Дата создания
-          </TextCenter>,
-          <TextCenter>Роль</TextCenter>,
+          <TextCenter>Название документа</TextCenter>,
+          <TextCenter>Дата создания</TextCenter>,
         ]}
         data={docsData}
       />

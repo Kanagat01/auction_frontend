@@ -11,6 +11,7 @@ import {
   DocumentsList,
 } from "~/entities/Document";
 import { documentButtonProps, OutlineButton, TitleLg } from "~/shared/ui";
+import { useMediaQuery } from "~/shared/lib";
 import Routes from "~/shared/routes";
 
 type TSection = "documents" | "map" | "data" | "offers";
@@ -65,6 +66,9 @@ export function OrderSections() {
             style={{
               padding: "0.5rem 2rem",
               fontSize: "1.4rem",
+              ...(useMediaQuery("(max-width: 375px)") && {
+                padding: "0.5rem 1rem",
+              }),
             }}
             onClick={() => setCurrentSection(section)}
             className={currentSection === section ? "active" : ""}

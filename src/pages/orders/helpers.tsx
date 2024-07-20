@@ -54,7 +54,7 @@ export function OrdersPage({ title, pageData, status }: TOrdersPage) {
         if (isNaN(value) || value < 0) return;
         setTransportationNumber(value);
       },
-      onKeyPress: (e: KeyboardEvent<HTMLInputElement>) => {
+      onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "-" || e.key === "+") {
           e.preventDefault();
         }

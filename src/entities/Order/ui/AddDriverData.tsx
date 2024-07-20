@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import {
   useState,
   ChangeEvent,
@@ -15,12 +16,12 @@ import {
   PrimaryButton,
 } from "~/shared/ui";
 import {
-  isOrderSelected,
   AddDriverDataRequest,
   addDriverData,
   $selectedOrder,
+  OrderStatus,
+  OrderStatusTranslation,
 } from "..";
-import toast from "react-hot-toast";
 
 const btnStyle: CSSProperties = {
   width: "100%",
@@ -50,12 +51,26 @@ export const AddDriverData = (
   const [driverData, setDriverData] =
     useState<Omit<AddDriverDataRequest, "order_id">>(initialState);
 
-  const onClick = () =>
-    isOrderSelected(() => {
-      if ($selectedOrder.getState()?.driver)
-        toast.error("Данные о водителе уже существуют");
-      else changeShow();
-    });
+  const onClick = () => {
+    const order = $selectedOrder.getState();
+    if (!order) {
+      toast.error("Выберите заказ");
+      return;
+    } else if (order.status !== OrderStatus.being_executed) {
+      toast.error(
+        `Нельзя подать данные, статус заказа "${
+          OrderStatusTranslation[order.status]
+        }"`
+      );
+      return;
+    }
+    if (order.driver)
+      setDriverData({
+        ...order.driver,
+        full_name: order.driver.user_or_fullname.full_name,
+      });
+    changeShow();
+  };
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setDriverData((prevData) => ({
       ...prevData,

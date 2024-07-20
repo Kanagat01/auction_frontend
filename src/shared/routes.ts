@@ -3,6 +3,7 @@ enum Routes {
   REGISTER = "/register",
   FORGOT_PASSWORD = "/forgot-password",
   RESET_PASSWORD_CONFIRM = "/reset-password-confirm/:token",
+  FIND_CARGO = "/find-cargo",
 
   HOME = "/",
   NEW_ORDER = "/new-order",

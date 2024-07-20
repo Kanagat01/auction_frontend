@@ -1,6 +1,6 @@
-import { Effect, attach, createEvent } from "effector";
+import { Effect, attach } from "effector";
 import { $userType, DriverProfile, getRole } from "~/entities/User";
-import { OrderModel } from "~/entities/Order";
+import { OrderModel, TGetOrder } from "~/entities/Order";
 import { RequestParams, apiRequestFx } from "~/shared/api";
 import {
   AddDriverDataRequest,
@@ -25,6 +25,15 @@ enum OrderStatusUrls {
   completed = "get_completed_orders",
 }
 
+// get order
+export const getOrderFx: Effect<number, TGetOrder> = attach({
+  effect: apiRequestFx,
+  mapParams: (transportation_number: number): RequestParams => ({
+    method: "get",
+    url: `/auction/get_order/${transportation_number}/`,
+  }),
+});
+
 // get orders
 export const getOrdersFx: Effect<GetOrdersRequest, GetOrdersResponse> = attach({
   effect: apiRequestFx,
@@ -47,8 +56,6 @@ export const getOrdersFx: Effect<GetOrdersRequest, GetOrdersResponse> = attach({
     };
   },
 });
-export const getOrders = createEvent<GetOrdersRequest>();
-getOrders.watch((data) => getOrdersFx(data));
 
 // create order
 export const createOrderFx: Effect<CreateOrderRequest, OrderModel> = attach({

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 
 export const useModalState = (initialState: boolean): [boolean, () => void] => {
   const [state, setState] = useState<boolean>(initialState);
@@ -13,4 +13,20 @@ export const useTextInputState = (
   const onChange = (e: ChangeEvent<HTMLInputElement>) =>
     setState(e.target.value);
   return [state, onChange];
+};
+
+export const useMediaQuery = (query: string) => {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = () => setMatches(media.matches);
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, [matches, query]);
+
+  return matches;
 };

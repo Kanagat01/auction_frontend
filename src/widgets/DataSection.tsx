@@ -1,6 +1,8 @@
 import { CSSProperties, ChangeEvent, useState, ReactNode } from "react";
+import { useLocation } from "react-router";
 import { TGetOrder } from "~/entities/Order";
 import { copyOnClickWrapper, handleClick } from "~/features/copyOnClick";
+import Routes from "~/shared/routes";
 import { InputContainer, RoundedTable, TitleSm } from "~/shared/ui";
 
 const gridContainer: CSSProperties = {
@@ -82,6 +84,9 @@ export function DataSection({ order }: { order: TGetOrder }) {
     field,
     copyOnClickWrapper(value),
   ]);
+  if (Routes.FIND_CARGO === useLocation().pathname) {
+    tableData.splice(0, 2);
+  }
   return (
     <>
       {inputs.map((arr, key) => (

@@ -16,7 +16,7 @@ export function OrdersInDirect() {
   const page = usePageFromSearchParams();
   const customerPageData = {
     textActions:
-      userType === "transporter_manager" ? (
+      userType === "customer_manager" ? (
         <>
           <UnpublishOrder {...textActionProps} />
           <CancelOrder variant="text" {...textActionProps} />

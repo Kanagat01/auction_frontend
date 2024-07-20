@@ -80,15 +80,20 @@ orderFormSubmitted.watch((e: FormEvent) => {
       style: { fontSize: "1.4rem" },
     });
   } else {
-    const handleError = (err: string) => {
-      if (err === "transportation_number_must_be_unique")
-        return "№ Транспортировки должен быть уникальным";
-      if (err.startsWith("order_stage_number_must_be_unique")) {
-        const stageNum = Number(err.split(":")[1]);
-        setNotValidStageNumber(stageNum);
-        return `№ Поставки должен быть уникальным: ${stageNum}`;
+    const handleError = (err: string | Record<string, string[]>) => {
+      if (typeof err === "string") {
+        if (err === "transportation_number_must_be_unique")
+          return "№ Транспортировки должен быть уникальным";
+        if (err.startsWith("order_stage_number_must_be_unique")) {
+          const stageNum = Number(err.split(":")[1]);
+          setNotValidStageNumber(stageNum);
+          return `№ Поставки должен быть уникальным: ${stageNum}`;
+        }
+        return `Произошла ошибка: ${err}`;
       }
-      return `Произошла ошибка: ${err}`;
+      if (err?.order_stage_number?.[0])
+        return `№ Поставки: ${err?.order_stage_number?.[0]}`;
+      return "Неизвестная ошибка";
     };
     if (formValues.id) {
       const { id, ...data } = formValues;

@@ -66,10 +66,22 @@ export const $orderStages = createStore<TStages>({
   unload_stage: initialOrderStage,
 }).on(setOrderStages, (_, state) => state);
 
+export const setSelectedStage = createEvent<TStages | null>();
+export const $selectedStage = createStore<TStages | null>(null).on(
+  setSelectedStage,
+  (_, state) => state
+);
+
 export const setStageType = createEvent<TStage>();
 export const $stageType = createStore<TStage>("load_stage").on(
   setStageType,
-  (_, payload) => payload
+  (_, state) => state
+);
+
+export const setNotValidStageNumber = createEvent<number>();
+export const $notValidStageNumber = createStore<number>(0).on(
+  setNotValidStageNumber,
+  (_, state) => state
 );
 
 export const getStage = (order_stage_number: number) =>

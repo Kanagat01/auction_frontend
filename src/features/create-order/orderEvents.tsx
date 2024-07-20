@@ -1,6 +1,6 @@
-import { createEvent, sample } from "effector";
+import toast from "react-hot-toast";
 import { FormEvent, MouseEvent } from "react";
-import { $orderForm, initialOrder, setOrderForm, TNewOrder } from ".";
+import { createEvent, sample } from "effector";
 import {
   $selectedOrder,
   createOrderFx,
@@ -9,7 +9,13 @@ import {
   orderTranslations,
 } from "~/entities/Order";
 import { $mainData } from "~/entities/User";
-import toast from "react-hot-toast";
+import {
+  $orderForm,
+  initialOrder,
+  setNotValidStageNumber,
+  setOrderForm,
+  TNewOrder,
+} from ".";
 
 export const clearForm = createEvent();
 clearForm.watch(() =>
@@ -74,19 +80,22 @@ orderFormSubmitted.watch((e: FormEvent) => {
       style: { fontSize: "1.4rem" },
     });
   } else {
+    const handleError = (err: string) => {
+      if (err === "transportation_number_must_be_unique")
+        return "№ Транспортировки должен быть уникальным";
+      if (err.startsWith("order_stage_number_must_be_unique")) {
+        const stageNum = Number(err.split(":")[1]);
+        setNotValidStageNumber(stageNum);
+        return `№ Поставки должен быть уникальным: ${stageNum}`;
+      }
+      return `Произошла ошибка: ${err}`;
+    };
     if (formValues.id) {
       const { id, ...data } = formValues;
       toast.promise(editOrderFx({ order_id: id, ...data }), {
         loading: `Обновляем заказ #${id}...`,
         success: `Заказ #${id} успешно обновлен`,
-        error: (err) => {
-          if (
-            err?.response?.data?.message ===
-            "transportation_number_must_be_unique"
-          )
-            return "№ Транспортировки должен быть уникальным";
-          else return "Неизвестная ошибка";
-        },
+        error: handleError,
       });
     } else {
       toast.promise(createOrderFx(formValues), {
@@ -95,14 +104,7 @@ orderFormSubmitted.watch((e: FormEvent) => {
           clearForm();
           return "Заказ успешно создан";
         },
-        error: (err) => {
-          if (
-            err?.response?.data?.message ===
-            "transportation_number_must_be_unique"
-          )
-            return "№ Транспортировки должен быть уникальным";
-          else return "Неизвестная ошибка";
-        },
+        error: handleError,
       });
     }
   }
@@ -132,6 +134,7 @@ EditOrder.watch((event) => {
     offers,
     tracking,
     documents,
+    application_type,
     ...newOrderForm
   } = order;
   setOrderForm({

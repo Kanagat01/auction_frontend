@@ -31,11 +31,25 @@ export function renderPromise<T, E = Error>(
   });
 
   useEffect(() => {
+    let isMounted = true;
     promiseFn()
-      .then((data) =>
-        setTimeout(() => setState({ loading: false, data, error: null }), 1000)
-      )
-      .catch((err: E) => setState({ loading: false, data: null, error: err }));
+      .then((data) => {
+        if (isMounted) {
+          setTimeout(
+            () => setState({ loading: false, data, error: null }),
+            1000
+          );
+        }
+      })
+      .catch((err: E) => {
+        if (isMounted) {
+          setState({ loading: false, data: null, error: err });
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, [promiseFn]);
 
   if (state.loading) {

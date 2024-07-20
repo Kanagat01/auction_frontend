@@ -1,6 +1,7 @@
 import {
   CSSProperties,
   InputHTMLAttributes,
+  ReactNode,
   SelectHTMLAttributes,
   TextareaHTMLAttributes,
 } from "react";
@@ -8,7 +9,7 @@ import { FormSelectProps } from "react-bootstrap";
 
 export type BaseProp = {
   name: string;
-  label: string;
+  label?: ReactNode;
   label_style?: CSSProperties;
   container_style?: CSSProperties;
 };

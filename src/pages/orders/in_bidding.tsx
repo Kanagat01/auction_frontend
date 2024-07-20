@@ -1,16 +1,11 @@
 import { useUnit } from "effector-react";
 import { $userType, getRole } from "~/entities/User";
 import { AcceptBestOffer, MakeOffer } from "~/entities/Offer";
-import { CancelOrder, getOrdersFx, UnpublishOrder } from "~/entities/Order";
-import {
-  OrdersPage,
-  textActionProps,
-  usePageFromSearchParams,
-} from "./helpers";
+import { CancelOrder, OrderStatus, UnpublishOrder } from "~/entities/Order";
+import { OrdersPage, textActionProps } from "./helpers";
 
 export function OrdersInBidding() {
   const userType = useUnit($userType);
-  const page = usePageFromSearchParams();
   const customerPageData = {
     textActions:
       userType === "customer_manager" ? (
@@ -41,7 +36,7 @@ export function OrdersInBidding() {
           ? customerPageData
           : transporterPageData
       }
-      promise={() => getOrdersFx({ status: "in_bidding", page })}
+      status={OrderStatus.in_bidding}
     />
   );
 }

@@ -1,4 +1,4 @@
-import { Effect, attach } from "effector";
+import { Effect, attach, createEvent } from "effector";
 import { $userType, DriverProfile, getRole } from "~/entities/User";
 import { OrderModel } from "~/entities/Order";
 import { RequestParams, apiRequestFx } from "~/shared/api";
@@ -28,13 +28,27 @@ enum OrderStatusUrls {
 // get orders
 export const getOrdersFx: Effect<GetOrdersRequest, GetOrdersResponse> = attach({
   effect: apiRequestFx,
-  mapParams: ({ status, page }: GetOrdersRequest): RequestParams => ({
-    method: "get",
-    url: `/auction/${getRole(
-      $userType.getState()
-    )}/get_orders/?status=${status}${page ? "&page=" + page : ""}`,
-  }),
+  mapParams: ({
+    status,
+    page,
+    cityFrom,
+    cityTo,
+    transportationNumber,
+  }: GetOrdersRequest): RequestParams => {
+    let queryParams = `status=${status}`;
+    if (page) queryParams += "&page=" + page;
+    if (cityFrom) queryParams += "&city_from=" + cityFrom;
+    if (cityTo) queryParams += "&city_to=" + cityTo;
+    if (transportationNumber)
+      queryParams += "&transportation_number=" + transportationNumber;
+    return {
+      method: "get",
+      url: `/auction/get_orders/?${queryParams}`,
+    };
+  },
 });
+export const getOrders = createEvent<GetOrdersRequest>();
+getOrders.watch((data) => getOrdersFx(data));
 
 // create order
 export const createOrderFx: Effect<CreateOrderRequest, OrderModel> = attach({

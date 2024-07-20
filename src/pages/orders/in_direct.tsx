@@ -1,19 +1,14 @@
 import { useUnit } from "effector-react";
 import { $userType, getRole } from "~/entities/User";
-import { CancelOrder, getOrdersFx, UnpublishOrder } from "~/entities/Order";
+import { CancelOrder, OrderStatus, UnpublishOrder } from "~/entities/Order";
 import {
   AcceptOfferTransporter,
   RejectOfferTransporter,
 } from "~/entities/Offer";
-import {
-  OrdersPage,
-  textActionProps,
-  usePageFromSearchParams,
-} from "./helpers";
+import { OrdersPage, textActionProps } from "./helpers";
 
 export function OrdersInDirect() {
   const userType = useUnit($userType);
-  const page = usePageFromSearchParams();
   const customerPageData = {
     textActions:
       userType === "customer_manager" ? (
@@ -44,7 +39,7 @@ export function OrdersInDirect() {
           ? customerPageData
           : transporterPageData
       }
-      promise={() => getOrdersFx({ status: "in_direct", page })}
+      status={OrderStatus.in_direct}
     />
   );
 }

@@ -3,25 +3,19 @@ import { useUnit } from "effector-react";
 import { NavLink } from "react-router-dom";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
 import { CopyOrder, EditOrder } from "~/features/create-order";
+import { $userType, getRole } from "~/entities/User";
 import {
   CancelOrder,
-  getOrdersFx,
+  OrderStatus,
   PublishOrder,
   PublishOrderInDirect,
 } from "~/entities/Order";
-import { $userType, getRole } from "~/entities/User";
 import Routes from "~/shared/routes";
 import { FolderPlus } from "~/shared/assets";
-import {
-  iconActionProps,
-  OrdersPage,
-  textActionProps,
-  usePageFromSearchParams,
-} from "./helpers";
+import { iconActionProps, OrdersPage, textActionProps } from "./helpers";
 
 export function UnpublishedOrders() {
   const userType = useUnit($userType);
-  const page = usePageFromSearchParams();
   const pageData = {
     iconActions:
       userType === "customer_manager" ? (
@@ -63,7 +57,7 @@ export function UnpublishedOrders() {
     <OrdersPage
       title={getRole(userType) === "customer" ? "Заказы" : "forbidden"}
       pageData={pageData}
-      promise={() => getOrdersFx({ status: "unpublished", page })}
+      status={OrderStatus.unpublished}
     />
   );
 }

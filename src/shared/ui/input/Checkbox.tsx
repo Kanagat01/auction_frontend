@@ -1,8 +1,8 @@
-import { FC, InputHTMLAttributes } from "react";
+import { FC, InputHTMLAttributes, ReactNode } from "react";
 import styles from "./styles.module.scss";
 
 export const Checkbox: FC<
-  InputHTMLAttributes<HTMLInputElement> & { label?: string }
+  InputHTMLAttributes<HTMLInputElement> & { label?: ReactNode }
 > = (props) => {
   return props.label ? (
     <label className="d-flex align-items-center">

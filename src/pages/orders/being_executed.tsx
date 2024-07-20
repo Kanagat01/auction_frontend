@@ -4,18 +4,13 @@ import {
   AddDriverData,
   CancelOrder,
   CompleteOrder,
+  OrderStatus,
   UnpublishOrder,
-  getOrdersFx,
 } from "~/entities/Order";
-import {
-  OrdersPage,
-  textActionProps,
-  usePageFromSearchParams,
-} from "./helpers";
+import { OrdersPage, textActionProps } from "./helpers";
 
 export function OrdersBeingExecuted() {
   const userType = useUnit($userType);
-  const page = usePageFromSearchParams();
   const customerPageData = {
     textActions:
       userType === "customer_manager" ? (
@@ -46,7 +41,7 @@ export function OrdersBeingExecuted() {
           ? customerPageData
           : transporterPageData
       }
-      promise={() => getOrdersFx({ status: "being_executed", page })}
+      status={OrderStatus.being_executed}
     />
   );
 }

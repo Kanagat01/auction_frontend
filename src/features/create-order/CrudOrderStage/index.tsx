@@ -1,25 +1,29 @@
 import toast from "react-hot-toast";
-import { useUnit } from "effector-react";
-import { useEffect, ButtonHTMLAttributes } from "react";
 import { Modal } from "react-bootstrap";
+import { useUnit } from "effector-react";
+import { useEffect, ChangeEvent, ButtonHTMLAttributes } from "react";
 
-import { ModalTitle } from "~/shared/ui";
+import { ModalTitle, InputContainer, OutlineButton } from "~/shared/ui";
 import {
   clearStages,
   addStageCouple,
   $stageType,
   setStageType,
   editStageCouple,
+  $selectedStage,
+  setOrderForm,
+  $orderForm,
+  setSelectedStage,
 } from "..";
 import { Stage } from "./inputs";
-import styles from "./styles.module.scss";
+import { CopyStage, CreateStage, EditStage, RemoveStageModal } from "./buttons";
 import {
   $mode,
   $showStageFormModal,
   changeShowStageFormModal,
   resetStageTypeAndCloseModal,
 } from "./helpers";
-import { CopyStage, CreateStage, EditStage, RemoveStageModal } from "./buttons";
+import styles from "./styles.module.scss";
 
 const buttonProps: ButtonHTMLAttributes<HTMLButtonElement> = {
   className: "px-2 py-0 me-2",
@@ -92,5 +96,59 @@ export function CrudOrderStage({
         </Modal.Body>
       </Modal>
     </>
+  );
+}
+
+export function OrderStageForm() {
+  const selectedStage = useUnit($selectedStage);
+  const orderStageNumber = selectedStage?.order_stage_number ?? "";
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (selectedStage) {
+      const value = Number(e.target.value);
+      const prevState = $orderForm.getState();
+      const newStage = prevState.stages.find(
+        (el) => el.order_stage_number === selectedStage.order_stage_number
+      );
+      if (newStage) {
+        newStage.order_stage_number = value;
+        const newStages = prevState.stages.map((stage) =>
+          stage.order_stage_number === selectedStage.order_stage_number
+            ? newStage
+            : stage
+        );
+        setOrderForm({ ...prevState, stages: newStages });
+        setSelectedStage(newStage);
+      }
+    }
+  };
+  return (
+    <div className={styles.gridContainer}>
+      <InputContainer
+        label="№ Поставки"
+        name="order_stage_number"
+        value={orderStageNumber}
+        onChange={onChange}
+        variant="input"
+        type="number"
+        label_style={{ color: "var(--default-font-color)" }}
+        className="w-100"
+        container_style={{
+          justifySelf: "start",
+          marginBottom: "1.5rem",
+        }}
+      />
+      <OutlineButton className={styles.formButton} type="submit">
+        Сохранить
+      </OutlineButton>
+      <div
+        className={`d-flex justify-content-between`}
+        style={{ justifySelf: "start", width: "15rem" }}
+      >
+        <CrudOrderStage orderStageNumber={orderStageNumber} />
+      </div>
+      <OutlineButton className={styles.formButton} type="reset">
+        Отмена
+      </OutlineButton>
+    </div>
   );
 }

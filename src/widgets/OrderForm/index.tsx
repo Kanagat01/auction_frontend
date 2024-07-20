@@ -4,14 +4,12 @@ import {
   $orderForm,
   clearForm,
   orderFormSubmitted,
-  TInputs,
-} from "~/features/create-order";
-import {
   OrderStagesTable,
-  PreCreateOrderResponse,
-} from "~/entities/OrderStage";
+  TInputs,
+  OrderStageForm,
+} from "~/features/create-order";
+import { PreCreateOrderResponse } from "~/entities/OrderStage";
 import { Field, SelectField } from "./inputs";
-import { OrderStageForm } from "../OrderStageForm";
 import styles from "./styles.module.scss";
 
 function mapResponseToOptions(

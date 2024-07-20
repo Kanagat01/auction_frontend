@@ -5,5 +5,4 @@ export * from "./DataSection";
 export * from "./MapSection";
 export * from "./MenuProfile";
 export * from "./ControlPanel";
-export * from "./OrderStageForm";
 export * from "./OrderSections";

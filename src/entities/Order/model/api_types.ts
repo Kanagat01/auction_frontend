@@ -6,6 +6,9 @@ import { TPaginator } from "~/shared/ui";
 export type GetOrdersRequest = {
   status: TOrderStatus;
   page?: number;
+  cityFrom?: string;
+  cityTo?: string;
+  transportationNumber?: number;
 };
 
 export type GetOrdersResponse = {

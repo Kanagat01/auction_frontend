@@ -1,7 +1,8 @@
-import { TGetOrder } from "~/entities/Order";
+import { OrderModel } from "~/entities/Order";
+import { TStages } from "~/entities/OrderStage";
 
 export type TNewOrder = Omit<
-  TGetOrder,
+  OrderModel,
   | "id"
   | "customer_manager"
   | "transporter_manager"
@@ -9,10 +10,7 @@ export type TNewOrder = Omit<
   | "created_at"
   | "updated_at"
   | "status"
-  | "offers"
-  | "tracking"
-  | "documents"
-> & { customer_manager: string };
+> & { customer_manager: string; stages: TStages[] };
 
 export type TInputs = {
   customer_manager: string;

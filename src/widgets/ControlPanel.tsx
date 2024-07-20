@@ -10,22 +10,8 @@ export type ControlPanelProps = {
   priceInputs?: boolean;
 };
 
-const defaultInputs = [
-  {
-    name: "transportation_number",
-    label: "№ Транспортировки",
-    placeholder: "00000000",
-  },
-  { name: "city_from", label: "Город-старт", placeholder: "Москва" },
-  {
-    name: "city_to",
-    label: "Город-место назначения",
-    placeholder: "Балашиха",
-  },
-];
-
 export function ControlPanel({
-  inputs = defaultInputs,
+  inputs,
   iconActions,
   textActions,
   priceInputs = false,
@@ -33,8 +19,7 @@ export function ControlPanel({
   const order = useUnit($selectedOrder);
   const priceData = order?.price_data;
   if (priceInputs) {
-    inputs = [
-      ...inputs,
+    const auctionInputs: Omit<InputProps, "variant">[] = [
       {
         name: "price",
         label: "Актуальная цена",
@@ -53,10 +38,12 @@ export function ControlPanel({
         readOnly: true,
       },
     ];
+    if (inputs) inputs = [...inputs, ...auctionInputs];
+    else inputs = auctionInputs;
   }
   return (
     <div className="control-panel">
-      {inputs.map((props, idx) => (
+      {inputs?.map((props, idx) => (
         <InputContainer
           key={idx}
           {...props}

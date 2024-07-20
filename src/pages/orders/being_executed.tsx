@@ -17,13 +17,16 @@ export function OrdersBeingExecuted() {
   const userType = useUnit($userType);
   const page = usePageFromSearchParams();
   const customerPageData = {
-    textActions: (
-      <>
-        <CompleteOrder {...textActionProps} />
-        <CancelOrder variant="text" {...textActionProps} />
-        <UnpublishOrder {...textActionProps} />
-      </>
-    ),
+    textActions:
+      userType === "customer_manager" ? (
+        <>
+          <CompleteOrder {...textActionProps} />
+          <CancelOrder variant="text" {...textActionProps} />
+          <UnpublishOrder {...textActionProps} />
+        </>
+      ) : (
+        ""
+      ),
   };
   const transporterPageData = {
     textActions:

@@ -12,7 +12,7 @@ import {
   $selectedOrder,
   deselectOrder,
   selectOrder,
-  OrderStatus,
+  OrderStatusTranslation,
   TOrderStatus,
   orderTranslations,
   TColumn,
@@ -145,7 +145,7 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
           });
         } else if (key === "status") {
           if (!value) return "-";
-          return OrderStatus[value.toString() as TOrderStatus];
+          return OrderStatusTranslation[value.toString() as TOrderStatus];
         } else if (["transporter_manager", "customer_manager"].includes(key)) {
           return value ? (value as { user: TUser }).user.full_name : "-";
         } else if (key === "driver") {
@@ -169,7 +169,7 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
             return (
               row.original?.offers?.find(
                 (el) => el.status === OrderOfferStatus.accepted
-              ) ?? "-"
+              )?.price ?? "-"
             );
 
           const bestOffer = row.original?.offers?.[0];
@@ -223,14 +223,29 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
             case "postal_code":
               return stage.postal_code;
             case "loading_date":
-              return stage.date;
+              return new Date(stage.date).toLocaleDateString("ru", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              });
             case "loading_time":
-              return stage.time_start;
+              return new Date(`${stage.date}T${stage.time_start}`)
+                .toLocaleDateString("ru", {
+                  hour: "numeric",
+                  minute: "numeric",
+                })
+                .split(" ")[1];
           }
         } else if (["city_to", "unloading_date"].includes(key)) {
           const stage = findLatestUnloadStage(row.original.stages);
           if (!stage) return "-";
-          return key === "city_to" ? stage.city : stage.date;
+          return key === "city_to"
+            ? stage.city
+            : new Date(stage.date).toLocaleDateString("ru", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              });
         } else if (key === "application_type") {
           const value = row.original.application_type;
           switch (value) {

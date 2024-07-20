@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-table";
 import {
   $selectedOrder,
+  OrderStatus,
   TGetOrder,
   deselectOrder,
   getColumns,
@@ -50,20 +51,25 @@ export function OrdersList({
   });
 
   const selectedOrder = useUnit($selectedOrder);
-  const getRowProps = (id: number) => ({
-    className: id === selectedOrder?.id ? "selected-row" : "",
-    onClick:
-      id === selectedOrder?.id
-        ? (deselectOrder as () => void)
-        : () => selectOrder(id),
-  });
+  const getRowProps = (id: number) => {
+    let className = "";
+    if (id === selectedOrder?.id) className = "selected-row";
+    else {
+      const order = data.find((el) => el.id === id);
+      className =
+        order?.status === OrderStatus.completed ? "order-completed" : "";
+    }
+    return {
+      className,
+      onClick:
+        id === selectedOrder?.id
+          ? (deselectOrder as () => void)
+          : () => selectOrder(id),
+    };
+  };
   return (
     <MainTable
-      table={table}
-      paginator={paginator}
-      getRowProps={getRowProps}
-      columnOrder={columnOrder}
-      setColumnOrder={setColumnOrder}
+      {...{ table, paginator, getRowProps, columnOrder, setColumnOrder }}
     />
   );
 }

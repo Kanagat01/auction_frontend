@@ -87,7 +87,12 @@ acceptOffer.watch(({ isBestOffer, transportation_number, ...data }) =>
       if (order) removeOrder(order.id);
       return `Предложение #${data.order_offer_id} принят \nЗаказ №${transportation_number} принят`;
     },
-    error: (err) => `Произошла ошибка: ${err?.response?.data?.message}`,
+    error: (err) =>
+      err?.response?.status > 499
+        ? "Ошибка на сервере"
+        : `Произошла ошибка: ${
+            err?.response?.data?.message ?? "Неизвестная ошибка"
+          }`,
   })
 );
 
@@ -108,7 +113,12 @@ rejectOffer.watch(({ orderId, order_offer_id, ...data }) =>
       }
       return `Предложение #${order_offer_id} отклонен`;
     },
-    error: (err) => `Произошла ошибка: ${err?.response?.data?.message}`,
+    error: (err) =>
+      err?.response?.status > 499
+        ? "Ошибка на сервере"
+        : `Произошла ошибка: ${
+            err?.response?.data?.message ?? "Неизвестная ошибка"
+          }`,
   })
 );
 
@@ -126,7 +136,12 @@ acceptOfferTransporter.watch(({ transportation_number, ...data }) =>
       if (order) removeOrder(order.id);
       return `Заказ №${transportation_number} принят`;
     },
-    error: (err) => `Произошла ошибка: ${err?.response?.data?.message}`,
+    error: (err) =>
+      err?.response?.status > 499
+        ? "Ошибка на сервере"
+        : `Произошла ошибка: ${
+            err?.response?.data?.message ?? "Неизвестная ошибка"
+          }`,
   })
 );
 
@@ -144,6 +159,11 @@ rejectOfferTransporter.watch(({ transportation_number, ...data }) =>
       if (order) removeOrder(order.id);
       return `Заказ №${transportation_number} отклонен`;
     },
-    error: (err) => `Произошла ошибка: ${err?.response?.data?.message}`,
+    error: (err) =>
+      err?.response?.status > 499
+        ? "Ошибка на сервере"
+        : `Произошла ошибка: ${
+            err?.response?.data?.message ?? "Неизвестная ошибка"
+          }`,
   })
 );

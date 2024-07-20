@@ -10,7 +10,12 @@ import {
   publishOrderFx,
   unpublishOrderFx,
 } from "./api";
-import { OrderModel, OrderStatus, TGetOrder } from "../types";
+import {
+  OrderModel,
+  OrderStatus,
+  OrderStatusTranslation,
+  TGetOrder,
+} from "../types";
 import { AddDriverDataRequest } from ".";
 
 export const $orders = createStore<TGetOrder[]>([]);
@@ -67,15 +72,19 @@ sample({
 export function handleOrderAction(
   actionFx: Effect<any, OrderModel>,
   actionMessage: { loading: string; success: string },
-  actionProps?: Record<string, any>
+  actionProps?: Record<string, any>,
+  onSuccess?: (order_id: number) => void
 ) {
   const order_id = $selectedOrder.getState()?.id;
   if (order_id)
     toast.promise(actionFx({ order_id, ...actionProps }), {
       loading: actionMessage.loading,
       success: () => {
-        removeOrder(order_id);
-        deselectOrder();
+        if (onSuccess) onSuccess(order_id);
+        else {
+          removeOrder(order_id);
+          deselectOrder();
+        }
         return actionMessage.success;
       },
       error: (err) => `Произошла ошибка ${err}`,
@@ -99,7 +108,7 @@ publishOrder.watch(({ publish_to, ...data }) =>
     publishOrderFx,
     {
       loading: "Публикуем заказ...",
-      success: `Статус заказа изменен на "${OrderStatus[publish_to]}"`,
+      success: `Статус заказа изменен на "${OrderStatusTranslation[publish_to]}"`,
     },
     { publish_to, ...data }
   )
@@ -115,10 +124,18 @@ unpublishOrder.watch(() =>
 
 export const completeOrder = createEvent();
 completeOrder.watch(() =>
-  handleOrderAction(completeOrderFx, {
-    loading: "Завершаем заказ...",
-    success: 'Статус заказа изменен на "Завершенные"',
-  })
+  handleOrderAction(
+    completeOrderFx,
+    {
+      loading: "Завершаем заказ...",
+      success: 'Статус заказа изменен на "Завершенные"',
+    },
+    {},
+    (orderId: number) => {
+      updateOrder({ orderId, newData: { status: OrderStatus.completed } });
+      deselectOrder();
+    }
+  )
 );
 
 const isDriverDataValid = (data: Omit<AddDriverDataRequest, "order_id">) => {

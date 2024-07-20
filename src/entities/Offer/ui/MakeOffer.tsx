@@ -30,7 +30,7 @@ export const MakeOffer = ({
 
   const changePrice = (num: number) => {
     if (inAuction) return;
-    setPrice(num);
+    if (num > 0) setPrice(num);
   };
   const [show, changeShow] = useModalState(false);
   const onClick = () => {
@@ -71,23 +71,23 @@ export const MakeOffer = ({
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               changePrice(Number(e.target.value))
             }
-            min={1}
             variant="input"
             type="number"
+            min={0}
             {...modalInputProps}
           />
           <div className="buttons">
             <OutlineButton
               style={btnStyle}
               onClick={() =>
-                order
+                order && price > 0
                   ? createOffer({
                       order_id: order.id,
                       price,
                       inAuction,
                       onReset,
                     })
-                  : ""
+                  : toast.error("Цена должна быть больше 0")
               }
             >
               Подтвердить

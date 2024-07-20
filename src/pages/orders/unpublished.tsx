@@ -23,31 +23,41 @@ export function UnpublishedOrders() {
   const userType = useUnit($userType);
   const page = usePageFromSearchParams();
   const pageData = {
-    iconActions: (
-      <>
-        <NavLink to={Routes.NEW_ORDER} {...iconActionProps}>
-          <ReactSVG src={FolderPlus} />
-        </NavLink>
-        <NavLink to={Routes.NEW_ORDER} onClick={CopyOrder} {...iconActionProps}>
-          <LuCopyPlus />
-        </NavLink>
-        <NavLink
-          to={Routes.EDIT_ORDER}
-          onClick={EditOrder}
-          {...iconActionProps}
-        >
-          <LuPenSquare />
-        </NavLink>
-        <CancelOrder variant="icon" {...iconActionProps} />
-      </>
-    ),
-    textActions: (
-      <>
-        <PublishOrder publishTo="in_auction" {...textActionProps} />
-        <PublishOrder publishTo="in_bidding" {...textActionProps} />
-        <PublishOrderInDirect />
-      </>
-    ),
+    iconActions:
+      userType === "customer_manager" ? (
+        <>
+          <NavLink to={Routes.NEW_ORDER} {...iconActionProps}>
+            <ReactSVG src={FolderPlus} />
+          </NavLink>
+          <NavLink
+            to={Routes.NEW_ORDER}
+            onClick={CopyOrder}
+            {...iconActionProps}
+          >
+            <LuCopyPlus />
+          </NavLink>
+          <NavLink
+            to={Routes.EDIT_ORDER}
+            onClick={EditOrder}
+            {...iconActionProps}
+          >
+            <LuPenSquare />
+          </NavLink>
+          <CancelOrder variant="icon" {...iconActionProps} />
+        </>
+      ) : (
+        ""
+      ),
+    textActions:
+      userType === "customer_manager" ? (
+        <>
+          <PublishOrder publishTo="in_auction" {...textActionProps} />
+          <PublishOrder publishTo="in_bidding" {...textActionProps} />
+          <PublishOrderInDirect />
+        </>
+      ) : (
+        ""
+      ),
   };
   return (
     <OrdersPage

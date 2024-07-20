@@ -21,6 +21,7 @@ import {
   cancelOrder,
   completeOrder,
   isOrderSelected,
+  OrderStatus,
   publishOrder,
   unpublishOrder,
 } from "..";
@@ -65,9 +66,14 @@ export const UnpublishOrder = (
 ) => {
   const order = useUnit($selectedOrder);
   const [show, changeShow] = useModalState(false);
+  const onClick = () => {
+    if (order?.status === OrderStatus.completed)
+      toast.error('Вы не можете "Вернуть в заказы" завершенный заказ');
+    else isOrderSelected(changeShow);
+  };
   return (
     <>
-      <PrimaryButton {...props} onClick={() => isOrderSelected(changeShow)}>
+      <PrimaryButton {...props} onClick={onClick}>
         Вернуть в заказы
       </PrimaryButton>
       <ConfirmationModal
@@ -222,9 +228,14 @@ export const CompleteOrder = (
 ) => {
   const order = useUnit($selectedOrder);
   const [show, changeShow] = useModalState(false);
+  const onClick = () => {
+    if (order?.status == OrderStatus.completed)
+      toast.error("Этот заказ уже завершен");
+    else isOrderSelected(changeShow);
+  };
   return (
     <>
-      <PrimaryButton {...props} onClick={() => isOrderSelected(changeShow)}>
+      <PrimaryButton {...props} onClick={onClick}>
         Завершить
       </PrimaryButton>
       <ConfirmationModal

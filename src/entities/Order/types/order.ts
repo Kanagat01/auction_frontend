@@ -9,15 +9,25 @@ import {
 } from "~/entities/User";
 
 export enum OrderStatus {
-  unpublished = "Не опубликован",
-  cancelled = "Отменен",
-  in_auction = "В аукционе",
-  in_bidding = "В торгах",
-  in_direct = "Назначенные",
-  being_executed = "Выполняется",
-  completed = "Завершен",
+  unpublished = "unpublished",
+  cancelled = "cancelled",
+  in_auction = "in_auction",
+  in_bidding = "in_bidding",
+  in_direct = "in_direct",
+  being_executed = "being_executed",
+  completed = "completed",
 }
 export type TOrderStatus = keyof typeof OrderStatus;
+
+export const OrderStatusTranslation: Record<TOrderStatus, string> = {
+  unpublished: "Не опубликован",
+  cancelled: "Отменен",
+  in_auction: "В аукционе",
+  in_bidding: "В торгах",
+  in_direct: "Назначенные",
+  being_executed: "Выполняется",
+  completed: "Завершен",
+};
 
 export type OrderModel = {
   id: number;

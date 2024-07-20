@@ -9,7 +9,8 @@ export const RejectOfferTransporter = (
   props: ButtonHTMLAttributes<HTMLButtonElement>
 ) => {
   const order = useUnit($selectedOrder);
-  const offer = order?.price_data ? order.price_data : null;
+  const priceData = order?.price_data;
+  const offer = priceData && "offer_id" in priceData ? priceData : null;
   const [show, changeShow] = useModalState(false);
   return (
     <>

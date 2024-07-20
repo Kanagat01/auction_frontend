@@ -12,13 +12,16 @@ export function OrdersInBidding() {
   const userType = useUnit($userType);
   const page = usePageFromSearchParams();
   const customerPageData = {
-    textActions: (
-      <>
-        <AcceptBestOffer {...textActionProps} />
-        <UnpublishOrder {...textActionProps} />
-        <CancelOrder variant="text" {...textActionProps} />
-      </>
-    ),
+    textActions:
+      userType === "customer_manager" ? (
+        <>
+          <AcceptBestOffer {...textActionProps} />
+          <UnpublishOrder {...textActionProps} />
+          <CancelOrder variant="text" {...textActionProps} />
+        </>
+      ) : (
+        ""
+      ),
   };
   const transporterPageData = {
     textActions:

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useUnit } from "effector-react";
 import { Modal } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 import { FaAngleLeft } from "react-icons/fa";
 import { SlSettings } from "react-icons/sl";
@@ -12,6 +13,11 @@ import { renderSection, TSection } from "./sections";
 import styles from "./styles.module.scss";
 
 export function SettingsModal() {
+  const { t, i18n } = useTranslation();
+  const changeLanguage = (language: "en" | "ru") => {
+    i18n.changeLanguage(language);
+  };
+
   const mainData = useUnit($mainData);
   const role = mainData?.user.user_type.split("_")[1];
   const currentCompany =
@@ -20,9 +26,9 @@ export function SettingsModal() {
       : (mainData as CustomerCompany)?.company_name;
   const sectionDict: Record<TSection, string> = {
     main: currentCompany,
-    company: "Ваши реквизиты",
-    security: "Изменить пароль",
-    subscriptions: "Тарифы",
+    company: t("Your banking details"),
+    security: t("Change the password"),
+    subscriptions: t("tarifs"),
     managers: "Ваши менеджеры",
     addManager: "Добавить менеджера",
   };

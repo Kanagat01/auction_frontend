@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, ReactNode, useState } from "react";
 import { useUnit } from "effector-react";
 import { ReactSVG } from "react-svg";
 import { FiCheck } from "react-icons/fi";
+import { MdLanguage } from "react-icons/md";
 import { BiSolidWallet } from "react-icons/bi";
 import { BsBuildingsFill } from "react-icons/bs";
 import { FaUserCog, FaUsers } from "react-icons/fa";
@@ -29,6 +30,7 @@ import {
   changePassword,
   ChangePasswordRequest,
 } from "~/features/change-password";
+import { Dropdown } from "react-bootstrap";
 
 const fontSize = { fontSize: "1.4rem" };
 const iconStyle = { fontSize: "2.4rem", lineHeight: "2.4rem" };
@@ -85,26 +87,48 @@ export const renderSection = (
   }
   switch (section) {
     case "main":
-      return settingOptions.map(([Icon, section, title, description], idx) => (
-        <div
-          key={idx}
-          className={styles.settingOption}
-          onClick={() => changeSection(section)}
-        >
-          {Icon}
-          <div
-            className="d-flex flex-column text-left"
-            style={{ gap: "0.5rem" }}
-          >
-            <span className={styles.settingOptionTitle}>{title}</span>
-            {description && (
-              <span className={styles.settingOptionDescription}>
-                {description}
-              </span>
-            )}
+      return (
+        <>
+          {settingOptions.map(([Icon, section, title, description], idx) => (
+            <div
+              key={idx}
+              className={styles.settingOption}
+              onClick={() => changeSection(section)}
+            >
+              {Icon}
+              <div
+                className="d-flex flex-column text-left"
+                style={{ gap: "0.5rem" }}
+              >
+                <span className={styles.settingOptionTitle}>{title}</span>
+                {description && (
+                  <span className={styles.settingOptionDescription}>
+                    {description}
+                  </span>
+                )}
+              </div>
+            </div>
+          ))}
+          <div className={styles.settingOption}>
+            <MdLanguage style={iconStyle} />
+            <div
+              className="d-flex flex-column text-left"
+              style={{ gap: "0.5rem" }}
+            >
+              <Dropdown>
+                <Dropdown.Toggle className={styles.settingOptionTitle}>
+                  Язык
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item>Русский</Dropdown.Item>
+                  <Dropdown.Item>Английский</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
           </div>
-        </div>
-      ));
+        </>
+      );
     case "company":
       return <CardNumber />;
     case "security":

@@ -1,5 +1,15 @@
 {
-    "Your banking details": "Your banking details",
-    "Change the password": "Change the password",
-    "tarifs": "Tarifs"
+    "my_company": "My company",
+    "details": "Details",
+    "security_section_title": "Entry and security",
+    "passwords": "Passwords",
+    "company_details": "Your company details",
+    "change_password": "Change the password",
+    "subscriptions": "Subscriptions",
+    "your_managers": "Your managers",
+    "add_manager": "Add manager",
+    "language": "Language",
+    "files_not_selected": "No selected files",
+    "load_document": "Upload the document",
+    "cancel": "Cancel"
 }

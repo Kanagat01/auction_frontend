@@ -8,9 +8,12 @@ export const useModalState = (initialState: boolean): [boolean, () => void] => {
 
 export const useTextInputState = (
   initialState: string
-): [string, (e: ChangeEvent<HTMLInputElement>) => void] => {
+): [
+  string,
+  (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+] => {
   const [state, setState] = useState<string>(initialState);
-  const onChange = (e: ChangeEvent<HTMLInputElement>) =>
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setState(e.target.value);
   return [state, onChange];
 };

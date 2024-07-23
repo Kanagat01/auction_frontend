@@ -1,5 +1,15 @@
 {
-    "Your banking details": "Ваши реквизиты",
-    "Change the password": "Изменить пароль",
-    "tarifs": "Тарифы"
+    "my_company": "Моя компания",
+    "details": "Реквизиты",
+    "security_section_title": "Вход и безопасность",
+    "passwords": "Пароли",
+    "company_details": "Ваши реквизиты",
+    "change_password": "Изменить пароль",
+    "subscriptions": "Тарифы",
+    "your_managers": "Ваши менеджеры",
+    "add_manager": "Добавить менеджера",
+    "language": "Язык",
+    "files_not_selected": "Нет выбранных файлов",
+    "load_document": "Загрузите документ",
+    "cancel": "Отмена"
 }

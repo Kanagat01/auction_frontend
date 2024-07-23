@@ -53,6 +53,7 @@ export type EditUserRequest = {
   full_name: string;
   email: string;
   company_name?: string;
+  details?: string;
 };
 
 const editUserFx: Effect<EditUserRequest, string> = attach({
@@ -81,7 +82,7 @@ editUser.watch(({ setIsEditing, ...data }) => {
     toast.error("Вы не изменили ни одно поле");
     return;
   }
-  toast.promise(editUserFx(data), {
+  toast.promise(editUserFx({ ...state, ...data }), {
     loading: "Обновляем данные...",
     success: () => {
       const prevState = $mainData.getState();
@@ -107,5 +108,26 @@ editUser.watch(({ setIsEditing, ...data }) => {
       if (err?.email) return "Неправильный email";
       return `Произошла ошибка: ${err}`;
     },
+  });
+});
+
+export const editDetails = createEvent<{ details: string }>();
+editDetails.watch(({ details }) => {
+  const state = $mainData.getState();
+  if (!(state && "company_name" in state)) return;
+  const data = {
+    email: state?.user.email,
+    full_name: state?.user.full_name,
+    company_name: state?.company_name,
+    details,
+  };
+  toast.promise(editUserFx(data), {
+    loading: "Сохраняем реквизиты...",
+    success: () => {
+      const prevState = $mainData.getState();
+      setMainData({ ...prevState, details } as TMainData);
+      return "Реквизиты обновлены";
+    },
+    error: (err) => `Произошла ошибка: ${err}`,
   });
 });

@@ -21,23 +21,6 @@ export function CompaniesList({
   const [show, changeShow] = useModalState(false);
   const [visible, setVisible] = useState<boolean>(true);
   const [section, setSection] = useState<"list" | "add">("list");
-
-  const [transporter_company_id, setTransporterCompanyId] = useState<number>(0);
-
-  const [transporters, setTransporters] = useState<
-    Omit<TransporterCompany, "user" | "managers">[]
-  >([]);
-  const options = transporters.map(
-    ({ transporter_company_id: id, company_name: value }) => ({
-      id,
-      value,
-    })
-  );
-
-  useEffect(() => {
-    getTransportersFx().then((res) => setTransporters(res));
-  }, []);
-
   const changeSection = (newSection: "list" | "add") => {
     setVisible(false);
     setTimeout(() => {
@@ -45,6 +28,24 @@ export function CompaniesList({
       setVisible(true);
     }, 500);
   };
+
+  const [transporter_company_id, setTransporterCompanyId] = useState<number>(0);
+  const [options, setOptions] = useState<{ id: number; value: string }[]>([]);
+
+  useEffect(() => {
+    if (section === "add")
+      getTransportersFx().then((transporters) =>
+        setOptions(
+          transporters.map(
+            ({ transporter_company_id: id, company_name: value }) => ({
+              id,
+              value,
+            })
+          )
+        )
+      );
+  }, [section]);
+
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     let alreadyExists = false;
@@ -68,11 +69,13 @@ export function CompaniesList({
         onReset: () => onReset(e),
       });
   };
+
   const onReset = (e: FormEvent) => {
     e.preventDefault();
     setTransporterCompanyId(0);
     changeSection("list");
   };
+
   return (
     <>
       <button onClick={changeShow}>

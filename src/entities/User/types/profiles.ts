@@ -6,6 +6,7 @@ export type TransporterCompany = {
   company_name: string;
   subscription: TransporterSubscriptions;
   managers: Omit<TransporterManager, "company">;
+  details: string;
 };
 
 export type TransporterManager = {
@@ -24,6 +25,7 @@ export type CustomerCompany = {
     TransporterCompany,
     "managers" | "user"
   >[];
+  details: string;
 };
 
 export type CustomerManager = {

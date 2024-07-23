@@ -6,12 +6,14 @@ type RoundedTableProps = HTMLAttributes<HTMLTableElement> & {
   columns?: ReactNode[];
   data: ReactNode[][];
   lightBorderMode?: boolean;
+  layoutFixed?: boolean;
 };
 
 export const RoundedTable: FC<RoundedTableProps> = ({
   columns,
   data,
   lightBorderMode = false,
+  layoutFixed = true,
   ...props
 }) => (
   <div
@@ -21,6 +23,7 @@ export const RoundedTable: FC<RoundedTableProps> = ({
   >
     <table
       className={`${styles.table} ${lightBorderMode ? styles.lightBorder : ""}`}
+      style={layoutFixed ? { tableLayout: "fixed" } : {}}
       {...props}
     >
       {columns ? (

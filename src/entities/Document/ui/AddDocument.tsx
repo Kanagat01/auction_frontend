@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   useState,
   ChangeEvent,
@@ -14,6 +15,7 @@ import { addDocument } from "..";
 import styles from "./style.module.scss";
 
 export function AddDocument(props: ButtonHTMLAttributes<HTMLButtonElement>) {
+  const { t } = useTranslation();
   const [show, changeShow] = useModalState(false);
   const [fileInfo, setFileInfo] = useState("Нет выбранных файлов");
   const [file, setFile] = useState<File | null>(null);
@@ -43,13 +45,13 @@ export function AddDocument(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   };
   const onReset = () => {
     setFile(null);
-    setFileInfo("Нет выбранных файлов");
+    setFileInfo(t("files not selected"));
     changeShow();
   };
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!file) {
-      toast.error("Загрузите документ");
+      toast.error(t("load_document"));
       return;
     }
     addDocument({ file, reset: onReset });
@@ -62,7 +64,7 @@ export function AddDocument(props: ButtonHTMLAttributes<HTMLButtonElement>) {
       <Modal show={show} onHide={changeShow} className="gradient-modal">
         <Modal.Body>
           <form onSubmit={onSubmit} onReset={onReset}>
-            <ModalTitle>Загрузите документ</ModalTitle>
+            <ModalTitle>{t("load_document")}</ModalTitle>
             <div
               className={styles["dropzone-area"]}
               onDragOver={handleDragOver}

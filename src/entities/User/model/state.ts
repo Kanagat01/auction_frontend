@@ -82,33 +82,36 @@ editUser.watch(({ setIsEditing, ...data }) => {
     toast.error("Вы не изменили ни одно поле");
     return;
   }
-  toast.promise(editUserFx({ ...state, ...data }), {
-    loading: "Обновляем данные...",
-    success: () => {
-      const prevState = $mainData.getState();
-      if (prevState) {
-        const newState = {
-          ...prevState,
-          user: {
-            ...prevState!.user,
-            full_name: data.full_name,
-            email: data.email,
-          },
-        };
-        if (data.company_name !== "") {
-          //@ts-ignore
-          newState["company_name"] = data.company_name;
+  toast.promise(
+    editUserFx({ details: (state as CustomerCompany).details ?? "", ...data }),
+    {
+      loading: "Обновляем данные...",
+      success: () => {
+        const prevState = $mainData.getState();
+        if (prevState) {
+          const newState = {
+            ...prevState,
+            user: {
+              ...prevState!.user,
+              full_name: data.full_name,
+              email: data.email,
+            },
+          };
+          if (data.company_name !== "") {
+            //@ts-ignore
+            newState["company_name"] = data.company_name;
+          }
+          setMainData(newState);
         }
-        setMainData(newState);
-      }
-      setIsEditing(false);
-      return "Данные обновлены";
-    },
-    error: (err) => {
-      if (err?.email) return "Неправильный email";
-      return `Произошла ошибка: ${err}`;
-    },
-  });
+        setIsEditing(false);
+        return "Данные обновлены";
+      },
+      error: (err) => {
+        if (err?.email) return "Неправильный email";
+        return `Произошла ошибка: ${err}`;
+      },
+    }
+  );
 });
 
 export const editDetails = createEvent<{ details: string }>();

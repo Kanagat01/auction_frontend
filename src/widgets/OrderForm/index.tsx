@@ -55,12 +55,12 @@ export function OrderForm(preCreateOrder: PreCreateOrderResponse) {
           <div className={styles.secondCol}>
             <Field
               name="comments_for_transporter"
-              value={order.comments_for_transporter}
+              value={order.comments_for_transporter ?? ""}
               colNum={2}
             />
             <Field
               name="additional_requirements"
-              value={order.additional_requirements}
+              value={order.additional_requirements ?? ""}
               colNum={2}
             />
           </div>

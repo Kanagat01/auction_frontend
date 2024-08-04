@@ -1,17 +1,15 @@
 import { Effect, attach } from "effector";
-import { $userType, DriverProfile, getRole } from "~/entities/User";
+import { DriverProfile } from "~/entities/User";
 import { OrderModel, TGetOrder } from "~/entities/Order";
 import { RequestParams, apiRequestFx } from "~/shared/api";
 import {
+  OrderIDRequest,
   AddDriverDataRequest,
-  CancelOrderRequest,
-  CompleteOrderRequest,
   CreateOrderRequest,
   EditOrderRequest,
   GetOrdersRequest,
   GetOrdersResponse,
   PublishOrderRequest,
-  UnpublishOrderRequest,
 } from "./api_types";
 
 //@ts-ignore
@@ -78,47 +76,55 @@ export const editOrderFx: Effect<EditOrderRequest, OrderModel> = attach({
 });
 
 // cancel order
-export const cancelOrderFx: Effect<CancelOrderRequest, OrderModel> = attach({
+export const cancelOrderFx: Effect<OrderIDRequest, OrderModel> = attach({
   effect: apiRequestFx,
-  mapParams: (data: CancelOrderRequest): RequestParams => ({
+  mapParams: (data: OrderIDRequest): RequestParams => ({
     method: "post",
-    url: `/auction/${getRole($userType.getState())}/cancel_order/`,
+    url: `/auction/customer/cancel_order/`,
     data,
   }),
 });
 
 // unpublish order
-export const unpublishOrderFx: Effect<UnpublishOrderRequest, OrderModel> =
-  attach({
-    effect: apiRequestFx,
-    mapParams: (data: UnpublishOrderRequest): RequestParams => ({
-      method: "post",
-      url: "/auction/customer/unpublish_order/",
-      data,
-    }),
-  });
+export const unpublishOrderFx: Effect<OrderIDRequest, OrderModel> = attach({
+  effect: apiRequestFx,
+  mapParams: (data: OrderIDRequest): RequestParams => ({
+    method: "post",
+    url: "/auction/customer/unpublish_order/",
+    data,
+  }),
+});
 
 // publish order
 export const publishOrderFx: Effect<PublishOrderRequest, OrderModel> = attach({
   effect: apiRequestFx,
   mapParams: (data: PublishOrderRequest): RequestParams => ({
     method: "post",
-    url: `/auction/${getRole($userType.getState())}/publish_order/`,
+    url: `/auction/customer/publish_order/`,
     data,
   }),
 });
 
 // complete order
-export const completeOrderFx: Effect<CompleteOrderRequest, OrderModel> = attach(
-  {
+export const completeOrderFx: Effect<OrderIDRequest, OrderModel> = attach({
+  effect: apiRequestFx,
+  mapParams: (data: OrderIDRequest): RequestParams => ({
+    method: "post",
+    url: `/auction/customer/complete_order/`,
+    data,
+  }),
+});
+
+// cancel order completion
+export const cancelOrderCompletionFx: Effect<OrderIDRequest, OrderModel> =
+  attach({
     effect: apiRequestFx,
-    mapParams: (data: CompleteOrderRequest): RequestParams => ({
+    mapParams: (data: OrderIDRequest): RequestParams => ({
       method: "post",
-      url: `/auction/${getRole($userType.getState())}/complete_order/`,
+      url: `/auction/customer/cancel_order_completion/`,
       data,
     }),
-  }
-);
+  });
 
 // add driver data to order
 export const addDriverDataFx: Effect<AddDriverDataRequest, DriverProfile> =

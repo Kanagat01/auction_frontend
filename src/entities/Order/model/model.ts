@@ -4,6 +4,7 @@ import { DriverProfileTranslations } from "~/entities/User";
 import { TPaginator } from "~/shared/ui";
 import {
   addDriverDataFx,
+  cancelOrderCompletionFx,
   cancelOrderFx,
   completeOrderFx,
   getOrderFx,
@@ -140,30 +141,60 @@ completeOrder.watch(() =>
   )
 );
 
+export const cancelOrderCompletion = createEvent();
+cancelOrderCompletion.watch(() =>
+  handleOrderAction(
+    cancelOrderCompletionFx,
+    {
+      loading: "Отменяем завершение заказа...",
+      success: 'Статус заказа изменен на "Выполняется"',
+    },
+    {},
+    (orderId: number) => {
+      updateOrder({ orderId, newData: { status: OrderStatus.being_executed } });
+      deselectOrder();
+    }
+  )
+);
+
 const isDriverDataValid = (data: Omit<AddDriverDataRequest, "order_id">) => {
-  let isValid = true;
   const regex = /^\+?1?\d{9,15}$/;
-  let notFilledIn = [];
-  if (data.full_name === "")
-    notFilledIn.push(DriverProfileTranslations.full_name);
-  if (data.machine_data === "")
-    notFilledIn.push(DriverProfileTranslations.machine_data);
-  if (data.machine_number === "")
-    notFilledIn.push(DriverProfileTranslations.machine_number);
-  if (isNaN(Number(data.passport_number))) {
-    toast.error("Неправильный номер паспорта");
-    isValid = false;
-  }
-  if (!regex.test(data.phone_number)) {
-    toast.error("Неправильный номер телефона");
-    isValid = false;
-  }
+  const notFilledIn: string[] = [];
+
+  const fields = [
+    { value: data.full_name, label: DriverProfileTranslations.full_name },
+    { value: data.machine_data, label: DriverProfileTranslations.machine_data },
+    {
+      value: data.machine_number,
+      label: DriverProfileTranslations.machine_number,
+    },
+    {
+      value: data.passport_number,
+      label: DriverProfileTranslations.passport_number,
+    },
+    { value: data.phone_number, label: DriverProfileTranslations.phone_number },
+  ];
+
+  fields.forEach(({ value, label }) => {
+    if (value === "") notFilledIn.push(label);
+  });
 
   if (notFilledIn.length > 0) {
     toast.error(`Заполните обязательные поля: ${notFilledIn.join(", ")}`);
-    isValid = false;
+    return false;
   }
-  return isValid;
+
+  if (isNaN(Number(data.passport_number))) {
+    toast.error("Неправильный номер паспорта");
+    return false;
+  }
+
+  if (!regex.test(data.phone_number)) {
+    toast.error("Неправильный номер телефона");
+    return false;
+  }
+
+  return true;
 };
 
 export const addDriverData = createEvent<

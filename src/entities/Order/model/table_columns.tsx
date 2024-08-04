@@ -109,7 +109,10 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
           const orderId = row.original.id;
           const checked = selectedOrder?.id === orderId;
           return (
-            <div className="d-flex align-items-center">
+            <div
+              className="d-flex align-items-center"
+              style={{ wordBreak: "break-word" }}
+            >
               <Checkbox
                 className="mr-3"
                 {...{
@@ -129,8 +132,8 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
         } else if (["volume", "weight"].includes(key)) {
           let result = 0;
           const typedKey = key as "volume" | "weight";
-          row.original.stages.map(({ load_stage, unload_stage }) => {
-            result += load_stage[typedKey] + unload_stage[typedKey];
+          row.original.stages.map((stage) => {
+            result += stage[typedKey];
             return;
           });
           return result;

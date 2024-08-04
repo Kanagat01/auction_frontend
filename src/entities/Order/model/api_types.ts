@@ -39,9 +39,7 @@ export type EditOrderRequest = { order_id: number } & Partial<
   >
 >;
 
-export type CancelOrderRequest = { order_id: number };
-export type UnpublishOrderRequest = { order_id: number };
-export type CompleteOrderRequest = { order_id: number };
+export type OrderIDRequest = { order_id: number };
 export type PublishOrderRequest =
   | {
       order_id: number;

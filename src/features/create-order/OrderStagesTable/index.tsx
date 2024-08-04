@@ -40,7 +40,17 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
       <tbody>
         {orderStages.length !== 0 ? (
           orderStages.map(
-            ({ order_stage_number, load_stage, unload_stage }, stageIdx) =>
+            (
+              {
+                order_stage_number,
+                load_stage,
+                unload_stage,
+                cargo,
+                volume,
+                weight,
+              },
+              stageIdx
+            ) =>
               [
                 { stageName: "load", ...load_stage },
                 { stageName: "unload", ...unload_stage },
@@ -93,12 +103,12 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
                     <td rowSpan={2}>{stageData.postal_code}</td>
                     <td rowSpan={2}>{stageData.city}</td>
                     <td rowSpan={2}>{stageData.address}</td>
-                    <td colSpan={2}>{stageData.cargo}</td>
+                    <td colSpan={2}>{cargo}</td>
                     <td rowSpan={2}>{stageData.contact_person}</td>
                   </tr>
                   <tr>
-                    <td>{stageData.weight}</td>
-                    <td>{stageData.volume}</td>
+                    <td>{weight}</td>
+                    <td>{volume}</td>
                   </tr>
                 </Fragment>
               ))

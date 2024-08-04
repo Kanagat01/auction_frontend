@@ -2,8 +2,9 @@ import { ChangeEvent } from "react";
 import { createEvent } from "effector";
 import { useStoreMap } from "effector-react";
 import {
+  CargoParams,
   OrderStageTranslations,
-  TOrderStageKey,
+  OrderStageKey,
   TStage,
 } from "~/entities/OrderStage";
 import { InputContainer, OutlineButton } from "~/shared/ui";
@@ -11,11 +12,11 @@ import { $orderStages, $stageType, initialOrderStage } from "..";
 import styles from "./styles.module.scss";
 
 type FieldUpdatePayload = {
-  key: TOrderStageKey;
+  key: OrderStageKey;
   value: string | number;
 };
 
-type FieldProps = { name: TOrderStageKey; stageType: TStage };
+type FieldProps = { name: OrderStageKey; stageType: TStage };
 
 type StageProps = {
   stageType: TStage;
@@ -29,6 +30,11 @@ const fieldUpdate = createEvent<FieldUpdatePayload>();
 
 $orderStages.on(fieldUpdate, (state, { key, value }) => {
   const stageType = $stageType.getState();
+  if (["cargo", "weight", "volume"].includes(key))
+    return {
+      ...state,
+      [key]: value,
+    };
   return { ...state, [stageType]: { ...state[stageType], [key]: value } };
 });
 
@@ -88,6 +94,24 @@ const Field = ({ name, stageType }: FieldProps) => {
   );
 };
 
+const StageCoupleField = ({ name }: { name: keyof CargoParams }) => {
+  const value = useStoreMap({
+    store: $orderStages,
+    keys: [name],
+    fn: (values, [name]) => values[name] || "",
+  });
+  return (
+    <InputContainer
+      {...{ name, value, onChange: handleChange }}
+      label={OrderStageTranslations[name]}
+      variant="input"
+      type={name === "cargo" ? "text" : "number"}
+      label_style={{ color: "var(--default-font-color)" }}
+      className="w-100 mb-2"
+    />
+  );
+};
+
 const TimeInput = ({ name, stageType }: FieldProps) => {
   const value = useStoreMap({
     store: $orderStages,
@@ -129,14 +153,14 @@ export const Stage = ({ stageType, ...props }: StageProps) => {
           "city",
           "address",
           "contact_person",
-          "cargo",
-          "weight",
-          "volume",
-          "comments",
-        ] as TOrderStageKey[]
+        ] as OrderStageKey[]
       ).map((name, idx) => (
         <Field key={idx} name={name} stageType={stageType} />
       ))}
+      <StageCoupleField name="cargo" />
+      <StageCoupleField name="weight" />
+      <StageCoupleField name="volume" />
+      <Field name="comments" stageType={stageType} />
       <div className={styles.buttonsBlock}>
         <OutlineButton
           className={styles.modalBtn}

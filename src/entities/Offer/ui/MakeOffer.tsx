@@ -33,13 +33,6 @@ export const MakeOffer = ({
     if (num > 0) setPrice(num);
   };
   const [show, changeShow] = useModalState(false);
-  const onClick = () => {
-    if (order && priceData && "is_best_offer" in priceData) {
-      toast.error("Вы уже сделали предложение");
-      return;
-    }
-    isOrderSelected(changeShow);
-  };
   const onReset = () => {
     changePrice(0);
     changeShow();
@@ -50,6 +43,8 @@ export const MakeOffer = ({
     if (inAuction && order) {
       if (priceData && "current_price" in priceData)
         newPrice = priceData.current_price - order.price_step;
+      else if (priceData && "price" in priceData)
+        newPrice = priceData.price - order.price_step;
       else newPrice = order.start_price - order.price_step;
     } else if (order && priceData && "price" in priceData)
       newPrice = priceData.price;
@@ -58,7 +53,7 @@ export const MakeOffer = ({
   }, [order]);
   return (
     <>
-      <PrimaryButton {...props} onClick={onClick}>
+      <PrimaryButton {...props} onClick={() => isOrderSelected(changeShow)}>
         Сделать ставку
       </PrimaryButton>
       <Modal show={show} onHide={changeShow} className="gradient-modal">

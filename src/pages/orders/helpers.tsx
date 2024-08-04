@@ -1,6 +1,13 @@
-import { useUnit } from "effector-react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  KeyboardEvent,
+  ChangeEvent,
+} from "react";
 import { useLocation } from "react-router-dom";
-import { ChangeEvent, useCallback, useState, KeyboardEvent } from "react";
+import { createEvent, createStore } from "effector";
+import { useUnit } from "effector-react";
 import { ControlPanel, ControlPanelProps, OrderSections } from "~/widgets";
 import {
   $orders,
@@ -15,7 +22,9 @@ import {
   RoundedWhiteBox,
   TextCenter,
 } from "~/shared/ui";
+import { COLLAPSED_STORAGE_KEY } from "~/shared/lib";
 import { renderPromise } from "~/shared/api";
+import Routes from "~/shared/routes";
 
 export const iconActionProps = {
   className: "outline-btn px-2 py-0 me-2",
@@ -35,7 +44,40 @@ type TOrdersPage = {
   status: TOrderStatus;
 };
 
+const setCollapsed = createEvent<boolean>();
+const $collapsed = createStore<boolean>(false).on(
+  setCollapsed,
+  (_, state) => state
+);
+
 export function OrdersPage({ title, pageData, status }: TOrdersPage) {
+  const currentRoute = useLocation().pathname;
+  const savedCollapsed = localStorage.getItem(COLLAPSED_STORAGE_KEY);
+  const [collapsedDict, setCollapsedDict] = useState(
+    savedCollapsed
+      ? JSON.parse(savedCollapsed)
+      : {
+          [Routes.ORDERS_IN_AUCTION]: false,
+          [Routes.ORDERS_IN_BIDDING]: false,
+          [Routes.ORDERS_IN_DIRECT]: false,
+          [Routes.ORDERS_BEING_EXECUTED]: false,
+          [Routes.CANCELLED_ORDERS]: false,
+          [Routes.UNPUBLISHED_ORDERS]: false,
+        }
+  );
+  const collapsed = useUnit($collapsed);
+  useEffect(() => {
+    setTimeout(() => setCollapsed(collapsedDict[currentRoute]), 50);
+  }, [currentRoute]);
+  useEffect(() => {
+    const newCollapsedDict = { ...collapsedDict, [currentRoute]: collapsed };
+    setCollapsedDict(newCollapsedDict);
+    localStorage.setItem(
+      COLLAPSED_STORAGE_KEY,
+      JSON.stringify(newCollapsedDict)
+    );
+  }, [collapsed]);
+
   const orders = useUnit($orders);
   const paginator = useUnit($ordersPagination);
   const [cityFrom, setCityFrom] = useState<string>("");
@@ -79,14 +121,7 @@ export function OrdersPage({ title, pageData, status }: TOrdersPage) {
 
   const page = usePageFromSearchParams();
   const fetchOrders = useCallback(
-    () =>
-      getOrdersFx({
-        status,
-        page,
-        cityFrom,
-        cityTo,
-        transportationNumber: transportationNumber,
-      }),
+    () => getOrdersFx({ status, page, cityFrom, cityTo, transportationNumber }),
     [status, page, cityFrom, cityTo, transportationNumber]
   );
   return (
@@ -122,7 +157,10 @@ export function OrdersPage({ title, pageData, status }: TOrdersPage) {
           </>
         )}
       </RoundedWhiteBox>
-      <CollapsableSidebar>
+      <CollapsableSidebar
+        collapsed={collapsed}
+        toggleExpand={() => setCollapsed(!collapsed)}
+      >
         <OrderSections />
       </CollapsableSidebar>
     </>

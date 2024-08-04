@@ -4,7 +4,7 @@ $border-color: rgba(0, 0, 0, 0.1);
 
 .table {
   border-spacing: 0;
-  width: 100%;
+  width: fit-content;
   height: fit-content;
   font-size: 1.2rem;
   line-height: 1.2rem;
@@ -12,6 +12,7 @@ $border-color: rgba(0, 0, 0, 0.1);
   border: none;
 
   th {
+    word-break: break-word;
     position: relative;
     color: rgba($default-font-color, 0.5);
     border-right: 1px solid $border-color;
@@ -23,6 +24,7 @@ $border-color: rgba(0, 0, 0, 0.1);
     }
   }
   td {
+    word-break: break-word;
     border-top: 1px solid $border-color;
     border-right: 1px solid $border-color;
     padding: 1rem;

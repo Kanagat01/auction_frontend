@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { useUnit } from "effector-react";
 import {
+  ColumnSizingState,
   SortingState,
   getCoreRowModel,
   getSortedRowModel,
@@ -18,6 +19,10 @@ import {
 import { $userType, getRole } from "~/entities/User";
 import { MainTable, TPaginator } from "~/shared/ui";
 import Routes from "~/shared/routes";
+import {
+  COLUMN_ORDER_STORAGE_KEY,
+  COLUMN_SIZING_STORAGE_KEY,
+} from "~/shared/lib";
 
 export function OrdersList({
   orders,
@@ -32,17 +37,36 @@ export function OrdersList({
   const [sorting, setSorting] = useState<SortingState>([]);
   const role = getRole(useUnit($userType));
   const columns = getColumns(useLocation().pathname as Routes, role);
-  const [columnOrder, setColumnOrder] = useState<string[]>(
-    columns.map((c) => c.id!)
-  );
+
+  const savedColumnOrder = localStorage.getItem(COLUMN_ORDER_STORAGE_KEY);
+  const initialColumnOrder = savedColumnOrder
+    ? JSON.parse(savedColumnOrder)
+    : columns.map((c) => c.id!);
+  const [columnOrder, setColumnOrder] = useState<string[]>(initialColumnOrder);
+
+  const savedColumnSizing = localStorage.getItem(COLUMN_SIZING_STORAGE_KEY);
+  const initialColumnSizing = savedColumnSizing
+    ? JSON.parse(savedColumnSizing)
+    : columns.map((c) => c.size!);
+  const [columnSizing, setColumnSize] =
+    useState<ColumnSizingState>(initialColumnSizing);
+
+  useEffect(() => {
+    localStorage.setItem(COLUMN_ORDER_STORAGE_KEY, JSON.stringify(columnOrder));
+    localStorage.setItem(
+      COLUMN_SIZING_STORAGE_KEY,
+      JSON.stringify(columnSizing)
+    );
+  }, [columnOrder, columnSizing]);
 
   const table = useReactTable({
     data,
     //@ts-ignore TODO
     columns,
-    state: { sorting, columnOrder },
+    state: { sorting, columnOrder, columnSizing },
     columnResizeMode: "onChange",
     columnResizeDirection: "ltr",
+    onColumnSizingChange: setColumnSize,
     onColumnOrderChange: setColumnOrder,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,

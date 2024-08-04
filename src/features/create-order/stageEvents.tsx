@@ -1,6 +1,11 @@
 import toast from "react-hot-toast";
 import { createEvent } from "effector";
-import { OrderStageTranslations, TStage, TStages } from "~/entities/OrderStage";
+import {
+  OrderStageTranslations,
+  OrderStageKey,
+  TStage,
+  TStages,
+} from "~/entities/OrderStage";
 import {
   $orderForm,
   $orderStages,
@@ -13,6 +18,9 @@ $orderStages.on(clearStages, (_) => ({
   order_stage_number: Math.ceil(Date.now() / 1000),
   load_stage: initialOrderStage,
   unload_stage: initialOrderStage,
+  cargo: "",
+  weight: 0,
+  volume: 0,
 }));
 
 const stageCoupleValidation = (func: (state: TStages) => void) => {
@@ -22,8 +30,8 @@ const stageCoupleValidation = (func: (state: TStages) => void) => {
   for (let key1 in state) {
     let stage = key1 as TStage;
     for (let key2 in state[stage]) {
-      let field = key2 as keyof typeof OrderStageTranslations;
-      if (!state[stage as TStage][field]) {
+      let field = key2 as OrderStageKey;
+      if (!state[stage][field] && field !== "comments") {
         const fieldName =
           (stage === "load_stage" ? "Погрузка" : "Выгрузка") +
           "." +
@@ -32,6 +40,9 @@ const stageCoupleValidation = (func: (state: TStages) => void) => {
       }
     }
   }
+  if (!state.cargo) emptyFields.push(OrderStageTranslations.cargo);
+  if (!state.weight) emptyFields.push(OrderStageTranslations.weight);
+  if (!state.volume) emptyFields.push(OrderStageTranslations.volume);
 
   if (emptyFields.length > 0) {
     toast(<span>Заполните обязательные поля: {emptyFields.join(", ")}</span>, {

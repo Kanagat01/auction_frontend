@@ -52,7 +52,6 @@ createOffer.watch(({ inAuction, onReset, ...data }) =>
       const status = err?.response?.status;
       const message = err?.response?.data?.message;
       const priceError = err?.response?.data?.price?.[0];
-      const orderIdError = err?.response?.data?.order_id?.[0];
 
       if (status > 499) return `Серверная ошибка. Код ${status}`;
       if (
@@ -62,9 +61,7 @@ createOffer.watch(({ inAuction, onReset, ...data }) =>
         return `Цена должна быть меньше чем ${message.split(" ")[6]}`;
       if (priceError === "Price must be greater than 0")
         return "Цена должна быть больше нуля";
-      if (orderIdError === "You have already offered")
-        return "Вы уже сделали предложение";
-      return `Неизвестная ошибка: ${message || "Неизвестная ошибка"}`;
+      return `Неизвестная ошибка: ${message}`;
     },
   })
 );
@@ -87,12 +84,7 @@ acceptOffer.watch(({ isBestOffer, transportation_number, ...data }) =>
       if (order) removeOrder(order.id);
       return `Предложение #${data.order_offer_id} принят \nЗаказ №${transportation_number} принят`;
     },
-    error: (err) =>
-      err?.response?.status > 499
-        ? "Ошибка на сервере"
-        : `Произошла ошибка: ${
-            err?.response?.data?.message ?? "Неизвестная ошибка"
-          }`,
+    error: (err) => `Произошла ошибка: ${err}`,
   })
 );
 
@@ -113,12 +105,7 @@ rejectOffer.watch(({ orderId, order_offer_id, ...data }) =>
       }
       return `Предложение #${order_offer_id} отклонен`;
     },
-    error: (err) =>
-      err?.response?.status > 499
-        ? "Ошибка на сервере"
-        : `Произошла ошибка: ${
-            err?.response?.data?.message ?? "Неизвестная ошибка"
-          }`,
+    error: (err) => `Произошла ошибка: ${err}`,
   })
 );
 
@@ -136,12 +123,7 @@ acceptOfferTransporter.watch(({ transportation_number, ...data }) =>
       if (order) removeOrder(order.id);
       return `Заказ №${transportation_number} принят`;
     },
-    error: (err) =>
-      err?.response?.status > 499
-        ? "Ошибка на сервере"
-        : `Произошла ошибка: ${
-            err?.response?.data?.message ?? "Неизвестная ошибка"
-          }`,
+    error: (err) => `Произошла ошибка: ${err}`,
   })
 );
 
@@ -159,11 +141,6 @@ rejectOfferTransporter.watch(({ transportation_number, ...data }) =>
       if (order) removeOrder(order.id);
       return `Заказ №${transportation_number} отклонен`;
     },
-    error: (err) =>
-      err?.response?.status > 499
-        ? "Ошибка на сервере"
-        : `Произошла ошибка: ${
-            err?.response?.data?.message ?? "Неизвестная ошибка"
-          }`,
+    error: (err) => `Произошла ошибка: ${err}`,
   })
 );

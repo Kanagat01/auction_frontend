@@ -52,6 +52,9 @@ export function CopyStage({ orderStageNumber, ...props }: CrudButtonProps) {
       load_stage: newLoadStage,
       unload_stage: newUnloadStage,
       order_stage_number: Math.ceil(Date.now() / 1000),
+      cargo: stage.cargo,
+      weight: stage.weight,
+      volume: stage.volume,
     });
 
     changeShowStageFormModal();

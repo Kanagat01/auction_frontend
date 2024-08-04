@@ -15,8 +15,14 @@ const gridContainer: CSSProperties = {
 
 export function DataSection({ order }: { order: TGetOrder }) {
   const [stageIdx, setStageIdx] = useState(0);
-  const { load_stage, unload_stage, order_stage_number } =
-    order.stages[stageIdx];
+  const {
+    load_stage,
+    unload_stage,
+    order_stage_number,
+    cargo,
+    volume,
+    weight,
+  } = order.stages[stageIdx];
   const inputs = [
     [
       {
@@ -82,7 +88,7 @@ export function DataSection({ order }: { order: TGetOrder }) {
   }
   tableData = tableData.map(([field, value]) => [
     field,
-    copyOnClickWrapper(value),
+    value ? copyOnClickWrapper(value) : "-",
   ]);
   if (Routes.FIND_CARGO === useLocation().pathname) {
     tableData.splice(0, 2);
@@ -95,10 +101,9 @@ export function DataSection({ order }: { order: TGetOrder }) {
           className="d-flex align-items-end"
           style={{ gap: "1rem" }}
         >
-          {arr.map((props) => (
+          {arr.map(({ name, label, defaultValue }) => (
             <InputContainer
-              key={props.name}
-              {...props}
+              {...{ key: name, name, label, defaultValue: defaultValue ?? "-" }}
               variant={key === 1 ? "textarea" : "input"}
               label_style={{
                 color: "var(--default-font-color)",
@@ -108,7 +113,7 @@ export function DataSection({ order }: { order: TGetOrder }) {
                 marginBottom: "1rem",
               }}
               className="w-100"
-              onClick={handleClick}
+              onClick={defaultValue ? handleClick : undefined}
               readOnly
             />
           ))}
@@ -187,26 +192,26 @@ export function DataSection({ order }: { order: TGetOrder }) {
               ]}
             />
           ))}
-          {[load_stage, unload_stage].map((stage, key) => (
+          {[1, 2].map((key) => (
             <div
               key={key}
               className="d-flex flex-column justify-content-between"
             >
               <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
-                Параметры груза - {copyOnClickWrapper(stage.cargo)}
+                Параметры груза - {copyOnClickWrapper(cargo)}
               </TitleSm>
               <div className="gray-line" />
             </div>
           ))}
-          {[load_stage, unload_stage].map((stage, key) => (
+          {[1, 2].map((key) => (
             <div key={key}>
               <div className="d-flex justify-content-between mt-2">
                 <TitleSm className="gray-text">Вес</TitleSm>
-                <TitleSm>{copyOnClickWrapper(`${stage.weight} kg`)}</TitleSm>
+                <TitleSm>{copyOnClickWrapper(`${weight} kg`)}</TitleSm>
               </div>
               <div className="d-flex justify-content-between mt-1">
                 <TitleSm className="gray-text">Обьем</TitleSm>
-                <TitleSm>{copyOnClickWrapper(`${stage.volume} cbm`)}</TitleSm>
+                <TitleSm>{copyOnClickWrapper(`${volume} cbm`)}</TitleSm>
               </div>
             </div>
           ))}
@@ -216,7 +221,9 @@ export function DataSection({ order }: { order: TGetOrder }) {
                 Комментарии к поставке
               </TitleSm>
               <div className="gray-line mb-2" />
-              <TitleSm>{copyOnClickWrapper(stage.comments)}</TitleSm>
+              <TitleSm>
+                {stage.comments ? copyOnClickWrapper(stage.comments) : "—"}
+              </TitleSm>
             </div>
           ))}
         </div>

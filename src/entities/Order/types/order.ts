@@ -40,17 +40,17 @@ export type OrderModel = {
   transportation_number: number;
   start_price: number;
   price_step: number;
-  comments_for_transporter: string;
-  additional_requirements: string;
+  comments_for_transporter?: string;
+  additional_requirements?: string;
   transport_body_type: number;
   transport_load_type: number;
   transport_unload_type: number;
   transport_volume: number;
-  temp_mode: string;
-  adr: number;
-  transport_body_width: number;
-  transport_body_length: number;
-  transport_body_height: number;
+  temp_mode?: string;
+  adr?: number;
+  transport_body_width?: number;
+  transport_body_length?: number;
+  transport_body_height?: number;
 };
 
 export type TColumn = TGetOrder & {

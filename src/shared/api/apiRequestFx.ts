@@ -18,7 +18,7 @@ export const apiRequestFx = createEffect<RequestParams, any, Error>(
         if (error.response?.status! > 499) throw "Ошибка на сервере";
         throw error.response?.data.message;
       } else {
-        throw "Неизвестная ошибка";
+        throw error;
       }
     }
   }

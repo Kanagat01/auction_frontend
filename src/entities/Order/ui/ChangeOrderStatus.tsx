@@ -19,6 +19,7 @@ import { useModalState } from "~/shared/lib";
 import {
   $selectedOrder,
   cancelOrder,
+  cancelOrderCompletion,
   completeOrder,
   isOrderSelected,
   OrderStatus,
@@ -228,26 +229,25 @@ export const CompleteOrder = (
 ) => {
   const order = useUnit($selectedOrder);
   const [show, changeShow] = useModalState(false);
-  const onClick = () => {
-    if (order?.status == OrderStatus.completed)
-      toast.error("Этот заказ уже завершен");
-    else isOrderSelected(changeShow);
-  };
   return (
     <>
-      <PrimaryButton {...props} onClick={onClick}>
+      <PrimaryButton {...props} onClick={() => isOrderSelected(changeShow)}>
         Завершить
       </PrimaryButton>
       <ConfirmationModal
         show={show}
         onHide={changeShow}
         onConfirm={() => {
-          completeOrder();
+          if (order?.status == OrderStatus.completed) cancelOrderCompletion();
+          else completeOrder();
           changeShow();
         }}
         title={
           <>
-            Вы уверены, что хотите завершить заказ{" "}
+            Вы уверены, что хотите{" "}
+            {order?.status == OrderStatus.completed
+              ? "отменить завершение заказа"
+              : "завершить заказ"}{" "}
             {<BlueText>№{order?.transportation_number}</BlueText>}?
           </>
         }

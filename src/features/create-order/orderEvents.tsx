@@ -60,12 +60,24 @@ CopyOrder.watch((event) => {
 export const orderFormSubmitted = createEvent<FormEvent>();
 orderFormSubmitted.watch((e: FormEvent) => {
   e.preventDefault();
-  const formValues = $orderForm.getState();
+  const orderForm = $orderForm.getState();
+  const notRequired = [
+    "comments_for_transporter",
+    "additional_requirements",
+    "adr",
+    "temp_mode",
+    "transport_body_width",
+    "transport_body_height",
+    "transport_body_length",
+  ];
   let notFilledIn = [];
-  for (const key in formValues) {
-    if (
-      !formValues[key as keyof typeof formValues] ||
-      (key === "stages" && formValues.stages.length === 0)
+  for (const key in orderForm) {
+    if (notRequired.includes(key)) {
+      //@ts-ignore
+      orderForm[key] = null;
+    } else if (
+      !orderForm[key as keyof typeof orderForm] ||
+      (key === "stages" && orderForm.stages.length === 0)
     ) {
       notFilledIn.push(
         orderTranslations[key as keyof typeof orderTranslations]
@@ -84,26 +96,27 @@ orderFormSubmitted.watch((e: FormEvent) => {
       if (typeof err === "string") {
         if (err === "transportation_number_must_be_unique")
           return "№ Транспортировки должен быть уникальным";
-        if (err.startsWith("order_stage_number_must_be_unique")) {
+        else if (err === "add_at_least_one_stage")
+          return "Добавьте хотя бы 1 поставку";
+        else if (err.startsWith("order_stage_number_must_be_unique")) {
           const stageNum = Number(err.split(":")[1]);
           setNotValidStageNumber(stageNum);
           return `№ Поставки должен быть уникальным: ${stageNum}`;
-        }
+        } else if (err === "You can edit only unpublished orders.")
+          return "Вы можете редактировать только неопубликованные заказы";
         return `Произошла ошибка: ${err}`;
       }
-      if (err?.order_stage_number?.[0])
-        return `№ Поставки: ${err?.order_stage_number?.[0]}`;
-      return "Неизвестная ошибка";
+      return `Неизвестная ошибка: ${err}`;
     };
-    if (formValues.id) {
-      const { id, ...data } = formValues;
+    if (orderForm.id) {
+      const { id, ...data } = orderForm;
       toast.promise(editOrderFx({ order_id: id, ...data }), {
         loading: `Обновляем заказ #${id}...`,
         success: `Заказ #${id} успешно обновлен`,
         error: handleError,
       });
     } else {
-      toast.promise(createOrderFx(formValues), {
+      toast.promise(createOrderFx(orderForm), {
         loading: "Создаем заказ...",
         success: () => {
           clearForm();

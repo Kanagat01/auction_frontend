@@ -53,9 +53,6 @@ export const initialOrderStage = {
   city: "",
   address: "",
   contact_person: "",
-  cargo: "",
-  weight: 0,
-  volume: 0,
   comments: "",
 };
 
@@ -64,6 +61,9 @@ export const $orderStages = createStore<TStages>({
   order_stage_number: Math.ceil(Date.now() / 1000),
   load_stage: initialOrderStage,
   unload_stage: initialOrderStage,
+  cargo: "",
+  weight: 0,
+  volume: 0,
 }).on(setOrderStages, (_, state) => state);
 
 export const setSelectedStage = createEvent<TStages | null>();

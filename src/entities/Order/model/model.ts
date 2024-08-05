@@ -1,5 +1,6 @@
 import toast from "react-hot-toast";
 import { Effect, createEvent, createStore, sample } from "effector";
+import { PreCreateOrderResponse } from "~/entities/OrderStage";
 import { DriverProfileTranslations } from "~/entities/User";
 import { TPaginator } from "~/shared/ui";
 import {
@@ -26,6 +27,12 @@ $orders.on(getOrderFx.doneData, (_, order) => [order]);
 
 export const $ordersPagination = createStore<TPaginator | null>(null);
 $ordersPagination.on(getOrdersFx.doneData, (_, payload) => payload.pagination);
+
+export const $preCreateOrder = createStore<PreCreateOrderResponse | null>(null);
+$preCreateOrder.on(
+  getOrdersFx.doneData,
+  (_, payload) => payload.pre_create_order
+);
 
 export const updateOrder = createEvent<{
   orderId: number;

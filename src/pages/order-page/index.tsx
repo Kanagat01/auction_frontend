@@ -1,12 +1,12 @@
 import { preCreateOrderFx } from "~/entities/OrderStage";
+import { OrderForm } from "~/widgets/OrderForm";
 import { RoundedWhiteBox, TitleLg } from "~/shared/ui";
 import { renderPromise } from "~/shared/api";
 import { logger } from "~/shared/config";
-import { OrderForm } from "~/widgets/OrderForm";
 
 export default function OrderPage() {
   return (
-    <RoundedWhiteBox>
+    <RoundedWhiteBox className="me-3">
       {renderPromise(preCreateOrderFx, {
         error: (err) => {
           logger.error(err);

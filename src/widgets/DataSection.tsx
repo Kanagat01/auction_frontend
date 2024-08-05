@@ -1,9 +1,10 @@
 import { CSSProperties, ChangeEvent, useState, ReactNode } from "react";
 import { useLocation } from "react-router";
-import { TGetOrder } from "~/entities/Order";
+import { useUnit } from "effector-react";
+import { $preCreateOrder, TGetOrder } from "~/entities/Order";
 import { copyOnClickWrapper, handleClick } from "~/features/copyOnClick";
-import Routes from "~/shared/routes";
 import { InputContainer, RoundedTable, TitleSm } from "~/shared/ui";
+import Routes from "~/shared/routes";
 
 const gridContainer: CSSProperties = {
   display: "grid",
@@ -14,6 +15,16 @@ const gridContainer: CSSProperties = {
 };
 
 export function DataSection({ order }: { order: TGetOrder }) {
+  const preCreateOrder = useUnit($preCreateOrder);
+  const transport_body_type = preCreateOrder?.transport_body_types.find(
+    (el) => el.id === order.transport_body_type
+  );
+  const transport_load_type = preCreateOrder?.transport_load_types.find(
+    (el) => el.id === order.transport_load_type
+  );
+  const transport_unload_type = preCreateOrder?.transport_unload_types.find(
+    (el) => el.id === order.transport_unload_type
+  );
   const [stageIdx, setStageIdx] = useState(0);
   const {
     load_stage,
@@ -69,11 +80,12 @@ export function DataSection({ order }: { order: TGetOrder }) {
   let tableData: [ReactNode, ReactNode][] = [
     ["Стартовая цена", order.start_price],
     ["Шаг цены", order.price_step],
-    ["Способ погрузки", order.transport_load_type],
-    ["Способ выгрузки", order.transport_unload_type],
+    ["Тип кузова", transport_body_type?.name],
+    ["Способ погрузки", transport_load_type?.name],
+    ["Способ выгрузки", transport_unload_type?.name],
     ["ТС, м3", order.transport_volume],
     ["Темп. режим", order.temp_mode],
-    ["ADR [шт.]", order.adr],
+    ["ADR", order.adr],
   ];
   if (order.driver) {
     tableData.push(

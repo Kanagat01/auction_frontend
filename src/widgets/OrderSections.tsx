@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useUnit } from "effector-react";
 import { useLocation } from "react-router-dom";
 import { DataSection, MapSection } from "~/widgets";
@@ -52,11 +52,6 @@ export function OrderSections() {
         </div>
       );
   };
-
-  useEffect(() => {
-    if (order) setCurrentSection("data");
-  }, [order]);
-
   return (
     <>
       <div className="d-flex align-items-center justify-content-between my-4">

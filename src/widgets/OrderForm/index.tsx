@@ -37,8 +37,12 @@ const inputNamesCol3: (keyof TInputs)[] = [
 export function OrderForm(preCreateOrder: PreCreateOrderResponse) {
   const order = useUnit($orderForm);
   return (
-    <form onSubmit={orderFormSubmitted} onReset={clearForm as () => void}>
-      <Row className="p-4">
+    <form
+      className="p-4"
+      onSubmit={orderFormSubmitted}
+      onReset={clearForm as () => void}
+    >
+      <Row>
         <Col md={6} lg={3} className="mb-4">
           <div className={styles.title}>Заказчик</div>
           {inputNamesCol1.map((name) => (
@@ -95,17 +99,19 @@ export function OrderForm(preCreateOrder: PreCreateOrderResponse) {
               <Field
                 key={name}
                 name={name}
-                value={order[name] as string | number}
+                value={order[name] ?? ""}
                 colNum={3}
               />
             ))}
           </Row>
         </Col>
-        <Col md={12} lg={8}>
+        <Col lg={8} md={12}>
           <OrderStagesTable orderStages={order.stages} />
         </Col>
-        <Col md={12} lg={4}>
-          <OrderStageForm />
+        <Col lg={4} md={12}>
+          <div className="ms-3">
+            <OrderStageForm />
+          </div>
         </Col>
       </Row>
     </form>

@@ -7,6 +7,7 @@ import {
   deselectOrder,
   editOrderFx,
   orderTranslations,
+  updateOrder,
 } from "~/entities/Order";
 import { $mainData } from "~/entities/User";
 import {
@@ -72,7 +73,8 @@ orderFormSubmitted.watch((e: FormEvent) => {
   ];
   let notFilledIn = [];
   for (const key in orderForm) {
-    if (notRequired.includes(key)) {
+    //@ts-ignore
+    if (!orderForm[key] && notRequired.includes(key)) {
       //@ts-ignore
       orderForm[key] = null;
     } else if (
@@ -112,7 +114,10 @@ orderFormSubmitted.watch((e: FormEvent) => {
       const { id, ...data } = orderForm;
       toast.promise(editOrderFx({ order_id: id, ...data }), {
         loading: `Обновляем заказ #${id}...`,
-        success: `Заказ #${id} успешно обновлен`,
+        success: (order) => {
+          updateOrder({ orderId: order.id, newData: order });
+          return `Заказ #${id} успешно обновлен`;
+        },
         error: handleError,
       });
     } else {

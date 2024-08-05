@@ -91,7 +91,7 @@ export const orderTranslations: Record<keyof TColumn, string> = {
   transport_unload_type: "Выгрузка",
   transport_volume: "ТС, м3",
   temp_mode: "Темп. режим",
-  adr: "ADR [шт.]",
+  adr: "ADR",
   transport_body_width: "Ширина кузова",
   transport_body_length: "Длина кузова",
   transport_body_height: "Высота кузова",

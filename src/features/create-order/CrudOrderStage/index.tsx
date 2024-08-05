@@ -130,9 +130,9 @@ export function OrderStageForm() {
         onChange={onChange}
         variant="input"
         type="number"
-        label_style={{ color: "var(--default-font-color)" }}
+        labelStyle={{ color: "var(--default-font-color)" }}
         className="w-100"
-        container_style={{
+        containerStyle={{
           justifySelf: "start",
           marginBottom: "1.5rem",
         }}

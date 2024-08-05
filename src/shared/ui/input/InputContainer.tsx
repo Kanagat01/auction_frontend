@@ -10,14 +10,14 @@ import styles from "./styles.module.scss";
 
 export const InputContainer: FC<
   InputProps | TextAreaProps | SelectProps | BootstrapSelectProps
-> = ({ label, label_style, container_style, ...props }) => {
+> = ({ label, labelStyle, containerStyle, ...props }) => {
   return (
     <div
       className={`${styles["input-container"]} position-relative`}
-      style={container_style}
+      style={containerStyle}
     >
       {label && (
-        <label htmlFor={props.id ? props.id : props.name} style={label_style}>
+        <label htmlFor={props.id ? props.id : props.name} style={labelStyle}>
           {label}
         </label>
       )}

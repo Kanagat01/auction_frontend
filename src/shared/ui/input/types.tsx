@@ -10,8 +10,8 @@ import { FormSelectProps } from "react-bootstrap";
 export type BaseProp = {
   name: string;
   label?: ReactNode;
-  label_style?: CSSProperties;
-  container_style?: CSSProperties;
+  labelStyle?: CSSProperties;
+  containerStyle?: CSSProperties;
 };
 
 export type InputProps = BaseProp &

@@ -1,11 +1,14 @@
-import { FC, InputHTMLAttributes, ReactNode } from "react";
+import { CSSProperties, FC, InputHTMLAttributes, ReactNode } from "react";
 import styles from "./styles.module.scss";
 
-export const Checkbox: FC<
-  InputHTMLAttributes<HTMLInputElement> & { label?: ReactNode }
-> = (props) => {
+type CheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
+  label?: ReactNode;
+  labelStyle?: CSSProperties;
+};
+
+export const Checkbox: FC<CheckboxProps> = ({ labelStyle, ...props }) => {
   return props.label ? (
-    <label className="d-flex align-items-center">
+    <label className="d-flex align-items-center" style={labelStyle}>
       <input
         {...props}
         className={`${styles.checkbox} ${props.className}`}

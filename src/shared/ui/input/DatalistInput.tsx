@@ -7,8 +7,8 @@ type DatalistInputProps = Omit<InputProps, "variant"> & {
 };
 
 export const DatalistInput: FC<DatalistInputProps> = ({
-  container_style,
-  label_style,
+  containerStyle,
+  labelStyle,
   options,
   value,
   onChange,
@@ -55,9 +55,9 @@ export const DatalistInput: FC<DatalistInputProps> = ({
   }, [inputValue, options]);
 
   return (
-    <div className={styles["input-container"]} style={container_style}>
+    <div className={styles["input-container"]} style={containerStyle}>
       {props.label && (
-        <label htmlFor={props.name} style={label_style}>
+        <label htmlFor={props.name} style={labelStyle}>
           {props.label}
         </label>
       )}

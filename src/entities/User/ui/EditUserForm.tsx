@@ -32,7 +32,7 @@ export function EditUserForm({ isEditing, setIsEditing }: EditUserFormProps) {
     { label: "Ф.И.О.", value: data.full_name, name: "full_name" },
     {
       style: !isCompany ? { display: "none" } : {},
-      label_style: !isCompany ? { display: "none" } : {},
+      labelStyle: !isCompany ? { display: "none" } : {},
       name: "company_name",
       label: "Название компании",
       value: data.company_name,

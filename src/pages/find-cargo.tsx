@@ -70,7 +70,7 @@ export default function FindCargo() {
                 }
               }}
               placeholder="Трек номер отправителя"
-              container_style={{ width: "100%" }}
+              containerStyle={{ width: "100%" }}
               iconOnClick={findCargo}
             />
             <div className="mt-5 w-100">

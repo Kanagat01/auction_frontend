@@ -1,14 +1,6 @@
-import toast from "react-hot-toast";
-import {
-  createStore,
-  createEffect,
-  createEvent,
-  attach,
-  Effect,
-} from "effector";
-import { apiInstance, apiRequestFx, RequestParams } from "~/shared/api";
+import { createStore, createEffect, createEvent } from "effector";
+import { apiInstance } from "~/shared/api";
 import { logger } from "~/shared/config";
-import { isValidEmail } from "~/shared/lib";
 import {
   CustomerCompany,
   CustomerManager,
@@ -17,7 +9,7 @@ import {
   TransporterManager,
 } from "../types";
 
-type TMainData =
+export type TMainData =
   | CustomerCompany
   | CustomerManager
   | TransporterCompany
@@ -36,101 +28,12 @@ export const $userType = createStore<TUserType | "">("");
 export const setUserType = createEvent<TUserType | "">();
 $userType.on(setUserType, (_, newState) => newState);
 
-export const $mainData = createStore<TMainData | null>(null).on(
-  getMainDataFx.doneData,
-  (_, payload) => payload
-);
-
 export const setMainData = createEvent<TMainData | null>();
-$mainData.on(setMainData, (_, newState) => newState);
+export const $mainData = createStore<TMainData | null>(null)
+  .on(getMainDataFx.doneData, (_, payload) => payload)
+  .on(setMainData, (_, newState) => newState);
 
 $mainData.watch((mainData) => {
   if (!mainData) return null;
   setUserType(mainData.user.user_type);
-});
-
-export type EditUserRequest = {
-  full_name: string;
-  email: string;
-  company_name?: string;
-  details?: string;
-};
-
-const editUserFx: Effect<EditUserRequest, string> = attach({
-  effect: apiRequestFx,
-  mapParams: (data): RequestParams => ({
-    method: "post",
-    url: "/user/common/edit_user/",
-    data,
-  }),
-});
-
-export const editUser = createEvent<
-  EditUserRequest & { setIsEditing: (state: boolean) => void }
->();
-editUser.watch(({ setIsEditing, ...data }) => {
-  if (!isValidEmail(data.email)) {
-    toast.error("Неправильный формат email");
-    return;
-  }
-  const state = $mainData.getState();
-  if (
-    data.email === state?.user.email &&
-    data.full_name === state.user.full_name &&
-    (!("company_name" in state) || state.company_name === data.company_name)
-  ) {
-    toast.error("Вы не изменили ни одно поле");
-    return;
-  }
-  toast.promise(
-    editUserFx({ details: (state as CustomerCompany).details ?? "", ...data }),
-    {
-      loading: "Обновляем данные...",
-      success: () => {
-        const prevState = $mainData.getState();
-        if (prevState) {
-          const newState = {
-            ...prevState,
-            user: {
-              ...prevState!.user,
-              full_name: data.full_name,
-              email: data.email,
-            },
-          };
-          if (data.company_name !== "") {
-            //@ts-ignore
-            newState["company_name"] = data.company_name;
-          }
-          setMainData(newState);
-        }
-        setIsEditing(false);
-        return "Данные обновлены";
-      },
-      error: (err) => {
-        if (err?.email) return "Неправильный email";
-        return `Произошла ошибка: ${err}`;
-      },
-    }
-  );
-});
-
-export const editDetails = createEvent<{ details: string }>();
-editDetails.watch(({ details }) => {
-  const state = $mainData.getState();
-  if (!(state && "company_name" in state)) return;
-  const data = {
-    email: state?.user.email,
-    full_name: state?.user.full_name,
-    company_name: state?.company_name,
-    details,
-  };
-  toast.promise(editUserFx(data), {
-    loading: "Сохраняем реквизиты...",
-    success: () => {
-      const prevState = $mainData.getState();
-      setMainData({ ...prevState, details } as TMainData);
-      return "Реквизиты обновлены";
-    },
-    error: (err) => `Произошла ошибка: ${err}`,
-  });
 });

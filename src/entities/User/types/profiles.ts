@@ -5,7 +5,7 @@ export type TransporterCompany = {
   user: TUser;
   company_name: string;
   subscription: TransporterSubscriptions;
-  managers: Omit<TransporterManager, "company">;
+  managers: Omit<TransporterManager, "company">[];
   details: string;
 };
 

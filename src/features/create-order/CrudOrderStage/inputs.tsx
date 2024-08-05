@@ -62,7 +62,7 @@ const StageTypeInput = ({ value }: { value: TStage }) => {
         ["load_stage", "Погрузка"],
         ["unload_stage", "Выгрузка"],
       ]}
-      label_style={{
+      labelStyle={{
         color: "var(--default-font-color)",
       }}
       disabled
@@ -88,7 +88,7 @@ const Field = ({ name, stageType }: FieldProps) => {
           ? "number"
           : "text"
       }
-      label_style={{ color: "var(--default-font-color)" }}
+      labelStyle={{ color: "var(--default-font-color)" }}
       className="w-100 mb-2"
     />
   );
@@ -106,7 +106,7 @@ const StageCoupleField = ({ name }: { name: keyof CargoParams }) => {
       label={OrderStageTranslations[name]}
       variant="input"
       type={name === "cargo" ? "text" : "number"}
-      label_style={{ color: "var(--default-font-color)" }}
+      labelStyle={{ color: "var(--default-font-color)" }}
       className="w-100 mb-2"
     />
   );
@@ -125,8 +125,8 @@ const TimeInput = ({ name, stageType }: FieldProps) => {
       variant="input"
       type="time"
       className="mb-0"
-      label_style={{ color: "var(--default-font-color)" }}
-      container_style={{
+      labelStyle={{ color: "var(--default-font-color)" }}
+      containerStyle={{
         flexDirection: "row",
         alignItems: "center",
         marginRight: 0,

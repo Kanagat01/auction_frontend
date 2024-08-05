@@ -105,10 +105,10 @@ export function DataSection({ order }: { order: TGetOrder }) {
             <InputContainer
               {...{ key: name, name, label, defaultValue: defaultValue ?? "-" }}
               variant={key === 1 ? "textarea" : "input"}
-              label_style={{
+              labelStyle={{
                 color: "var(--default-font-color)",
               }}
-              container_style={{
+              containerStyle={{
                 width: "100%",
                 marginBottom: "1rem",
               }}

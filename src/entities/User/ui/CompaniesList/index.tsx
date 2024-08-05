@@ -127,12 +127,12 @@ export function CompaniesList({
                 }
                 options={options}
                 className="w-100 mb-0 px-4 py-3"
-                label_style={{
+                labelStyle={{
                   color: "var(--default-font-color)",
                   fontSize: "1.4rem",
                   marginBottom: "1rem",
                 }}
-                container_style={{ marginRight: 0, gap: 0 }}
+                containerStyle={{ marginRight: 0, gap: 0 }}
                 style={{ borderRadius: "10px" }}
               />
               <div

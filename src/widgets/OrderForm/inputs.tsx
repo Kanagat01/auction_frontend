@@ -31,7 +31,7 @@ export const SelectField = ({ name, value, options }: SelectFieldProps) => {
         {...{ name, label, options, onChange: handleChange }}
         value={value !== 0 ? value : undefined}
         variant="select"
-        label_style={{
+        labelStyle={{
           color: "var(--default-font-color)",
         }}
         className={styles.select}
@@ -51,7 +51,7 @@ export const Field = ({ name, value, colNum }: FieldProps) => {
           {...{ name, label, value, onChange: handleChange, type }}
           variant="input"
           className={`${styles.input} w-100 mb-3`}
-          label_style={{ color: "var(--default-font-color)" }}
+          labelStyle={{ color: "var(--default-font-color)" }}
           disabled={name === "customer_manager"}
         />
       );
@@ -69,7 +69,7 @@ export const Field = ({ name, value, colNum }: FieldProps) => {
           <InputContainer
             {...{ name, label, value, onChange: handleChange, type }}
             variant="input"
-            label_style={{
+            labelStyle={{
               color: "var(--default-font-color)",
             }}
             className={`${styles.input} mb-0`}

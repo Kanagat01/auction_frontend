@@ -7,6 +7,7 @@ import { FaAngleLeft, FaPen } from "react-icons/fa";
 import { SlSettings } from "react-icons/sl";
 
 import { $mainData, CustomerCompany, CustomerManager } from "~/entities/User";
+import { RoundedGrayButton } from "~/shared/ui";
 import { useModalState } from "~/shared/lib";
 import {
   TSection,
@@ -16,15 +17,17 @@ import {
   SubscriptionsList,
   ManagersList,
   AddManager,
+  EditManager,
+  setSelectedManager,
 } from "./sections";
 import styles from "./styles.module.scss";
-import { RoundedGrayButton } from "~/shared/ui";
 
 const renderSection = (
   role: string,
   section: TSection,
   changeSection: (newSection: TSection) => void
 ) => {
+  if (!["managers", "editManager"].includes(section)) setSelectedManager(null);
   switch (section) {
     case "main":
       return <MainSection role={role} changeSection={changeSection} />;
@@ -38,6 +41,8 @@ const renderSection = (
       return <ManagersList />;
     case "addManager":
       return <AddManager />;
+    case "editManager":
+      return <EditManager />;
   }
 };
 
@@ -56,6 +61,7 @@ export function SettingsModal() {
     subscriptions: t("subscriptions"),
     managers: t("your_managers"),
     addManager: t("add_manager"),
+    editManager: t("edit_manager"),
   };
 
   const [visible, setVisible] = useState(true);
@@ -69,6 +75,10 @@ export function SettingsModal() {
       setVisible(true);
     }, 500);
   };
+  const goBack = () => {
+    if (section === "editManager") changeSection("managers");
+    else if (section !== "main") changeSection("main");
+  };
 
   return (
     <>
@@ -78,10 +88,7 @@ export function SettingsModal() {
       <Modal show={show} onHide={changeShow} className="rounded-modal">
         <Modal.Body>
           <div className="d-flex align-items-center mb-2">
-            <button
-              className="p-0 z-1"
-              onClick={() => (section !== "main" ? changeSection("main") : {})}
-            >
+            <button className="p-0 z-1" onClick={goBack}>
               <FaAngleLeft className={styles.goBackButton} />
             </button>
             <div
@@ -100,6 +107,7 @@ export function SettingsModal() {
                   className={`${styles.editButton} slide-animation ${
                     visible ? "visible" : ""
                   }`}
+                  onClick={() => changeSection("editManager")}
                 >
                   <FaPen />
                 </RoundedGrayButton>

@@ -299,7 +299,7 @@ export default function CargoPlan() {
             <InputContainer
               key={idx}
               variant="input"
-              container_style={{ justifyContent: "end" }}
+              containerStyle={{ justifyContent: "end" }}
               name={name}
               label={label}
               placeholder={placeholder}

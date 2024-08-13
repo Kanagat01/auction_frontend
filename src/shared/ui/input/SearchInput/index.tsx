@@ -5,23 +5,27 @@ import styles from "./styles.module.scss";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   containerStyle?: CSSProperties;
   iconOnClick?: () => void;
+  withoutIcon?: boolean;
 }
 
 export const SearchInput: FC<InputProps> = ({
-  iconOnClick,
   containerStyle,
+  withoutIcon = false,
+  iconOnClick,
   ...props
 }) => {
   return (
     <div className={styles["search-box"]} style={containerStyle}>
       <input className={styles["search-input"]} type="text" {...props} />
-      <span
-        className={styles["search-icon"]}
-        onClick={iconOnClick}
-        style={iconOnClick ? { cursor: "pointer" } : {}}
-      >
-        <FiSearch className="w-100 h-100" />
-      </span>
+      {!withoutIcon && (
+        <span
+          className={styles["search-icon"]}
+          onClick={iconOnClick}
+          style={iconOnClick ? { cursor: "pointer" } : {}}
+        >
+          <FiSearch className="w-100 h-100" />
+        </span>
+      )}
     </div>
   );
 };

@@ -2,12 +2,12 @@ import toast from "react-hot-toast";
 import { FormEvent, MouseEvent } from "react";
 import { createEvent, sample } from "effector";
 import {
-  $selectedOrder,
   createOrderFx,
-  deselectOrder,
   editOrderFx,
-  orderTranslations,
   updateOrder,
+  $selectedOrder,
+  setSelectedOrder,
+  orderTranslations,
 } from "~/entities/Order";
 import { $mainData } from "~/entities/User";
 import {
@@ -64,7 +64,8 @@ CopyOrder.watch((event) => {
   });
   sample({
     clock: $orderForm,
-    target: deselectOrder,
+    fn: () => null,
+    target: setSelectedOrder,
   });
   setOrderForm(newState as TNewOrder);
 });
@@ -157,7 +158,8 @@ EditOrder.watch((event) => {
   toast.remove();
   sample({
     clock: $orderForm,
-    target: deselectOrder,
+    fn: () => null,
+    target: setSelectedOrder,
   });
 
   const newOrderForm = orderToOrderForm(order);

@@ -10,8 +10,7 @@ import { Checkbox } from "~/shared/ui";
 import Routes from "~/shared/routes";
 import {
   $selectedOrder,
-  deselectOrder,
-  selectOrder,
+  setSelectedOrder,
   OrderStatusTranslation,
   TOrderStatus,
   orderTranslations,
@@ -123,7 +122,7 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
                     ? row.getIsSomeSelected()
                     : undefined,
                   onChange: () =>
-                    !checked ? selectOrder(orderId) : deselectOrder(),
+                    setSelectedOrder(!checked ? row.original : null),
                 }}
               />
               <span className="ms-3">{value?.toString() ?? "-"}</span>

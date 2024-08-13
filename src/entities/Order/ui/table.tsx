@@ -9,12 +9,11 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {
-  $selectedOrder,
+  getColumns,
   OrderStatus,
   TGetOrder,
-  deselectOrder,
-  getColumns,
-  selectOrder,
+  $selectedOrder,
+  setSelectedOrder,
 } from "~/entities/Order";
 import { $userType, getRole } from "~/entities/User";
 import { MainTable, TPaginator } from "~/shared/ui";
@@ -87,8 +86,8 @@ export function OrdersList({
       className,
       onClick:
         id === selectedOrder?.id
-          ? (deselectOrder as () => void)
-          : () => selectOrder(id),
+          ? () => setSelectedOrder(null)
+          : () => setSelectedOrder(data.find((o) => o.id === id) ?? null),
     };
   };
   return (

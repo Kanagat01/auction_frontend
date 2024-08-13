@@ -8,7 +8,7 @@ import {
   cancelOrderCompletionFx,
   cancelOrderFx,
   completeOrderFx,
-  getOrderFx,
+  findCargoFx,
   getOrdersFx,
   publishOrderFx,
   unpublishOrderFx,
@@ -23,7 +23,7 @@ import { AddDriverDataRequest } from ".";
 
 export const $orders = createStore<TGetOrder[]>([]);
 $orders.on(getOrdersFx.doneData, (_, payload) => payload.orders);
-$orders.on(getOrderFx.doneData, (_, order) => [order]);
+$orders.on(findCargoFx.doneData, (_, order) => [order]);
 
 export const $ordersPagination = createStore<TPaginator | null>(null);
 $ordersPagination.on(getOrdersFx.doneData, (_, payload) => payload.pagination);
@@ -49,18 +49,14 @@ $orders.on(removeOrder, (state, orderId) =>
   state.filter((order) => order.id !== orderId)
 );
 
-export const $selectedOrder = createStore<TGetOrder | null>(null);
+export const setSelectedOrder = createEvent<TGetOrder | null>();
+export const $selectedOrder = createStore<TGetOrder | null>(null).on(
+  setSelectedOrder,
+  (_, state) => state
+);
 $selectedOrder.on(updateOrder, (state, { newData }) => {
   return state ? { ...state, ...newData } : null;
 });
-
-export const selectOrder = createEvent<number>();
-$selectedOrder.on(selectOrder, (_, orderId) =>
-  $orders.getState().find((order) => order.id === orderId)
-);
-
-export const deselectOrder = createEvent();
-$selectedOrder.on(deselectOrder, (_) => null);
 
 export const updateSelectedOrder = createEvent();
 $selectedOrder.on(updateSelectedOrder, (state) => {
@@ -93,7 +89,7 @@ function handleOrderAction(
         if (onSuccess) onSuccess(order_id);
         else {
           removeOrder(order_id);
-          deselectOrder();
+          setSelectedOrder(null);
         }
         return actionMessage.success;
       },
@@ -143,7 +139,7 @@ completeOrder.watch(() =>
     {},
     (orderId: number) => {
       updateOrder({ orderId, newData: { status: OrderStatus.completed } });
-      deselectOrder();
+      setSelectedOrder(null);
     }
   )
 );
@@ -159,7 +155,7 @@ cancelOrderCompletion.watch(() =>
     {},
     (orderId: number) => {
       updateOrder({ orderId, newData: { status: OrderStatus.being_executed } });
-      deselectOrder();
+      setSelectedOrder(null);
     }
   )
 );
@@ -216,7 +212,7 @@ addDriverData.watch(({ onReset, ...data }) => {
     loading: "Отправляем данные о водителе...",
     success: (driver) => {
       updateOrder({ orderId: order_id, newData: { driver } });
-      deselectOrder();
+      setSelectedOrder(null);
       onReset();
       return "Данные отправлены";
     },

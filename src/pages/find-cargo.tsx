@@ -1,8 +1,13 @@
+import toast from "react-hot-toast";
 import { useState, ChangeEvent, KeyboardEvent } from "react";
 import { useUnit } from "effector-react";
 import { Modal } from "react-bootstrap";
 import { Header, OrderSections } from "~/widgets";
-import { $selectedOrder, getOrderFx, selectOrder } from "~/entities/Order";
+import {
+  $selectedOrder,
+  setSelectedOrder,
+  findCargoFx,
+} from "~/entities/Order";
 import { useModalState } from "~/shared/lib";
 import {
   MainTitle,
@@ -16,25 +21,35 @@ export default function FindCargo() {
   const order = useUnit($selectedOrder);
   const [show, changeShow] = useModalState(false);
   const [transportation_number, setTransportationNumber] = useState<number>(0);
+  const [machine_number, setMachineNumber] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
   const findCargo = async () => {
-    if (transportation_number == 0) return;
-    if (order?.transportation_number === transportation_number) {
+    if (transportation_number == 0 || machine_number == "") {
+      toast.error("Заполните оба поля");
+      return;
+    }
+    if (
+      order?.transportation_number === transportation_number &&
+      order.driver?.machine_number === machine_number
+    ) {
       changeShow();
       return;
     }
     setLoading(true);
     setError("");
     try {
-      const data = await getOrderFx(transportation_number);
-      selectOrder(data.id);
+      const data = await findCargoFx({ transportation_number, machine_number });
+      setSelectedOrder(data);
       changeShow();
     } catch (error: any) {
-      if (typeof error === "string" && error === "order_not_found")
-        setError("Рейс с таким трек-номером не найден");
-      else setError(error);
+      if (typeof error === "string") {
+        if (error === "order_not_found")
+          setError("Рейс с таким трек-номером не найден");
+        else if (error === "driver_not_found")
+          setError("Водитель с таким номером машины не найден");
+      } else setError(error);
     } finally {
       setLoading(false);
     }
@@ -55,7 +70,9 @@ export default function FindCargo() {
             style={{ width: "35rem" }}
           >
             <MainTitle className="mb-5">
-              <TextCenter>Поиск рейса по треку-номеру</TextCenter>
+              <TextCenter>
+                Поиск рейса по треку-номеру и номеру машины
+              </TextCenter>
             </MainTitle>
             <SearchInput
               value={transportation_number !== 0 ? transportation_number : ""}
@@ -70,6 +87,15 @@ export default function FindCargo() {
                 }
               }}
               placeholder="Трек номер отправителя"
+              containerStyle={{ width: "100%", marginBottom: "2rem" }}
+              withoutIcon={true}
+            />
+            <SearchInput
+              value={machine_number}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setMachineNumber(e.target.value)
+              }
+              placeholder="Номер машины водителя"
               containerStyle={{ width: "100%" }}
               iconOnClick={findCargo}
             />

@@ -1,6 +1,6 @@
 import { createStore, createEvent, sample } from "effector";
 import { preCreateOrderFx, TStage, TStages } from "~/entities/OrderStage";
-import { deselectOrder, TGetOrder } from "~/entities/Order";
+import { setSelectedOrder, TGetOrder } from "~/entities/Order";
 import { $mainData } from "~/entities/User";
 import { FieldUpdatePayload, TNewOrder } from "./types";
 import { ORDER_FORM_STORAGE_KEY } from "~/shared/lib";
@@ -141,7 +141,8 @@ preCreateOrderFx.doneData.watch(
     if (order) {
       sample({
         clock: $orderForm,
-        target: deselectOrder,
+        fn: () => null,
+        target: setSelectedOrder,
       });
       const newOrderForm = orderToOrderForm(order);
       setOrderForm({

@@ -10,6 +10,7 @@ import {
   GetOrdersRequest,
   GetOrdersResponse,
   PublishOrderRequest,
+  FindCargoRequest,
 } from "./api_types";
 
 //@ts-ignore
@@ -24,11 +25,14 @@ enum OrderStatusUrls {
 }
 
 // get order
-export const getOrderFx: Effect<number, TGetOrder> = attach({
+export const findCargoFx: Effect<FindCargoRequest, TGetOrder> = attach({
   effect: apiRequestFx,
-  mapParams: (transportation_number: number): RequestParams => ({
+  mapParams: ({
+    transportation_number,
+    machine_number,
+  }: FindCargoRequest): RequestParams => ({
     method: "get",
-    url: `/auction/get_order/${transportation_number}/`,
+    url: `/auction/find_cargo/${transportation_number}/${machine_number}/`,
   }),
 });
 

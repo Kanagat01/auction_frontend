@@ -3,6 +3,11 @@ import { PreCreateOrderResponse, TStages } from "~/entities/OrderStage";
 import { DriverProfile } from "~/entities/User";
 import { TPaginator } from "~/shared/ui";
 
+export type FindCargoRequest = {
+  transportation_number: number;
+  machine_number: string;
+};
+
 export type GetOrdersRequest = {
   status: TOrderStatus;
   page?: number;

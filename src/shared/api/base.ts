@@ -22,7 +22,7 @@ apiInstance.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       setAuth(false);
     }
-    logger.log(error);
+    logger.error(error);
     return Promise.reject(error);
   }
 );

@@ -203,7 +203,6 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
               );
           }
         } else if (key === "offer_price") {
-          console.log(row.original);
           const priceData = row.original.price_data;
           return priceData && "price" in priceData ? (
             <span

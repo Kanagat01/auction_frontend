@@ -49,8 +49,6 @@ CopyOrder.watch((event) => {
   Object.keys(initialOrder).map((key) => {
     if (key === "stages") {
       const newOrderStageNum = $maxOrderStageNumber.getState();
-      console.log("m", newOrderStageNum);
-
       newState.stages = order.stages.map((stage, idx) => ({
         ...stage,
         order_stage_number: newOrderStageNum + idx,

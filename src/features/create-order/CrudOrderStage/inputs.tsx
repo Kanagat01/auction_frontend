@@ -43,11 +43,14 @@ const handleChange = fieldUpdate.prepend(
     event: ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
-  ) =>
-    ({
+  ) => {
+    let newValue = event.target.value;
+    if (event.target.type === "number") newValue = newValue.replace(",", ".");
+    return {
       key: event.target.name,
-      value: event.target.value,
-    } as FieldUpdatePayload)
+      value: newValue,
+    } as FieldUpdatePayload;
+  }
 );
 
 const StageTypeInput = ({ value }: { value: TStage }) => {

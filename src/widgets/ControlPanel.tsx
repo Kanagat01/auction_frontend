@@ -26,8 +26,6 @@ export function ControlPanel({
         defaultValue:
           priceData && "current_price" in priceData
             ? priceData.current_price
-            : priceData && "price" in priceData
-            ? priceData.price
             : order?.start_price,
         readOnly: true,
       },

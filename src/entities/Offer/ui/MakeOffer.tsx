@@ -43,9 +43,7 @@ export const MakeOffer = ({
     if (inAuction && order) {
       if (priceData && "current_price" in priceData)
         newPrice = priceData.current_price - order.price_step;
-      else if (priceData && "price" in priceData)
-        newPrice = priceData.price - order.price_step;
-      else newPrice = order.start_price - order.price_step;
+      else newPrice = order?.start_price - order.price_step;
     } else if (order && priceData && "price" in priceData)
       newPrice = priceData.price;
 

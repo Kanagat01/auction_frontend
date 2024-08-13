@@ -31,10 +31,18 @@ export const editOrderStageFx: Effect<EditOrderStageRequest, OrderModel> =
   });
 
 // get order stages
-export const preCreateOrderFx: Effect<void, PreCreateOrderResponse> = attach({
+export const preCreateOrderFx: Effect<
+  { transportation_number?: number },
+  PreCreateOrderResponse
+> = attach({
   effect: apiRequestFx,
-  mapParams: (): RequestParams => ({
-    method: "get",
-    url: `/auction/customer/pre_create_order/`,
-  }),
+  mapParams: ({ transportation_number }): RequestParams => {
+    let queryParams = "";
+    if (transportation_number)
+      queryParams += `?transportation_number=${transportation_number}`;
+    return {
+      method: "get",
+      url: `/auction/customer/pre_create_order/${queryParams}`,
+    };
+  },
 });

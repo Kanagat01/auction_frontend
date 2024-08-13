@@ -36,6 +36,7 @@ createOffer.watch(({ inAuction, onReset, ...data }) =>
       if (inAuction)
         price_data = {
           offer_id: 0,
+          current_price: data.price,
           price: data.price,
           is_best_offer: true,
         };

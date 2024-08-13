@@ -7,9 +7,13 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   iconOnClick?: () => void;
 }
 
-export const SearchInput: FC<InputProps> = ({ iconOnClick, ...props }) => {
+export const SearchInput: FC<InputProps> = ({
+  iconOnClick,
+  containerStyle,
+  ...props
+}) => {
   return (
-    <div className={styles["search-box"]} style={props.containerStyle}>
+    <div className={styles["search-box"]} style={containerStyle}>
       <input className={styles["search-input"]} type="text" {...props} />
       <span
         className={styles["search-icon"]}

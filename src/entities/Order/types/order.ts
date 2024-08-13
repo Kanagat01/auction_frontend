@@ -127,6 +127,7 @@ export type TPriceData =
   | {
       offer_id: number;
       price: number;
+      current_price: number;
       is_best_offer: boolean;
     };
 

@@ -13,19 +13,24 @@ import { $mainData } from "~/entities/User";
 import {
   $orderForm,
   initialOrder,
+  setMaxOrderStageNumber,
+  $maxTransportationNumber,
+  setMaxTransportationNumber,
   setNotValidStageNumber,
   setOrderForm,
   TNewOrder,
+  $maxOrderStageNumber,
+  orderToOrderForm,
 } from ".";
 
 export const clearForm = createEvent();
-clearForm.watch(() =>
+clearForm.watch(() => {
   setOrderForm({
     ...initialOrder,
     customer_manager: $orderForm.getState().customer_manager,
-    transportation_number: Math.ceil(Date.now() / 1000),
-  } as TNewOrder)
-);
+    transportation_number: $maxTransportationNumber.getState(),
+  } as TNewOrder);
+});
 
 export const CopyOrder = createEvent<MouseEvent<HTMLAnchorElement>>();
 CopyOrder.watch((event) => {
@@ -35,16 +40,22 @@ CopyOrder.watch((event) => {
     toast.error("Выберите заказ для копирования");
     return;
   }
+  const newTrNumber = $maxTransportationNumber.getState() + 1;
+  setMaxTransportationNumber(newTrNumber);
   let newState: Partial<TNewOrder> = {
-    transportation_number: Math.ceil(Date.now() / 1000),
+    transportation_number: newTrNumber,
     customer_manager: $mainData.getState()?.user.full_name ?? "",
   };
   Object.keys(initialOrder).map((key) => {
     if (key === "stages") {
+      const newOrderStageNum = $maxOrderStageNumber.getState();
+      console.log("m", newOrderStageNum);
+
       newState.stages = order.stages.map((stage, idx) => ({
         ...stage,
-        order_stage_number: Math.ceil(Date.now() / 1000) + idx,
+        order_stage_number: newOrderStageNum + idx,
       }));
+      setMaxOrderStageNumber(newOrderStageNum + order.stages.length - 1);
     } else if (["transportation_number", "customer_manager"].includes(key)) {
     } else {
       // @ts-ignore
@@ -113,10 +124,10 @@ orderFormSubmitted.watch((e: FormEvent) => {
     if (orderForm.id) {
       const { id, ...data } = orderForm;
       toast.promise(editOrderFx({ order_id: id, ...data }), {
-        loading: `Обновляем заказ #${id}...`,
+        loading: `Обновляем заказ #${data.transportation_number}...`,
         success: (order) => {
-          updateOrder({ orderId: order.id, newData: order });
-          return `Заказ #${id} успешно обновлен`;
+          updateOrder({ orderId: id, newData: order });
+          return `Заказ #${data.transportation_number} успешно обновлен`;
         },
         error: handleError,
       });
@@ -125,6 +136,8 @@ orderFormSubmitted.watch((e: FormEvent) => {
         loading: "Создаем заказ...",
         success: () => {
           clearForm();
+          setMaxTransportationNumber($maxTransportationNumber.getState() + 1);
+          setMaxOrderStageNumber($maxOrderStageNumber.getState() + 1);
           return "Заказ успешно создан";
         },
         error: handleError,
@@ -147,19 +160,7 @@ EditOrder.watch((event) => {
     target: deselectOrder,
   });
 
-  const {
-    customer_manager,
-    transporter_manager,
-    driver,
-    created_at,
-    updated_at,
-    status,
-    offers,
-    tracking,
-    documents,
-    application_type,
-    ...newOrderForm
-  } = order;
+  const newOrderForm = orderToOrderForm(order);
   setOrderForm({
     customer_manager: $mainData.getState()?.user.full_name ?? "",
     ...newOrderForm,

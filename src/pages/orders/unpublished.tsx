@@ -1,10 +1,11 @@
 import { ReactSVG } from "react-svg";
 import { useUnit } from "effector-react";
-import { NavLink } from "react-router-dom";
+import { generatePath, NavLink } from "react-router-dom";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
-import { CopyOrder, EditOrder } from "~/features/create-order";
+import { clearForm, CopyOrder, EditOrder } from "~/features/create-order";
 import { $userType, getRole } from "~/entities/User";
 import {
+  $selectedOrder,
   CancelOrder,
   OrderStatus,
   PublishOrder,
@@ -16,11 +17,16 @@ import { iconActionProps, OrdersPage, textActionProps } from "./helpers";
 
 export function UnpublishedOrders() {
   const userType = useUnit($userType);
+  const order = useUnit($selectedOrder);
   const pageData = {
     iconActions:
       userType === "customer_manager" ? (
         <>
-          <NavLink to={Routes.NEW_ORDER} {...iconActionProps}>
+          <NavLink
+            to={Routes.NEW_ORDER}
+            {...iconActionProps}
+            onClick={() => clearForm()}
+          >
             <ReactSVG src={FolderPlus} />
           </NavLink>
           <NavLink
@@ -31,7 +37,11 @@ export function UnpublishedOrders() {
             <LuCopyPlus />
           </NavLink>
           <NavLink
-            to={Routes.EDIT_ORDER}
+            to={generatePath(Routes.EDIT_ORDER, {
+              transportationNumber: order
+                ? order.transportation_number.toString()
+                : "",
+            })}
             onClick={EditOrder}
             {...iconActionProps}
           >

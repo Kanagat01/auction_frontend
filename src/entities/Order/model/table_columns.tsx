@@ -163,18 +163,26 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
             "transporter",
           ].includes(key)
         ) {
-          // if role is transporter then key is final_price
           if (role === "transporter") {
-            const priceData = row.original.price_data;
-            return priceData && "price" in priceData ? priceData.price : "-";
+            switch (key) {
+              case "final_price":
+                const priceData = row.original.price_data;
+                return priceData && "current_price" in priceData
+                  ? priceData.current_price
+                  : "-";
+              case "transporter":
+                return (
+                  row.original.transporter_manager?.company.company_name ?? "-"
+                );
+            }
           }
-          if (key === "final_price")
+          if (key === "final_price") {
             return (
               row.original?.offers?.find(
                 (el) => el.status === OrderOfferStatus.accepted
               )?.price ?? "-"
             );
-
+          }
           const bestOffer = row.original?.offers?.[0];
           if (!bestOffer) return "-";
           switch (key) {
@@ -196,6 +204,7 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
               );
           }
         } else if (key === "offer_price") {
+          console.log(row.original);
           const priceData = row.original.price_data;
           return priceData && "price" in priceData ? (
             <span

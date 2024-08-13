@@ -20,7 +20,7 @@ $font-color: map-get($colors, "default-font-color");
     border-left: none;
   }
   tr:first-child th:last-child,
-  td:last-child {
+  tr:nth-child(odd) td:last-child {
     border-right: none;
   }
 }

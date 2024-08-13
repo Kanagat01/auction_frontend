@@ -1,10 +1,14 @@
 import { useUnit } from "effector-react";
-import { $mainData, CustomerCompany } from "~/entities/User";
+import {
+  $mainData,
+  CustomerCompany,
+  TransporterCompany,
+} from "~/entities/User";
 import { Checkbox, RoundedTable, TextCenter } from "~/shared/ui";
 import { $selectedManager, fontSize, setSelectedManager } from "./helpers";
 
 export function ManagersList() {
-  const mainData = useUnit($mainData);
+  const mainData = useUnit($mainData) as CustomerCompany | TransporterCompany;
   const selectedManager = useUnit($selectedManager);
   return (
     <RoundedTable
@@ -13,8 +17,12 @@ export function ManagersList() {
         <TextCenter style={fontSize}>Менеджер</TextCenter>,
         <TextCenter style={fontSize}>Email</TextCenter>,
       ]}
-      data={(mainData as CustomerCompany).managers.map(
-        ({ customer_manager_id: id, user: { email, full_name } }) => [
+      data={mainData.managers.map(({ user: { email, full_name }, ...data }) => {
+        const id =
+          "customer_manager_id" in data
+            ? data.customer_manager_id
+            : data.transporter_manager_id;
+        return [
           <Checkbox
             id={id.toString()}
             label={`№${id}`}
@@ -38,8 +46,8 @@ export function ManagersList() {
           >
             {email}
           </TextCenter>,
-        ]
-      )}
+        ];
+      })}
       layoutFixed={false}
     />
   );

@@ -7,15 +7,17 @@ import {
   TStages,
 } from "~/entities/OrderStage";
 import {
+  $maxOrderStageNumber,
   $orderForm,
   $orderStages,
   initialOrderStage,
+  setMaxOrderStageNumber,
   setOrderForm,
 } from "./state";
 
 export const clearStages = createEvent();
 $orderStages.on(clearStages, (_) => ({
-  order_stage_number: Math.ceil(Date.now() / 1000),
+  order_stage_number: $maxOrderStageNumber.getState(),
   load_stage: initialOrderStage,
   unload_stage: initialOrderStage,
   cargo: "",
@@ -54,6 +56,7 @@ const stageCoupleValidation = (func: (state: TStages) => void) => {
   } else {
     func(state);
     clearStages();
+    setMaxOrderStageNumber($maxOrderStageNumber.getState() + 1);
   }
   return !(emptyFields.length > 0);
 };

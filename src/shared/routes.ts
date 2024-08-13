@@ -7,7 +7,7 @@ enum Routes {
 
   HOME = "/",
   NEW_ORDER = "/new-order",
-  EDIT_ORDER = "/edit-order",
+  EDIT_ORDER = "/edit-order/:transportationNumber",
   PROFILE = "/cabinet",
   CARGO_PLAN = "/cargo-plan",
 

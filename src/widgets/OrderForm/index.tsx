@@ -40,7 +40,7 @@ export function OrderForm(preCreateOrder: PreCreateOrderResponse) {
     <form
       className="p-4"
       onSubmit={orderFormSubmitted}
-      onReset={clearForm as () => void}
+      onReset={() => clearForm}
     >
       <Row>
         <Col md={6} lg={3} className="mb-4">

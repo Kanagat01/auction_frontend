@@ -79,7 +79,7 @@ sample({
   target: updateSelectedOrder,
 });
 
-export function handleOrderAction(
+function handleOrderAction(
   actionFx: Effect<any, OrderModel>,
   actionMessage: { loading: string; success: string },
   actionProps?: Record<string, any>,

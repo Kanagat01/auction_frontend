@@ -24,15 +24,13 @@ export const MakeOffer = ({
   ...props
 }: { inAuction?: boolean } & ButtonHTMLAttributes<HTMLButtonElement>) => {
   const order = useUnit($selectedOrder);
-  const priceData = order?.price_data;
-
   const [price, setPrice] = useState<number>(0);
+  const [show, changeShow] = useModalState(false);
 
   const changePrice = (num: number) => {
     if (inAuction) return;
     if (num > 0) setPrice(num);
   };
-  const [show, changeShow] = useModalState(false);
   const onReset = () => {
     changePrice(0);
     changeShow();
@@ -40,12 +38,15 @@ export const MakeOffer = ({
 
   useEffect(() => {
     let newPrice = price;
+    const priceData = order?.price_data;
+
     if (inAuction && order) {
       if (priceData && "current_price" in priceData)
         newPrice = priceData.current_price - order.price_step;
       else newPrice = order?.start_price - order.price_step;
     } else if (order && priceData && "price" in priceData)
       newPrice = priceData.price;
+    else newPrice = 0;
 
     setPrice(newPrice);
   }, [order]);

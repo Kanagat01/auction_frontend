@@ -1,7 +1,10 @@
 import toast from "react-hot-toast";
 import { Effect, createEvent, createStore, sample } from "effector";
 import { PreCreateOrderResponse } from "~/entities/OrderStage";
-import { DriverProfileTranslations } from "~/entities/User";
+import {
+  DriverProfileTranslationKey,
+  DriverProfileTranslations,
+} from "~/entities/User";
 import { TPaginator } from "~/shared/ui";
 import {
   addDriverDataFx,
@@ -219,6 +222,27 @@ addDriverData.watch(({ onReset, ...data }) => {
     error: (err) => {
       if (err === "Status should be being_executed") {
         return 'Для добавления данных о водителе, статус заказа должен быть "Выполняется"';
+      } else if (typeof err === "object") {
+        const getErrorValue = (value: any) => {
+          if (typeof value[0] === "string") {
+            if (value[0].startsWith("max_length is"))
+              return `Максимальная длина ${value[0]
+                .split(" ")
+                .at(-2)} символов`;
+            else if (value[0] === "required") return "Обязательное поле";
+            else if (value[0] === "must_be_unique")
+              return "Должен быть уникальным для водителя";
+          }
+          return value;
+        };
+        return Object.entries(err)
+          .map(
+            ([key, value]) =>
+              `${
+                DriverProfileTranslations[key as DriverProfileTranslationKey]
+              }: ${getErrorValue(value)}`
+          )
+          .join("\n");
       }
       return `Произошла ошибка: ${err}`;
     },

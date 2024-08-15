@@ -49,8 +49,12 @@ export type DriverProfile = {
   machine_number: string;
 };
 
+export type DriverProfileTranslationKey =
+  | keyof Omit<DriverProfile, "user_or_fullname" | "companies">
+  | "full_name";
+
 export const DriverProfileTranslations: Record<
-  keyof Omit<DriverProfile, "user_or_fullname" | "companies"> | "full_name",
+  DriverProfileTranslationKey,
   string
 > = {
   driver_id: "ID",

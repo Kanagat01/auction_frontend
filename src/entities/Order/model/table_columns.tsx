@@ -165,6 +165,7 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
           if (role === "transporter") {
             switch (key) {
               case "final_price":
+              case "best_offer_price":
                 const priceData = row.original.price_data;
                 return priceData && "current_price" in priceData
                   ? priceData.current_price

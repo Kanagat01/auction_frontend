@@ -3,7 +3,8 @@ export type NotificationType =
   | "new_order_in_auction"
   | "new_order_in_bidding"
   | "new_order_in_direct"
-  | "new_order_being_executed";
+  | "new_order_being_executed"
+  | "order_cancelled";
 
 export type TNotification = {
   id: number;

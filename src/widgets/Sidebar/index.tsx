@@ -29,6 +29,7 @@ export function Sidebar() {
     [Routes.ORDERS_IN_AUCTION]: "new_order_in_auction",
     [Routes.ORDERS_IN_BIDDING]: "new_order_in_bidding",
     [Routes.ORDERS_IN_DIRECT]: "new_order_in_direct",
+    [Routes.CANCELLED_ORDERS]: "order_cancelled",
   };
   const currentRoute = useLocation().pathname;
 
@@ -95,7 +96,10 @@ export function Sidebar() {
     //   Routes.CARGO_PLAN,
     // ],
     [
-      <RiDeleteBin5Line className={styles.icon} />,
+      <>
+        {NotificationDot(Routes.CANCELLED_ORDERS)}
+        <RiDeleteBin5Line className={styles.icon} />
+      </>,
       "Отмененные",
       Routes.CANCELLED_ORDERS,
     ],

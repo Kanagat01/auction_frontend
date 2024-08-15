@@ -18,31 +18,29 @@ export const $maxOrderStageNumber = createStore<number>(1).on(
 );
 
 const savedState = localStorage.getItem(ORDER_FORM_STORAGE_KEY);
-export const initialOrder: TNewOrder = savedState
-  ? JSON.parse(savedState)
-  : {
-      transportation_number: 0,
-      customer_manager: "",
-      start_price: 0,
-      price_step: 0,
-      comments_for_transporter: "",
-      additional_requirements: "",
-      transport_volume: 0,
-      temp_mode: "",
-      adr: 0,
-      transport_body_width: 0,
-      transport_body_length: 0,
-      transport_body_height: 0,
+export const initialOrder: TNewOrder = {
+  transportation_number: 0,
+  customer_manager: "",
+  start_price: 0,
+  price_step: 0,
+  comments_for_transporter: "",
+  additional_requirements: "",
+  transport_volume: 0,
+  temp_mode: "",
+  adr: 0,
+  transport_body_width: 0,
+  transport_body_length: 0,
+  transport_body_height: 0,
 
-      transport_body_type: 0,
-      transport_load_type: 0,
-      transport_unload_type: 0,
-      stages: [],
-    };
+  transport_body_type: 0,
+  transport_load_type: 0,
+  transport_unload_type: 0,
+  stages: [],
+};
 
 export const setOrderForm = createEvent<TNewOrder & { id?: number }>();
 export const $orderForm = createStore<TNewOrder & { id?: number }>({
-  ...initialOrder,
+  ...(savedState ? JSON.parse(savedState) : initialOrder),
   transportation_number: $maxTransportationNumber.getState(),
 }).on(setOrderForm, (_, state) => state);
 

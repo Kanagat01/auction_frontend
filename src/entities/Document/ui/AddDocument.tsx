@@ -5,6 +5,7 @@ import {
   DragEvent,
   FormEvent,
   ButtonHTMLAttributes,
+  useRef,
 } from "react";
 import toast from "react-hot-toast";
 import { Modal } from "react-bootstrap";
@@ -16,9 +17,10 @@ import styles from "./style.module.scss";
 
 export function AddDocument(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   const { t } = useTranslation();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [show, changeShow] = useModalState(false);
-  const [fileInfo, setFileInfo] = useState("Нет выбранных файлов");
   const [file, setFile] = useState<File | null>(null);
+  const [fileInfo, setFileInfo] = useState("Нет выбранных файлов");
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -42,6 +44,12 @@ export function AddDocument(props: ButtonHTMLAttributes<HTMLButtonElement>) {
       `${newFile.name}, ${(newFile.size / (1024 * 1024)).toFixed(2)} мб`
     );
     setFile(newFile);
+
+    if (fileInputRef.current) {
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(newFile);
+      fileInputRef.current.files = dataTransfer.files;
+    }
   };
   const onReset = () => {
     setFile(null);
@@ -93,6 +101,7 @@ export function AddDocument(props: ButtonHTMLAttributes<HTMLButtonElement>) {
                 type="file"
                 name="uploaded-file"
                 onChange={handleFileChange}
+                ref={fileInputRef}
                 required
               />
               <p className={styles["file-info"]}>{fileInfo}</p>

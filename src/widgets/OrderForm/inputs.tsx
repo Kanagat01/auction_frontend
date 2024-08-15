@@ -45,6 +45,7 @@ export const SelectField = ({ name, value, options }: SelectFieldProps) => {
 };
 
 export const Field = ({ name, value, colNum }: FieldProps) => {
+  console.log(name, value);
   const label = orderTranslations[name];
   const type = typeof initialOrder[name] === "number" ? "number" : "string";
   switch (colNum) {

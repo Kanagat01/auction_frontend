@@ -20,18 +20,19 @@ const removeNotificationFx: Effect<{ notification_id: number }, string> =
     }),
   });
 
+export const $notifications = createStore<TNotification[]>([]);
+$notifications.on(getNotificationsFx.doneData, (_, data) => data);
+
 export const addNotification = createEvent<TNotification>();
+$notifications.on(addNotification, (state, notification) => [
+  ...state,
+  notification,
+]);
+
 export const removeNotification = createEvent<number>();
 removeNotification.watch((notification_id) =>
   removeNotificationFx({ notification_id })
 );
-
-export const $notifications = createStore<TNotification[]>([]);
-$notifications.on(getNotificationsFx.doneData, (_, data) => data);
-$notifications.on(addNotification, (state, notification) => [
-  notification,
-  ...state,
-]);
 $notifications.on(removeNotification, (state, notification_id) => {
   return state.filter((el) => el.id !== notification_id);
 });

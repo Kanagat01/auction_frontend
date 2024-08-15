@@ -3,7 +3,6 @@ import { preCreateOrderFx, TStage, TStages } from "~/entities/OrderStage";
 import { setSelectedOrder, TGetOrder } from "~/entities/Order";
 import { $mainData } from "~/entities/User";
 import { FieldUpdatePayload, TNewOrder } from "./types";
-import { ORDER_FORM_STORAGE_KEY } from "~/shared/lib";
 
 export const setMaxTransportationNumber = createEvent<number>();
 export const $maxTransportationNumber = createStore<number>(1).on(
@@ -17,7 +16,6 @@ export const $maxOrderStageNumber = createStore<number>(1).on(
   (_, state) => state
 );
 
-const savedState = localStorage.getItem(ORDER_FORM_STORAGE_KEY);
 export const initialOrder: TNewOrder = {
   transportation_number: 0,
   customer_manager: "",
@@ -40,14 +38,9 @@ export const initialOrder: TNewOrder = {
 
 export const setOrderForm = createEvent<TNewOrder & { id?: number }>();
 export const $orderForm = createStore<TNewOrder & { id?: number }>({
-  ...(savedState ? JSON.parse(savedState) : initialOrder),
+  ...initialOrder,
   transportation_number: $maxTransportationNumber.getState(),
 }).on(setOrderForm, (_, state) => state);
-
-$orderForm.watch((state) => {
-  if (state.id) localStorage.removeItem(ORDER_FORM_STORAGE_KEY);
-  else localStorage.setItem(ORDER_FORM_STORAGE_KEY, JSON.stringify(state));
-});
 
 $maxTransportationNumber.watch((state) =>
   setOrderForm({ ...$orderForm.getState(), transportation_number: state })

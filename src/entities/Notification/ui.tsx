@@ -1,11 +1,12 @@
+import { Fragment } from "react";
 import { ReactSVG } from "react-svg";
 import { Modal } from "react-bootstrap";
 import { useUnit } from "effector-react";
 
-import { Bell } from "~/shared/assets";
 import { $websocket, renderPromise } from "~/shared/api";
 import { SectionButton, TitleLg } from "~/shared/ui";
 import { useModalState } from "~/shared/lib";
+import { Bell } from "~/shared/assets";
 
 import {
   $notifications,
@@ -16,45 +17,52 @@ import {
 } from ".";
 import styles from "./styles.module.scss";
 
+function groupNotificationsByDate(notifications: TNotification[]) {
+  return notifications.reduce((acc, notification) => {
+    const date = new Date(notification.created_at).toLocaleDateString("ru", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    if (!acc[date]) {
+      acc[date] = [];
+    }
+    acc[date].push(notification);
+    return acc;
+  }, {} as Record<string, TNotification[]>);
+}
+
 export const NotificationCard = (notification: TNotification) => {
   const datetime = new Date(notification.created_at);
-  const date = datetime.toLocaleDateString("ru", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const time = datetime.toLocaleTimeString("ru", {
+    hour: "numeric",
+    minute: "numeric",
   });
-  const time = datetime
-    .toLocaleDateString("ru", {
-      hour: "numeric",
-      minute: "numeric",
-    })
-    .split(" ")[1];
+
   return (
-    <>
-      <span className={`${styles.notificationDate} mb-3`}>{date}</span>
-      <div className={styles.notificationCard}>
-        {/* <span className={styles.notificationType}>{notification.type}</span> */}
-        <span className={styles.notificationTitle}>{notification.title}</span>
-        <div className={styles.notificationText}>
-          {notification.description}
-        </div>
-        <div className="d-flex w-100">
-          <button
-            className={styles.readMore}
-            onClick={() => removeNotification(notification.id)}
-          >
-            Прочитано
-          </button>
-          <span className={styles.notificationTime}>{time}</span>
-        </div>
+    <div className={styles.notificationCard}>
+      {/* <span className={styles.notificationType}>{notification.type}</span> */}
+      <span className={styles.notificationTitle}>{notification.title}</span>
+      <div className={styles.notificationText}>{notification.description}</div>
+      <div className="d-flex w-100">
+        <button
+          className={styles.readMore}
+          onClick={() => removeNotification(notification.id)}
+        >
+          Прочитано
+        </button>
+        <span className={styles.notificationTime}>{time}</span>
       </div>
-    </>
+    </div>
   );
 };
 
 export function Notifications() {
   const [show, changeShow] = useModalState(false);
   const notifications = useUnit($notifications);
+  const groupedNotifications = groupNotificationsByDate(notifications);
+
   const websocket = useUnit($websocket);
   websocket.onmessage = (ev) => {
     const data = JSON.parse(ev.data);
@@ -80,9 +88,18 @@ export function Notifications() {
                   <SectionButton className="active">Информация</SectionButton>
                 </div>
                 {notifications.length > 0 ? (
-                  notifications.map((el, idx) => (
-                    <NotificationCard key={idx} {...el} />
-                  ))
+                  Object.entries(groupedNotifications).map(
+                    ([date, notifications]) => (
+                      <Fragment key={date}>
+                        <span className={`${styles.notificationDate} mb-3`}>
+                          {date}
+                        </span>
+                        {notifications.map((el, idx) => (
+                          <NotificationCard key={idx} {...el} />
+                        ))}
+                      </Fragment>
+                    )
+                  )
                 ) : (
                   <div className="ms-2 mt-5" style={{ fontSize: "1.6rem" }}>
                     Уведомлений нет

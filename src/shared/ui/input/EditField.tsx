@@ -1,6 +1,6 @@
 import { FC } from "react";
+import { RenderInput } from "./RenderInput";
 import { InputProps, TextAreaProps } from "./types";
-import { renderInput } from "./renderInput";
 import styles from "./styles.module.scss";
 
 export const EditField: FC<InputProps | TextAreaProps> = (props) => {
@@ -9,7 +9,7 @@ export const EditField: FC<InputProps | TextAreaProps> = (props) => {
       <label htmlFor={props.name} style={props.labelStyle}>
         {props.label}
       </label>
-      {renderInput(props)}
+      <RenderInput {...props} />
     </div>
   );
 };

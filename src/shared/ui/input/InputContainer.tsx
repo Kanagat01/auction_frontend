@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { renderInput } from "./renderInput";
+import { RenderInput } from "./RenderInput";
 import {
   BootstrapSelectProps,
   InputProps,
@@ -21,7 +21,7 @@ export const InputContainer: FC<
           {label}
         </label>
       )}
-      {renderInput(props)}
+      <RenderInput {...props} />
     </div>
   );
 };

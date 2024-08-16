@@ -1,5 +1,6 @@
 import { ReactNode, useState } from "react";
 import { Form } from "react-bootstrap";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 import {
   BootstrapSelectProps,
   InputProps,
@@ -7,9 +8,8 @@ import {
   TextAreaProps,
 } from "./types";
 import styles from "./styles.module.scss";
-import { BsEye, BsEyeSlash } from "react-icons/bs";
 
-export const renderInput = (
+export const RenderInput = (
   props: InputProps | TextAreaProps | SelectProps | BootstrapSelectProps
 ): ReactNode => {
   switch (props.variant) {

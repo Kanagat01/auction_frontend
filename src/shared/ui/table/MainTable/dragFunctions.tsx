@@ -9,7 +9,7 @@ import styles from "./styles.module.scss";
 export const DraggableTableHeader = ({
   header,
 }: {
-  header: Header<any, unknown>;
+  header: Header<unknown, unknown>;
 }) => {
   const { attributes, isDragging, listeners, setNodeRef, transform } =
     useSortable({
@@ -62,7 +62,7 @@ export const DraggableTableHeader = ({
   );
 };
 
-export const DragAlongCell = ({ cell }: { cell: Cell<any, unknown> }) => {
+export const DragAlongCell = ({ cell }: { cell: Cell<unknown, unknown> }) => {
   const { isDragging, setNodeRef, transform } = useSortable({
     id: cell.column.id,
   });

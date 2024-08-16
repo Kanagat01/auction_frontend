@@ -24,6 +24,7 @@ const sections: [string, TSection][] = [
 export function OrderSections() {
   const userType = useUnit($userType);
   const order = useUnit($selectedOrder);
+  const mediaQuery = useMediaQuery("(max-width: 375px)");
 
   const currentRoute = useLocation().pathname;
   const showOffers =
@@ -61,7 +62,7 @@ export function OrderSections() {
             style={{
               padding: "0.5rem 2rem",
               fontSize: "1.4rem",
-              ...(useMediaQuery("(max-width: 375px)") && {
+              ...(mediaQuery && {
                 padding: "0.5rem 1rem",
               }),
             }}

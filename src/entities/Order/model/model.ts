@@ -67,7 +67,7 @@ $selectedOrder.on(updateSelectedOrder, (state) => {
     return $orders.getState().find((order) => order.id === state.id) ?? null;
   return null;
 });
-export const isOrderSelected = (func: Function) => {
+export const isOrderSelected = (func: () => void) => {
   const order = $selectedOrder.getState();
   if (!order) toast.error("Выберите заказ");
   else func();
@@ -81,7 +81,7 @@ sample({
 function handleOrderAction(
   actionFx: Effect<any, OrderModel>,
   actionMessage: { loading: string; success: string },
-  actionProps?: Record<string, any>,
+  actionProps?: Record<string, unknown>,
   onSuccess?: (order_id: number) => void
 ) {
   const order_id = $selectedOrder.getState()?.id;
@@ -223,8 +223,8 @@ addDriverData.watch(({ onReset, ...data }) => {
       if (err === "Status should be being_executed") {
         return 'Для добавления данных о водителе, статус заказа должен быть "Выполняется"';
       } else if (typeof err === "object") {
-        const getErrorValue = (value: any) => {
-          if (typeof value[0] === "string") {
+        const getErrorValue = (value: unknown) => {
+          if (Array.isArray(value) && typeof value[0] === "string") {
             if (value[0].startsWith("max_length is"))
               return `Максимальная длина ${value[0]
                 .split(" ")

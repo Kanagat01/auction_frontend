@@ -13,17 +13,6 @@ import {
   FindCargoRequest,
 } from "./api_types";
 
-//@ts-ignore
-enum OrderStatusUrls {
-  unpublished = "get_unpublished_orders",
-  cancelled = "get_cancelled_orders",
-  in_auction = "get_orders_in_auction",
-  in_bidding = "get_orders_in_bidding",
-  in_direct = "get_orders_in_direct",
-  being_executed = "get_being_executed_orders",
-  completed = "get_completed_orders",
-}
-
 // get order
 export const findCargoFx: Effect<FindCargoRequest, TGetOrder> = attach({
   effect: apiRequestFx,

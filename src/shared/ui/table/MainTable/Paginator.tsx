@@ -5,7 +5,7 @@ import styles from "./styles.module.scss";
 import { TPaginator } from ".";
 
 export const Paginator = (paginator: TPaginator) => {
-  let pages = [];
+  const pages = [];
   const { pages_total, current_page } = paginator;
   if (pages_total <= 10) {
     for (let i = 1; i <= pages_total; i++) pages.push(i);

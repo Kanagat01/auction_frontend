@@ -28,7 +28,7 @@ export function EditManager() {
       | CustomerCompany
       | TransporterCompany;
     const m_id = data?.manager_id;
-    for (let idx in mainData.managers) {
+    for (const idx in mainData.managers) {
       const m = mainData.managers[idx];
       if (
         ("customer_manager_id" in m && m.customer_manager_id === m_id) ||

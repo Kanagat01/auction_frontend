@@ -37,7 +37,7 @@ export const MakeOffer = ({
   };
 
   useEffect(() => {
-    let newPrice = price;
+    let newPrice;
     const priceData = order?.price_data;
 
     if (inAuction && order) {
@@ -49,7 +49,7 @@ export const MakeOffer = ({
     else newPrice = 0;
 
     setPrice(newPrice);
-  }, [order]);
+  }, [order, inAuction]);
   return (
     <>
       <PrimaryButton {...props} onClick={() => isOrderSelected(changeShow)}>

@@ -1,5 +1,5 @@
 export interface LogFn {
-  (message?: any, ...optionalParams: any[]): void;
+  (message?: unknown, ...optionalParams: unknown[]): void;
 }
 
 export interface Logger {

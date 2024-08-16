@@ -10,7 +10,7 @@ export const addDocument = createEvent<
 addDocument.watch(({ reset, file }) => {
   const order_id = $selectedOrder.getState()?.id;
   if (!order_id) return;
-  let data = new FormData();
+  const data = new FormData();
   data.append("order_id", order_id.toString());
   data.append("file", file);
 

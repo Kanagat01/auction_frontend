@@ -3,7 +3,7 @@ import { MouseEvent, ReactNode } from "react";
 export const handleClick = (
   event: MouseEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSpanElement>
 ) => {
-  let target = event.target as
+  const target = event.target as
     | HTMLInputElement
     | HTMLTextAreaElement
     | HTMLSpanElement;

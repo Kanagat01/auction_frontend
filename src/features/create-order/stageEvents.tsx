@@ -29,10 +29,10 @@ const stageCoupleValidation = (func: (state: TStages) => void) => {
   const state = $orderStages.getState();
   const emptyFields = [];
 
-  for (let key1 in state) {
-    let stage = key1 as TStage;
-    for (let key2 in state[stage]) {
-      let field = key2 as OrderStageKey;
+  for (const key1 in state) {
+    const stage = key1 as TStage;
+    for (const key2 in state[stage]) {
+      const field = key2 as OrderStageKey;
       if (!state[stage][field] && field !== "comments") {
         const fieldName =
           (stage === "load_stage" ? "Погрузка" : "Выгрузка") +

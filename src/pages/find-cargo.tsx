@@ -43,13 +43,14 @@ export default function FindCargo() {
       const data = await findCargoFx({ transportation_number, machine_number });
       setSelectedOrder(data);
       changeShow();
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (typeof error === "string") {
         if (error === "order_not_found")
           setError("Рейс с таким трек-номером не найден");
         else if (error === "driver_not_found")
           setError("Водитель с таким номером машины не найден");
-      } else setError(error);
+        else setError(error);
+      }
     } finally {
       setLoading(false);
     }

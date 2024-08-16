@@ -42,7 +42,7 @@ CopyOrder.watch((event) => {
   }
   const newTrNumber = $maxTransportationNumber.getState() + 1;
   setMaxTransportationNumber(newTrNumber);
-  let newState: Partial<TNewOrder> = {
+  const newState: Partial<TNewOrder> = {
     transportation_number: newTrNumber,
     customer_manager: $mainData.getState()?.user.full_name ?? "",
   };
@@ -81,7 +81,7 @@ orderFormSubmitted.watch((e: FormEvent) => {
     "transport_body_height",
     "transport_body_length",
   ];
-  let notFilledIn = [];
+  const notFilledIn = [];
   for (const key in orderForm) {
     //@ts-ignore
     if (!orderForm[key] && notRequired.includes(key)) {

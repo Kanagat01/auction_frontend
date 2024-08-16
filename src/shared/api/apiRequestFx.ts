@@ -1,14 +1,14 @@
-import { AxiosError, Method } from "axios";
+import { AxiosError, AxiosResponse, Method } from "axios";
 import { createEffect } from "effector";
 import { apiInstance } from ".";
 
 export type RequestParams = {
   method: Method;
   url: string;
-  data?: any;
+  data?: object;
 };
 
-export const apiRequestFx = createEffect<RequestParams, any, Error>(
+export const apiRequestFx = createEffect<RequestParams, AxiosResponse, Error>(
   async ({ method, url, data }) => {
     try {
       const response = await apiInstance({ method, url, data });

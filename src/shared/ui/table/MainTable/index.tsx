@@ -39,12 +39,19 @@ type MainTableProps = {
 export function MainTable({
   table,
   paginator,
-  getRowProps = (_id: number) => ({}),
+  getRowProps = (_: number) => ({}),
   columnOrder,
   setColumnOrder,
 }: MainTableProps) {
   const headerGroups = table.getHeaderGroups();
   const rows = table.getRowModel().rows;
+  const checkRowProps = (obj: unknown) =>
+    typeof obj === "object" &&
+    obj !== null &&
+    "id" in obj &&
+    typeof obj.id === "number"
+      ? getRowProps(obj.id)
+      : {};
 
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
@@ -77,7 +84,7 @@ export function MainTable({
           <tbody>
             {rows.length !== 0 ? (
               rows.map((row) => (
-                <tr key={row.id} {...getRowProps(row.original.id)}>
+                <tr key={row.id} {...checkRowProps(row.original)}>
                   {row.getVisibleCells().map((cell) => (
                     <SortableContext
                       key={cell.id}
@@ -119,7 +126,7 @@ export function MainTable({
           <tbody>
             {rows.length !== 0 ? (
               rows.map((row) => (
-                <tr key={row.id} {...getRowProps(row.original.id)}>
+                <tr key={row.id} {...checkRowProps(row.original)}>
                   {row.getVisibleCells().map((cell) => (
                     <DragAlongCell key={cell.id} cell={cell} />
                   ))}

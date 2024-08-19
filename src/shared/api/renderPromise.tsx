@@ -15,7 +15,7 @@ type Handlers<T, E> = {
   error: ((error: E) => ReactNode) | ReactNode;
 };
 
-export function renderPromise<T, E = Error>(
+export function RenderPromise<T, E = Error>(
   promiseFn: () => Promise<T>,
   handlers: Handlers<T, E>
 ) {

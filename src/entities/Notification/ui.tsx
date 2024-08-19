@@ -3,7 +3,7 @@ import { ReactSVG } from "react-svg";
 import { Modal } from "react-bootstrap";
 import { useUnit } from "effector-react";
 
-import { $websocket, renderPromise } from "~/shared/api";
+import { $websocket, RenderPromise } from "~/shared/api";
 import { SectionButton, TitleLg } from "~/shared/ui";
 import { useModalState } from "~/shared/lib";
 import { Bell } from "~/shared/assets";
@@ -81,7 +81,7 @@ export function Notifications() {
 
       <Modal show={show} onHide={changeShow} className="rounded-modal">
         <Modal.Body>
-          {renderPromise(getNotificationsFx, {
+          {RenderPromise(getNotificationsFx, {
             success: (
               <>
                 <div className="d-flex mb-4" style={{ gap: "1rem" }}>

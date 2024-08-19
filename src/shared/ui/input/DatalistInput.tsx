@@ -24,17 +24,17 @@ export const DatalistInput: FC<DatalistInputProps> = ({
     }
   };
 
-  const handleItemClick = (id: number) => {
-    if (onChange) {
-      const fakeEvent = {
-        target: { value: id.toString() },
-      } as ChangeEvent<HTMLInputElement>;
-      onChange(fakeEvent);
-    }
-    setInputValue(id.toString());
-  };
-
   useEffect(() => {
+    const handleItemClick = (id: number) => {
+      if (onChange) {
+        const fakeEvent = {
+          target: { value: id.toString() },
+        } as ChangeEvent<HTMLInputElement>;
+        onChange(fakeEvent);
+      }
+      setInputValue(id.toString());
+    };
+
     const results = resultsRef.current;
     if (results) {
       let foundOne = false;

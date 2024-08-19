@@ -5,7 +5,7 @@ import { OrderForm } from "~/widgets/OrderForm";
 import { $orderForm } from "~/features/create-order";
 import { preCreateOrderFx } from "~/entities/OrderStage";
 import { RoundedWhiteBox, TextCenter, TitleLg } from "~/shared/ui";
-import { renderPromise } from "~/shared/api";
+import { RenderPromise } from "~/shared/api";
 import Routes from "~/shared/routes";
 
 export default function OrderPage() {
@@ -27,7 +27,7 @@ export default function OrderPage() {
   );
   return (
     <RoundedWhiteBox className="me-3">
-      {renderPromise(fetchPreCreateOrder, {
+      {RenderPromise(fetchPreCreateOrder, {
         error: (err) => {
           let errorMessage;
           if (typeof err === "string") {

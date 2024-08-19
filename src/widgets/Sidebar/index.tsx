@@ -42,7 +42,7 @@ export function Sidebar() {
         )
         .map(({ id }) => removeNotification(id));
     }
-  }, [currentRoute, notifications]);
+  }, [currentRoute, notifications, notificationsDict]);
 
   const NotificationDot = (route: string) => {
     const notification = notifications.find(

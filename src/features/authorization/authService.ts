@@ -6,7 +6,7 @@ import { API_URL } from "~/shared/config";
 import { setAuth } from "./authStore";
 
 type LoginRequest = {
-  email: string;
+  username: string;
   password: string;
 };
 type LoginResponse = { token: string };

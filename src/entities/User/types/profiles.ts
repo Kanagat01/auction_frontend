@@ -40,8 +40,7 @@ export type CustomerManager = {
 
 export type DriverProfile = {
   driver_id: number;
-  user_or_fullname: TUser | { full_name: string };
-  companies: Omit<TransporterCompany, "managers" | "user">[];
+  user: TUser;
   birth_date: string;
   passport_number: string;
   phone_number: string;
@@ -50,7 +49,7 @@ export type DriverProfile = {
 };
 
 export type DriverProfileTranslationKey =
-  | keyof Omit<DriverProfile, "user_or_fullname" | "companies">
+  | keyof Omit<DriverProfile, "user">
   | "full_name";
 
 export const DriverProfileTranslations: Record<

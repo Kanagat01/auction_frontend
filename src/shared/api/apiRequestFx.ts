@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse, Method } from "axios";
+import { AxiosError, Method } from "axios";
 import { createEffect } from "effector";
 import { apiInstance } from ".";
 
@@ -8,15 +8,15 @@ export type RequestParams = {
   data?: object;
 };
 
-export const apiRequestFx = createEffect<RequestParams, AxiosResponse, Error>(
+export const apiRequestFx = createEffect<RequestParams, any, Error>(
   async ({ method, url, data }) => {
     try {
       const response = await apiInstance({ method, url, data });
-      return response.data.message;
+      return response?.data?.message;
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status! > 499) throw "Ошибка на сервере";
-        throw error.response?.data.message;
+        throw error.response?.data?.message;
       } else {
         throw error;
       }

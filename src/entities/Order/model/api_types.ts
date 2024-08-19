@@ -61,7 +61,4 @@ export type PublishOrderRequest =
 export type AddDriverDataRequest = {
   order_id: number;
   full_name: string;
-} & Omit<
-  DriverProfile,
-  "driver_id" | "user_or_fullname" | "companies" | "birth_date"
->;
+} & Omit<DriverProfile, "driver_id" | "user" | "birth_date">;

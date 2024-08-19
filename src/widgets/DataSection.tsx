@@ -91,7 +91,7 @@ export function DataSection({ order }: { order: TGetOrder }) {
     tableData.push(
       ...([
         ["Телефон", order.driver.phone_number],
-        ["ФИО водителя", order.driver.user_or_fullname.full_name],
+        ["ФИО водителя", order.driver.user.full_name],
         ["Номер паспорта", order.driver.passport_number],
         ["Данные авто", order.driver.machine_data],
         ["Номер авто", order.driver.machine_number],

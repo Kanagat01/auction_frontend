@@ -151,9 +151,7 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
         } else if (["transporter_manager", "customer_manager"].includes(key)) {
           return value ? (value as { user: TUser }).user.full_name : "-";
         } else if (key === "driver") {
-          return value
-            ? (value as DriverProfile).user_or_fullname.full_name
-            : "-";
+          return value ? (value as DriverProfile).user.full_name : "-";
         } else if (
           [
             "final_price",

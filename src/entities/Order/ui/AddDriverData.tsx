@@ -67,7 +67,7 @@ export const AddDriverData = (
     if (order.driver)
       setDriverData({
         ...order.driver,
-        full_name: order.driver.user_or_fullname.full_name,
+        full_name: order.driver.user.full_name,
       });
     changeShow();
   };

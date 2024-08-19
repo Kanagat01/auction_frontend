@@ -23,7 +23,7 @@ import {
   TextCenter,
 } from "~/shared/ui";
 import { COLLAPSED_STORAGE_KEY } from "~/shared/lib";
-import { renderPromise } from "~/shared/api";
+import { RenderPromise } from "~/shared/api";
 import Routes from "~/shared/routes";
 
 export const iconActionProps = {
@@ -139,7 +139,7 @@ export function OrdersPage({ title, pageData, status }: TOrdersPage) {
               <MainTitle>{title}</MainTitle>
               <ControlPanel inputs={defaultInputs} {...pageData} />
             </div>
-            {renderPromise(fetchOrders, {
+            {RenderPromise(fetchOrders, {
               success: (
                 <OrdersList
                   orders={orders}

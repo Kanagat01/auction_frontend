@@ -75,7 +75,8 @@ export function OrderForm(preCreateOrder: PreCreateOrderResponse) {
         formHasChanged = !deepEqual(initialForm, order);
       }
       if (formHasChanged) {
-        event.preventDefault();
+        // event.preventDefault();
+        return "Ошибка крч";
       }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);

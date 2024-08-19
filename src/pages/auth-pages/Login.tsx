@@ -18,7 +18,7 @@ export function Login() {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    login({ email, password, navigateFunc });
+    login({ username: email, password, navigateFunc });
   }
 
   return (

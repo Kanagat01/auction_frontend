@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { RenderInput } from "./RenderInput";
+import { RenderInput } from "./RenderInp";
 import {
   BootstrapSelectProps,
   InputProps,

@@ -11,6 +11,8 @@ import {
   GetOrdersResponse,
   PublishOrderRequest,
   FindCargoRequest,
+  CreateOrderResponse,
+  EditOrderResponse,
 } from "./api_types";
 
 // get order
@@ -49,17 +51,18 @@ export const getOrdersFx: Effect<GetOrdersRequest, GetOrdersResponse> = attach({
 });
 
 // create order
-export const createOrderFx: Effect<CreateOrderRequest, OrderModel> = attach({
-  effect: apiRequestFx,
-  mapParams: (data: CreateOrderRequest): RequestParams => ({
-    method: "post",
-    url: "/auction/customer/create_order/",
-    data,
-  }),
-});
+export const createOrderFx: Effect<CreateOrderRequest, CreateOrderResponse> =
+  attach({
+    effect: apiRequestFx,
+    mapParams: (data: CreateOrderRequest): RequestParams => ({
+      method: "post",
+      url: "/auction/customer/create_order/",
+      data,
+    }),
+  });
 
 // edit order
-export const editOrderFx: Effect<EditOrderRequest, OrderModel> = attach({
+export const editOrderFx: Effect<EditOrderRequest, EditOrderResponse> = attach({
   effect: apiRequestFx,
   mapParams: (data: EditOrderRequest): RequestParams => ({
     method: "post",

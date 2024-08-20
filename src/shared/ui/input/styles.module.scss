@@ -75,6 +75,7 @@ $default-font-color: map-get($colors, "default-font-color");
 .input-container {
   display: flex;
   flex-direction: column;
+  font-size: 1.2rem;
   gap: 0.6rem;
   margin-right: 0.7rem;
 
@@ -96,7 +97,6 @@ $default-font-color: map-get($colors, "default-font-color");
 
   label {
     color: rgba($default-font-color, 0.5);
-    font-size: 1.2rem;
     font-weight: 400;
     line-height: 1.4rem;
   }
@@ -182,9 +182,8 @@ $default-font-color: map-get($colors, "default-font-color");
 }
 
 .error-text {
-  color: red;
-  font-size: 1.2rem;
-  margin-bottom: 5px;
+  color: var(--danger);
+  margin-top: 0.25rem;
 }
 
 .results {

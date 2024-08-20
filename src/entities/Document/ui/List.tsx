@@ -36,8 +36,6 @@ export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
         Документ №{doc.id} <br />
         {decodeURIComponent(doc.file).replace("/media/documents/", "")}
       </a>
-    </TextCenter>,
-    <TextCenter>
       {new Date(doc.created_at).toLocaleDateString("ru", {
         year: "numeric",
         month: "numeric",
@@ -46,6 +44,7 @@ export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
         minute: "numeric",
       })}
     </TextCenter>,
+    <TextCenter>{doc.user ?? "Данные отсутствуют"}</TextCenter>,
   ]);
   return (
     <>
@@ -67,7 +66,7 @@ export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
       <RoundedTable
         columns={[
           <TextCenter>Название документа</TextCenter>,
-          <TextCenter>Дата создания</TextCenter>,
+          <TextCenter>Пользователь</TextCenter>,
         ]}
         data={docsData}
       />

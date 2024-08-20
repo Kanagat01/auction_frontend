@@ -18,12 +18,7 @@ import {
   handleStageNotFound,
   setMode,
 } from "./helpers";
-import {
-  $maxOrderStageNumber,
-  removeStage,
-  setMaxOrderStageNumber,
-  setOrderStages,
-} from "..";
+import { getMaxOrderStageNumber, removeStage, setOrderStages } from "..";
 
 type CrudButtonProps = {
   orderStageNumber: number | "";
@@ -49,16 +44,17 @@ export function CopyStage({ orderStageNumber, ...props }: CrudButtonProps) {
     const stage = handleStageNotFound(orderStageNumber);
     if (!stage) return;
 
-    const { load_stage, unload_stage, ...newStage } = stage;
-    const { id, ...newLoadStage } = load_stage;
+    const { id, load_stage, unload_stage, order_stage_number, ...newStage } =
+      stage;
+    const { id: loadId, ...newLoadStage } = load_stage;
     const { id: unloadId, ...newUnloadStage } = unload_stage;
 
     setOrderStages({
       load_stage: newLoadStage,
       unload_stage: newUnloadStage,
+      order_stage_number: getMaxOrderStageNumber(),
       ...newStage,
     });
-    setMaxOrderStageNumber($maxOrderStageNumber.getState() + 1);
     changeShowStageFormModal();
   };
   return (

@@ -11,7 +11,6 @@ import {
   OrderStageForm,
   initialOrder,
   orderToOrderForm,
-  $maxTransportationNumber,
 } from "~/features/create-order";
 import { PreCreateOrderResponse } from "~/entities/OrderStage";
 import Routes from "~/shared/routes";
@@ -70,7 +69,7 @@ export function OrderForm(preCreateOrder: PreCreateOrderResponse) {
       else {
         const initialForm = {
           ...initialOrder,
-          transportation_number: $maxTransportationNumber.getState(),
+          transportation_number: preCreateOrder.max_transportation_number,
         };
         formHasChanged = !deepEqual(initialForm, order);
       }

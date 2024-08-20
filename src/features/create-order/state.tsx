@@ -4,12 +4,6 @@ import { setSelectedOrder, TGetOrder } from "~/entities/Order";
 import { $mainData } from "~/entities/User";
 import { FieldUpdatePayload, TNewOrder } from "./types";
 
-export const setMaxTransportationNumber = createEvent<number>();
-export const $maxTransportationNumber = createStore<number>(1).on(
-  setMaxTransportationNumber,
-  (_, state) => state
-);
-
 export const setMaxOrderStageNumber = createEvent<number>();
 export const $maxOrderStageNumber = createStore<number>(1).on(
   setMaxOrderStageNumber,
@@ -37,14 +31,20 @@ export const initialOrder: TNewOrder = {
 };
 
 export const setOrderForm = createEvent<TNewOrder & { id?: number }>();
-export const $orderForm = createStore<TNewOrder & { id?: number }>({
-  ...initialOrder,
-  transportation_number: $maxTransportationNumber.getState(),
-}).on(setOrderForm, (_, state) => state);
+export const $orderForm = createStore<TNewOrder & { id?: number }>(
+  initialOrder
+).on(setOrderForm, (_, state) => state);
 
-$maxTransportationNumber.watch((state) =>
-  setOrderForm({ ...$orderForm.getState(), transportation_number: state })
-);
+export function getMaxOrderStageNumber() {
+  const prevStages = $orderForm
+    .getState()
+    .stages.map((s) => s.order_stage_number);
+  const prevStagesMax = Math.max(...prevStages);
+  let maxOrderStageNumber = $maxOrderStageNumber.getState();
+  if (prevStagesMax >= maxOrderStageNumber)
+    maxOrderStageNumber = prevStagesMax + 1;
+  return maxOrderStageNumber;
+}
 
 export const fieldUpdate = createEvent<FieldUpdatePayload>();
 $orderForm.on(fieldUpdate, (state, { key, value }) => ({
@@ -129,6 +129,7 @@ export const orderToOrderForm = (order: TGetOrder) => {
 
 preCreateOrderFx.doneData.watch(
   ({ order, max_order_stage_number, max_transportation_number }) => {
+    let maxOrderStageNumber = max_order_stage_number + 1;
     if (order) {
       sample({
         clock: $orderForm,
@@ -141,8 +142,21 @@ preCreateOrderFx.doneData.watch(
         ...newOrderForm,
       });
     } else if (max_transportation_number) {
-      setMaxTransportationNumber(max_transportation_number + 1);
+      const newState = {
+        ...$orderForm.getState(),
+        transportation_number: max_transportation_number + 1,
+      };
+      if (newState.stages.length > 0) {
+        for (let idx in newState.stages) {
+          newState.stages[idx] = {
+            ...newState.stages[idx],
+            order_stage_number: maxOrderStageNumber,
+          };
+          maxOrderStageNumber += 1;
+        }
+      }
+      setOrderForm(newState);
     }
-    setMaxOrderStageNumber(max_order_stage_number + 1);
+    setMaxOrderStageNumber(maxOrderStageNumber);
   }
 );

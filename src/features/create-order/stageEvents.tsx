@@ -7,17 +7,16 @@ import {
   TStages,
 } from "~/entities/OrderStage";
 import {
-  $maxOrderStageNumber,
   $orderForm,
   $orderStages,
+  getMaxOrderStageNumber,
   initialOrderStage,
-  setMaxOrderStageNumber,
   setOrderForm,
 } from "./state";
 
 export const clearStages = createEvent();
 $orderStages.on(clearStages, (_) => ({
-  order_stage_number: $maxOrderStageNumber.getState(),
+  order_stage_number: getMaxOrderStageNumber(),
   load_stage: initialOrderStage,
   unload_stage: initialOrderStage,
   cargo: "",
@@ -56,7 +55,6 @@ const stageCoupleValidation = (func: (state: TStages) => void) => {
   } else {
     func(state);
     clearStages();
-    setMaxOrderStageNumber($maxOrderStageNumber.getState() + 1);
   }
   return !(emptyFields.length > 0);
 };
@@ -70,6 +68,7 @@ export const addStageCouple = () => stageCoupleValidation(addStage);
 
 const editStage = createEvent<TStages>();
 editStage.watch((newStageData) => {
+  console.log("st", newStageData);
   const prevState = $orderForm.getState();
   setOrderForm({
     ...prevState,

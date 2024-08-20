@@ -33,7 +33,18 @@ export const RenderInput = (
         </div>
       );
     case "input":
-      return <input id={props.name} {...props} />;
+      return props.error ? (
+        <div className="d-flex flex-column">
+          <input
+            id={props.name}
+            {...props}
+            style={{ borderColor: "var(--danger)" }}
+          />
+          <span className={styles["error-text"]}>{props.error}</span>
+        </div>
+      ) : (
+        <input id={props.name} {...props} />
+      );
     case "textarea":
       return <textarea id={props.name} {...props}></textarea>;
     case "select":

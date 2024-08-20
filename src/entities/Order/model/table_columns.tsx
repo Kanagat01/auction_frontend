@@ -193,7 +193,7 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
                 <span
                   style={
                     bestOffer.status == OrderOfferStatus.rejected
-                      ? { color: "#F40D0D" }
+                      ? { color: "var(--danger)" }
                       : {}
                   }
                 >
@@ -208,8 +208,8 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
               style={
                 "is_best_offer" in priceData
                   ? priceData.is_best_offer
-                    ? { color: "#1ED900", textDecoration: "underline" }
-                    : { color: "#F40D0D", textDecoration: "underline" }
+                    ? { color: "var(--success)", textDecoration: "underline" }
+                    : { color: "var(--danger)", textDecoration: "underline" }
                   : {}
               }
             >

@@ -1,6 +1,7 @@
 import { CSSProperties, ChangeEvent, useState, ReactNode } from "react";
 import { useLocation } from "react-router";
 import { useUnit } from "effector-react";
+import { DriverProfileTranslations } from "~/entities/User";
 import { $preCreateOrder, TGetOrder } from "~/entities/Order";
 import { copyOnClickWrapper, handleClick } from "~/features/copyOnClick";
 import { InputContainer, RoundedTable, TitleSm } from "~/shared/ui";
@@ -90,11 +91,14 @@ export function DataSection({ order }: { order: TGetOrder }) {
   if (order.driver) {
     tableData.push(
       ...([
-        ["Телефон", order.driver.phone_number],
-        ["ФИО водителя", order.driver.user.full_name],
-        ["Номер паспорта", order.driver.passport_number],
-        ["Данные авто", order.driver.machine_data],
-        ["Номер авто", order.driver.machine_number],
+        [DriverProfileTranslations.phone_number, order.driver.phone_number],
+        [DriverProfileTranslations.full_name, order.driver.user.full_name],
+        [
+          DriverProfileTranslations.passport_number,
+          order.driver.passport_number,
+        ],
+        [DriverProfileTranslations.machine_data, order.driver.machine_data],
+        [DriverProfileTranslations.machine_number, order.driver.machine_number],
       ] as [ReactNode, ReactNode][])
     );
   }

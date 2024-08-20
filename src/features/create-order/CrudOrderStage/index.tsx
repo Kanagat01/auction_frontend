@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 import { Modal } from "react-bootstrap";
 import { useUnit } from "effector-react";
-import { useEffect, ChangeEvent, ButtonHTMLAttributes } from "react";
+import { useState, useEffect, ChangeEvent, ButtonHTMLAttributes } from "react";
 
 import { ModalTitle, InputContainer, OutlineButton } from "~/shared/ui";
 import {
@@ -15,14 +15,14 @@ import {
   $orderForm,
   setSelectedStage,
 } from "..";
-import { Stage } from "./inputs";
-import { CopyStage, CreateStage, EditStage, RemoveStageModal } from "./buttons";
 import {
   $mode,
   $showStageFormModal,
   changeShowStageFormModal,
   resetStageTypeAndCloseModal,
 } from "./helpers";
+import { CopyStage, CreateStage, EditStage, RemoveStageModal } from "./buttons";
+import { Stage } from "./inputs";
 import styles from "./styles.module.scss";
 
 const buttonProps: ButtonHTMLAttributes<HTMLButtonElement> = {
@@ -101,11 +101,31 @@ export function CrudOrderStage({
 
 export function OrderStageForm() {
   const selectedStage = useUnit($selectedStage);
-  const orderStageNumber = selectedStage?.order_stage_number ?? "";
+  const [orderStageNumber, setOrderStageNumber] = useState<number | "">(
+    selectedStage ? selectedStage.order_stage_number : ""
+  );
+  useEffect(() => {
+    if (selectedStage) setOrderStageNumber(selectedStage.order_stage_number);
+  }, [selectedStage]);
+
+  const [errorText, setErrorText] = useState<string>();
+
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (selectedStage) {
       const value = Number(e.target.value);
+      setOrderStageNumber(value);
+
       const prevState = $orderForm.getState();
+      const alreadyExist = prevState.stages.find(
+        (el) => el.order_stage_number === value
+      );
+      if (alreadyExist) {
+        setErrorText("Такой номер поставки уже существует");
+        return;
+      } else {
+        setErrorText(undefined);
+      }
+
       const newStage = prevState.stages.find(
         (el) => el.order_stage_number === selectedStage.order_stage_number
       );
@@ -122,33 +142,42 @@ export function OrderStageForm() {
     }
   };
   return (
-    <div className={styles.gridContainer}>
-      <InputContainer
-        label="№ Поставки"
-        name="order_stage_number"
-        value={orderStageNumber}
-        onChange={onChange}
-        variant="input"
-        type="number"
-        labelStyle={{ color: "var(--default-font-color)" }}
-        className="w-100"
-        containerStyle={{
-          justifySelf: "start",
-          marginBottom: "1.5rem",
-        }}
-      />
-      <OutlineButton className={styles.formButton} type="submit">
-        Сохранить
-      </OutlineButton>
-      <div
-        className={`d-flex justify-content-between`}
-        style={{ justifySelf: "start", width: "15rem" }}
-      >
-        <CrudOrderStage orderStageNumber={orderStageNumber} />
+    <div className="d-flex justify-content-between">
+      <div className="d-flex flex-column">
+        <InputContainer
+          label="№ Поставки"
+          name="order_stage_number"
+          value={orderStageNumber}
+          onChange={onChange}
+          variant="input"
+          type="number"
+          labelStyle={{ color: "var(--default-font-color)" }}
+          className="w-100"
+          containerStyle={{
+            justifySelf: "start",
+            marginBottom: "1.5rem",
+          }}
+          error={errorText}
+        />
+        <div
+          className={`d-flex justify-content-between`}
+          style={{ justifySelf: "start", width: "15rem" }}
+        >
+          <CrudOrderStage orderStageNumber={orderStageNumber} />
+        </div>
       </div>
-      <OutlineButton className={styles.formButton} type="reset">
-        Отмена
-      </OutlineButton>
+      <div className="d-flex flex-column">
+        <OutlineButton
+          className={styles.formButton}
+          style={{ marginTop: "2rem", marginBottom: "1.5rem" }}
+          type="submit"
+        >
+          Сохранить
+        </OutlineButton>
+        <OutlineButton className={styles.formButton} type="reset">
+          Отмена
+        </OutlineButton>
+      </div>
     </div>
   );
 }

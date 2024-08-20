@@ -2,6 +2,7 @@ import {
   CSSProperties,
   InputHTMLAttributes,
   ReactNode,
+  RefObject,
   SelectHTMLAttributes,
   TextareaHTMLAttributes,
 } from "react";
@@ -17,6 +18,8 @@ export type BaseProp = {
 export type InputProps = BaseProp &
   InputHTMLAttributes<HTMLInputElement> & {
     variant: "input" | "password-input";
+    error?: string;
+    ref?: RefObject<HTMLInputElement>;
   };
 
 export type TextAreaProps = BaseProp &

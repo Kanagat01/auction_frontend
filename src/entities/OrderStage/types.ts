@@ -39,6 +39,7 @@ export const OrderStageTranslations: Record<
 };
 
 export type TStages = {
+  id?: number;
   order_stage_number: number;
   load_stage: OrderStages;
   unload_stage: OrderStages;

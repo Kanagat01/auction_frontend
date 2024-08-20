@@ -2,7 +2,7 @@ import { ReactSVG } from "react-svg";
 import { useUnit } from "effector-react";
 import { generatePath, NavLink } from "react-router-dom";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
-import { clearForm, CopyOrder, EditOrder } from "~/features/create-order";
+import { clearForm, CopyOrder } from "~/features/create-order";
 import { $userType, getRole } from "~/entities/User";
 import {
   $selectedOrder,
@@ -42,7 +42,6 @@ export function UnpublishedOrders() {
                 ? order.transportation_number.toString()
                 : "",
             })}
-            onClick={EditOrder}
             {...iconActionProps}
           >
             <LuPenSquare />

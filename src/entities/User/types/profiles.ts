@@ -61,6 +61,6 @@ export const DriverProfileTranslations: Record<
   full_name: "ФИО водителя",
   passport_number: "Номер паспорта",
   phone_number: "Телефон",
-  machine_data: "Данные авто",
-  machine_number: "Номер авто",
+  machine_data: "Машина",
+  machine_number: "Номер машины",
 };

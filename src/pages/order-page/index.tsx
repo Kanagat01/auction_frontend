@@ -1,15 +1,12 @@
 import { useCallback } from "react";
-import { useUnit } from "effector-react";
 import { useMatch, useParams } from "react-router";
 import { OrderForm } from "~/widgets/OrderForm";
-import { $orderForm } from "~/features/create-order";
 import { preCreateOrderFx } from "~/entities/OrderStage";
 import { RoundedWhiteBox, TextCenter, TitleLg } from "~/shared/ui";
 import { RenderPromise } from "~/shared/api";
 import Routes from "~/shared/routes";
 
 export default function OrderPage() {
-  const order = useUnit($orderForm);
   const match = useMatch(Routes.EDIT_ORDER);
   const { transportationNumber } = useParams<{
     transportationNumber: string;
@@ -18,10 +15,7 @@ export default function OrderPage() {
   const fetchPreCreateOrder = useCallback(
     () =>
       preCreateOrderFx({
-        transportation_number:
-          match && trNumber && order.transportation_number !== trNumber
-            ? trNumber
-            : undefined,
+        transportation_number: match && trNumber ? trNumber : undefined,
       }),
     [match, transportationNumber]
   );

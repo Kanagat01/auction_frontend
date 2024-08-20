@@ -33,6 +33,11 @@ export type CreateOrderRequest = Omit<
   | "adr"
 > & { stages: TStages[] };
 
+export type CreateOrderResponse = {
+  max_transportation_number: number;
+  max_order_stage_number: number;
+};
+
 export type EditOrderRequest = { order_id: number } & Partial<
   Omit<
     OrderModel,
@@ -44,6 +49,11 @@ export type EditOrderRequest = { order_id: number } & Partial<
     | "order_type"
   >
 >;
+
+export type EditOrderResponse = {
+  order: OrderModel;
+  max_order_stage_number: number;
+};
 
 export type OrderIDRequest = { order_id: number };
 export type PublishOrderRequest =

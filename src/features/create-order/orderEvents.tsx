@@ -14,21 +14,19 @@ import {
   $orderForm,
   initialOrder,
   setMaxOrderStageNumber,
-  $maxTransportationNumber,
-  setMaxTransportationNumber,
   setNotValidStageNumber,
   setOrderForm,
   TNewOrder,
-  $maxOrderStageNumber,
-  orderToOrderForm,
 } from ".";
 
-export const clearForm = createEvent();
-clearForm.watch(() => {
+export const clearForm = createEvent<number | void>();
+clearForm.watch((transportationNumber) => {
   setOrderForm({
     ...initialOrder,
     customer_manager: $orderForm.getState().customer_manager,
-    transportation_number: $maxTransportationNumber.getState(),
+    transportation_number: transportationNumber
+      ? transportationNumber
+      : $orderForm.getState().transportation_number,
   } as TNewOrder);
 });
 
@@ -40,20 +38,15 @@ CopyOrder.watch((event) => {
     toast.error("Выберите заказ для копирования");
     return;
   }
-  const newTrNumber = $maxTransportationNumber.getState() + 1;
-  setMaxTransportationNumber(newTrNumber);
   const newState: Partial<TNewOrder> = {
-    transportation_number: newTrNumber,
     customer_manager: $mainData.getState()?.user.full_name ?? "",
   };
   Object.keys(initialOrder).map((key) => {
     if (key === "stages") {
-      const newOrderStageNum = $maxOrderStageNumber.getState();
       newState.stages = order.stages.map((stage, idx) => ({
         ...stage,
-        order_stage_number: newOrderStageNum + idx,
+        order_stage_number: idx,
       }));
-      setMaxOrderStageNumber(newOrderStageNum + order.stages.length - 1);
     } else if (["transportation_number", "customer_manager"].includes(key)) {
     } else {
       // @ts-ignore
@@ -67,6 +60,23 @@ CopyOrder.watch((event) => {
   });
   setOrderForm(newState as TNewOrder);
 });
+
+const handleError = (err: string | Record<string, string[]>) => {
+  if (typeof err === "string") {
+    if (err === "transportation_number_must_be_unique")
+      return "№ Транспортировки должен быть уникальным";
+    else if (err === "add_at_least_one_stage")
+      return "Добавьте хотя бы 1 поставку";
+    else if (err.startsWith("order_stage_number_must_be_unique")) {
+      const stageNum = Number(err.split(":")[1]);
+      setNotValidStageNumber(stageNum);
+      return `№ Поставки должен быть уникальным: ${stageNum}`;
+    } else if (err === "You can edit only unpublished orders.")
+      return "Вы можете редактировать только неопубликованные заказы";
+    return `Произошла ошибка: ${err}`;
+  }
+  return `Неизвестная ошибка: ${err}`;
+};
 
 export const orderFormSubmitted = createEvent<FormEvent>();
 orderFormSubmitted.watch((e: FormEvent) => {
@@ -104,28 +114,13 @@ orderFormSubmitted.watch((e: FormEvent) => {
       style: { fontSize: "1.4rem" },
     });
   } else {
-    const handleError = (err: string | Record<string, string[]>) => {
-      if (typeof err === "string") {
-        if (err === "transportation_number_must_be_unique")
-          return "№ Транспортировки должен быть уникальным";
-        else if (err === "add_at_least_one_stage")
-          return "Добавьте хотя бы 1 поставку";
-        else if (err.startsWith("order_stage_number_must_be_unique")) {
-          const stageNum = Number(err.split(":")[1]);
-          setNotValidStageNumber(stageNum);
-          return `№ Поставки должен быть уникальным: ${stageNum}`;
-        } else if (err === "You can edit only unpublished orders.")
-          return "Вы можете редактировать только неопубликованные заказы";
-        return `Произошла ошибка: ${err}`;
-      }
-      return `Неизвестная ошибка: ${err}`;
-    };
     if (orderForm.id) {
       const { id, ...data } = orderForm;
       toast.promise(editOrderFx({ order_id: id, ...data }), {
         loading: `Обновляем заказ #${data.transportation_number}...`,
-        success: (order) => {
+        success: ({ order, max_order_stage_number }) => {
           updateOrder({ orderId: id, newData: order });
+          setMaxOrderStageNumber(max_order_stage_number);
           return `Заказ #${data.transportation_number} успешно обновлен`;
         },
         error: handleError,
@@ -133,36 +128,13 @@ orderFormSubmitted.watch((e: FormEvent) => {
     } else {
       toast.promise(createOrderFx(orderForm), {
         loading: "Создаем заказ...",
-        success: () => {
-          clearForm();
-          setMaxTransportationNumber($maxTransportationNumber.getState() + 1);
-          setMaxOrderStageNumber($maxOrderStageNumber.getState() + 1);
+        success: (response) => {
+          clearForm(response.max_transportation_number + 1);
+          setMaxOrderStageNumber(response.max_order_stage_number);
           return "Заказ успешно создан";
         },
         error: handleError,
       });
     }
   }
-});
-
-export const EditOrder = createEvent<MouseEvent<HTMLAnchorElement>>();
-EditOrder.watch((event) => {
-  const order = $selectedOrder.getState();
-  if (!order) {
-    event.preventDefault();
-    toast.error("Выберите заказ для редактирования");
-    return;
-  }
-  toast.remove();
-  sample({
-    clock: $orderForm,
-    fn: () => null,
-    target: setSelectedOrder,
-  });
-
-  const newOrderForm = orderToOrderForm(order);
-  setOrderForm({
-    customer_manager: $mainData.getState()?.user.full_name ?? "",
-    ...newOrderForm,
-  });
 });

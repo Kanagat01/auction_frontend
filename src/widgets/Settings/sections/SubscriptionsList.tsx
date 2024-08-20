@@ -33,7 +33,7 @@ export function SubscriptionsList() {
           (mainData as CustomerCompany | TransporterCompany).subscription ? (
             <FiCheck
               className="ms-auto"
-              color="var(--green)"
+              color="var(--success)"
               style={{ width: "3rem", height: "2.5rem" }}
             />
           ) : (

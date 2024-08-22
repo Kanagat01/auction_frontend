@@ -128,9 +128,9 @@ orderFormSubmitted.watch((e: FormEvent) => {
     } else {
       toast.promise(createOrderFx(orderForm), {
         loading: "Создаем заказ...",
-        success: (response) => {
-          clearForm(response.max_transportation_number + 1);
-          setMaxOrderStageNumber(response.max_order_stage_number);
+        success: ({ max_order_stage_number, max_transportation_number }) => {
+          clearForm(max_transportation_number + 1);
+          setMaxOrderStageNumber(max_order_stage_number);
           return "Заказ успешно создан";
         },
         error: handleError,

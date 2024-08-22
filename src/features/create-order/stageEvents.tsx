@@ -68,7 +68,6 @@ export const addStageCouple = () => stageCoupleValidation(addStage);
 
 const editStage = createEvent<TStages>();
 editStage.watch((newStageData) => {
-  console.log("st", newStageData);
   const prevState = $orderForm.getState();
   setOrderForm({
     ...prevState,

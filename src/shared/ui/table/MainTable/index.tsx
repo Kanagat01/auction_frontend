@@ -118,6 +118,7 @@ export function MainTable({
             {headerGroups.map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
+                  // not draggable
                   <DraggableTableHeader key={header.id} header={header} />
                 ))}
               </tr>
@@ -128,6 +129,7 @@ export function MainTable({
               rows.map((row) => (
                 <tr key={row.id} {...checkRowProps(row.original)}>
                   {row.getVisibleCells().map((cell) => (
+                    // not draggable
                     <DragAlongCell key={cell.id} cell={cell} />
                   ))}
                 </tr>

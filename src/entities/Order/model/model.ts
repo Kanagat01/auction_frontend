@@ -37,6 +37,21 @@ $preCreateOrder.on(
   (_, payload) => payload.pre_create_order
 );
 
+export const addOrder = createEvent<TGetOrder>();
+$orders.on(addOrder, (state, order) => {
+  const index = state.findIndex(
+    (o) => o.transportation_number <= order.transportation_number
+  );
+
+  if (index === -1) {
+    return [...state, order];
+  } else if (index === 0) {
+    return [order, ...state];
+  } else {
+    return [...state.slice(0, index), order, ...state.slice(index)];
+  }
+});
+
 export const updateOrder = createEvent<{
   orderId: number;
   newData: Partial<TGetOrder>;

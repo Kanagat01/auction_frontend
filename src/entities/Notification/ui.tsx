@@ -3,11 +3,12 @@ import { ReactSVG } from "react-svg";
 import { Modal } from "react-bootstrap";
 import { useUnit } from "effector-react";
 
-import { $websocket, RenderPromise } from "~/shared/api";
 import { SectionButton, TitleLg } from "~/shared/ui";
 import { useModalState } from "~/shared/lib";
+import { RenderPromise } from "~/shared/api";
 import { Bell } from "~/shared/assets";
 
+import { $websocket } from "./api";
 import {
   $notifications,
   addNotification,

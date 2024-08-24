@@ -49,8 +49,7 @@ export function Sidebar() {
       (el) => el.type === notificationsDict[route]
     );
     return (
-      route !== currentRoute &&
-      notification && <span className={styles["blue-circle"]} />
+      route !== currentRoute && notification && <span className="blue-circle" />
     );
   };
   const sections: Array<[ReactNode, string, string]> = [

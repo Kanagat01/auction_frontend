@@ -1,5 +1,5 @@
 import { createStore } from "effector";
-import { API_URL } from "../config";
+import { API_URL } from "~/shared/config";
 
 const token = localStorage.getItem("token");
 const WS_URL = API_URL.replace("http", "ws");

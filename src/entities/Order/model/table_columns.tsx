@@ -109,8 +109,8 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
           const checked = selectedOrder?.id === orderId;
           return (
             <div
-              className="d-flex align-items-center"
-              style={{ wordBreak: "break-word" }}
+              className="d-flex align-items-center position-relative"
+              style={{ wordBreak: "break-word", width: "fit-content" }}
             >
               <Checkbox
                 className="mr-3"
@@ -126,6 +126,10 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
                 }}
               />
               <span className="ms-3">{value?.toString() ?? "-"}</span>
+              <span
+                className="blue-circle"
+                style={{ top: "0.25rem", right: "-1.5rem" }}
+              />
             </div>
           );
         } else if (["volume", "weight"].includes(key)) {

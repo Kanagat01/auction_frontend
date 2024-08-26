@@ -14,6 +14,7 @@ import {
 } from "~/shared/ui";
 import { API_URL } from "~/shared/config";
 import Routes from "~/shared/routes";
+import { dateTimeToString } from "~/shared/lib";
 
 export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
   const userType = useUnit($userType);
@@ -36,13 +37,7 @@ export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
         Документ №{doc.id} <br />
         {decodeURIComponent(doc.file).replace("/media/documents/", "")}
       </a>
-      {new Date(doc.created_at).toLocaleDateString("ru", {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-      })}
+      {dateTimeToString(doc.created_at)}
     </TextCenter>,
     <TextCenter>{doc.user ?? "Данные отсутствуют"}</TextCenter>,
   ]);

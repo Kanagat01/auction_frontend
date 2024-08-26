@@ -10,3 +10,38 @@ export const validatePassword = (password: string): string => {
 
 export const isValidEmail = (email: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+export const dateToTimeString = (date: string | Date) => {
+  return new Date(date)
+    .toLocaleDateString("ru", {
+      hour: "numeric",
+      minute: "numeric",
+    })
+    .split(" ")[1];
+};
+
+export const dateToString = (date: string | Date) => {
+  return new Date(date).toLocaleDateString("ru", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  });
+};
+
+export const dateToLongMonthString = (date: string | Date) => {
+  return new Date(date).toLocaleDateString("ru", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
+export const dateTimeToString = (datetime: string | Date) => {
+  return new Date(datetime).toLocaleDateString("ru", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  });
+};

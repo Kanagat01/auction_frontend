@@ -4,7 +4,7 @@ import { Modal } from "react-bootstrap";
 import { useUnit } from "effector-react";
 
 import { SectionButton, TitleLg } from "~/shared/ui";
-import { useModalState } from "~/shared/lib";
+import { dateToLongMonthString, useModalState } from "~/shared/lib";
 import { RenderPromise } from "~/shared/api";
 import { Bell } from "~/shared/assets";
 
@@ -20,16 +20,12 @@ import styles from "./styles.module.scss";
 
 function groupNotificationsByDate(notifications: TNotification[]) {
   return notifications.reduce((acc, notification) => {
-    const date = new Date(notification.created_at).toLocaleDateString("ru", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+    const date = dateToLongMonthString(notification.created_at);
 
-    if (!acc[date]) {
-      acc[date] = [];
-    }
+    if (!acc[date]) acc[date] = [];
+
     acc[date].push(notification);
+
     return acc;
   }, {} as Record<string, TNotification[]>);
 }

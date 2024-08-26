@@ -8,6 +8,7 @@ import {
   setSelectedStage,
 } from "../state";
 import styles from "./styles.module.scss";
+import { dateToString } from "~/shared/lib";
 
 export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
   const selectedStage = useUnit($selectedStage);
@@ -92,11 +93,7 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
                         {stageName === "load" ? "Погрузка" : "Выгрузка"}
                       </td>
                       <td rowSpan={2}>
-                        {new Date(stageData.date).toLocaleDateString("ru", {
-                          year: "numeric",
-                          month: "2-digit",
-                          day: "2-digit",
-                        })}{" "}
+                        {dateToString(stageData.date)}{" "}
                         {stageData.time_start.slice(0, 5)}-
                         {stageData.time_end.slice(0, 5)}
                       </td>

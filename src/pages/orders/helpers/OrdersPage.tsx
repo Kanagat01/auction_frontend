@@ -1,17 +1,17 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useUnit } from "effector-react";
+import { useLocation } from "react-router-dom";
 import { ControlPanel, ControlPanelProps, OrderSections } from "~/widgets";
+import { ExportToExcelButton } from "~/features/ExportToExcel";
+import { $userType, getRole } from "~/entities/User";
 import {
   $orders,
   $ordersPagination,
-  $orderWebsocket,
-  addOrder,
+  getExportData,
   getOrdersFx,
   OrdersList,
-  removeOrder,
-  TGetOrder,
+  OrderStatusTranslation,
   TOrderStatus,
-  updateOrder,
 } from "~/entities/Order";
 import { RenderPromise } from "~/shared/api";
 import {
@@ -20,10 +20,13 @@ import {
   RoundedWhiteBox,
   TextCenter,
 } from "~/shared/ui";
+import Routes from "~/shared/routes";
+import { iconActionProps } from "./consts";
 import {
   useCollapsed,
   useDefaultInputs,
   usePageFromSearchParams,
+  useWebsocket,
 } from "./hooks";
 
 type TOrdersPage = {
@@ -34,6 +37,8 @@ type TOrdersPage = {
 
 export function OrdersPage({ title, pageData, status }: TOrdersPage) {
   const orders = useUnit($orders);
+  useWebsocket(orders, status);
+
   const paginator = useUnit($ordersPagination);
   const { cityFrom, cityTo, transportationNumber, defaultInputs } =
     useDefaultInputs();
@@ -46,31 +51,8 @@ export function OrdersPage({ title, pageData, status }: TOrdersPage) {
 
   const [collapsed, toggleExpand] = useCollapsed();
 
-  const websocket = useUnit($orderWebsocket);
-  websocket.onmessage = (ev) => {
-    const data = JSON.parse(ev.data);
-    console.log(data);
-    if ("add_or_update_order" in data) {
-      const order: TGetOrder = data["add_or_update_order"];
-      const idx = orders.findIndex((o) => o.id === order.id);
-      if (idx === -1) addOrder(order);
-      else {
-        updateOrder({ orderId: order.id, newData: order });
-      }
-    } else if ("remove_order" in data) {
-      const orderId: number = data["remove_order"];
-      removeOrder(orderId);
-    }
-  };
-  useEffect(() => {
-    if (websocket.readyState === WebSocket.OPEN) {
-      websocket.send(JSON.stringify({ action: "set_status", status }));
-    } else {
-      websocket.onopen = () => {
-        websocket.send(JSON.stringify({ action: "set_status", status }));
-      };
-    }
-  }, [websocket, status]);
+  const userType = useUnit($userType);
+  const currentRoute = useLocation().pathname as Routes;
   return (
     <>
       <RoundedWhiteBox style={{ width: "90%" }}>
@@ -84,7 +66,24 @@ export function OrdersPage({ title, pageData, status }: TOrdersPage) {
           <>
             <div className="p-5">
               <MainTitle>{title}</MainTitle>
-              <ControlPanel inputs={defaultInputs} {...pageData} />
+              <ControlPanel
+                {...pageData}
+                inputs={defaultInputs}
+                iconActions={
+                  <>
+                    <ExportToExcelButton
+                      filename={`Заказы - ${OrderStatusTranslation[status]}`}
+                      data={getExportData(
+                        orders,
+                        currentRoute,
+                        getRole(userType)
+                      )}
+                      {...iconActionProps}
+                    />
+                    {pageData.iconActions}
+                  </>
+                }
+              />
             </div>
             {RenderPromise(fetchOrders, {
               success: (

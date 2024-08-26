@@ -6,6 +6,7 @@ import { $preCreateOrder, TGetOrder } from "~/entities/Order";
 import { copyOnClickWrapper, handleClick } from "~/features/copyOnClick";
 import { InputContainer, RoundedTable, TitleSm } from "~/shared/ui";
 import Routes from "~/shared/routes";
+import { dateToString } from "~/shared/lib";
 
 const gridContainer: CSSProperties = {
   display: "grid",
@@ -194,12 +195,7 @@ export function DataSection({ order }: { order: TGetOrder }) {
                 [
                   copyOnClickWrapper(
                     <>
-                      {new Date(stage.date).toLocaleDateString("ru", {
-                        year: "numeric",
-                        month: "numeric",
-                        day: "numeric",
-                      })}{" "}
-                      <br />
+                      {dateToString(stage.date)} <br />
                       {stage.time_start.slice(0, 5)}-
                       {stage.time_end.slice(0, 5)}
                     </>

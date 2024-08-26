@@ -22,9 +22,13 @@ export const RoundedTable: FC<RoundedTableProps> = ({
     }`}
   >
     <table
-      className={`${styles.table} ${lightBorderMode ? styles.lightBorder : ""}`}
-      style={layoutFixed ? { tableLayout: "fixed" } : {}}
       {...props}
+      className={`${styles.table} ${
+        lightBorderMode ? styles.lightBorder : ""
+      } ${props.className}`}
+      style={
+        layoutFixed ? { tableLayout: "fixed", ...props.style } : props.style
+      }
     >
       {columns ? (
         <thead>

@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { DataSection, MapSection } from "~/widgets";
 import { AcceptOffer, OffersList } from "~/entities/Offer";
 import { $userType, getRole } from "~/entities/User";
-import { $selectedOrder } from "~/entities/Order";
+import { $selectedOrder, OrderStatus } from "~/entities/Order";
 import {
   AddDocument,
   DeleteDocument,
@@ -40,7 +40,18 @@ export function OrderSections() {
         case "documents":
           return <DocumentsList documents={order.documents ?? []} />;
         case "map":
-          return <MapSection tracking={order!.tracking ?? null} />;
+          return (
+            <MapSection
+              tracking={order!.tracking ?? undefined}
+              stages={
+                [OrderStatus.completed, OrderStatus.being_executed].includes(
+                  order.status as OrderStatus
+                )
+                  ? order.stages
+                  : undefined
+              }
+            />
+          );
         case "data":
           return <DataSection order={order} />;
         case "offers":

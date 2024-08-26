@@ -53,6 +53,28 @@ export type OrderModel = {
   transport_body_height?: number;
 };
 
+export type TPriceData =
+  | { offer_id: number; price: number }
+  | { current_price: number }
+  | {
+      offer_id: number;
+      price: number;
+      current_price: number;
+      is_best_offer: boolean;
+    };
+
+export type TGetOrder = OrderModel & {
+  offers?: OrderOffer[];
+  tracking?: OrderTracking | null;
+  documents: OrderDocument[];
+  stages: TStages[];
+  price_data?: TPriceData;
+  application_type?: "in_auction" | "in_bidding" | "in_direct";
+
+  // параметр существует если заказ добавлен через сокет
+  isNewOrder?: boolean;
+};
+
 export type TColumn = TGetOrder & {
   stages_cnt: number;
   loading_time: string;
@@ -72,7 +94,10 @@ export type TColumn = TGetOrder & {
   transporter: string;
 };
 
-export const orderTranslations: Record<keyof TColumn, string> = {
+export const orderTranslations: Record<
+  Exclude<keyof TColumn, "isNewOrder">,
+  string
+> = {
   id: "id",
   transportation_number: "№ Транспортировки",
   customer_manager: "Менеджер Заказчика",
@@ -119,23 +144,4 @@ export const orderTranslations: Record<keyof TColumn, string> = {
   best_offer_price: "Лучшее предложение",
   best_offer_company: "Компания с луч. предл.",
   transporter: "Перевозчик",
-};
-
-export type TPriceData =
-  | { offer_id: number; price: number }
-  | { current_price: number }
-  | {
-      offer_id: number;
-      price: number;
-      current_price: number;
-      is_best_offer: boolean;
-    };
-
-export type TGetOrder = OrderModel & {
-  offers?: OrderOffer[];
-  tracking?: OrderTracking | null;
-  documents: OrderDocument[];
-  stages: TStages[];
-  price_data?: TPriceData;
-  application_type?: "in_auction" | "in_bidding" | "in_direct";
 };

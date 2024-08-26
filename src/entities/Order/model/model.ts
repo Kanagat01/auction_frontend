@@ -39,6 +39,7 @@ $preCreateOrder.on(
 
 export const addOrder = createEvent<TGetOrder>();
 $orders.on(addOrder, (state, order) => {
+  order = { ...order, isNewOrder: true };
   const index = state.findIndex(
     (o) => o.transportation_number <= order.transportation_number
   );
@@ -57,9 +58,18 @@ export const updateOrder = createEvent<{
   newData: Partial<TGetOrder>;
 }>();
 $orders.on(updateOrder, (state, { orderId, newData }) => {
-  return state.map((order) =>
-    order.id === orderId ? { ...order, ...newData } : order
-  );
+  return state.map((order) => {
+    if (order.id === orderId) {
+      if (!order.driver && newData.driver && newData.transportation_number) {
+        // если существует newData.transportation_number, значит заказ обновляется из сокета
+        toast.success(
+          `Для заказа №${newData.transportation_number} добавлены данные о водителе`
+        );
+      }
+      return { ...order, ...newData };
+    }
+    return order;
+  });
 });
 
 export const removeOrder = createEvent<number>();
@@ -70,7 +80,10 @@ $orders.on(removeOrder, (state, orderId) =>
 export const setSelectedOrder = createEvent<TGetOrder | null>();
 export const $selectedOrder = createStore<TGetOrder | null>(null).on(
   setSelectedOrder,
-  (_, state) => state
+  (_, state) => {
+    if (state?.isNewOrder) state.isNewOrder = false;
+    return state;
+  }
 );
 $selectedOrder.on(updateOrder, (state, { newData }) => {
   return state ? { ...state, ...newData } : null;

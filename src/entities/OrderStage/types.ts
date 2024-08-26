@@ -15,10 +15,11 @@ export type OrderStages = {
   city: string;
   address: string;
   contact_person: string;
+  completed: boolean;
   comments?: string;
 };
 
-export type OrderStageKey = keyof Omit<OrderStages, "id">;
+export type OrderStageKey = keyof Omit<OrderStages, "id" | "completed">;
 
 export const OrderStageTranslations: Record<
   OrderStageKey | CargoParamKey,

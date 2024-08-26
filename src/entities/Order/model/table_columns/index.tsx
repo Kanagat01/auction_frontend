@@ -59,10 +59,12 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
                 }}
               />
               <span className="ms-3">{value}</span>
-              <span
-                className="blue-circle"
-                style={{ top: "0.25rem", right: "-1.5rem" }}
-              />
+              {order.isNewOrder && (
+                <span
+                  className="blue-circle"
+                  style={{ top: "0.25rem", right: "-1.5rem" }}
+                />
+              )}
             </div>
           );
         } else if (key === "transporter") {
@@ -79,12 +81,13 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
             </span>
           );
         } else if (key === "offer_price") {
+          const priceData = order.price_data;
           return (
             <span
               style={
-                "is_best_offer" in order.price_data!
+                priceData && "is_best_offer" in priceData
                   ? {
-                      color: order.price_data.is_best_offer
+                      color: priceData.is_best_offer
                         ? "var(--success)"
                         : "var(--danger)",
                       textDecoration: "underline",

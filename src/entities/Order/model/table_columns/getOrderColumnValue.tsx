@@ -36,8 +36,9 @@ export const getOrderColumnValue = (
       return order[key]?.user.full_name ?? "-";
     case "final_price":
       if (role === "transporter") {
-        return "current_price" in order.price_data!
-          ? order.price_data.current_price
+        const priceData = order.price_data;
+        return priceData && "current_price" in priceData
+          ? priceData.current_price
           : "-";
       }
       return (
@@ -46,8 +47,9 @@ export const getOrderColumnValue = (
       );
     case "best_offer_price":
       if (role === "transporter") {
-        return "current_price" in order.price_data!
-          ? order.price_data.current_price
+        const priceData = order.price_data;
+        return priceData && "current_price" in priceData
+          ? priceData.current_price
           : "-";
       }
       return order?.offers?.[0]?.price ?? "-";
@@ -62,7 +64,8 @@ export const getOrderColumnValue = (
         order?.offers?.[0]?.transporter_manager?.company.company_name ?? "-"
       );
     case "offer_price":
-      return "price" in order.price_data! ? order.price_data.price : "-";
+      const priceData = order.price_data;
+      return priceData && "price" in priceData ? priceData.price : "-";
     case "stages_cnt":
       return order.stages.length;
     case "city_from":

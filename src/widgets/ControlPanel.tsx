@@ -47,14 +47,18 @@ export function ControlPanel({
           {...props}
           variant="input"
           style={{ width: "100%", height: "-webkit-fill-available" }}
+          labelStyle={{ textWrap: "nowrap", width: "fit-content" }}
           autoComplete="off"
         />
       ))}
       <div className="actions">
         {iconActions && <span className="actions-title">Действия</span>}
-        <div className="d-flex">
+        <div
+          className="d-flex"
+          style={{ gap: "1rem", height: "-webkit-fill-available" }}
+        >
           <div className="d-inline-flex">{iconActions}</div>
-          <div className="d-inline-flex ms-3">{textActions}</div>
+          <div className="d-inline-flex">{textActions}</div>
         </div>
       </div>
     </div>

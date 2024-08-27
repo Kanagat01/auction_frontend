@@ -1,14 +1,17 @@
 import { useUnit } from "effector-react";
 import {
   $mainData,
+  $settings,
   CompaniesList,
   CustomerCompany,
   TransporterCompany,
 } from "~/entities/User";
 import styles from "./styles.module.scss";
+import { formatPhoneNumber } from "~/shared/lib";
 
 export function MenuProfile() {
   const mainData = useUnit($mainData);
+  const settings = useUnit($settings);
   let orgName;
   if (mainData) {
     const company = "company" in mainData ? mainData?.company : mainData;
@@ -24,7 +27,11 @@ export function MenuProfile() {
     <div className={styles["menu-profile-info"]}>
       <div className={`${styles["profile-main"]} align-items-end`}>
         <span className={styles["full-name"]}>150 000 Rub</span>
-        <span className={styles["org-name"]}>+7 777 777 7777</span>
+        <span className={styles["org-name"]}>
+          {settings?.phone_number
+            ? formatPhoneNumber(settings.phone_number)
+            : ""}
+        </span>
       </div>
       <div className="rounded-block company-logo">
         {mainData?.user.full_name[0]}

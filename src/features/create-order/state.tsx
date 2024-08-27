@@ -71,6 +71,7 @@ export const initialOrderStage = {
   address: "",
   contact_person: "",
   comments: "",
+  completed: false,
 };
 
 export const setOrderStages = createEvent<TStages>();

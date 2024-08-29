@@ -6,8 +6,9 @@ import {
   CustomerCompany,
   TransporterCompany,
 } from "~/entities/User";
+import { formatPhoneNumber, useModalState } from "~/shared/lib";
 import styles from "./styles.module.scss";
-import { formatPhoneNumber } from "~/shared/lib";
+import { PopupModal } from "~/entities/Notification";
 
 export function MenuProfile() {
   const mainData = useUnit($mainData);
@@ -23,10 +24,35 @@ export function MenuProfile() {
     orgName = `${companyName} (${companyId})`;
   }
 
+  const [show, changeShow] = useModalState(true);
   return (
     <div className={styles["menu-profile-info"]}>
+      {mainData && "subscription" in mainData && !mainData.subscription && (
+        <PopupModal
+          show={show}
+          title="Выберите тариф"
+          description={
+            <>
+              Для того чтобы получить доступ ко всему функционалу сайта,
+              выберите тариф и сделайте абонентскую плату. Для этого вам нужно
+              перейти в <br /> "Настройки {">"} Тарифы"
+            </>
+          }
+          handleClose={changeShow}
+        />
+      )}
+
       <div className={`${styles["profile-main"]} align-items-end`}>
-        <span className={styles["full-name"]}>150 000 Rub</span>
+        <span className={styles["full-name"]}>
+          {mainData
+            ? `${Number(
+                ("balance" in mainData ? mainData : mainData.company).balance
+              ).toLocaleString("ru-RU", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+              })} Rub`
+            : ""}
+        </span>
         <span className={styles["org-name"]}>
           {settings?.phone_number
             ? formatPhoneNumber(settings.phone_number)

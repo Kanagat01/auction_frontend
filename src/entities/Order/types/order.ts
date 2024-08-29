@@ -17,9 +17,8 @@ export enum OrderStatus {
   being_executed = "being_executed",
   completed = "completed",
 }
-export type TOrderStatus = keyof typeof OrderStatus;
 
-export const OrderStatusTranslation: Record<TOrderStatus, string> = {
+export const OrderStatusTranslation: Record<OrderStatus, string> = {
   unpublished: "Не опубликован",
   cancelled: "Отменен",
   in_auction: "В аукционе",
@@ -36,7 +35,7 @@ export type OrderModel = {
   driver?: DriverProfile;
   created_at: string;
   updated_at: string;
-  status: TOrderStatus;
+  status: OrderStatus;
   transportation_number: number;
   start_price: number;
   price_step: number;

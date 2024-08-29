@@ -1,15 +1,12 @@
-export enum TransporterSubscriptionTranslation {
-  transporter_unpaid = "Перевозчик НЕоплаченный",
-  transporter_paid = "Перевозчик оплаченный",
-}
+type Subscription = {
+  id: number;
+  codename: string;
+  name: string;
+  price: number;
+  days_without_payment: number;
+};
 
-export type TransporterSubscriptions =
-  keyof typeof TransporterSubscriptionTranslation;
-
-export enum CustomerSubscriptionTranslation {
-  customer_unpaid = "Заказчик НЕоплаченный",
-  customer_paid = "Заказчик оплаченный",
-}
-
-export type CustomerSubscriptions =
-  keyof typeof CustomerSubscriptionTranslation;
+export type CustomerSubscription = Subscription;
+export type TransporterSubscription = {
+  win_percentage_fee: number;
+} & Subscription;

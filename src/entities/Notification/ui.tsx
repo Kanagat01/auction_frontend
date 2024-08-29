@@ -1,9 +1,9 @@
-import { Fragment } from "react";
+import { Fragment, ReactNode, useEffect } from "react";
 import { ReactSVG } from "react-svg";
 import { Modal } from "react-bootstrap";
 import { useUnit } from "effector-react";
 
-import { SectionButton, TitleLg } from "~/shared/ui";
+import { PrimaryButton, SectionButton, TitleLg, TitleMd } from "~/shared/ui";
 import { dateToLongMonthString, useModalState } from "~/shared/lib";
 import { RenderPromise } from "~/shared/api";
 import { Bell } from "~/shared/assets";
@@ -15,8 +15,77 @@ import {
   getNotificationsFx,
   removeNotification,
   TNotification,
+  NotificationType,
 } from ".";
 import styles from "./styles.module.scss";
+
+export function PopupModal(props: {
+  show: boolean;
+  title: string;
+  description: ReactNode;
+  handleClose: () => void;
+}) {
+  return (
+    <Modal
+      show={props.show}
+      className="rounded-modal d-flex align-items-center justify-content-center"
+    >
+      <Modal.Body>
+        <TitleLg
+          className="text-center mb-4"
+          style={{ wordWrap: "break-word" }}
+        >
+          {props.title}
+        </TitleLg>
+        <TitleMd
+          className="text-center mb-4"
+          style={{ wordWrap: "break-word", fontSize: "1.6rem" }}
+        >
+          {props.description}
+        </TitleMd>
+        <div className="d-flex justify-content-evenly w-100">
+          <PrimaryButton
+            onClick={props.handleClose}
+            style={{ padding: "0.5rem 3rem", fontSize: "1.6rem" }}
+          >
+            Прочитал (-a)
+          </PrimaryButton>
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+}
+
+function PopupNotifications() {
+  const notifications = useUnit($notifications).filter(
+    (n) => n.type === NotificationType.POPUP_NOTIFICATION
+  );
+  const [show, changeShow] = useModalState(false);
+
+  useEffect(() => {
+    if (notifications.length > 0)
+      setTimeout(() => (!show ? changeShow() : {}), 500);
+  }, [notifications]);
+
+  const handleClose = () => {
+    changeShow();
+    setTimeout(
+      () =>
+        notifications.length > 0 ? removeNotification(notifications[0].id) : {},
+      500
+    );
+  };
+  return (
+    notifications.length > 0 && (
+      <PopupModal
+        show={show}
+        title={notifications[0].title}
+        description={notifications[0].description}
+        handleClose={handleClose}
+      />
+    )
+  );
+}
 
 function groupNotificationsByDate(notifications: TNotification[]) {
   return notifications.reduce((acc, notification) => {
@@ -30,7 +99,7 @@ function groupNotificationsByDate(notifications: TNotification[]) {
   }, {} as Record<string, TNotification[]>);
 }
 
-export const NotificationCard = (notification: TNotification) => {
+const NotificationCard = (notification: TNotification) => {
   const datetime = new Date(notification.created_at);
   const time = datetime.toLocaleTimeString("ru", {
     hour: "numeric",
@@ -57,7 +126,9 @@ export const NotificationCard = (notification: TNotification) => {
 
 export function Notifications() {
   const [show, changeShow] = useModalState(false);
-  const notifications = useUnit($notifications);
+  const notifications = useUnit($notifications).filter(
+    (n) => n.type !== NotificationType.POPUP_NOTIFICATION
+  );
   const groupedNotifications = groupNotificationsByDate(notifications);
 
   const websocket = useUnit($websocket);
@@ -112,6 +183,7 @@ export function Notifications() {
           })}
         </Modal.Body>
       </Modal>
+      <PopupNotifications />
     </>
   );
 }

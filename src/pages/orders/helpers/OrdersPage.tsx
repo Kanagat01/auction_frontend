@@ -11,7 +11,7 @@ import {
   getOrdersFx,
   OrdersList,
   OrderStatusTranslation,
-  TOrderStatus,
+  OrderStatus,
 } from "~/entities/Order";
 import { RenderPromise } from "~/shared/api";
 import {
@@ -32,7 +32,7 @@ import {
 type TOrdersPage = {
   title: string;
   pageData: ControlPanelProps;
-  status: TOrderStatus;
+  status: OrderStatus;
 };
 
 export function OrdersPage({ title, pageData, status }: TOrdersPage) {

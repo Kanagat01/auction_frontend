@@ -1,12 +1,17 @@
-import { TUser, CustomerSubscriptions, TransporterSubscriptions } from ".";
+import { TUser, CustomerSubscription, TransporterSubscription } from ".";
 
-export type TransporterCompany = {
-  transporter_company_id: number;
+type Company = {
   user: TUser;
   company_name: string;
-  subscription: TransporterSubscriptions;
-  managers: Omit<TransporterManager, "company">[];
+  balance: number;
   details: string;
+};
+
+export type TransporterCompany = Company & {
+  transporter_company_id: number;
+  managers: Omit<TransporterManager, "company">[];
+  subscription: TransporterSubscription | null;
+  subscriptions_list: TransporterSubscription[];
 };
 
 export type TransporterManager = {
@@ -15,17 +20,15 @@ export type TransporterManager = {
   company: Omit<TransporterCompany, "managers" | "user">;
 };
 
-export type CustomerCompany = {
+export type CustomerCompany = Company & {
   customer_company_id: number;
   managers: Omit<CustomerManager, "company">[];
-  user: TUser;
-  company_name: string;
-  subscription: CustomerSubscriptions;
+  subscription: CustomerSubscription | null;
+  subscriptions_list: CustomerSubscription[];
   allowed_transporter_companies: Omit<
     TransporterCompany,
     "managers" | "user"
   >[];
-  details: string;
 };
 
 export type CustomerManager = {

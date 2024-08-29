@@ -1,4 +1,4 @@
-import { OrderModel, TGetOrder, TOrderStatus } from "~/entities/Order";
+import { OrderModel, TGetOrder, OrderStatus } from "~/entities/Order";
 import { PreCreateOrderResponse, TStages } from "~/entities/OrderStage";
 import { DriverProfile } from "~/entities/User";
 import { TPaginator } from "~/shared/ui";
@@ -9,7 +9,7 @@ export type FindCargoRequest = {
 };
 
 export type GetOrdersRequest = {
-  status: TOrderStatus;
+  status: OrderStatus;
   page?: number;
   cityFrom?: string;
   cityTo?: string;

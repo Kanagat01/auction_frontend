@@ -8,7 +8,7 @@ import {
   updateOrder,
   removeOrder,
   TGetOrder,
-  TOrderStatus,
+  OrderStatus,
 } from "~/entities/Order";
 import { COLLAPSED_STORAGE_KEY } from "~/shared/lib";
 import { InputProps } from "~/shared/ui";
@@ -107,7 +107,7 @@ export const useCollapsed = (): [boolean, () => void] => {
   return [collapsed, () => setCollapsed(!collapsed)];
 };
 
-export const useWebsocket = (orders: TGetOrder[], status: TOrderStatus) => {
+export const useWebsocket = (orders: TGetOrder[], status: OrderStatus) => {
   const websocket = useUnit($orderWebsocket);
   websocket.onmessage = (ev) => {
     const data = JSON.parse(ev.data);

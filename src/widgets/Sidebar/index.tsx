@@ -25,11 +25,11 @@ export function Sidebar() {
   const notifications = useUnit($notifications);
 
   const notificationsDict: Record<string, NotificationType> = {
-    [Routes.ORDERS_BEING_EXECUTED]: "new_order_being_executed",
-    [Routes.ORDERS_IN_AUCTION]: "new_order_in_auction",
-    [Routes.ORDERS_IN_BIDDING]: "new_order_in_bidding",
-    [Routes.ORDERS_IN_DIRECT]: "new_order_in_direct",
-    [Routes.CANCELLED_ORDERS]: "order_cancelled",
+    [Routes.ORDERS_BEING_EXECUTED]: NotificationType.NEW_ORDER_BEING_EXECUTED,
+    [Routes.ORDERS_IN_AUCTION]: NotificationType.NEW_ORDER_IN_AUCTION,
+    [Routes.ORDERS_IN_BIDDING]: NotificationType.NEW_ORDER_IN_BIDDING,
+    [Routes.ORDERS_IN_DIRECT]: NotificationType.NEW_ORDER_IN_DIRECT,
+    [Routes.CANCELLED_ORDERS]: NotificationType.ORDER_CANCELLED,
   };
   const currentRoute = useLocation().pathname;
 

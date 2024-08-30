@@ -24,11 +24,42 @@ editDetails.watch(({ details }) => {
   toast.promise(editUserFx(data), {
     loading: "Сохраняем реквизиты...",
     success: () => {
-      const prevState = $mainData.getState();
-      setMainData({ ...prevState, details } as TMainData);
+      setMainData({ ...state, details } as TMainData);
       return "Реквизиты обновлены";
     },
     error: (err) => `Произошла ошибка: ${err}`,
+  });
+});
+
+const changeSubscriptionFx: Effect<
+  { subscription_id: number },
+  CustomerCompany | TransporterCompany
+> = attach({
+  effect: apiRequestFx,
+  mapParams: (data): RequestParams => ({
+    method: "post",
+    url: "/user/common/change_subscription/",
+    data,
+  }),
+});
+
+export const changeSubscription = createEvent<{ subscription_id: number }>();
+changeSubscription.watch((data) => {
+  toast.promise(changeSubscriptionFx(data), {
+    loading: "Обновляем тариф...",
+    success: (newMainData) => {
+      setMainData(newMainData);
+      return "Тариф обновлен";
+    },
+    error: (err) => {
+      if (typeof err === "string") {
+        if (err === "subscription does not exist")
+          return "Тариф с таким id не существует";
+        else if (err === "Only company accounts can change subscription")
+          return "Только аккаунт компании может изменять тарифы";
+      }
+      return `Произошла ошибка: ${err}`;
+    },
   });
 });
 

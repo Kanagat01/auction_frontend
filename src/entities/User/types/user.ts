@@ -3,8 +3,7 @@ export enum UserTypes {
   customer_manager = "Заказчик (менеджер)",
   transporter_company = "Перевозчик (компания)",
   transporter_manager = "Перевозчик (менеджер)",
-  // order_viewer = "Просмотрщик заказов",
-  // driver = "Водитель",
+  driver = "Водитель",
   // super_admin = "Супер админ",
 }
 

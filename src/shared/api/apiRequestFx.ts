@@ -16,7 +16,21 @@ export const apiRequestFx = createEffect<RequestParams, any, Error>(
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status! > 499) throw "Ошибка на сервере";
-        throw error.response?.data?.message;
+        const data = error.response?.data;
+        if (data && "detail" in data && !("message" in data)) {
+          console.log(data.detail);
+          if (
+            data.detail ===
+            "У вас недостаточно прав для выполнения данного действия."
+          ) {
+            setTimeout(() => {
+              window.location.reload();
+            }, 5000);
+            throw "У вас недостаточно прав для выполнения данного действия";
+          }
+          throw data.detail;
+        }
+        throw data?.message;
       } else {
         throw error;
       }

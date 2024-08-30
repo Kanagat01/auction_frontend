@@ -41,6 +41,22 @@ export function MenuProfile() {
           handleClose={changeShow}
         />
       )}
+      {mainData &&
+        "transporter_company_id" in mainData &&
+        mainData.balance <= 0 && (
+          <PopupModal
+            show={show}
+            title="Пополните баланс"
+            description={
+              <>
+                Ваш баланс равен или меньше нуля. Функционал будет ограничен
+                просмотром информации и переходом по разделам. Пожалуйста
+                пополните баланс
+              </>
+            }
+            handleClose={changeShow}
+          />
+        )}
 
       <div className={`${styles["profile-main"]} align-items-end`}>
         <span className={styles["full-name"]}>

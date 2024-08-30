@@ -28,21 +28,17 @@ export const getMainDataFx = createEffect<
   }
 });
 
-export const $userType = createStore<TUserType | "">("");
-export const setUserType = createEvent<TUserType | "">();
-$userType.on(setUserType, (_, newState) => newState);
-
 export const setMainData = createEvent<TMainData | null>();
 export const $mainData = createStore<TMainData | null>(null)
   .on(getMainDataFx.doneData, (_, payload) => payload.profile)
   .on(setMainData, (_, newState) => newState);
 
+export const $userType = createStore<TUserType | "">("").on(
+  $mainData,
+  (_, state) => state?.user.user_type ?? ""
+);
+
 export const $settings = createStore<Settings | null>(null).on(
   getMainDataFx.doneData,
   (_, _payload) => _payload.settings
 );
-
-$mainData.watch((mainData) => {
-  if (!mainData) return null;
-  setUserType(mainData.user.user_type);
-});

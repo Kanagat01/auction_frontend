@@ -30,8 +30,6 @@ const loginFx = createEffect<LoginRequest, LoginResponse>(async (data) => {
       switch (error.response?.data.message) {
         case "invalid_credentials":
           throw "Неверный логин или пароль";
-        case "user_blocked":
-          throw "Пользователь заблокирован";
       }
     }
     throw "Неизвестная ошибка";

@@ -46,6 +46,12 @@ export const dateTimeToString = (datetime: string | Date) => {
   });
 };
 
+export function isDayPassed(date: number) {
+  const today = new Date();
+  const todayDay = today.getDate();
+  return date < todayDay;
+}
+
 export function formatPhoneNumber(phoneNumber: string) {
   const cleaned = ("" + phoneNumber).replace(/\D/g, "");
   const match = cleaned.match(/^(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})$/);

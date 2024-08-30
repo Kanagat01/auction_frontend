@@ -1,9 +1,9 @@
-import { useCallback } from "react";
 import { useUnit } from "effector-react";
+import { useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { ControlPanel, ControlPanelProps, OrderSections } from "~/widgets";
 import { ExportToExcelButton } from "~/features/ExportToExcel";
-import { $userType, getRole } from "~/entities/User";
+import { $userType, getRole, useIsActive } from "~/entities/User";
 import {
   $orders,
   $ordersPagination,
@@ -12,21 +12,21 @@ import {
   OrdersList,
   OrderStatusTranslation,
   OrderStatus,
+  $orderWebsocket,
 } from "~/entities/Order";
-import { RenderPromise } from "~/shared/api";
 import {
-  CollapsableSidebar,
   MainTitle,
+  PageError,
+  CollapsableSidebar,
   RoundedWhiteBox,
-  TextCenter,
 } from "~/shared/ui";
 import Routes from "~/shared/routes";
+import { RenderPromise } from "~/shared/api";
 import { iconActionProps } from "./consts";
 import {
   useCollapsed,
   useDefaultInputs,
   usePageFromSearchParams,
-  useWebsocket,
 } from "./hooks";
 
 type TOrdersPage = {
@@ -35,9 +35,26 @@ type TOrdersPage = {
   status: OrderStatus;
 };
 
-export function OrdersPage({ title, pageData, status }: TOrdersPage) {
+export function OrdersPage({
+  title,
+  pageData: { iconActions, textActions, ...pageData },
+  status,
+}: TOrdersPage) {
+  const userType = useUnit($userType);
+  const isActive = useIsActive();
+  const currentRoute = useLocation().pathname as Routes;
+
   const orders = useUnit($orders);
-  useWebsocket(orders, status);
+  const websocket = useUnit($orderWebsocket);
+  useEffect(() => {
+    if (websocket.readyState === WebSocket.OPEN) {
+      websocket.send(JSON.stringify({ action: "set_status", status }));
+    } else {
+      websocket.onopen = () => {
+        websocket.send(JSON.stringify({ action: "set_status", status }));
+      };
+    }
+  }, [websocket, status]);
 
   const paginator = useUnit($ordersPagination);
   const { cityFrom, cityTo, transportationNumber, defaultInputs } =
@@ -50,18 +67,11 @@ export function OrdersPage({ title, pageData, status }: TOrdersPage) {
   );
 
   const [collapsed, toggleExpand] = useCollapsed();
-
-  const userType = useUnit($userType);
-  const currentRoute = useLocation().pathname as Routes;
   return (
     <>
       <RoundedWhiteBox style={{ width: "90%" }}>
         {title === "forbidden" ? (
-          <TextCenter className="p-5 mt-5">
-            <MainTitle style={{ fontSize: "2.5rem", fontWeight: 500 }}>
-              У вас нет прав для просмотра данной страницы
-            </MainTitle>
-          </TextCenter>
+          <PageError>У вас нет прав для просмотра данной страницы</PageError>
         ) : (
           <>
             <div className="p-5">
@@ -80,9 +90,10 @@ export function OrdersPage({ title, pageData, status }: TOrdersPage) {
                       )}
                       {...iconActionProps}
                     />
-                    {pageData.iconActions}
+                    {isActive ? iconActions : ""}
                   </>
                 }
+                textActions={isActive ? textActions : ""}
               />
             </div>
             {RenderPromise(fetchOrders, {
@@ -93,11 +104,7 @@ export function OrdersPage({ title, pageData, status }: TOrdersPage) {
                 />
               ),
               error: (err) => (
-                <TextCenter className="p-5 mt-5">
-                  <MainTitle style={{ fontSize: "2.5rem", fontWeight: 500 }}>
-                    Произошла ошибка: {err?.message}
-                  </MainTitle>
-                </TextCenter>
+                <PageError>Произошла ошибка: {err?.message}</PageError>
               ),
             })}
           </>

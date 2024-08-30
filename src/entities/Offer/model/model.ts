@@ -50,19 +50,22 @@ createOffer.watch(({ inAuction, onReset, ...data }) =>
       return "Предложение успешно создано";
     },
     error: (err) => {
-      const status = err?.response?.status;
-      const message = err?.response?.data?.message;
-      const priceError = err?.response?.data?.price?.[0];
+      if (typeof err === "object") {
+        const status = err?.response?.status;
+        const message = err?.response?.data?.message;
+        const priceError = err?.response?.data?.price?.[0];
 
-      if (status > 499) return `Серверная ошибка. Код ${status}`;
-      if (
-        typeof message === "string" &&
-        message.startsWith("not_valid_price. Price must be less than")
-      )
-        return `Цена должна быть меньше чем ${message.split(" ")[6]}`;
-      if (priceError === "Price must be greater than 0")
-        return "Цена должна быть больше нуля";
-      return `Неизвестная ошибка: ${message}`;
+        if (status > 499) return `Серверная ошибка. Код ${status}`;
+        if (
+          typeof message === "string" &&
+          message.startsWith("not_valid_price. Price must be less than")
+        )
+          return `Цена должна быть меньше чем ${message.split(" ")[6]}`;
+        if (priceError === "Price must be greater than 0")
+          return "Цена должна быть больше нуля";
+        return `Произошла ошибка: ${message}`;
+      }
+      return `Произошла ошибка: ${err}`;
     },
   })
 );

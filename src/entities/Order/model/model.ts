@@ -23,6 +23,7 @@ import {
   TGetOrder,
 } from "../types";
 import { AddDriverDataRequest } from ".";
+import { API_URL } from "~/shared/config";
 
 export const $orders = createStore<TGetOrder[]>([]);
 $orders.on(getOrdersFx.doneData, (_, payload) => payload.orders);
@@ -276,3 +277,25 @@ addDriverData.watch(({ onReset, ...data }) => {
     },
   });
 });
+
+const token = localStorage.getItem("token");
+const WS_URL = API_URL.replace("http", "ws");
+
+const socket = new WebSocket(`${WS_URL}/api/ws/orders/?token=${token}`);
+socket.onerror = (err) => console.log(err);
+socket.onmessage = (ev) => {
+  const data = JSON.parse(ev.data);
+  console.log(data);
+  if ("add_or_update_order" in data) {
+    const order: TGetOrder = data["add_or_update_order"];
+    const idx = $orders.getState().findIndex((o) => o.id === order.id);
+    if (idx === -1) addOrder(order);
+    else {
+      updateOrder({ orderId: order.id, newData: order });
+    }
+  } else if ("remove_order" in data) {
+    const orderId: number = data["remove_order"];
+    removeOrder(orderId);
+  }
+};
+export const $orderWebsocket = createStore<WebSocket>(socket);

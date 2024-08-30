@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { useState, ChangeEvent, KeyboardEvent } from "react";
+import { useState, ChangeEvent, KeyboardEvent, useEffect } from "react";
 import { useUnit } from "effector-react";
 import { Modal } from "react-bootstrap";
 import { Header, OrderSections } from "~/widgets";
@@ -49,12 +49,25 @@ export default function FindCargo() {
           setError("Рейс с таким трек-номером не найден");
         else if (error === "driver_not_found")
           setError("Водитель с таким номером машины не найден");
+        else if (
+          error === "service is not available with current company subscription"
+        )
+          setError('Для данного заказа недоступна услуга "Грузополучатель"');
         else setError(error);
       }
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const prevTitle = document.title;
+    document.title = 'Сервис "Грузополучатель"';
+
+    return () => {
+      document.title = prevTitle;
+    };
+  }, []);
   return (
     <div className="main-bg">
       <Header />

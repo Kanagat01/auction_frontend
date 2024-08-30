@@ -5,6 +5,7 @@ export * from "./modal";
 export * from "./TooltipOnHover";
 export * from "./RoundedWhiteBox";
 export * from "./Button";
+export * from "./PageError";
 export * from "./Preloader";
 export * from "./ScheduleCard";
 export * from "./CollapsableSidebar";

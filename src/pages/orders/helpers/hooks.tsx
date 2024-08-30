@@ -1,15 +1,7 @@
-import { useUnit } from "effector-react";
-import { createEvent, createStore } from "effector";
 import { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
 import { useLocation } from "react-router-dom";
-import {
-  $orderWebsocket,
-  addOrder,
-  updateOrder,
-  removeOrder,
-  TGetOrder,
-  OrderStatus,
-} from "~/entities/Order";
+import { useUnit } from "effector-react";
+import { createEvent, createStore } from "effector";
 import { COLLAPSED_STORAGE_KEY } from "~/shared/lib";
 import { InputProps } from "~/shared/ui";
 import Routes from "~/shared/routes";
@@ -105,32 +97,4 @@ export const useCollapsed = (): [boolean, () => void] => {
   }, [collapsed]);
 
   return [collapsed, () => setCollapsed(!collapsed)];
-};
-
-export const useWebsocket = (orders: TGetOrder[], status: OrderStatus) => {
-  const websocket = useUnit($orderWebsocket);
-  websocket.onmessage = (ev) => {
-    const data = JSON.parse(ev.data);
-    console.log(data);
-    if ("add_or_update_order" in data) {
-      const order: TGetOrder = data["add_or_update_order"];
-      const idx = orders.findIndex((o) => o.id === order.id);
-      if (idx === -1) addOrder(order);
-      else {
-        updateOrder({ orderId: order.id, newData: order });
-      }
-    } else if ("remove_order" in data) {
-      const orderId: number = data["remove_order"];
-      removeOrder(orderId);
-    }
-  };
-  useEffect(() => {
-    if (websocket.readyState === WebSocket.OPEN) {
-      websocket.send(JSON.stringify({ action: "set_status", status }));
-    } else {
-      websocket.onopen = () => {
-        websocket.send(JSON.stringify({ action: "set_status", status }));
-      };
-    }
-  }, [websocket, status]);
 };

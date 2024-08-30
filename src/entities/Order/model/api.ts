@@ -1,8 +1,7 @@
-import { Effect, attach, createStore } from "effector";
+import { Effect, attach } from "effector";
 import { DriverProfile } from "~/entities/User";
 import { OrderModel, TGetOrder } from "~/entities/Order";
 import { RequestParams, apiRequestFx } from "~/shared/api";
-import { API_URL } from "~/shared/config";
 import {
   OrderIDRequest,
   AddDriverDataRequest,
@@ -15,13 +14,6 @@ import {
   CreateOrderResponse,
   EditOrderResponse,
 } from "./api_types";
-
-const token = localStorage.getItem("token");
-const WS_URL = API_URL.replace("http", "ws");
-
-const socket = new WebSocket(`${WS_URL}/api/ws/orders/?token=${token}`);
-socket.onerror = (err) => console.log(err);
-export const $orderWebsocket = createStore<WebSocket>(socket);
 
 // get order
 export const findCargoFx: Effect<FindCargoRequest, TGetOrder> = attach({

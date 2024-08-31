@@ -21,7 +21,14 @@ addDocument.watch(({ reset, file }) => {
       reset();
       return `Документ ${file.name} успешно добавлен`;
     },
-    error: (err) => `Произошла ошибка при добавлении документа: ${err}`,
+    error: (err) => {
+      if (typeof err === "string") {
+        if (err === "OrderModel with this ID does not belong to your company") {
+          return "Вы не можете добавлять документ к этому заказу";
+        }
+      }
+      return `Произошла ошибка при добавлении документа: ${err}`;
+    },
   });
 });
 

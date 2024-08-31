@@ -10,7 +10,6 @@ type MapSectionProps = {
 };
 
 export function MapSection({ tracking, stages }: MapSectionProps) {
-  console.log(tracking);
   const centralGeoPoint = tracking?.geopoints[
     Math.floor(tracking.geopoints.length / 2)
   ] as OrderTrackingGeoPoint;

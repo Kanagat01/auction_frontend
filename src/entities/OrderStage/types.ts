@@ -19,7 +19,7 @@ export type OrderStages = {
   comments?: string;
 };
 
-export type OrderStageKey = keyof Omit<OrderStages, "id" | "completed">;
+export type OrderStageKey = keyof Omit<OrderStages, "id">;
 
 export const OrderStageTranslations: Record<
   OrderStageKey | CargoParamKey,
@@ -37,6 +37,7 @@ export const OrderStageTranslations: Record<
   comments: "Комментарий к поставке",
   time_start: "С",
   time_end: "По",
+  completed: "Завершено",
 };
 
 export type TStages = {

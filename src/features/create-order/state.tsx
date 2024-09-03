@@ -142,7 +142,7 @@ preCreateOrderFx.doneData.watch(
         customer_manager: $mainData.getState()?.user.full_name ?? "",
         ...newOrderForm,
       });
-    } else if (max_transportation_number) {
+    } else if (max_transportation_number !== undefined) {
       const newState = {
         ...$orderForm.getState(),
         transportation_number: max_transportation_number + 1,

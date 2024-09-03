@@ -27,12 +27,13 @@ $orderStages.on(clearStages, (_) => ({
 const stageCoupleValidation = (func: (state: TStages) => void) => {
   const state = $orderStages.getState();
   const emptyFields = [];
+  const notRequired = ["comments", "completed"];
 
   for (const key1 in state) {
     const stage = key1 as TStage;
     for (const key2 in state[stage]) {
       const field = key2 as OrderStageKey;
-      if (!state[stage][field] && field !== "comments") {
+      if (!state[stage][field] && !notRequired.includes(field)) {
         const fieldName =
           (stage === "load_stage" ? "Погрузка" : "Выгрузка") +
           "." +

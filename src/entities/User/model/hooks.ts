@@ -1,5 +1,4 @@
 import { useUnit } from "effector-react";
-import { isDayPassed } from "~/shared/lib";
 import { $mainData } from "./state";
 
 export const useIsActive = () => {
@@ -17,12 +16,11 @@ export const useIsActive = () => {
       ? mainData.company.subscription
       : mainData.subscription;
 
+  const today = new Date();
   const isActive =
     subscription &&
-    !(
-      mainData?.user.has_unpaid_subscription &&
-      isDayPassed(subscription.days_without_payment)
-    );
+    (mainData?.user.subscription_paid ||
+      today.getDate() <= subscription.days_without_payment);
 
   return isActive;
 };

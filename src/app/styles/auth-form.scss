@@ -1,7 +1,7 @@
 .login-page {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
   width: 100vw;
   height: 100vh;
   margin: auto;
@@ -16,12 +16,36 @@
   }
 }
 
+.login-form,
+.login-page-bottom {
+  margin-top: auto;
+  width: 45rem;
+}
+
+.login-page-bottom {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+  gap: 1rem;
+
+  .copyright,
+  a {
+    font-size: 1.4rem;
+    font-weight: 400;
+    opacity: 0.5;
+  }
+  // .copyright {
+  // }
+  // a {
+  //   color: var(--primary);
+  // }
+}
+
 .login-form {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 45rem;
 
   a,
   span.link-text {

@@ -4,6 +4,7 @@ import { forgotPassword } from "~/features/reset-password";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
 import { useTextInputState } from "~/shared/lib";
 import Routes from "~/shared/routes";
+import { Credentials } from "./Credentials";
 
 export function ForgotPassword() {
   const [success, setSuccess] = useState<boolean>(false);
@@ -15,7 +16,7 @@ export function ForgotPassword() {
   return (
     <div className="login-page">
       <form className="login-form" onSubmit={handleSubmit}>
-        <span className="login-title">Kargonika</span>
+        <span className="login-title">Cargonika</span>
         <span className="login-subtitle">
           {success ? (
             'На введенный вами email было отправлено сообщение со ссылкой для сброса пароля. Если письмо не пришло проверьте папку "Спам"'
@@ -47,6 +48,7 @@ export function ForgotPassword() {
           </a>
         )}
       </form>
+      <Credentials />
     </div>
   );
 }

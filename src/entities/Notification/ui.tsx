@@ -48,7 +48,7 @@ export function PopupModal(props: {
             onClick={props.handleClose}
             style={{ padding: "0.5rem 3rem", fontSize: "1.6rem" }}
           >
-            Прочитал (-a)
+            Понятно
           </PrimaryButton>
         </div>
       </Modal.Body>

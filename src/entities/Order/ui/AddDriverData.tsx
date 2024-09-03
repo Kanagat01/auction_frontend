@@ -96,7 +96,13 @@ export const AddDriverData = (
               label={DriverProfileTranslations[name]}
               value={driverData[name]}
               variant="input"
-              type={name !== "phone_number" ? "text" : "tel"}
+              type={
+                name !== "phone_number"
+                  ? name !== "passport_number"
+                    ? "text"
+                    : "number"
+                  : "tel"
+              }
               {...modalInputProps}
               className={modalInputProps.className.replace("mb-4", "mb-3")}
             />

@@ -5,8 +5,6 @@
  * @module
  */
 
-import { ConsoleLogger } from "./logger";
-
 /**
  * Получение env-переменной
  * @throwable
@@ -32,5 +30,3 @@ if (NODE_ENV === "development") {
   /** Режим продакшена */
   API_URL = getEnvVar("VITE_PRODUCTION_API_URL");
 }
-
-export const logger = new ConsoleLogger();

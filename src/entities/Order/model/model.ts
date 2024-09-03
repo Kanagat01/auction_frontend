@@ -213,22 +213,14 @@ const isDriverDataValid = (data: Omit<AddDriverDataRequest, "order_id">) => {
   fields.forEach(({ value, label }) => {
     if (value === "") notFilledIn.push(label);
   });
-
   if (notFilledIn.length > 0) {
     toast.error(`Заполните обязательные поля: ${notFilledIn.join(", ")}`);
     return false;
   }
-
-  if (isNaN(Number(data.passport_number))) {
-    toast.error("Неправильный номер паспорта");
-    return false;
-  }
-
   if (!regex.test(data.phone_number)) {
     toast.error("Неправильный номер телефона");
     return false;
   }
-
   return true;
 };
 

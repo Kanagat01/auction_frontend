@@ -6,6 +6,7 @@ import {
 } from "~/features/registration";
 import Routes from "~/shared/routes";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
+import { Credentials } from "./Credentials";
 
 export function Register() {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export function Register() {
   return (
     <div className="login-page">
       <form className="login-form" onSubmit={handleSubmit}>
-        <span className="login-title">Kargonika</span>
+        <span className="login-title">Cargonika</span>
         <RoundedInputGroup>
           <RoundedInputGroup.Select
             options={[
@@ -80,6 +81,7 @@ export function Register() {
           Уже есть аккаунт? <NavLink to={Routes.LOGIN}>Войти</NavLink>
         </span>
       </form>
+      <Credentials />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { resetPasswordConfirm } from "~/features/reset-password";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
 import { useTextInputState } from "~/shared/lib";
 import Routes from "~/shared/routes";
+import { Credentials } from "./Credentials";
 
 export function ResetPasswordConfirm() {
   const { token } = useParams<{ token: string }>();
@@ -28,7 +29,7 @@ export function ResetPasswordConfirm() {
   return (
     <div className="login-page">
       <form className="login-form" onSubmit={handleSubmit}>
-        <span className="login-title">Kargonika</span>
+        <span className="login-title">Cargonika</span>
         {isValidToken ? (
           <>
             <span className="login-subtitle">
@@ -63,6 +64,7 @@ export function ResetPasswordConfirm() {
           </>
         )}
       </form>
+      <Credentials />
     </div>
   );
 }

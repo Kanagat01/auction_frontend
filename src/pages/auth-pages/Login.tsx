@@ -6,6 +6,7 @@ import { login } from "~/features/authorization";
 import { useTextInputState } from "~/shared/lib";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
 import Routes from "~/shared/routes";
+import { Credentials } from "./Credentials";
 
 export function Login() {
   const [email, onChangeEmail] = useTextInputState("");
@@ -24,7 +25,7 @@ export function Login() {
   return (
     <div className="login-page">
       <form className="login-form" onSubmit={handleSubmit}>
-        <span className="login-title">Kargonika</span>
+        <span className="login-title">Cargonika</span>
         <RoundedInputGroup>
           <RoundedInputGroup.Input
             value={email}
@@ -45,6 +46,7 @@ export function Login() {
           Забыли пароль?
         </NavLink>
       </form>
+      <Credentials />
     </div>
   );
 }

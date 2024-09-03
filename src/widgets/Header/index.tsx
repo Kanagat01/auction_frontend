@@ -13,7 +13,7 @@ export function Header() {
   return (
     <header className={styles.header}>
       <div className={styles["logo"]}>
-        <NavLink to={Routes.HOME}>Kargonika</NavLink>
+        <NavLink to={Routes.HOME}>Cargonika</NavLink>
       </div>
       {isAuth && (
         <div className={styles["left-side"]}>

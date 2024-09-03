@@ -73,8 +73,6 @@ const resetPasswordConfirmFx = createEffect<
       if (message) {
         if (typeof message === "string") {
           switch (message) {
-            case "passwords_do_not_match":
-              throw "Пароли не совпадают";
             case "invalid_token":
               setIsValidToken(false);
               throw "Адрес не существует";
@@ -84,6 +82,14 @@ const resetPasswordConfirmFx = createEffect<
             case "user_not_found":
               throw "Пользователь не найден";
           }
+        } else if (typeof message === "object") {
+          if (
+            "non_field_errors" in message &&
+            (message.non_field_errors as Array<string>).includes(
+              "passwords_do_not_match"
+            )
+          )
+            throw "Пароли не совпадают";
         }
         throw message;
       }

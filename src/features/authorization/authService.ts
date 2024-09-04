@@ -1,7 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 import { createEffect, createEvent } from "effector";
-import { setMainData } from "~/entities/User";
+import { getMainDataFx, setMainData } from "~/entities/User";
 import { API_URL } from "~/shared/config";
 import { setAuth } from "./authStore";
 
@@ -43,6 +43,7 @@ login.watch(({ navigateFunc, ...data }) => {
     success: ({ token }) => {
       localStorage.setItem("token", token);
       setAuth(true);
+      getMainDataFx();
       navigateFunc();
       return "Вы успешно авторизованы";
     },

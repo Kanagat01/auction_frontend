@@ -320,7 +320,7 @@ const token = localStorage.getItem("token");
 const WS_URL = API_URL.replace("http", "ws");
 const socketUrl = `${WS_URL}/api/ws/orders/?token=${token}`;
 
-const connectToSocketFx = createEffect(async () => {
+export const connectToSocketFx = createEffect(async () => {
   const socket = new WebSocket(socketUrl);
   socket.onopen = () => console.log("connected to order websocket");
   socket.onerror = (err) => console.log(err);
@@ -367,7 +367,7 @@ const connectToSocketFx = createEffect(async () => {
   return socket;
 });
 
-const setOrderWebsocket = createEvent<WebSocket>();
-export const $orderWebsocket = createStore<WebSocket>(
-  await connectToSocketFx()
-).on(setOrderWebsocket, (_, state) => state);
+export const $orderWebsocket = createStore<WebSocket | null>(null).on(
+  connectToSocketFx.doneData,
+  (_, state) => state
+);

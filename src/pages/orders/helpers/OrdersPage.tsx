@@ -13,6 +13,7 @@ import {
   OrderStatusTranslation,
   OrderStatus,
   $orderWebsocket,
+  connectToSocketFx,
 } from "~/entities/Order";
 import {
   MainTitle,
@@ -47,12 +48,15 @@ export function OrdersPage({
   const orders = useUnit($orders);
   const websocket = useUnit($orderWebsocket);
   useEffect(() => {
-    if (websocket.readyState === WebSocket.OPEN) {
-      websocket.send(JSON.stringify({ action: "set_status", status }));
-    } else {
-      websocket.onopen = () => {
+    if (!websocket) connectToSocketFx();
+    else {
+      if (websocket.readyState === WebSocket.OPEN) {
         websocket.send(JSON.stringify({ action: "set_status", status }));
-      };
+      } else {
+        websocket.onopen = () => {
+          websocket.send(JSON.stringify({ action: "set_status", status }));
+        };
+      }
     }
   }, [websocket, status]);
 

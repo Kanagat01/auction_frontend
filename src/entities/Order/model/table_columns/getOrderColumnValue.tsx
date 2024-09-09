@@ -1,4 +1,9 @@
-import { TGetOrder, OrderStatusTranslation, TColumn } from "~/entities/Order";
+import {
+  TGetOrder,
+  OrderStatusTranslation,
+  TColumn,
+  OrderStatus,
+} from "~/entities/Order";
 import { OrderStages } from "~/entities/OrderStage";
 import { OrderOfferStatus } from "~/entities/Offer";
 import {
@@ -41,10 +46,12 @@ export const getOrderColumnValue = (
           ? priceData.current_price
           : "-";
       }
-      return (
-        order?.offers?.find((el) => el.status === OrderOfferStatus.accepted)
-          ?.price ?? "-"
-      );
+      return [OrderStatus.completed, OrderStatus.being_executed].includes(
+        order.status
+      )
+        ? order?.offers?.find((el) => el.status === OrderOfferStatus.accepted)
+            ?.price ?? "-"
+        : order?.offers![0]?.price ?? "-";
     case "best_offer_price":
       if (role === "transporter") {
         const priceData = order.price_data;

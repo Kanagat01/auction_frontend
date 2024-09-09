@@ -39,7 +39,11 @@ export function PopupModal(props: {
         </TitleLg>
         <TitleMd
           className="text-center mb-4"
-          style={{ wordWrap: "break-word", fontSize: "1.6rem" }}
+          style={{
+            wordWrap: "break-word",
+            fontSize: "1.6rem",
+            whiteSpace: "pre-line",
+          }}
         >
           {props.description}
         </TitleMd>

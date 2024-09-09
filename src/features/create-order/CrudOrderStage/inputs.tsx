@@ -1,5 +1,4 @@
 import { ChangeEvent } from "react";
-import { createEvent } from "effector";
 import { useStoreMap } from "effector-react";
 import {
   CargoParams,
@@ -8,13 +7,10 @@ import {
   TStage,
 } from "~/entities/OrderStage";
 import { InputContainer, OutlineButton } from "~/shared/ui";
-import { $orderStages, $stageType, initialOrderStage } from "..";
+import { stageFieldUpdate } from "../stageEvents";
+import { StageFieldUpdatePayload } from "../types";
+import { $orderStages, initialOrderStage } from "../state";
 import styles from "./styles.module.scss";
-
-type FieldUpdatePayload = {
-  key: OrderStageKey;
-  value: string | number;
-};
 
 type FieldProps = { name: OrderStageKey; stageType: TStage };
 
@@ -26,19 +22,7 @@ type StageProps = {
   onClick2: () => void;
 };
 
-const fieldUpdate = createEvent<FieldUpdatePayload>();
-
-$orderStages.on(fieldUpdate, (state, { key, value }) => {
-  const stageType = $stageType.getState();
-  if (["cargo", "weight", "volume"].includes(key))
-    return {
-      ...state,
-      [key]: value,
-    };
-  return { ...state, [stageType]: { ...state[stageType], [key]: value } };
-});
-
-const handleChange = fieldUpdate.prepend(
+const handleChange = stageFieldUpdate.prepend(
   (
     event: ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -49,7 +33,7 @@ const handleChange = fieldUpdate.prepend(
     return {
       key: event.target.name,
       value: newValue,
-    } as FieldUpdatePayload;
+    } as StageFieldUpdatePayload;
   }
 );
 

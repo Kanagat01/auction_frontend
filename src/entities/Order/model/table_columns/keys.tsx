@@ -41,6 +41,7 @@ export const keysCustomer: Partial<Record<Routes, (keyof TColumn)[]>> = {
   ],
   [Routes.ORDERS_IN_DIRECT]: [
     ...defaultKeys,
+    "final_price",
     "comments_for_transporter",
     "transporter",
   ],
@@ -65,7 +66,11 @@ export const keysTransporter: Partial<Record<Routes, (keyof TColumn)[]>> = {
   ],
   [Routes.ORDERS_IN_AUCTION]: [...defaultKeys, "offer_price"],
   [Routes.ORDERS_IN_BIDDING]: [...defaultKeys, "offer_price"],
-  [Routes.ORDERS_IN_DIRECT]: [...defaultKeys, "comments_for_transporter"],
+  [Routes.ORDERS_IN_DIRECT]: [
+    ...defaultKeys,
+    "final_price",
+    "comments_for_transporter",
+  ],
   [Routes.CANCELLED_ORDERS]: [
     ...defaultKeys,
     "start_price",

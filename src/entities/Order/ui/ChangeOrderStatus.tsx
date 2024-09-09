@@ -34,31 +34,33 @@ export const CancelOrder = ({
   const order = useUnit($selectedOrder);
   const [show, changeShow] = useModalState(false);
   return (
-    <>
-      {variant === "icon" ? (
-        <OutlineButton {...props} onClick={changeShow}>
-          <FaRegTrashCan />
-        </OutlineButton>
-      ) : (
-        <PrimaryButton {...props} onClick={changeShow}>
-          Отменить
-        </PrimaryButton>
-      )}
-      <ConfirmationModal
-        show={show}
-        onHide={changeShow}
-        onConfirm={() => {
-          cancelOrder();
-          changeShow();
-        }}
-        title={
-          <>
-            Вы уверены, что хотите отменить заказ{" "}
-            {<BlueText>№{order?.transportation_number}</BlueText>}
-          </>
-        }
-      />
-    </>
+    order?.status !== OrderStatus.completed && (
+      <>
+        {variant === "icon" ? (
+          <OutlineButton {...props} onClick={changeShow}>
+            <FaRegTrashCan />
+          </OutlineButton>
+        ) : (
+          <PrimaryButton {...props} onClick={changeShow}>
+            Отменить
+          </PrimaryButton>
+        )}
+        <ConfirmationModal
+          show={show}
+          onHide={changeShow}
+          onConfirm={() => {
+            cancelOrder();
+            changeShow();
+          }}
+          title={
+            <>
+              Вы уверены, что хотите отменить заказ{" "}
+              {<BlueText>№{order?.transportation_number}</BlueText>}
+            </>
+          }
+        />
+      </>
+    )
   );
 };
 

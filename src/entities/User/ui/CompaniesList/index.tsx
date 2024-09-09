@@ -147,7 +147,7 @@ export function CompaniesList({
                     fontSize: "1.6rem",
                   }}
                 >
-                  Назначить
+                  Добавить
                 </OutlineButton>
                 <OutlineButton
                   type="reset"

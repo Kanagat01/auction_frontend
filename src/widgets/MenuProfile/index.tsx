@@ -6,9 +6,8 @@ import {
   CustomerCompany,
   TransporterCompany,
 } from "~/entities/User";
-import { formatPhoneNumber, useModalState } from "~/shared/lib";
+import { formatPhoneNumber } from "~/shared/lib";
 import styles from "./styles.module.scss";
-import { PopupModal } from "~/entities/Notification";
 
 export function MenuProfile() {
   const mainData = useUnit($mainData);
@@ -24,40 +23,8 @@ export function MenuProfile() {
     orgName = `${companyName} (${companyId})`;
   }
 
-  const [show, changeShow] = useModalState(true);
   return (
     <div className={styles["menu-profile-info"]}>
-      {mainData && "subscription" in mainData && !mainData.subscription && (
-        <PopupModal
-          show={show}
-          title="Выберите тариф"
-          description={
-            <>
-              Для того, чтобы получить доступ ко всему функционалу сайта,
-              выберите тариф и внесите абонентскую плату. Для этого вам нужно
-              перейти в <br /> "Настройки {">"} Тарифы"
-            </>
-          }
-          handleClose={changeShow}
-        />
-      )}
-      {mainData &&
-        "transporter_company_id" in mainData &&
-        mainData.balance <= 0 && (
-          <PopupModal
-            show={show}
-            title="Пополните баланс"
-            description={
-              <>
-                Ваш баланс равен нулю или отрицателен. Функционал будет
-                ограничен просмотром информации и переходом по разделам.
-                Пожалуйста, пополните баланс.
-              </>
-            }
-            handleClose={changeShow}
-          />
-        )}
-
       <div className={`${styles["profile-main"]} align-items-end`}>
         <span className={styles["full-name"]}>
           {mainData

@@ -32,7 +32,7 @@ export const MakeOffer = ({
     if (num > 0) setPrice(num);
   };
   const onReset = () => {
-    changePrice(0);
+    changePrice(0); // модальное окно закрывается, поэтому в режиме аукциона эффекта не имеет
     changeShow();
   };
 

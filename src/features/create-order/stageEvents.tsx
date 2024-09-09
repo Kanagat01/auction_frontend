@@ -9,10 +9,23 @@ import {
 import {
   $orderForm,
   $orderStages,
+  $stageType,
   getMaxOrderStageNumber,
   initialOrderStage,
   setOrderForm,
 } from "./state";
+import { StageFieldUpdatePayload } from "./types";
+
+export const stageFieldUpdate = createEvent<StageFieldUpdatePayload>();
+$orderStages.on(stageFieldUpdate, (state, { key, value }) => {
+  const stageType = $stageType.getState();
+  if (["cargo", "weight", "volume"].includes(key))
+    return {
+      ...state,
+      [key]: value,
+    };
+  return { ...state, [stageType]: { ...state[stageType], [key]: value } };
+});
 
 export const clearStages = createEvent();
 $orderStages.on(clearStages, (_) => ({

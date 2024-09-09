@@ -9,7 +9,7 @@ import {
 } from "react";
 import toast from "react-hot-toast";
 import { Modal } from "react-bootstrap";
-import { LuCopyPlus } from "react-icons/lu";
+import { LuDownload } from "react-icons/lu";
 import { ModalTitle, OutlineButton, PrimaryButton } from "~/shared/ui";
 import { useModalState } from "~/shared/lib";
 import { addDocument } from "..";
@@ -67,7 +67,7 @@ export function AddDocument(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <>
       <OutlineButton {...props} onClick={changeShow}>
-        <LuCopyPlus />
+        <LuDownload />
       </OutlineButton>
       <Modal show={show} onHide={changeShow} className="gradient-modal">
         <Modal.Body>

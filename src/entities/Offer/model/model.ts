@@ -56,14 +56,19 @@ createOffer.watch(({ inAuction, onReset, ...data }) =>
         const priceError = err?.response?.data?.price?.[0];
 
         if (status > 499) return `Серверная ошибка. Код ${status}`;
-        if (
-          typeof message === "string" &&
-          message.startsWith("not_valid_price. Price must be less than")
-        )
-          return `Цена должна быть меньше чем ${message.split(" ")[6]}`;
         if (priceError === "Price must be greater than 0")
           return "Цена должна быть больше нуля";
         return `Произошла ошибка: ${message}`;
+      } else if (typeof err === "string") {
+        if (err.startsWith("not_valid_price. Price must be less than")) {
+          const current_price = Number(err.split(" ")[6]);
+          if (current_price)
+            updateOrder({
+              orderId: data.order_id,
+              newData: { price_data: { current_price } },
+            });
+          return `Актуальная цена изменилась. Повторите попытку`;
+        }
       }
       return `Произошла ошибка: ${err}`;
     },

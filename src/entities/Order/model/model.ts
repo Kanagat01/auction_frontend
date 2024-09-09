@@ -1,11 +1,18 @@
-import toast from "react-hot-toast";
-import { Effect, createEvent, createStore, sample } from "effector";
+import toast, { Renderable, ValueOrFunction } from "react-hot-toast";
+import {
+  Effect,
+  createEffect,
+  createEvent,
+  createStore,
+  sample,
+} from "effector";
 import { PreCreateOrderResponse } from "~/entities/OrderStage";
 import {
   DriverProfileTranslationKey,
   DriverProfileTranslations,
 } from "~/entities/User";
 import { TPaginator } from "~/shared/ui";
+import { API_URL } from "~/shared/config";
 import {
   addDriverDataFx,
   cancelOrderCompletionFx,
@@ -23,7 +30,6 @@ import {
   TGetOrder,
 } from "../types";
 import { AddDriverDataRequest } from ".";
-import { API_URL } from "~/shared/config";
 
 export const $orders = createStore<TGetOrder[]>([]);
 $orders.on(getOrdersFx.doneData, (_, payload) => payload.orders);
@@ -54,6 +60,10 @@ $orders.on(addOrder, (state, order) => {
   }
 });
 
+/**
+ * Обновляет состояние заказа в хранилище.
+ * Если из сокета пришли данные о водителе, добавить transportation_number в newData
+ */
 export const updateOrder = createEvent<{
   orderId: number;
   newData: Partial<TGetOrder>;
@@ -62,7 +72,6 @@ $orders.on(updateOrder, (state, { orderId, newData }) => {
   return state.map((order) => {
     if (order.id === orderId) {
       if (!order.driver && newData.driver && newData.transportation_number) {
-        // если существует newData.transportation_number, значит заказ обновляется из сокета
         toast.success(
           `Для заказа №${newData.transportation_number} добавлены данные о водителе`
         );
@@ -109,12 +118,17 @@ sample({
 
 function handleOrderAction(
   actionFx: Effect<any, OrderModel>,
-  actionMessage: { loading: string; success: string },
+  actionMessage: {
+    loading: string;
+    success: string;
+    error?: ValueOrFunction<Renderable, any>;
+  },
   actionProps?: Record<string, unknown>,
   onSuccess?: (order_id: number) => void
 ) {
-  const order_id = $selectedOrder.getState()?.id;
-  if (order_id)
+  const order = $selectedOrder.getState();
+  const order_id = order?.id;
+  if (order_id) {
     toast.promise(actionFx({ order_id, ...actionProps }), {
       loading: actionMessage.loading,
       success: () => {
@@ -125,8 +139,33 @@ function handleOrderAction(
         }
         return actionMessage.success;
       },
-      error: (err) => `Произошла ошибка ${err}`,
+      error: actionMessage.error
+        ? actionMessage.error
+        : (err) => {
+            if (err instanceof Array) {
+              const statusError = err.find((el) =>
+                el.startsWith("order_status_is")
+              );
+              if (err.includes("order_is_completed"))
+                return "Нельзя отменить, заказ уже завершен";
+              else if (statusError) {
+                const orderStatus: OrderStatus = statusError.split(":")[1];
+                if (orderStatus !== OrderStatus.completed) {
+                  removeOrder(order_id);
+                  return `Статус заказа "${OrderStatusTranslation[orderStatus]}"`;
+                } else {
+                  updateOrder({
+                    orderId: order_id,
+                    newData: { status: orderStatus },
+                  });
+                  return "Заказ уже завершен";
+                }
+              }
+            }
+            return `Произошла ошибка: ${err}`;
+          },
     });
+  } else toast.error("Выберите заказ");
 }
 
 export const cancelOrder = createEvent();
@@ -147,6 +186,13 @@ publishOrder.watch(({ publish_to, ...data }) =>
     {
       loading: "Публикуем заказ...",
       success: `Статус заказа изменен на "${OrderStatusTranslation[publish_to]}"`,
+      error: (err) => {
+        if (typeof err === "string") {
+          if (err === "transporter_company has no manager")
+            return "У компании перевозчика нет менеджера, чтобы назначить";
+        }
+        return `Произошла ошибка: ${err}`;
+      },
     },
     { publish_to, ...data }
   )
@@ -272,22 +318,56 @@ addDriverData.watch(({ onReset, ...data }) => {
 
 const token = localStorage.getItem("token");
 const WS_URL = API_URL.replace("http", "ws");
+const socketUrl = `${WS_URL}/api/ws/orders/?token=${token}`;
 
-const socket = new WebSocket(`${WS_URL}/api/ws/orders/?token=${token}`);
-socket.onerror = (err) => console.log(err);
-socket.onmessage = (ev) => {
-  const data = JSON.parse(ev.data);
-  console.log(data);
-  if ("add_or_update_order" in data) {
-    const order: TGetOrder = data["add_or_update_order"];
-    const idx = $orders.getState().findIndex((o) => o.id === order.id);
-    if (idx === -1) addOrder(order);
-    else {
-      updateOrder({ orderId: order.id, newData: order });
+const connectToSocketFx = createEffect(async () => {
+  const socket = new WebSocket(socketUrl);
+  socket.onopen = () => console.log("connected to order websocket");
+  socket.onerror = (err) => console.log(err);
+
+  socket.onclose = () => {
+    setTimeout(() => {
+      toast.promise(
+        connectToSocketFx(),
+        {
+          loading: "Попытка восстановить соединение...",
+          success: "Соединение восстановлено",
+          error: (err) => err,
+        },
+        {
+          position: "top-right",
+        }
+      );
+    }, 5000);
+  };
+
+  socket.onmessage = (ev) => {
+    const data = JSON.parse(ev.data);
+    console.log(data);
+    if ("add_or_update_order" in data) {
+      const order: TGetOrder = data["add_or_update_order"];
+      const idx = $orders.getState().findIndex((o) => o.id === order.id);
+      if (idx === -1) addOrder(order);
+      else {
+        updateOrder({ orderId: order.id, newData: order });
+      }
+    } else if ("remove_order" in data) {
+      const orderId: number = data["remove_order"];
+      removeOrder(orderId);
     }
-  } else if ("remove_order" in data) {
-    const orderId: number = data["remove_order"];
-    removeOrder(orderId);
-  }
-};
-export const $orderWebsocket = createStore<WebSocket>(socket);
+  };
+
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+  if (
+    ([WebSocket.CLOSED, WebSocket.CLOSING] as number[]).includes(
+      socket.readyState
+    )
+  )
+    throw "Соединение разорвано";
+  return socket;
+});
+
+const setOrderWebsocket = createEvent<WebSocket>();
+export const $orderWebsocket = createStore<WebSocket>(
+  await connectToSocketFx()
+).on(setOrderWebsocket, (_, state) => state);

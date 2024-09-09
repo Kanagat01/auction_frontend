@@ -1,5 +1,5 @@
 import { OrderModel } from "~/entities/Order";
-import { TStages } from "~/entities/OrderStage";
+import { OrderStageKey, TStages } from "~/entities/OrderStage";
 
 export type TNewOrder = Omit<
   OrderModel,
@@ -33,6 +33,11 @@ export type TInputs = {
 
 export type FieldUpdatePayload = {
   key: keyof TInputs;
+  value: string | number;
+};
+
+export type StageFieldUpdatePayload = {
+  key: OrderStageKey;
   value: string | number;
 };
 

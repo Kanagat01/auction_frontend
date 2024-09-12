@@ -1,5 +1,5 @@
 import { useUnit } from "effector-react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { ControlPanel, ControlPanelProps, OrderSections } from "~/widgets";
 import { ExportToExcelButton } from "~/features/ExportToExcel";
@@ -13,7 +13,6 @@ import {
   OrderStatusTranslation,
   OrderStatus,
   $orderWebsocket,
-  connectToSocketFx,
 } from "~/entities/Order";
 import {
   MainTitle,
@@ -47,17 +46,32 @@ export function OrdersPage({
 
   const orders = useUnit($orders);
   const websocket = useUnit($orderWebsocket);
+
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
-    if (!websocket) connectToSocketFx();
-    else {
-      if (websocket.readyState === WebSocket.OPEN) {
-        websocket.send(JSON.stringify({ action: "set_status", status }));
-      } else {
-        websocket.onopen = () => {
-          websocket.send(JSON.stringify({ action: "set_status", status }));
-        };
+    const clearTimer = () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
       }
+    };
+
+    if (websocket) {
+      websocket.onopen = () => {
+        websocket?.send(JSON.stringify({ action: "set_status", status }));
+      };
+    } else {
+      clearTimer();
+
+      timerRef.current = setTimeout(() => {
+        const prevOrders = orders;
+        fetchOrders();
+        console.log("p", prevOrders);
+        console.log("n", orders);
+        timerRef.current = null;
+      }, 2 * 60 * 1000);
     }
+    return () => clearTimer();
   }, [websocket, status]);
 
   const paginator = useUnit($ordersPagination);

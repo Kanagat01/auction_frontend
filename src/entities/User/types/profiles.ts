@@ -4,6 +4,7 @@ type Company = {
   user: TUser;
   company_name: string;
   balance: number;
+  subscription_paid: boolean;
   details: string;
 };
 

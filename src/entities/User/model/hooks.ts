@@ -11,16 +11,13 @@ export const useIsActive = () => {
     if (mainData.company.balance <= 0) return false;
   }
 
-  const subscription =
-    "company" in mainData
-      ? mainData.company.subscription
-      : mainData.subscription;
+  const company = "company" in mainData ? mainData.company : mainData;
 
   const today = new Date();
   const isActive =
-    subscription &&
-    (mainData?.user.subscription_paid ||
-      today.getDate() <= subscription.days_without_payment);
+    company.subscription &&
+    (company.subscription_paid ||
+      today.getDate() <= company.subscription.days_without_payment);
 
   return isActive;
 };

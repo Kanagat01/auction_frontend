@@ -14,7 +14,6 @@ export type TUser = {
   email: string;
   user_type: TUserType;
   full_name: string;
-  subscription_paid: boolean;
 };
 
 export const getRole = (userType: TUserType | "") =>

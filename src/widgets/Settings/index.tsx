@@ -19,8 +19,10 @@ import {
   AddManager,
   EditManager,
   setSelectedManager,
+  $selectedManager,
 } from "./sections";
 import styles from "./styles.module.scss";
+import toast from "react-hot-toast";
 
 const renderSection = (
   role: string,
@@ -49,6 +51,7 @@ const renderSection = (
 export function SettingsModal() {
   const { t } = useTranslation();
   const mainData = useUnit($mainData);
+  const selectedManager = useUnit($selectedManager);
   const role = mainData?.user.user_type.split("_")[1];
   const currentCompany =
     role === "manager"
@@ -69,6 +72,10 @@ export function SettingsModal() {
 
   const [show, changeShow] = useModalState(false);
   const changeSection = (newSection: TSection) => {
+    if (newSection === "editManager" && !selectedManager) {
+      toast.error("Выберите менеджера");
+      return;
+    }
     setVisible(false);
     setTimeout(() => {
       setSection(newSection);

@@ -325,20 +325,17 @@ export const connectToSocketFx = createEffect(async () => {
   socket.onopen = () => console.log("connected to order websocket");
   socket.onerror = (err) => console.log(err);
 
-  socket.onclose = () => {
-    setTimeout(() => {
-      toast.promise(
-        connectToSocketFx(),
-        {
-          loading: "Попытка восстановить соединение...",
-          success: "Соединение восстановлено",
-          error: (err) => err,
-        },
-        {
-          position: "top-right",
-        }
-      );
-    }, 5000);
+  socket.onclose = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 10000));
+    toast.promise(
+      connectToSocketFx(),
+      {
+        loading: "Попытка восстановить соединение...",
+        success: "Соединение восстановлено",
+        error: (err) => err,
+      },
+      { position: "top-center", duration: 2000 }
+    );
   };
 
   socket.onmessage = (ev) => {
@@ -356,17 +353,26 @@ export const connectToSocketFx = createEffect(async () => {
       removeOrder(orderId);
     }
   };
-
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-  if (
-    ([WebSocket.CLOSED, WebSocket.CLOSING] as number[]).includes(
-      socket.readyState
-    )
-  )
-    throw "Соединение разорвано";
+  await new Promise<void>((resolve, reject) => {
+    const checkState = () => {
+      if (
+        socket.readyState === WebSocket.OPEN ||
+        socket.readyState === WebSocket.CLOSED
+      ) {
+        clearInterval(interval);
+        if (socket.readyState === WebSocket.CLOSED) {
+          reject("Соединение разорвано");
+        } else {
+          resolve();
+        }
+      }
+    };
+    const interval = setInterval(checkState, 100);
+  });
   return socket;
 });
 
+connectToSocketFx();
 export const $orderWebsocket = createStore<WebSocket | null>(null).on(
   connectToSocketFx.doneData,
   (_, state) => state

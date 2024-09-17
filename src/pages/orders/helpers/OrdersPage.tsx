@@ -57,19 +57,17 @@ export function OrdersPage({
     };
 
     if (websocket) {
-      websocket.onopen = () => {
-        websocket?.send(JSON.stringify({ action: "set_status", status }));
-      };
+      if (websocket.readyState === WebSocket.CONNECTING) {
+        websocket.onopen = () => {
+          websocket.send(JSON.stringify({ action: "set_status", status }));
+        };
+      } else {
+        websocket.send(JSON.stringify({ action: "set_status", status }));
+      }
     } else {
-      clearTimer();
-
-      timerRef.current = setTimeout(() => {
-        const prevOrders = orders;
+      if (new Date().getMinutes() % 5 == 0) {
         fetchOrders();
-        console.log("p", prevOrders);
-        console.log("n", orders);
-        timerRef.current = null;
-      }, 2 * 60 * 1000);
+      }
     }
     return () => clearTimer();
   }, [websocket, status]);

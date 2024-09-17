@@ -324,20 +324,7 @@ export const connectToSocketFx = createEffect(async () => {
   const socket = new WebSocket(socketUrl);
   socket.onopen = () => console.log("connected to order websocket");
   socket.onerror = (err) => console.log(err);
-
-  socket.onclose = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 10000));
-    toast.promise(
-      connectToSocketFx(),
-      {
-        loading: "Попытка восстановить соединение...",
-        success: "Соединение восстановлено",
-        error: (err) => err,
-      },
-      { position: "top-center", duration: 2000 }
-    );
-  };
-
+  socket.onclose = () => connectToSocketFx();
   socket.onmessage = (ev) => {
     const data = JSON.parse(ev.data);
     console.log(data);
@@ -353,22 +340,6 @@ export const connectToSocketFx = createEffect(async () => {
       removeOrder(orderId);
     }
   };
-  await new Promise<void>((resolve, reject) => {
-    const checkState = () => {
-      if (
-        socket.readyState === WebSocket.OPEN ||
-        socket.readyState === WebSocket.CLOSED
-      ) {
-        clearInterval(interval);
-        if (socket.readyState === WebSocket.CLOSED) {
-          reject("Соединение разорвано");
-        } else {
-          resolve();
-        }
-      }
-    };
-    const interval = setInterval(checkState, 100);
-  });
   return socket;
 });
 

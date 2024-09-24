@@ -1,18 +1,11 @@
 import toast, { Renderable, ValueOrFunction } from "react-hot-toast";
-import {
-  Effect,
-  createEffect,
-  createEvent,
-  createStore,
-  sample,
-} from "effector";
+import { Effect, createEvent, createStore, sample } from "effector";
 import { PreCreateOrderResponse } from "~/entities/OrderStage";
 import {
   DriverProfileTranslationKey,
   DriverProfileTranslations,
 } from "~/entities/User";
 import { TPaginator } from "~/shared/ui";
-import { API_URL } from "~/shared/config";
 import {
   addDriverDataFx,
   cancelOrderCompletionFx,
@@ -315,36 +308,3 @@ addDriverData.watch(({ onReset, ...data }) => {
     },
   });
 });
-
-const token = localStorage.getItem("token");
-const WS_URL = API_URL.replace("http", "ws");
-const socketUrl = `${WS_URL}/api/ws/orders/?token=${token}`;
-
-export const connectToSocketFx = createEffect(async () => {
-  const socket = new WebSocket(socketUrl);
-  socket.onopen = () => console.log("connected to order websocket");
-  socket.onerror = (err) => console.log(err);
-  socket.onclose = () => connectToSocketFx();
-  socket.onmessage = (ev) => {
-    const data = JSON.parse(ev.data);
-    console.log(data);
-    if ("add_or_update_order" in data) {
-      const order: TGetOrder = data["add_or_update_order"];
-      const idx = $orders.getState().findIndex((o) => o.id === order.id);
-      if (idx === -1) addOrder(order);
-      else {
-        updateOrder({ orderId: order.id, newData: order });
-      }
-    } else if ("remove_order" in data) {
-      const orderId: number = data["remove_order"];
-      removeOrder(orderId);
-    }
-  };
-  return socket;
-});
-
-connectToSocketFx();
-export const $orderWebsocket = createStore<WebSocket | null>(null).on(
-  connectToSocketFx.doneData,
-  (_, state) => state
-);

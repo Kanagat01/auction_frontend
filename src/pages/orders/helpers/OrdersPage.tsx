@@ -1,8 +1,9 @@
 import { useUnit } from "effector-react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { ControlPanel, ControlPanelProps, OrderSections } from "~/widgets";
 import { ExportToExcelButton } from "~/features/ExportToExcel";
+import { $websocket } from "~/features/websocket";
 import { $userType, getRole, useIsActive } from "~/entities/User";
 import {
   $orders,
@@ -12,7 +13,6 @@ import {
   OrdersList,
   OrderStatusTranslation,
   OrderStatus,
-  $orderWebsocket,
 } from "~/entities/Order";
 import {
   MainTitle,
@@ -45,17 +45,9 @@ export function OrdersPage({
   const currentRoute = useLocation().pathname as Routes;
 
   const orders = useUnit($orders);
-  const websocket = useUnit($orderWebsocket);
+  const websocket = useUnit($websocket);
 
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
-    const clearTimer = () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
-      }
-    };
-
     if (websocket) {
       if (websocket.readyState === WebSocket.CONNECTING) {
         websocket.onopen = () => {
@@ -66,10 +58,9 @@ export function OrdersPage({
       }
     } else {
       if (new Date().getMinutes() % 5 == 0) {
-        fetchOrders();
+        window.location.reload();
       }
     }
-    return () => clearTimer();
   }, [websocket, status]);
 
   const paginator = useUnit($ordersPagination);

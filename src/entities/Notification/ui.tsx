@@ -8,10 +8,8 @@ import { dateToLongMonthString, useModalState } from "~/shared/lib";
 import { RenderPromise } from "~/shared/api";
 import { Bell } from "~/shared/assets";
 
-import { $websocket } from "./api";
 import {
   $notifications,
-  addNotification,
   getNotificationsFx,
   removeNotification,
   TNotification,
@@ -134,12 +132,6 @@ export function Notifications() {
     (n) => n.type !== NotificationType.POPUP_NOTIFICATION
   );
   const groupedNotifications = groupNotificationsByDate(notifications);
-
-  const websocket = useUnit($websocket);
-  websocket.onmessage = (ev) => {
-    const data = JSON.parse(ev.data);
-    if ("new_notification" in data) addNotification(data["new_notification"]);
-  };
   return (
     <>
       <a href="#" onClick={changeShow} className={styles.notificationBell}>

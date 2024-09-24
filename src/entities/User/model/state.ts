@@ -27,10 +27,23 @@ export const getMainDataFx = createEffect<
   }
 });
 
+export const updateBalance = createEvent<number>();
 export const setMainData = createEvent<TMainData | null>();
 export const $mainData = createStore<TMainData | null>(null)
   .on(getMainDataFx.doneData, (_, payload) => payload.profile)
-  .on(setMainData, (_, newState) => newState);
+  .on(setMainData, (_, newState) => newState)
+  .on(updateBalance, (state, newBalance) => {
+    if (!state) return null;
+
+    let newState = state;
+    if ("balance" in state) newState = { ...state, balance: newBalance };
+    else
+      newState = {
+        ...state,
+        company: { ...state.company, balance: newBalance },
+      } as TMainData;
+    return newState;
+  });
 
 export const $userType = createStore<TUserType | "">("").on(
   $mainData,

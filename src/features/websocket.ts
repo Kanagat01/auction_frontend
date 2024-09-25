@@ -16,7 +16,6 @@ const socketUrl = `${WS_URL}/api/ws/general/?token=${token}`;
 
 export const connectToSocketFx = createEffect(async () => {
   const socket = new WebSocket(socketUrl);
-  socket.onerror = (err) => console.log(err);
   socket.onclose = () => connectToSocketFx();
 
   socket.onmessage = (ev) => {

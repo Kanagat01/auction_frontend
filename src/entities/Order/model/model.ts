@@ -141,7 +141,10 @@ function handleOrderAction(
               );
               if (err.includes("order_is_completed"))
                 return "Нельзя отменить, заказ уже завершен";
-              else if (statusError) {
+              else if (err.includes("order_is_completed_or_unpublished")) {
+                removeOrder(order_id);
+                return "Заказ уже завершен или не опубликован";
+              } else if (statusError) {
                 const orderStatus: OrderStatus = statusError.split(":")[1];
                 if (orderStatus !== OrderStatus.completed) {
                   removeOrder(order_id);

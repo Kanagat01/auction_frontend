@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import toast from "react-hot-toast";
 import { createEvent } from "effector";
 import { $selectedOrder, TGetOrder, updateOrder } from "~/entities/Order";
@@ -10,24 +11,25 @@ export const addDocument = createEvent<
 addDocument.watch(({ reset, file }) => {
   const order_id = $selectedOrder.getState()?.id;
   if (!order_id) return;
+
   const data = new FormData();
   data.append("order_id", order_id.toString());
   data.append("file", file);
 
   toast.promise(addDocumentFx(data), {
-    loading: "Добавляем документ...",
+    loading: t("addDocument.loading"),
     success: (newData) => {
       updateOrder({ orderId: order_id, newData });
       reset();
-      return `Документ ${file.name} успешно добавлен`;
+      return t("addDocument.success", { name: file.name });
     },
     error: (err) => {
       if (typeof err === "string") {
         if (err === "OrderModel with this ID does not belong to your company") {
-          return "Вы не можете добавлять документ к этому заказу";
+          return t("addDocument.error.orderDoesNotBelong");
         }
       }
-      return `Произошла ошибка при добавлении документа: ${err}`;
+      return t("addDocument.error.general", { err });
     },
   });
 });
@@ -37,7 +39,7 @@ export const deleteDocument = createEvent<
 >();
 deleteDocument.watch(({ reset, document_id }) =>
   toast.promise(deleteDocumentFx({ document_id }), {
-    loading: "Удаляем документ...",
+    loading: t("deleteDocument.loading"),
     success: () => {
       const order = $selectedOrder.getState() as TGetOrder;
       const file =
@@ -47,11 +49,10 @@ deleteDocument.watch(({ reset, document_id }) =>
       };
       updateOrder({ orderId: order.id, newData });
       reset();
-      return `Документ #${document_id} ${decodeURIComponent(file).replace(
-        "/media/documents/",
-        ""
-      )} удален`;
+
+      const docName = decodeURIComponent(file).replace("/media/documents/", "");
+      return t("deleteDocument.success", { docId: document_id, docName });
     },
-    error: (err) => `Произошла ошибка при удалении документа: ${err}`,
+    error: (err) => t("deleteDocument.error", { err }),
   })
 );

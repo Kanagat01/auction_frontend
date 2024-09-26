@@ -1,5 +1,6 @@
 import { createEffect, createStore } from "effector";
 import { addNotification } from "~/entities/Notification";
+import { updateBalance } from "~/entities/User";
 import {
   $orders,
   addOrder,
@@ -7,17 +8,21 @@ import {
   TGetOrder,
   updateOrder,
 } from "~/entities/Order";
-import { updateBalance } from "~/entities/User";
 import { API_URL } from "~/shared/config";
-
-const token = localStorage.getItem("token");
-const WS_URL = API_URL.replace("http", "ws");
-const socketUrl = `${WS_URL}/api/ws/general/?token=${token}`;
+import { $isAuthenticated } from "./authorization";
 
 export const connectToSocketFx = createEffect(async () => {
-  const socket = new WebSocket(socketUrl);
-  socket.onclose = () => connectToSocketFx();
+  const token = localStorage.getItem("token");
+  const WS_URL = API_URL.replace("http", "ws");
 
+  const socket = new WebSocket(`${WS_URL}/api/ws/general/?token=${token}`);
+  socket.onclose = () => {
+    if ($isAuthenticated.getState()) {
+      setTimeout(() => {
+        connectToSocketFx();
+      }, 10_000);
+    }
+  };
   socket.onmessage = (ev) => {
     const data = JSON.parse(ev.data);
     if ("add_or_update_order" in data) {
@@ -36,7 +41,10 @@ export const connectToSocketFx = createEffect(async () => {
   return socket;
 });
 
-connectToSocketFx();
+$isAuthenticated.watch((state) => {
+  if (state) connectToSocketFx();
+});
+
 export const $websocket = createStore<WebSocket | null>(null).on(
   connectToSocketFx.doneData,
   (_, state) => state

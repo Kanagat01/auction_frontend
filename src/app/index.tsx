@@ -1,8 +1,7 @@
 import { Spinner } from "react-bootstrap";
 import { Toaster } from "react-hot-toast";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Routing } from "~/pages";
 import { withProviders } from "./providers";
+import { Routing } from "~/pages";
 import "./styles/index.scss";
 
 const App = () => {

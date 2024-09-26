@@ -1,7 +1,9 @@
 import toast from "react-hot-toast";
-import { ButtonHTMLAttributes, ChangeEvent, useState } from "react";
 import { Modal } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { ButtonHTMLAttributes, ChangeEvent, useState } from "react";
+import { OrderDocument, deleteDocument } from "~/entities/Document";
 import { useModalState } from "~/shared/lib";
 import {
   Checkbox,
@@ -11,8 +13,6 @@ import {
   RoundedTable,
   TextCenter,
 } from "~/shared/ui";
-import { OrderDocument } from "../types";
-import { deleteDocument } from "../model";
 import styles from "./style.module.scss";
 
 export function DeleteDocument({
@@ -21,6 +21,7 @@ export function DeleteDocument({
 }: {
   documents: OrderDocument[];
 } & ButtonHTMLAttributes<HTMLButtonElement>) {
+  const { t } = useTranslation();
   const fontSize = { fontSize: "1.4rem" };
   const [show, changeShow] = useModalState(false);
   const [documentId, setDocumentId] = useState<number | null>(null);
@@ -36,7 +37,7 @@ export function DeleteDocument({
   };
   const onSubmit = () => {
     if (documentId) deleteDocument({ document_id: documentId, reset: onReset });
-    else toast.error("Выберите документ для удаления");
+    else toast.error(t("deleteDocument.selectDocument"));
   };
   return (
     <>
@@ -44,7 +45,7 @@ export function DeleteDocument({
         {...props}
         onClick={
           documents.length === 0
-            ? () => toast.error("Нет документов для удаления")
+            ? () => toast.error(t("deleteDocument.noDocs"))
             : changeShow
         }
       >
@@ -52,15 +53,19 @@ export function DeleteDocument({
       </OutlineButton>
       <Modal show={show} onHide={changeShow} className="gradient-modal">
         <Modal.Body>
-          <ModalTitle>Удалить документ</ModalTitle>
+          <ModalTitle>{t("deleteDocument.title")}</ModalTitle>
           <RoundedTable
             columns={[
-              <TextCenter style={fontSize}>Документ</TextCenter>,
-              <TextCenter style={fontSize}>Выбор</TextCenter>,
+              <TextCenter style={fontSize}>
+                {t("documents.document")}
+              </TextCenter>,
+              <TextCenter style={fontSize}>
+                {t("documents.selection")}
+              </TextCenter>,
             ]}
             data={documents.map((doc) => [
               <TextCenter className="p-1" style={fontSize}>
-                Документ №{doc.id} <br />
+                {t("documents.document")} №{doc.id} <br />
                 {decodeURIComponent(doc.file).replace("/media/documents/", "")}
               </TextCenter>,
               <TextCenter className="p-1">
@@ -74,8 +79,12 @@ export function DeleteDocument({
             lightBorderMode
           />
           <div className={styles["dropzone-actions"]}>
-            <OutlineButton onClick={onReset}>Отмена</OutlineButton>
-            <PrimaryButton onClick={onSubmit}>Удалить</PrimaryButton>
+            <OutlineButton onClick={onReset}>
+              {t("common.cancel")}
+            </OutlineButton>
+            <PrimaryButton onClick={onSubmit}>
+              {t("common.delete")}
+            </PrimaryButton>
           </div>
         </Modal.Body>
       </Modal>

@@ -81,10 +81,9 @@ export function MainSection({
           <Dropdown>
             <Dropdown.Toggle
               variant="outline"
-              className={styles.settingOptionTitle}
               style={{ border: "none", padding: 0 }}
             >
-              {t("language")}
+              <span className={styles.settingOptionTitle}>{t("language")}</span>
             </Dropdown.Toggle>
 
             <Dropdown.Menu>

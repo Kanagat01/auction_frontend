@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { attach, createEvent, createStore, Effect } from "effector";
 import { apiRequestFx, RequestParams } from "~/shared/api";
 import { NotificationType, TNotification } from "./types";
@@ -42,25 +43,22 @@ export const $notifications = createStore<TNotification[]>([])
     if ("subscription" in mainData && !mainData.subscription) {
       data.push({
         ...defaultNotificationProp,
-        title: "Выберите тариф",
-        description:
-          'Для того, чтобы получить доступ ко всему функционалу сайта, выберите тариф и внесите абонентскую плату. Для этого вам нужно перейти в \n "Настройки > Тарифы"',
+        title: t("notifications.chooseSubscription.title"),
+        description: t("notifications.chooseSubscription.description"),
       });
     } else if ("transporter_company_id" in mainData) {
       if (mainData.balance <= 0) {
         data.push({
           ...defaultNotificationProp,
-          title: "Пополните баланс",
-          description:
-            "Ваш баланс равен нулю или отрицателен. Функционал будет ограничен просмотром информации и переходом по разделам. Пожалуйста, пополните баланс.",
+          title: t("notifications.topUpBalance.title"),
+          description: t("notifications.topUpBalance.description"),
         });
       }
       if (mainData.managers.length === 0) {
         data.push({
           ...defaultNotificationProp,
-          title: "Добавьте менеджера",
-          description:
-            'Вам нужно добавить менеджера, чтобы работать с заказами. Для этого вам нужно перейти в \n "Настройки > Добавить менеджера"',
+          title: t("notifications.addManager.title"),
+          description: t("notifications.addManager.description"),
         });
       }
     }

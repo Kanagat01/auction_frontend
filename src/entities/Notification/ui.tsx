@@ -1,7 +1,8 @@
 import { Fragment, ReactNode, useEffect } from "react";
-import { ReactSVG } from "react-svg";
-import { Modal } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { useUnit } from "effector-react";
+import { Modal } from "react-bootstrap";
+import { ReactSVG } from "react-svg";
 
 import { PrimaryButton, SectionButton, TitleLg, TitleMd } from "~/shared/ui";
 import { dateToLongMonthString, useModalState } from "~/shared/lib";
@@ -23,6 +24,7 @@ export function PopupModal(props: {
   description: ReactNode;
   handleClose: () => void;
 }) {
+  const { t } = useTranslation();
   return (
     <Modal
       show={props.show}
@@ -50,7 +52,7 @@ export function PopupModal(props: {
             onClick={props.handleClose}
             style={{ padding: "0.5rem 3rem", fontSize: "1.6rem" }}
           >
-            Понятно
+            {t("notifications.understood")}
           </PrimaryButton>
         </div>
       </Modal.Body>
@@ -102,6 +104,7 @@ function groupNotificationsByDate(notifications: TNotification[]) {
 }
 
 const NotificationCard = (notification: TNotification) => {
+  const { t } = useTranslation();
   const datetime = new Date(notification.created_at);
   const time = datetime.toLocaleTimeString("ru", {
     hour: "numeric",
@@ -118,7 +121,7 @@ const NotificationCard = (notification: TNotification) => {
           className={styles.readMore}
           onClick={() => removeNotification(notification.id)}
         >
-          Прочитано
+          {t("notifications.remove")}
         </button>
         <span className={styles.notificationTime}>{time}</span>
       </div>
@@ -127,6 +130,7 @@ const NotificationCard = (notification: TNotification) => {
 };
 
 export function Notifications() {
+  const { t } = useTranslation();
   const [show, changeShow] = useModalState(false);
   const notifications = useUnit($notifications).filter(
     (n) => n.type !== NotificationType.POPUP_NOTIFICATION
@@ -149,7 +153,9 @@ export function Notifications() {
             success: (
               <>
                 <div className="d-flex mb-4" style={{ gap: "1rem" }}>
-                  <SectionButton className="active">Информация</SectionButton>
+                  <SectionButton className="active">
+                    {t("notifications.info")}
+                  </SectionButton>
                 </div>
                 {notifications.length > 0 ? (
                   Object.entries(groupedNotifications).map(
@@ -166,7 +172,7 @@ export function Notifications() {
                   )
                 ) : (
                   <div className="ms-2 mt-5" style={{ fontSize: "1.6rem" }}>
-                    Уведомлений нет
+                    {t("notifications.empty")}
                   </div>
                 )}
               </>

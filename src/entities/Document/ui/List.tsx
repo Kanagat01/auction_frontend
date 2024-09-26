@@ -1,5 +1,6 @@
 import { useUnit } from "effector-react";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { $userType, getRole } from "~/entities/User";
 import {
   AddDocument,
@@ -13,10 +14,11 @@ import {
   TitleMd,
 } from "~/shared/ui";
 import { API_URL } from "~/shared/config";
-import Routes from "~/shared/routes";
 import { dateTimeToString } from "~/shared/lib";
+import Routes from "~/shared/routes";
 
 export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
+  const { t } = useTranslation();
   const userType = useUnit($userType);
   const role = getRole(userType);
   const currentRoute = useLocation().pathname;
@@ -34,12 +36,12 @@ export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
   const docsData = documents.map((doc) => [
     <TextCenter>
       <a className="link" target="_blank" href={API_URL + doc.file}>
-        Документ №{doc.id} <br />
+        {t("documents.document")} №{doc.id} <br />
         {decodeURIComponent(doc.file).replace("/media/documents/", "")}
       </a>
       {dateTimeToString(doc.created_at)}
     </TextCenter>,
-    <TextCenter>{doc.user ?? "Данные отсутствуют"}</TextCenter>,
+    <TextCenter>{doc.user ?? t("documents.noData")}</TextCenter>,
   ]);
   return (
     <>
@@ -47,7 +49,7 @@ export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
         className="d-flex align-items-center justify-content-between mb-3"
         style={{ height: "3rem" }}
       >
-        <TitleMd>Мои документы</TitleMd>
+        <TitleMd>{t("documents.myDocuments")}</TitleMd>
 
         <div className={`${showButtons ? "d-inline-flex" : "d-none"} h-100`}>
           <AddDocument {...documentButtonProps} />
@@ -60,8 +62,8 @@ export function DocumentsList({ documents }: { documents: OrderDocument[] }) {
       </div>
       <RoundedTable
         columns={[
-          <TextCenter>Название документа</TextCenter>,
-          <TextCenter>Пользователь</TextCenter>,
+          <TextCenter>{t("documents.documentName")}</TextCenter>,
+          <TextCenter>{t("documents.user")}</TextCenter>,
         ]}
         data={docsData}
       />

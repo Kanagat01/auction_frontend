@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useUnit } from "effector-react";
 import { Modal } from "react-bootstrap";
+import { useUnit } from "effector-react";
 import { useTranslation } from "react-i18next";
 
 import { FaAngleLeft, FaPen } from "react-icons/fa";

@@ -1,16 +1,63 @@
 {
-    "my_company": "My company",
+    "common": {
+        "save": "Save",
+        "delete": "Delete",
+        "cancel": "Cancel"
+    },
+    "myCompany": "My company",
     "details": "Details",
-    "security_section_title": "Entry and security",
+    "securitySectionTitle": "Entry and security",
     "passwords": "Passwords",
-    "company_details": "Your company details",
-    "change_password": "Change the password",
+    "companyDetails": "Your company details",
+    "changePassword": "Change the password",
     "subscriptions": "Subscriptions",
-    "your_managers": "Your managers",
-    "add_manager": "Add manager",
-    "edit_manager": "Edit manager",
+    "yourManagers": "Your managers",
+    "addManager": "Add manager",
+    "editManager": "Edit manager",
     "language": "Language",
-    "files_not_selected": "No selected files",
-    "load_document": "Upload the document",
-    "cancel": "Cancel"
+    "documents": {
+        "document": "Document",
+        "selection": "Selection",
+        "noData": "No data available",
+        "myDocuments": "My documents",
+        "documentName": "Document name",
+        "user": "User",
+        "mb": "mb"
+    },
+    "addDocument": {
+        "loading": "Adding a document...",
+        "success": "Document {{name}} has been added successfully",
+        "error": {
+            "general": "An error occurred while adding a document: {{err}}",
+            "orderDoesNotBelong": "You can't add a document to this order"
+        },
+        "loadDocument": "Upload document",
+        "filesNotSelected": "No selected files"
+    },
+    "deleteDocument": {
+        "loading": "Deleting the document...",
+        "success": "Document #{{docId}} {{docName}} deleted",
+        "error": "An error occurred while deleting the document: {{err}}",
+        "title": "Delete document",
+        "selectDocument": "Select the document to delete",
+        "noDocs": "There are no documents to delete"
+    },
+    "notifications": {
+        "info": "Information",
+        "empty": "There are no notifications",
+        "understood": "Understood",
+        "remove": "Remove",
+        "chooseSubscription": {
+            "title": "Choose a subscription",
+            "description": "In order to get access to all the functionality of the site, choose a subscription and pay a subscription fee. To do this, you need to go to \n\"Settings > Subscriptions\""
+        },
+        "topUpBalance": {
+            "title": "Top up your balance",
+            "description": "Your balance is zero or negative. The functionality will be limited to viewing information and navigating through sections. Please top up your balance."
+        },
+        "addManager": {
+            "title": "Add a manager",
+            "description": "You need to add a manager to work with orders. To do this, you need to go to \n\"Settings > Add Manager\""
+        }
+    }
 }

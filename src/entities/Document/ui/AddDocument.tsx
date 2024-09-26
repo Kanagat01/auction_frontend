@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import {
   useState,
   ChangeEvent,
@@ -9,25 +8,28 @@ import {
 } from "react";
 import toast from "react-hot-toast";
 import { Modal } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { LuDownload } from "react-icons/lu";
-import { ModalTitle, OutlineButton, PrimaryButton } from "~/shared/ui";
 import { useModalState } from "~/shared/lib";
+import { ModalTitle, OutlineButton, PrimaryButton } from "~/shared/ui";
 import { addDocument } from "..";
 import styles from "./style.module.scss";
 
 export function AddDocument(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [show, changeShow] = useModalState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [fileInfo, setFileInfo] = useState("Нет выбранных файлов");
+  const [show, changeShow] = useModalState(false);
+  const [fileInfo, setFileInfo] = useState(t("addDocument.filesNotSelected"));
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       const newFile = files[0];
       setFileInfo(
-        `${newFile.name}, ${(newFile.size / (1024 * 1024)).toFixed(2)} мб`
+        `${newFile.name}, ${(newFile.size / (1024 * 1024)).toFixed(2)} ${t(
+          "documents.mb"
+        )}`
       );
       setFile(newFile);
     }
@@ -41,7 +43,9 @@ export function AddDocument(props: ButtonHTMLAttributes<HTMLButtonElement>) {
     e.preventDefault();
     const newFile = e.dataTransfer.files[0];
     setFileInfo(
-      `${newFile.name}, ${(newFile.size / (1024 * 1024)).toFixed(2)} мб`
+      `${newFile.name}, ${(newFile.size / (1024 * 1024)).toFixed(2)} ${t(
+        "documents.mb"
+      )}`
     );
     setFile(newFile);
 
@@ -53,13 +57,13 @@ export function AddDocument(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   };
   const onReset = () => {
     setFile(null);
-    setFileInfo(t("files not selected"));
+    setFileInfo(t("addDocument.filesNotSelected"));
     changeShow();
   };
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!file) {
-      toast.error(t("load_document"));
+      toast.error(t("addDocument.loadDocument"));
       return;
     }
     addDocument({ file, reset: onReset });
@@ -72,7 +76,7 @@ export function AddDocument(props: ButtonHTMLAttributes<HTMLButtonElement>) {
       <Modal show={show} onHide={changeShow} className="gradient-modal">
         <Modal.Body>
           <form onSubmit={onSubmit} onReset={onReset}>
-            <ModalTitle>{t("load_document")}</ModalTitle>
+            <ModalTitle>{t("addDocument.loadDocument")}</ModalTitle>
             <div
               className={styles["dropzone-area"]}
               onDragOver={handleDragOver}
@@ -107,8 +111,8 @@ export function AddDocument(props: ButtonHTMLAttributes<HTMLButtonElement>) {
               <p className={styles["file-info"]}>{fileInfo}</p>
             </div>
             <div className={styles["dropzone-actions"]}>
-              <OutlineButton type="reset">Отмена</OutlineButton>
-              <PrimaryButton type="submit">Сохранить</PrimaryButton>
+              <OutlineButton type="reset">{t("common.cancel")}</OutlineButton>
+              <PrimaryButton type="submit">{t("common.save")}</PrimaryButton>
             </div>
           </form>
         </Modal.Body>

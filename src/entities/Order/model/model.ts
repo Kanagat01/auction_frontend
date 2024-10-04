@@ -182,8 +182,13 @@ publishOrder.watch(({ publish_to, ...data }) =>
         status: t(`orderStatus.${publish_to}`),
       }),
       error: (err) => {
-        if (typeof err === "string") {
-          if (err === "transporter_company has no manager")
+        if ("transporter_company_id" in err) {
+          if (
+            err.transporter_company_id instanceof Array &&
+            err.transporter_company_id.includes(
+              "TransporterCompany has no manager"
+            )
+          )
             return t("publishOrder.transporterHasNoManager");
         }
         return t("common.errorMessage", { err });

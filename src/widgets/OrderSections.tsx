@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useUnit } from "effector-react";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { DataSection, MapSection } from "~/widgets";
 import { AcceptOffer, OffersList } from "~/entities/Offer";
-import { $userType, getRole } from "~/entities/User";
 import { $selectedOrder, OrderStatus } from "~/entities/Order";
+import { $userType, getRole } from "~/entities/User";
 import {
   AddDocument,
   DeleteDocument,
@@ -15,13 +16,15 @@ import { useMediaQuery } from "~/shared/lib";
 import Routes from "~/shared/routes";
 
 type TSection = "documents" | "map" | "data" | "offers";
-const sections: [string, TSection][] = [
-  ["Данные", "data"],
-  ["Трекинг", "map"],
-  ["Документы", "documents"],
-];
 
 export function OrderSections() {
+  const { t } = useTranslation();
+  const sections: [string, TSection][] = [
+    [t("common.data"), "data"],
+    [t("orderTranslations.tracking"), "map"],
+    [t("orderTranslations.documents"), "documents"],
+  ];
+
   const userType = useUnit($userType);
   const order = useUnit($selectedOrder);
   const mediaQuery = useMediaQuery("(max-width: 375px)");
@@ -60,7 +63,7 @@ export function OrderSections() {
     } else
       return (
         <div style={{ display: "grid", placeItems: "center", height: "5rem" }}>
-          <TitleLg>Выберите заказ</TitleLg>
+          <TitleLg>{t("orders.selectOrder")}</TitleLg>
         </div>
       );
   };
@@ -95,7 +98,7 @@ export function OrderSections() {
             onClick={() => setCurrentSection("offers")}
             className={currentSection === "offers" ? "active" : ""}
           >
-            Предложения
+            {t("orderTranslations.offers")}
           </OutlineButton>
           <AcceptOffer
             style={{

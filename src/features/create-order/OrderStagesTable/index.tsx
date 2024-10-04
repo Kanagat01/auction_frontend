@@ -1,16 +1,18 @@
 import { Fragment } from "react";
 import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
 import { TStages } from "~/entities/OrderStage";
 import { Checkbox, TextCenter, TitleMd } from "~/shared/ui";
+import { dateToString } from "~/shared/lib";
 import {
   $notValidStageNumber,
   $selectedStage,
   setSelectedStage,
 } from "../state";
 import styles from "./styles.module.scss";
-import { dateToString } from "~/shared/lib";
 
 export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
+  const { t } = useTranslation();
   const selectedStage = useUnit($selectedStage);
   const notValidStageNumber = useUnit($notValidStageNumber);
   return (
@@ -19,24 +21,24 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
         <thead>
           <tr>
             {[
-              "№ Поставки",
-              "Этап",
-              "Дата время",
-              "Компания",
-              "Индекс",
-              "Город",
-              "Адрес",
+              t("orderStage.stageNumber"),
+              t("orderStage.stage"),
+              t("orderStage.datetime"),
+              t("orderStageTranslations.company"),
+              t("orderStageTranslations.postalCode"),
+              t("orderStageTranslations.city"),
+              t("orderStageTranslations.address"),
             ].map((text, idx) => (
               <th key={idx} rowSpan={2}>
                 {text}
               </th>
             ))}
-            <th colSpan={2}>Груз</th>
-            <th rowSpan={2}>Контактное лицо</th>
+            <th colSpan={2}>{t("orderStageTranslations.cargo")}</th>
+            <th rowSpan={2}>{t("orderStageTranslations.contactPerson")}</th>
           </tr>
           <tr>
-            <th>Вес</th>
-            <th>Обьем</th>
+            <th>{t("orderStageTranslations.weight")}</th>
+            <th>{t("orderStageTranslations.volume")}</th>
           </tr>
         </thead>
         <tbody>
@@ -71,7 +73,6 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
                               </span>
                             }
                             className="me-2"
-                            // style={{ textWrap: "nowrap" }}
                             checked={
                               selectedStage?.order_stage_number ===
                               order_stage_number
@@ -90,7 +91,9 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
                         ""
                       )}
                       <td rowSpan={2}>
-                        {stageName === "load" ? "Погрузка" : "Выгрузка"}
+                        {stageName === "load"
+                          ? t("orderStage.loadingStage")
+                          : t("orderStage.unloadingStage")}
                       </td>
                       <td rowSpan={2}>
                         {dateToString(stageData.date)}{" "}
@@ -115,7 +118,7 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
             <tr>
               <td colSpan={10}>
                 <TitleMd className="p-4">
-                  <TextCenter>Нет данных для отображения</TextCenter>
+                  <TextCenter>{t("common.noData")}</TextCenter>
                 </TitleMd>
               </td>
             </tr>

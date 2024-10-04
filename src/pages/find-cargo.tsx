@@ -1,7 +1,8 @@
 import toast from "react-hot-toast";
-import { useState, ChangeEvent, KeyboardEvent, useEffect } from "react";
-import { useUnit } from "effector-react";
 import { Modal } from "react-bootstrap";
+import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
+import { useState, ChangeEvent, KeyboardEvent, useEffect } from "react";
 import { Header, OrderSections } from "~/widgets";
 import {
   $selectedOrder,
@@ -18,6 +19,7 @@ import {
 } from "~/shared/ui";
 
 export default function FindCargo() {
+  const { t } = useTranslation();
   const order = useUnit($selectedOrder);
   const [show, changeShow] = useModalState(false);
   const [transportation_number, setTransportationNumber] = useState<number>(0);
@@ -27,7 +29,7 @@ export default function FindCargo() {
 
   const findCargo = async () => {
     if (transportation_number == 0 || machine_number == "") {
-      toast.error("Заполните оба поля");
+      toast.error(t("findCargo.fillOutBoth"));
       return;
     }
     if (
@@ -45,14 +47,13 @@ export default function FindCargo() {
       changeShow();
     } catch (error: unknown) {
       if (typeof error === "string") {
-        if (error === "order_not_found")
-          setError("Рейс с таким трек-номером не найден");
+        if (error === "order_not_found") setError(t("findCargo.orderNotFound"));
         else if (error === "driver_not_found")
-          setError("Водитель с таким номером машины не найден");
+          setError(t("findCargo.driverNotFound"));
         else if (
           error === "service is not available with current company subscription"
         )
-          setError('Для данного заказа недоступна услуга "Грузополучатель"');
+          setError(t("findCargo.notAvailableWithCurrentSubscription"));
         else setError(error);
       }
     } finally {
@@ -62,7 +63,7 @@ export default function FindCargo() {
 
   useEffect(() => {
     const prevTitle = document.title;
-    document.title = 'Сервис "Грузополучатель"';
+    document.title = t("findCargo.documentTitle");
 
     return () => {
       document.title = prevTitle;
@@ -84,9 +85,7 @@ export default function FindCargo() {
             style={{ width: "35rem" }}
           >
             <MainTitle className="mb-5">
-              <TextCenter>
-                Поиск рейса по треку-номеру и номеру машины
-              </TextCenter>
+              <TextCenter>{t("findCargo.mainTitle")}</TextCenter>
             </MainTitle>
             <SearchInput
               value={transportation_number !== 0 ? transportation_number : ""}
@@ -100,7 +99,7 @@ export default function FindCargo() {
                   e.preventDefault();
                 }
               }}
-              placeholder="Трек номер отправителя"
+              placeholder={t("findCargo.transportationNumberPlaceholder")}
               containerStyle={{ width: "100%", marginBottom: "2rem" }}
               withoutIcon={true}
             />
@@ -109,7 +108,7 @@ export default function FindCargo() {
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setMachineNumber(e.target.value)
               }
-              placeholder="Номер машины водителя"
+              placeholder={t("findCargo.machineNumberPlaceholder")}
               containerStyle={{ width: "100%" }}
               iconOnClick={findCargo}
             />
@@ -123,8 +122,7 @@ export default function FindCargo() {
               {order?.transportation_number === transportation_number && (
                 <TextCenter className="mt-5">
                   <MainTitle style={{ fontSize: "2.5rem", fontWeight: 500 }}>
-                    Чтобы посмотреть информацию о текущем рейсе, нажмите на
-                    значок поиска
+                    {t("findCargo.instruction")}
                   </MainTitle>
                 </TextCenter>
               )}

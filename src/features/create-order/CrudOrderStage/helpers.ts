@@ -1,15 +1,16 @@
+import { t } from "i18next";
 import toast from "react-hot-toast";
 import { createEvent, createStore } from "effector";
 import { getStage, setStageType } from "..";
 
 export const handleStageNotFound = (orderStageNumber: number | "") => {
   if (orderStageNumber === "") {
-    toast.error("Введите номер поставки");
+    toast.error(t("orderStage.enterOrderStageNumber"));
     return null;
   }
   const stage = getStage(orderStageNumber);
   if (!stage) {
-    toast.error("Поставка не найдена");
+    toast.error(t("orderStage.stageNotFound"));
     return null;
   }
   return stage;

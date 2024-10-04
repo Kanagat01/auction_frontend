@@ -1,5 +1,6 @@
 import { ReactSVG } from "react-svg";
 import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
 import { generatePath, NavLink } from "react-router-dom";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
 import { clearForm, CopyOrder } from "~/features/create-order";
@@ -16,6 +17,7 @@ import { FolderPlus } from "~/shared/assets";
 import { iconActionProps, OrdersPage, textActionProps } from "./helpers";
 
 export function UnpublishedOrders() {
+  const { t } = useTranslation();
   const userType = useUnit($userType);
   const order = useUnit($selectedOrder);
   const pageData = {
@@ -64,7 +66,11 @@ export function UnpublishedOrders() {
   };
   return (
     <OrdersPage
-      title={getRole(userType) === "customer" ? "Заказы" : "forbidden"}
+      title={
+        getRole(userType) === "customer"
+          ? t("orders.pages.unpublished")
+          : "forbidden"
+      }
       pageData={pageData}
       status={OrderStatus.unpublished}
     />

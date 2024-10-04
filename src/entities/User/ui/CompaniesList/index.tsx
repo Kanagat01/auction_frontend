@@ -1,8 +1,9 @@
 import toast from "react-hot-toast";
-import { FormEvent, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { FiPlus } from "react-icons/fi";
 import { FaAngleDown } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
+import { FormEvent, useEffect, useState } from "react";
 import {
   TransporterCompany,
   CompanyCard,
@@ -18,6 +19,7 @@ export function CompaniesList({
 }: {
   companies: Omit<TransporterCompany, "managers" | "user">[];
 }) {
+  const { t } = useTranslation();
   const [show, changeShow] = useModalState(false);
   const [visible, setVisible] = useState<boolean>(true);
   const [section, setSection] = useState<"list" | "add">("list");
@@ -53,7 +55,7 @@ export function CompaniesList({
       if (id === transporter_company_id) alreadyExists = true;
     });
     if (alreadyExists) {
-      toast.error("Эта компания уже добавлена в Ваши перевозчики");
+      toast.error(t("companiesList.alreadyExists"));
       return;
     }
 
@@ -62,7 +64,7 @@ export function CompaniesList({
       if (id === transporter_company_id) foundOne = true;
     });
 
-    if (!foundOne) toast.error("Компании Перевозчика с таким id не существует");
+    if (!foundOne) toast.error(t("companiesList.notFound"));
     else
       addTransportToAllowed({
         transporter_company_id,
@@ -89,20 +91,13 @@ export function CompaniesList({
           {section === "list" ? (
             <>
               <div className={`${styles.yourCompanies} mb-4`}>
-                Ваши перевозчики
+                {t("companiesList.title")}
               </div>
-              {
-                companies.length !== 0
-                  ? companies.map((comp, idx) => (
-                      <CompanyCard key={idx} {...comp} />
-                    ))
-                  : ""
-                // <div
-                //   className={`${styles.yourCompanies} mb-4`}
-                // >
-                //   Нет добавленных перевозчиков
-                // </div>
-              }
+              {companies.length !== 0
+                ? companies.map((comp, idx) => (
+                    <CompanyCard key={idx} {...comp} />
+                  ))
+                : ""}
               <button
                 className="d-inline-flex align-items-center px-0"
                 style={{ gap: "1rem" }}
@@ -111,14 +106,18 @@ export function CompaniesList({
                 <div className={`rounded-block ${styles.plusIcon}`}>
                   <FiPlus color="var(--primary)" />
                 </div>
-                <span className={styles.addCompany}>Добавить перевозчика</span>
+                <span className={styles.addCompany}>
+                  {t("companiesList.addCompany")}
+                </span>
               </button>
             </>
           ) : (
             <form onSubmit={onSubmit} onReset={onReset}>
-              <ModalTitle className="mb-4">Добавить перевозчика</ModalTitle>
+              <ModalTitle className="mb-4">
+                {t("companiesList.addCompany")}
+              </ModalTitle>
               <DatalistInput
-                label="ID перевозчика"
+                label={t("companiesList.transporterCompanyId")}
                 name="transporter_company_id"
                 type="number"
                 value={transporter_company_id}
@@ -147,7 +146,7 @@ export function CompaniesList({
                     fontSize: "1.6rem",
                   }}
                 >
-                  Добавить
+                  {t("common.add")}
                 </OutlineButton>
                 <OutlineButton
                   type="reset"
@@ -157,7 +156,7 @@ export function CompaniesList({
                     fontSize: "1.6rem",
                   }}
                 >
-                  Отмена
+                  {t("common.cancel")}
                 </OutlineButton>
               </div>
             </form>

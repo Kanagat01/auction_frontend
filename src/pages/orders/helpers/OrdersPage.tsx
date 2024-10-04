@@ -1,19 +1,19 @@
 import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
 import { useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { ControlPanel, ControlPanelProps, OrderSections } from "~/widgets";
 import { ExportToExcelButton } from "~/features/ExportToExcel";
 import { $websocket } from "~/features/websocket";
-import { $userType, getRole, useIsActive } from "~/entities/User";
 import {
   $orders,
   $ordersPagination,
   getExportData,
   getOrdersFx,
   OrdersList,
-  OrderStatusTranslation,
   OrderStatus,
 } from "~/entities/Order";
+import { $userType, getRole, useIsActive } from "~/entities/User";
 import {
   MainTitle,
   PageError,
@@ -40,6 +40,7 @@ export function OrdersPage({
   pageData: { iconActions, textActions, ...pageData },
   status,
 }: TOrdersPage) {
+  const { t } = useTranslation();
   const userType = useUnit($userType);
   const isActive = useIsActive();
   const currentRoute = useLocation().pathname as Routes;
@@ -78,7 +79,7 @@ export function OrdersPage({
     <>
       <RoundedWhiteBox style={{ width: "90%" }}>
         {title === "forbidden" ? (
-          <PageError>У вас нет прав для просмотра данной страницы</PageError>
+          <PageError>{t("common.pageForbidden")}</PageError>
         ) : (
           <>
             <div className="p-5">
@@ -89,7 +90,9 @@ export function OrdersPage({
                 iconActions={
                   <>
                     <ExportToExcelButton
-                      filename={`Заказы - ${OrderStatusTranslation[status]}`}
+                      filename={`${t("orders.plural")} - ${t(
+                        `orderStatus.${status}`
+                      )}`}
                       data={getExportData(
                         orders,
                         currentRoute,
@@ -111,7 +114,9 @@ export function OrdersPage({
                 />
               ),
               error: (err) => (
-                <PageError>Произошла ошибка: {err?.message}</PageError>
+                <PageError>
+                  {t("common.errorMessage", { err: err?.message })}
+                </PageError>
               ),
             })}
           </>

@@ -51,20 +51,3 @@ export type DriverProfile = {
   machine_data: string;
   machine_number: string;
 };
-
-export type DriverProfileTranslationKey =
-  | keyof Omit<DriverProfile, "user">
-  | "full_name";
-
-export const DriverProfileTranslations: Record<
-  DriverProfileTranslationKey,
-  string
-> = {
-  driver_id: "ID",
-  birth_date: "Дата рождения",
-  full_name: "ФИО водителя",
-  passport_number: "Номер паспорта",
-  phone_number: "Телефон",
-  machine_data: "Машина",
-  machine_number: "Номер машины",
-};

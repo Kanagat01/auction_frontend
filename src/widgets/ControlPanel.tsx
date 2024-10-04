@@ -1,5 +1,6 @@
-import { useUnit } from "effector-react";
 import { ReactNode } from "react";
+import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
 import { $selectedOrder } from "~/entities/Order";
 import { InputContainer, InputProps } from "~/shared/ui";
 
@@ -16,13 +17,14 @@ export function ControlPanel({
   textActions,
   priceInputs = false,
 }: ControlPanelProps) {
+  const { t } = useTranslation();
   const order = useUnit($selectedOrder);
   const priceData = order?.price_data;
   if (priceInputs) {
     const auctionInputs: Omit<InputProps, "variant">[] = [
       {
         name: "price",
-        label: "Актуальная цена",
+        label: t("orderTranslations.currentPrice"),
         defaultValue:
           priceData && "current_price" in priceData
             ? priceData.current_price
@@ -31,7 +33,7 @@ export function ControlPanel({
       },
       {
         name: "price_step",
-        label: "Шаг цены",
+        label: t("orderTranslations.price_step"),
         defaultValue: order?.price_step,
         readOnly: true,
       },
@@ -52,7 +54,9 @@ export function ControlPanel({
         />
       ))}
       <div className="actions">
-        {iconActions && <span className="actions-title">Действия</span>}
+        {iconActions && (
+          <span className="actions-title">{t("common.actions")}</span>
+        )}
         <div
           className="d-flex"
           style={{ gap: "1rem", height: "-webkit-fill-available" }}

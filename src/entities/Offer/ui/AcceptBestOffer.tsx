@@ -1,28 +1,29 @@
 import toast from "react-hot-toast";
-import { ButtonHTMLAttributes } from "react";
 import { useUnit } from "effector-react";
+import { ButtonHTMLAttributes } from "react";
+import { useTranslation } from "react-i18next";
 import { $selectedOrder, isOrderSelected } from "~/entities/Order";
-import { useModalState } from "~/shared/lib";
 import { BlueText, ConfirmationModal, PrimaryButton } from "~/shared/ui";
+import { useModalState } from "~/shared/lib";
 import { acceptOffer } from "..";
 
 export const AcceptBestOffer = (
   props: ButtonHTMLAttributes<HTMLButtonElement>
 ) => {
+  const { t } = useTranslation();
   const order = useUnit($selectedOrder);
   const bestOffer =
     order?.offers && order?.offers.length !== 0 ? order?.offers[0] : null;
 
   const [show, changeShow] = useModalState(false);
   const onClick = () => {
-    if (order && !bestOffer)
-      return toast.error("На этот заказ еще нет предложений");
+    if (order && !bestOffer) return toast.error(t("offers.empty"));
     isOrderSelected(changeShow);
   };
   return (
     <>
       <PrimaryButton {...props} onClick={onClick}>
-        Принять
+        {t("common.accept")}
       </PrimaryButton>
       {order && bestOffer && (
         <ConfirmationModal
@@ -38,12 +39,13 @@ export const AcceptBestOffer = (
           }}
           title={
             <>
-              Вы уверены, что хотите принять лучшее предложение на{" "}
-              <BlueText>{bestOffer.price}</BlueText> от{" "}
+              {t("acceptOffer.areYouSure_bestOffer")}{" "}
+              <BlueText>{bestOffer.price}</BlueText> {t("acceptOffer.from")}{" "}
               <BlueText>
                 {bestOffer.transporter_manager.user.full_name}
               </BlueText>{" "}
-              для заказа {<BlueText>№{order?.transportation_number}</BlueText>}?
+              {t("acceptOffer.forOrder")}{" "}
+              {<BlueText>№{order?.transportation_number}</BlueText>}?
             </>
           }
         />

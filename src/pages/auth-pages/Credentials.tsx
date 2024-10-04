@@ -1,5 +1,6 @@
-import { createEffect, createStore } from "effector";
 import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
+import { createEffect, createStore } from "effector";
 import { apiInstance } from "~/shared/api";
 
 type TSettings = { phone_number: string; email: string };
@@ -20,6 +21,7 @@ const $settings = createStore<TSettings | null>(null).on(
 );
 
 export function Credentials() {
+  const { t } = useTranslation();
   const settings = useUnit($settings);
   return (
     <div className="login-page-bottom">
@@ -27,9 +29,7 @@ export function Credentials() {
         <a href={`mailto:${settings?.email}`}>{settings?.email}</a>
         <a href={`tel:${settings?.phone_number}`}>{settings?.phone_number}</a>
       </div>
-      <p className="copyright">
-        &copy; 2024 ООО «Каргоника». Все права защищены
-      </p>
+      <p className="copyright">&copy; {t("common.credentials")}</p>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { useUnit } from "effector-react";
 import {
   $mainData,
@@ -15,6 +16,7 @@ import {
 } from "./helpers";
 
 export function EditManager() {
+  const { t } = useTranslation();
   const data = useUnit($selectedManager);
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (data) setSelectedManager({ ...data, [e.target.name]: e.target.value });
@@ -45,24 +47,24 @@ export function EditManager() {
     <form onSubmit={onSubmit} onReset={onReset}>
       <InputContainer
         variant="input"
-        label="ФИО менеджера"
+        label={t("registration.managerFullName")}
         {...{ name: "full_name", value: data!.full_name, onChange }}
         {...inputProps}
         autoComplete="manager-full_name"
       />
       <InputContainer
         variant="input"
-        label="Email менеджера"
+        label={t("registration.managerEmail")}
         {...{ name: "email", value: data!.email, onChange }}
         {...inputProps}
         autoComplete="manager-email"
       />
       <div className="d-flex justify-content-evenly w-100 mt-5">
         <PrimaryButton type="submit" style={btnStyle}>
-          Сохранить
+          {t("common.save")}
         </PrimaryButton>
         <PrimaryButton type="reset" style={btnStyle}>
-          Отмена
+          {t("common.cancel")}
         </PrimaryButton>
       </div>
     </form>

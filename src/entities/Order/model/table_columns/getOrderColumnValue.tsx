@@ -1,9 +1,5 @@
-import {
-  TGetOrder,
-  OrderStatusTranslation,
-  TColumn,
-  OrderStatus,
-} from "~/entities/Order";
+import { t } from "i18next";
+import { TGetOrder, TColumn, OrderStatus } from "~/entities/Order";
 import { OrderStages } from "~/entities/OrderStage";
 import { OrderOfferStatus } from "~/entities/Offer";
 import {
@@ -34,7 +30,7 @@ export const getOrderColumnValue = (
       if (!value) return "-";
       return dateTimeToString(value);
     case "status":
-      return OrderStatusTranslation[order.status];
+      return t(`orderStatus.${order.status}`);
     case "transporter_manager":
     case "customer_manager":
     case "driver":
@@ -98,11 +94,11 @@ export const getOrderColumnValue = (
     case "application_type":
       switch (order.application_type) {
         case "in_auction":
-          return "Аукцион";
+          return t("applicationType.auction");
         case "in_bidding":
-          return "Торги";
+          return t("applicationType.bidding");
         case "in_direct":
-          return "Прямой заказ";
+          return t("applicationType.direct");
         default:
           return "-";
       }

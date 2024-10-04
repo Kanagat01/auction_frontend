@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import toast from "react-hot-toast";
 import { createEvent, attach, Effect } from "effector";
 import { RequestParams, apiRequestFx } from "~/shared/api";
@@ -33,7 +34,7 @@ export const addTransportToAllowed = createEvent<{
 }>();
 addTransportToAllowed.watch(({ transporter_company_id, onReset }) => {
   toast.promise(addToAllowedFx({ transporter_company_id }), {
-    loading: "Добавляем в Ваши перевозчики...",
+    loading: t("addTransportToAllowed.loading"),
     success: (transporter) => {
       const prevState = $mainData.getState() as CustomerCompany;
       setMainData({
@@ -44,9 +45,11 @@ addTransportToAllowed.watch(({ transporter_company_id, onReset }) => {
         ],
       });
       onReset();
-      return `Перевозчик #${transporter.transporter_company_id} успешно добавлен`;
+      return t("addTransportToAllowed.success", {
+        id: transporter.transporter_company_id,
+      });
     },
-    error: (err) => `Произошла ошибка: ${err}`,
+    error: (err) => t("common.errorMessage", { err }),
   });
 });
 

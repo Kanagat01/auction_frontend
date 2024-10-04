@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { Modal } from "react-bootstrap";
 import { useUnit } from "effector-react";
 import { useTranslation } from "react-i18next";
@@ -22,7 +23,6 @@ import {
   $selectedManager,
 } from "./sections";
 import styles from "./styles.module.scss";
-import toast from "react-hot-toast";
 
 const renderSection = (
   role: string,
@@ -59,12 +59,12 @@ export function SettingsModal() {
       : (mainData as CustomerCompany)?.company_name;
   const sectionDict: Record<TSection, string> = {
     main: currentCompany,
-    company: t("company_details"),
-    security: t("change_password"),
-    subscriptions: t("subscriptions"),
-    managers: t("your_managers"),
-    addManager: t("add_manager"),
-    editManager: t("edit_manager"),
+    company: t("editDetails.yourDetails"),
+    security: t("settings.changePassword"),
+    subscriptions: t("subscriptions.plural"),
+    managers: t("settings.yourManagers"),
+    addManager: t("settings.addManager"),
+    editManager: t("editManager.title"),
   };
 
   const [visible, setVisible] = useState(true);
@@ -73,7 +73,7 @@ export function SettingsModal() {
   const [show, changeShow] = useModalState(false);
   const changeSection = (newSection: TSection) => {
     if (newSection === "editManager" && !selectedManager) {
-      toast.error("Выберите менеджера");
+      toast.error(t("editManager.selectManager"));
       return;
     }
     setVisible(false);

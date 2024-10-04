@@ -1,7 +1,8 @@
 import { FC, InputHTMLAttributes, ReactNode, useState } from "react";
-import { BsEye, BsEyeSlash } from "react-icons/bs";
-import styles from "./styles.module.scss";
 import { Form, FormSelectProps } from "react-bootstrap";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
+import { useTranslation } from "react-i18next";
+import styles from "./styles.module.scss";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
@@ -34,11 +35,12 @@ const RoundedSelect: FC<
 };
 
 const PasswordInput: FC<InputProps> = (props) => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   return (
     <div className={styles["password-input-container"]}>
       <RoundedInput
-        placeholder="Пароль"
+        placeholder={t("login.inputPlaceholders.password")}
         type={showPassword ? "text" : "password"}
         {...props}
       />

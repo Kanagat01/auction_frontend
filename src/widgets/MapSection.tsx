@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
 import { OrderTracking, OrderTrackingGeoPoint } from "~/entities/Order";
 import { TStages } from "~/entities/OrderStage";
@@ -10,12 +11,13 @@ type MapSectionProps = {
 };
 
 export function MapSection({ tracking, stages }: MapSectionProps) {
+  const { t } = useTranslation();
   const centralGeoPoint = tracking?.geopoints[
     Math.floor(tracking.geopoints.length / 2)
   ] as OrderTrackingGeoPoint;
   return (
     <>
-      <TitleMd>Карта</TitleMd>
+      <TitleMd>{t("mapSection.map")}</TitleMd>
       {tracking && tracking.geopoints.length !== 0 ? (
         <div
           className="w-100 h-100 mt-4"
@@ -41,7 +43,7 @@ export function MapSection({ tracking, stages }: MapSectionProps) {
                   defaultGeometry={[geo.latitude, geo.longitude]}
                   modules={["geoObject.addon.balloon"]}
                   properties={{
-                    balloonContentBody: "Местонахождение груза",
+                    balloonContentBody: t("mapSection.cargoLocation"),
                   }}
                 />
               ))}
@@ -49,24 +51,22 @@ export function MapSection({ tracking, stages }: MapSectionProps) {
           </YMaps>
         </div>
       ) : (
-        <TitleMd className="w-100 h-100 mt-4">
-          Нет данных для отображения
-        </TitleMd>
+        <TitleMd className="w-100 h-100 mt-4">{t("common.noData")}</TitleMd>
       )}
       {stages && (
         <div className="mt-4">
           <RoundedTable
             columns={[
-              <TextCenter>№ Поставки</TextCenter>,
-              <TextCenter>Статус доставки</TextCenter>,
+              <TextCenter>{t("orderStage.stageNumber")}</TextCenter>,
+              <TextCenter>{t("orderStage.deliveryStatus")}</TextCenter>,
             ]}
             data={stages.map(
               ({ order_stage_number, load_stage, unload_stage }) => [
                 <TextCenter>{order_stage_number}</TextCenter>,
                 <TextCenter>
                   {load_stage.completed && unload_stage.completed
-                    ? "Груз доставлен"
-                    : "Ожидает доставки"}
+                    ? t("orderStage.delivered")
+                    : t("orderStage.notDelivered")}
                 </TextCenter>,
               ]
             )}

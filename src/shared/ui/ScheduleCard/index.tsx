@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import styles from "./styles.module.scss";
 
 type ScheduleCardProps = {
@@ -9,16 +10,17 @@ type ScheduleCardProps = {
 };
 
 export function ScheduleCard({ status, ...props }: ScheduleCardProps) {
+  const { t } = useTranslation();
   if (status === "empty") {
     return (
       <div className={styles.scheduleCard}>
-        <div className={styles.title}>Свободен</div>
+        <div className={styles.title}>{t("scheduleCard.free")}</div>
       </div>
     );
   } else {
     return (
       <div className={styles.scheduleCard}>
-        <div className={styles.title}>Занятый</div>
+        <div className={styles.title}>{t("scheduleCard.reserved")}</div>
         <div className={`${styles.status} ${styles[status]}`}></div>
         <div>{props.transportation_number}</div>
         <div>{props.transporter_manager}</div>

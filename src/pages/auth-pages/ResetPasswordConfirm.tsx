@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { resetPasswordConfirm } from "~/features/reset-password";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
@@ -7,6 +8,7 @@ import Routes from "~/shared/routes";
 import { Credentials } from "./Credentials";
 
 export function ResetPasswordConfirm() {
+  const { t } = useTranslation();
   const { token } = useParams<{ token: string }>();
   const [isValidToken, setIsValidToken] = useState<boolean>(Boolean(token));
 
@@ -33,34 +35,40 @@ export function ResetPasswordConfirm() {
         {isValidToken ? (
           <>
             <span className="login-subtitle">
-              Для сброса пароля введите <br />
-              новый пароль и повторите его
+              {t("resetPassword.loginSubtitle")}
             </span>
             <RoundedInputGroup>
               <RoundedInputGroup.PasswordInput
                 value={new_password}
                 onChange={changeNewPassword}
-                placeholder="Новый пароль"
+                placeholder={t("resetPassword.inputPlaceholders.newPassword")}
                 required
               />
               <RoundedInputGroup.PasswordInput
                 value={confirm_password}
                 onChange={changeConfirmPassword}
-                placeholder="Повторите пароль"
+                placeholder={t(
+                  "resetPassword.inputPlaceholders.confirmPassword"
+                )}
                 required
               />
             </RoundedInputGroup>
-            <PrimaryButton type="submit">Сбросить</PrimaryButton>
+            <PrimaryButton type="submit">
+              {t("resetPassword.buttonText")}
+            </PrimaryButton>
             <span className="link-text">
-              Уже есть аккаунт? <NavLink to={Routes.LOGIN}>Войти</NavLink>
+              {t("login.alreadyHaveAnAccount")}{" "}
+              <NavLink to={Routes.LOGIN}>{t("login.buttonText")}</NavLink>
             </span>
           </>
         ) : (
           <>
             <span className="login-subtitle">
-              Неправильный адрес. Возможно ссылка для сброса пароля истекла
+              {t("resetPassword.loginSubtitleInvalidToken")}
             </span>
-            <NavLink to={Routes.FORGOT_PASSWORD}>Забыли пароль?</NavLink>
+            <NavLink to={Routes.FORGOT_PASSWORD}>
+              {t("login.forgotPassword")}
+            </NavLink>
           </>
         )}
       </form>

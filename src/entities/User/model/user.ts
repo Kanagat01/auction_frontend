@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import toast from "react-hot-toast";
 import { attach, createEvent, Effect } from "effector";
 import { apiRequestFx, RequestParams } from "~/shared/api";
@@ -26,7 +27,7 @@ export const editUser = createEvent<
 >();
 editUser.watch(({ setIsEditing, ...data }) => {
   if (!isValidEmail(data.email)) {
-    toast.error("Неправильный формат email");
+    toast.error(t("common.notValidEmail"));
     return;
   }
   const state = $mainData.getState();
@@ -35,13 +36,13 @@ editUser.watch(({ setIsEditing, ...data }) => {
     data.full_name === state.user.full_name &&
     (!("company_name" in state) || state.company_name === data.company_name)
   ) {
-    toast.error("Вы не изменили ни одно поле");
+    toast.error(t("common.youDidNotChangeAnyField"));
     return;
   }
   toast.promise(
     editUserFx({ details: (state as CustomerCompany).details ?? "", ...data }),
     {
-      loading: "Обновляем данные...",
+      loading: t("editUser.loading"),
       success: () => {
         const prevState = $mainData.getState();
         if (prevState) {
@@ -60,11 +61,11 @@ editUser.watch(({ setIsEditing, ...data }) => {
           setMainData(newState);
         }
         setIsEditing(false);
-        return "Данные обновлены";
+        return t("editUser.success");
       },
       error: (err) => {
-        if (err?.email) return "Неправильный email";
-        return `Произошла ошибка: ${err}`;
+        if (err?.email) return t("common.wrongEmail");
+        return t("common.errorMessage", { err });
       },
     }
   );

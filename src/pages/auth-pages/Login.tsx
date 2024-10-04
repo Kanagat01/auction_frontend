@@ -1,14 +1,16 @@
 import { FormEvent } from "react";
-import { useLocation, useNavigate } from "react-router";
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router";
 
 import { login } from "~/features/authorization";
-import { useTextInputState } from "~/shared/lib";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
+import { useTextInputState } from "~/shared/lib";
 import Routes from "~/shared/routes";
 import { Credentials } from "./Credentials";
 
 export function Login() {
+  const { t } = useTranslation();
   const [email, onChangeEmail] = useTextInputState("");
   const [password, onChangePassword] = useTextInputState("");
 
@@ -30,20 +32,20 @@ export function Login() {
           <RoundedInputGroup.Input
             value={email}
             onChange={onChangeEmail}
-            placeholder="Логин или Email"
+            placeholder={t("login.inputPlaceholders.email")}
             required
           />
           <RoundedInputGroup.PasswordInput
             value={password}
             onChange={onChangePassword}
-            placeholder="Пароль"
+            placeholder={t("login.inputPlaceholders.password")}
             required
           />
         </RoundedInputGroup>
-        <PrimaryButton type="submit">Войти</PrimaryButton>
-        <NavLink to={Routes.REGISTER}>Регистрация</NavLink>
+        <PrimaryButton type="submit">{t("login.buttonText")}</PrimaryButton>
+        <NavLink to={Routes.REGISTER}>{t("registration.buttonText")}</NavLink>
         <NavLink to={Routes.FORGOT_PASSWORD} className="mt-2">
-          Забыли пароль?
+          {t("login.forgotPassword")}
         </NavLink>
       </form>
       <Credentials />

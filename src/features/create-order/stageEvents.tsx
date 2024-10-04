@@ -1,11 +1,7 @@
+import { t } from "i18next";
 import toast from "react-hot-toast";
 import { createEvent } from "effector";
-import {
-  OrderStageTranslations,
-  OrderStageKey,
-  TStage,
-  TStages,
-} from "~/entities/OrderStage";
+import { OrderStageKey, TStage, TStages } from "~/entities/OrderStage";
 import {
   $orderForm,
   $orderStages,
@@ -48,24 +44,31 @@ const stageCoupleValidation = (func: (state: TStages) => void) => {
       const field = key2 as OrderStageKey;
       if (!state[stage][field] && !notRequired.includes(field)) {
         const fieldName =
-          (stage === "load_stage" ? "Погрузка" : "Выгрузка") +
+          (stage === "load_stage"
+            ? t("orderStage.loadingStage")
+            : t("orderStage.unloadingStage")) +
           "." +
-          OrderStageTranslations[field];
+          t("orderStageTranslations.${field}");
         emptyFields.push(fieldName);
       }
     }
   }
-  if (!state.cargo) emptyFields.push(OrderStageTranslations.cargo);
-  if (!state.weight) emptyFields.push(OrderStageTranslations.weight);
-  if (!state.volume) emptyFields.push(OrderStageTranslations.volume);
+  if (!state.cargo) emptyFields.push(t("orderStageTranslations.cargo"));
+  if (!state.weight) emptyFields.push(t("orderStageTranslations.weight"));
+  if (!state.volume) emptyFields.push(t("orderStageTranslations.volume"));
 
   if (emptyFields.length > 0) {
-    toast(<span>Заполните обязательные поля: {emptyFields.join(", ")}</span>, {
-      position: "top-right",
-      duration: 3000,
-      icon: <button onClick={() => toast.dismiss()}>❌</button>,
-      style: { fontSize: "1.4rem" },
-    });
+    toast(
+      <span>
+        {t("common.fillOutRequired", { fields: emptyFields.join(", ") })}
+      </span>,
+      {
+        position: "top-right",
+        duration: 3000,
+        icon: <button onClick={() => toast.dismiss()}>❌</button>,
+        style: { fontSize: "1.4rem" },
+      }
+    );
   } else {
     func(state);
     clearStages();

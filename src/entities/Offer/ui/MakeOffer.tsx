@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import { Modal } from "react-bootstrap";
 import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
 import { ButtonHTMLAttributes, ChangeEvent, useEffect, useState } from "react";
 import { $selectedOrder, isOrderSelected } from "~/entities/Order";
 import { createOffer } from "~/entities/Offer";
@@ -23,6 +24,7 @@ export const MakeOffer = ({
   inAuction = false,
   ...props
 }: { inAuction?: boolean } & ButtonHTMLAttributes<HTMLButtonElement>) => {
+  const { t } = useTranslation();
   const order = useUnit($selectedOrder);
   const [price, setPrice] = useState<number>(0);
   const [show, changeShow] = useModalState(false);
@@ -53,14 +55,14 @@ export const MakeOffer = ({
   return (
     <>
       <PrimaryButton {...props} onClick={() => isOrderSelected(changeShow)}>
-        Сделать ставку
+        {t("createOffer.title")}
       </PrimaryButton>
       <Modal show={show} onHide={changeShow} className="gradient-modal">
         <Modal.Body>
-          <ModalTitle>Предложение</ModalTitle>
+          <ModalTitle>{t("offers.singular")}</ModalTitle>
           <InputContainer
             name="price"
-            label="Цена [rub]"
+            label={t("common.priceRub")}
             value={price}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               changePrice(Number(e.target.value))
@@ -81,13 +83,13 @@ export const MakeOffer = ({
                       inAuction,
                       onReset,
                     })
-                  : toast.error("Цена должна быть больше 0")
+                  : toast.error(t("offers.priceMoreThan0Error"))
               }
             >
-              Подтвердить
+              {t("common.confirm")}
             </OutlineButton>
             <OutlineButton style={btnStyle} onClick={onReset}>
-              Отмена
+              {t("common.cancel")}
             </OutlineButton>
           </div>
         </Modal.Body>

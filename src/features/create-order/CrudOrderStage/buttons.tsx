@@ -1,6 +1,7 @@
-import { ButtonHTMLAttributes } from "react";
-import { Modal } from "react-bootstrap";
 import { ReactSVG } from "react-svg";
+import { Modal } from "react-bootstrap";
+import { ButtonHTMLAttributes } from "react";
+import { useTranslation } from "react-i18next";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
 
@@ -84,6 +85,7 @@ export function RemoveStageModal({
   orderStageNumber,
   ...props
 }: CrudButtonProps) {
+  const { t } = useTranslation();
   const [show, changeShow] = useModalState(false);
 
   const showModal = () => {
@@ -108,7 +110,7 @@ export function RemoveStageModal({
         <Modal.Body>
           <TextCenter>
             <TitleMd style={{ fontSize: "1.7rem" }}>
-              Вы уверены, что хотите удалить поставку{" "}
+              {t("removeStage.areYouSure")}{" "}
               <BlueText>№{orderStageNumber}</BlueText>?
             </TitleMd>
           </TextCenter>
@@ -119,14 +121,14 @@ export function RemoveStageModal({
             style={{ fontSize: "1.4rem" }}
             onClick={changeShow}
           >
-            Отмена
+            {t("common.cancel")}
           </OutlineButton>
           <PrimaryButton
             className="py-2 px-4"
             style={{ fontSize: "1.4rem" }}
             onClick={handleRemove}
           >
-            Удалить
+            {t("common.delete")}
           </PrimaryButton>
         </Modal.Footer>
       </Modal>

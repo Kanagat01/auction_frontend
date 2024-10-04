@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import toast from "react-hot-toast";
 import { createEvent } from "effector";
 import {
@@ -30,7 +31,7 @@ export const createOffer = createEvent<
 >();
 createOffer.watch(({ inAuction, onReset, ...data }) =>
   toast.promise(createOfferFx(data), {
-    loading: "Создаем предложение...",
+    loading: t("createOffer.loading"),
     success: () => {
       let price_data: TPriceData;
       if (inAuction)
@@ -47,7 +48,7 @@ createOffer.watch(({ inAuction, onReset, ...data }) =>
         };
       updateOrder({ orderId: data.order_id, newData: { price_data } });
       onReset();
-      return "Предложение успешно создано";
+      return t("createOffer.success");
     },
     error: (err) => {
       if (typeof err === "object") {
@@ -55,10 +56,10 @@ createOffer.watch(({ inAuction, onReset, ...data }) =>
         const message = err?.response?.data?.message;
         const priceError = err?.response?.data?.price?.[0];
 
-        if (status > 499) return `Серверная ошибка. Код ${status}`;
+        if (status > 499) return t("common.serverError", { code: status });
         if (priceError === "Price must be greater than 0")
-          return "Цена должна быть больше нуля";
-        return `Произошла ошибка: ${message}`;
+          return t("createOffer.priceError");
+        return t("common.errorMessage", { err: message });
       } else if (typeof err === "string") {
         if (err.startsWith("not_valid_price. Price must be less than")) {
           const current_price = Number(err.split(" ")[6]);
@@ -67,10 +68,10 @@ createOffer.watch(({ inAuction, onReset, ...data }) =>
               orderId: data.order_id,
               newData: { price_data: { current_price } },
             });
-          return `Актуальная цена изменилась. Повторите попытку`;
+          return t("createOffer.priceChangedError");
         }
       }
-      return `Произошла ошибка: ${err}`;
+      return t("common.errorMessage", { err });
     },
   })
 );
@@ -84,16 +85,19 @@ export const acceptOffer = createEvent<
 acceptOffer.watch(({ isBestOffer, transportation_number, ...data }) =>
   toast.promise(acceptOfferFx(data), {
     loading: isBestOffer
-      ? "Принимаем лучшее предложение..."
-      : `Принимаем предложение #${data.order_offer_id}...`,
+      ? t("acceptOffer.loading_bestOffer")
+      : t("acceptOffer.loading", { id: data.order_offer_id }),
     success: () => {
       const order = $orders
         .getState()
         .find((order) => order.transportation_number === transportation_number);
       if (order) removeOrder(order.id);
-      return `Предложение #${data.order_offer_id} принят \nЗаказ №${transportation_number} принят`;
+      return t("acceptOffer.success", {
+        offerId: data.order_offer_id,
+        transportationNumber: transportation_number,
+      });
     },
-    error: (err) => `Произошла ошибка: ${err}`,
+    error: (err) => t("common.errorMessage", { err }),
   })
 );
 
@@ -103,7 +107,7 @@ export const rejectOffer = createEvent<
 >();
 rejectOffer.watch(({ orderId, order_offer_id, ...data }) =>
   toast.promise(rejectOfferFx({ order_offer_id, ...data }), {
-    loading: "Отклоняем заказ...",
+    loading: t("rejectOffer.loading"),
     success: () => {
       const order = $orders.getState().find((order) => order.id === orderId);
       if (order) {
@@ -112,9 +116,9 @@ rejectOffer.watch(({ orderId, order_offer_id, ...data }) =>
         };
         updateOrder({ orderId, newData });
       }
-      return `Предложение #${order_offer_id} отклонен`;
+      return t("rejectOffer.success", { id: order_offer_id });
     },
-    error: (err) => `Произошла ошибка: ${err}`,
+    error: (err) => t("common.errorMessage", { err }),
   })
 );
 
@@ -124,15 +128,17 @@ export const acceptOfferTransporter = createEvent<
 >();
 acceptOfferTransporter.watch(({ transportation_number, ...data }) =>
   toast.promise(acceptOfferTransporterFx(data), {
-    loading: "Принимаем заказ...",
+    loading: t("acceptOfferTransporter.loading"),
     success: () => {
       const order = $orders
         .getState()
         .find((order) => order.transportation_number === transportation_number);
       if (order) removeOrder(order.id);
-      return `Заказ №${transportation_number} принят`;
+      return t("acceptOfferTransporter.success", {
+        transportationNumber: transportation_number,
+      });
     },
-    error: (err) => `Произошла ошибка: ${err}`,
+    error: (err) => t("common.errorMessage", { err }),
   })
 );
 
@@ -142,14 +148,16 @@ export const rejectOfferTransporter = createEvent<
 >();
 rejectOfferTransporter.watch(({ transportation_number, ...data }) =>
   toast.promise(rejectOfferTransporterFx(data), {
-    loading: "Отклоняем заказ...",
+    loading: t("rejectOfferTransporter.loading"),
     success: () => {
       const order = $orders
         .getState()
         .find((order) => order.transportation_number === transportation_number);
       if (order) removeOrder(order.id);
-      return `Заказ №${transportation_number} отклонен`;
+      return t("rejectOfferTransporter.success", {
+        transportationNumber: transportation_number,
+      });
     },
-    error: (err) => `Произошла ошибка: ${err}`,
+    error: (err) => t("common.errorMessage", { err }),
   })
 );

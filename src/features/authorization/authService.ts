@@ -1,4 +1,5 @@
 import axios from "axios";
+import { t } from "i18next";
 import toast from "react-hot-toast";
 import { createEffect, createEvent } from "effector";
 import { getMainDataFx, setMainData } from "~/entities/User";
@@ -19,35 +20,35 @@ const loginFx = createEffect<LoginRequest, LoginResponse>(async (data) => {
     if (axios.isAxiosError(error)) {
       switch (error.response?.status) {
         case 401:
-          throw "Неверные учетные данные";
+          throw t("login.401");
         case 403:
-          throw "Доступ запрещен";
+          throw t("login.403");
         case 404:
-          throw "Пользователь не найден";
+          throw t("login.404");
         case 500:
-          throw "Внутренняя ошибка сервера";
+          throw t("common.serverError", { code: 500 });
       }
       switch (error.response?.data.message) {
         case "invalid_credentials":
-          throw "Неверный логин или пароль";
+          throw t("login.invalidCredentials");
       }
     }
-    throw "Неизвестная ошибка";
+    throw t("common.unknownError", { error });
   }
 });
 
 export const login = createEvent<LoginRequest & { navigateFunc: () => void }>();
 login.watch(({ navigateFunc, ...data }) => {
   toast.promise(loginFx(data), {
-    loading: "Авторизуемся...",
+    loading: t("login.loading"),
     success: ({ token }) => {
       localStorage.setItem("token", token);
       setAuth(true);
       getMainDataFx();
       navigateFunc();
-      return "Вы успешно авторизованы";
+      return t("login.success");
     },
-    error: (err) => `Произошла ошибка: ${err}`,
+    error: (err) => t("common.errorMessage", { err }),
   });
 });
 

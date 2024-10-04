@@ -1,10 +1,12 @@
+import { t } from "i18next";
+
 export const validatePassword = (password: string): string => {
-  if (password.length < 8) return "Пароль должен быть не менее 8 символов";
+  if (password.length < 8) return t("validatePassword.passwordLengthError");
   if (!/[a-z]/.test(password) || !/[A-Z]/.test(password)) {
-    return "Пароль должен состоять из больших и маленьких букв";
+    return t("validatePassword.letterTestError");
   }
   if (!/\d/.test(password) || !/[@$!%*?&]/.test(password))
-    return "Пароль должен содержать хотя бы одну цифру и специальный знак";
+    return t("validatePassword.numberTestError");
   return "";
 };
 

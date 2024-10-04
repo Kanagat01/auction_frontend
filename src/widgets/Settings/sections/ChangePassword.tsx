@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   changePassword,
   ChangePasswordRequest,
@@ -7,6 +8,8 @@ import { InputContainer, PrimaryButton } from "~/shared/ui";
 import { btnStyle, inputProps } from "./helpers";
 
 export function ChangePassword() {
+  const { t } = useTranslation();
+
   const initialState = {
     old_password: "",
     new_password: "",
@@ -24,7 +27,7 @@ export function ChangePassword() {
     <form onSubmit={onSubmit}>
       <InputContainer
         variant="password-input"
-        label="Текущий пароль"
+        label={t("changePassword.currentPassword")}
         {...{ name: "old_password", value: data.old_password, onChange }}
         {...inputProps}
         autoComplete="old-password"
@@ -32,7 +35,7 @@ export function ChangePassword() {
       />
       <InputContainer
         variant="password-input"
-        label="Новый пароль"
+        label={t("resetPassword.inputPlaceholders.newPassword")}
         {...{ name: "new_password", value: data.new_password, onChange }}
         {...inputProps}
         autoComplete="new-password"
@@ -40,7 +43,7 @@ export function ChangePassword() {
       />
       <InputContainer
         variant="password-input"
-        label="Повторите пароль"
+        label={t("resetPassword.inputPlaceholders.confirmPassword")}
         {...{ name: "repeat_password", value: data.repeat_password, onChange }}
         {...inputProps}
         autoComplete="repeat-password"
@@ -48,7 +51,7 @@ export function ChangePassword() {
       />
       <div className="d-flex justify-content-evenly w-100 mt-5">
         <PrimaryButton type="submit" style={btnStyle}>
-          Обновить пароль
+          {t("changePassword.updatePassword")}
         </PrimaryButton>
       </div>
     </form>

@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useMatch, useParams } from "react-router";
 import { OrderForm } from "~/widgets/OrderForm";
 import { useIsActive } from "~/entities/User";
@@ -8,6 +9,7 @@ import { RenderPromise } from "~/shared/api";
 import Routes from "~/shared/routes";
 
 export default function OrderPage() {
+  const { t } = useTranslation();
   const isActive = useIsActive();
   const match = useMatch(Routes.EDIT_ORDER);
   const { transportationNumber } = useParams<{
@@ -29,18 +31,14 @@ export default function OrderPage() {
             let errorMessage;
             if (typeof err === "string") {
               if (err === "order_not_found")
-                errorMessage =
-                  "Заказ с таким номером транспортировки не найден";
+                errorMessage = t("orderPage.orderNotFound");
             } else errorMessage = `${err.name} ${err.message}`;
             return <PageError>{errorMessage}</PageError>;
           },
           success: (response) => <OrderForm {...response} />,
         })
       ) : (
-        <PageError>
-          У вас нет доступа к этой странице. Оплатите свой тариф, чтобы получить
-          доступ
-        </PageError>
+        <PageError>{t("orderPage.noAccess")}</PageError>
       )}
     </RoundedWhiteBox>
   );

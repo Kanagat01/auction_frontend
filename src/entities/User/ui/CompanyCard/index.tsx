@@ -1,5 +1,5 @@
-import styles from "./styles.module.scss";
 import { TransporterCompany } from "~/entities/User";
+import styles from "./styles.module.scss";
 
 export const CompanyCard = (
   comp: Omit<TransporterCompany, "managers" | "user">

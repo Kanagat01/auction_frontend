@@ -59,9 +59,7 @@ export function DeleteDocument({
               <TextCenter style={fontSize}>
                 {t("documents.document")}
               </TextCenter>,
-              <TextCenter style={fontSize}>
-                {t("documents.selection")}
-              </TextCenter>,
+              <TextCenter style={fontSize}>{t("common.selection")}</TextCenter>,
             ]}
             data={documents.map((doc) => [
               <TextCenter className="p-1" style={fontSize}>

@@ -1,5 +1,6 @@
-import { AxiosError, Method } from "axios";
+import { t } from "i18next";
 import { createEffect } from "effector";
+import { AxiosError, Method } from "axios";
 import { apiInstance } from ".";
 
 export type RequestParams = {
@@ -15,18 +16,18 @@ export const apiRequestFx = createEffect<RequestParams, any, Error>(
       return response?.data?.message;
     } catch (error) {
       if (error instanceof AxiosError) {
-        if (error.response?.status! > 499) throw "Ошибка на сервере";
+        if (error.response?.status! > 499)
+          throw t("common.serverError", { code: error.response?.status });
         const data = error.response?.data;
         if (data && "detail" in data && !("message" in data)) {
-          console.log(data.detail);
           if (
             data.detail ===
-            "У вас недостаточно прав для выполнения данного действия."
+            "У вас недостаточно прав для выполнения данного действия." // Джанго ошибка, не переводим
           ) {
             setTimeout(() => {
               window.location.reload();
             }, 5000);
-            throw "У вас недостаточно прав для выполнения данного действия";
+            throw t("common.actionForbidden");
           }
           throw data.detail;
         }

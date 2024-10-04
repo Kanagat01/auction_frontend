@@ -1,9 +1,11 @@
 import toast from "react-hot-toast";
-import { ButtonHTMLAttributes, ChangeEvent, useState } from "react";
 import { useUnit } from "effector-react";
-import { Modal, ModalTitle } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { Modal, ModalTitle } from "react-bootstrap";
+import { ButtonHTMLAttributes, ChangeEvent, useState } from "react";
 import { $mainData, CustomerManager } from "~/entities/User";
+import { useModalState } from "~/shared/lib";
 import {
   OutlineButton,
   PrimaryButton,
@@ -15,7 +17,6 @@ import {
   InputContainer,
   modalInputProps,
 } from "~/shared/ui";
-import { useModalState } from "~/shared/lib";
 import {
   $selectedOrder,
   cancelOrder,
@@ -31,6 +32,7 @@ export const CancelOrder = ({
   variant,
   ...props
 }: { variant: "icon" | "text" } & ButtonHTMLAttributes<HTMLButtonElement>) => {
+  const { t } = useTranslation();
   const order = useUnit($selectedOrder);
   const [show, changeShow] = useModalState(false);
   return (
@@ -42,7 +44,7 @@ export const CancelOrder = ({
           </OutlineButton>
         ) : (
           <PrimaryButton {...props} onClick={changeShow}>
-            Отменить
+            {t("cancelOrder.buttonText")}
           </PrimaryButton>
         )}
         <ConfirmationModal
@@ -54,7 +56,7 @@ export const CancelOrder = ({
           }}
           title={
             <>
-              Вы уверены, что хотите отменить заказ{" "}
+              {t("cancelOrder.areYouSure")}{" "}
               {<BlueText>№{order?.transportation_number}</BlueText>}
             </>
           }
@@ -67,17 +69,18 @@ export const CancelOrder = ({
 export const UnpublishOrder = (
   props: ButtonHTMLAttributes<HTMLButtonElement>
 ) => {
+  const { t } = useTranslation();
   const order = useUnit($selectedOrder);
   const [show, changeShow] = useModalState(false);
   const onClick = () => {
     if (order?.status === OrderStatus.completed)
-      toast.error('Вы не можете "Вернуть в заказы" завершенный заказ');
+      toast.error(t("unpublishOrder.orderCompletedError"));
     else isOrderSelected(changeShow);
   };
   return (
     <>
       <PrimaryButton {...props} onClick={onClick}>
-        Вернуть в заказы
+        {t("unpublishOrder.buttonText")}
       </PrimaryButton>
       <ConfirmationModal
         show={show}
@@ -88,7 +91,7 @@ export const UnpublishOrder = (
         }}
         title={
           <>
-            Вы уверены, что хотите "Вернуть в заказы" заказ{" "}
+            {t("unpublishOrder.areYouSure")}{" "}
             {<BlueText>№{order?.transportation_number}</BlueText>}?
           </>
         }
@@ -103,9 +106,13 @@ export const PublishOrder = ({
 }: {
   publishTo: "in_auction" | "in_bidding";
 } & ButtonHTMLAttributes<HTMLButtonElement>) => {
+  const { t } = useTranslation();
   const order = useUnit($selectedOrder);
   const [show, changeShow] = useModalState(false);
-  const publishText = publishTo === "in_auction" ? "в аукцион" : "на торги";
+  const publishText =
+    publishTo === "in_auction"
+      ? t("publishOrder.inAuction")
+      : t("publishOrder.inBidding");
   return (
     <>
       <PrimaryButton {...props} onClick={() => isOrderSelected(changeShow)}>
@@ -120,7 +127,7 @@ export const PublishOrder = ({
         }}
         title={
           <>
-            Вы уверены, что хотите отправить заказ{" "}
+            {t("publishOrder.areYouSure")}{" "}
             {<BlueText>№{order?.transportation_number}</BlueText>} {publishText}
             ?
           </>
@@ -138,6 +145,7 @@ export function PublishOrderInDirect() {
     fontSize: "1.6rem",
   };
 
+  const { t } = useTranslation();
   const mainData = useUnit($mainData);
   const [show, changeShow] = useModalState(false);
   const [companyId, setCompanyId] = useState<number>(0);
@@ -150,9 +158,9 @@ export function PublishOrderInDirect() {
   };
   const onSubmit = () => {
     if (companyId === 0) {
-      toast.error("Выберите компанию перевозчика");
+      toast.error(t("publishOrder.selectTransporter"));
     } else if (price === 0) {
-      toast.error("Цена должна быть больше нуля");
+      toast.error(t("publishOrder.priceMustBeGreaterThan0"));
     } else {
       publishOrder({
         publish_to: "in_direct",
@@ -168,14 +176,14 @@ export function PublishOrderInDirect() {
         className="me-2 px-3 py-2"
         onClick={() => isOrderSelected(changeShow)}
       >
-        Назначить
+        {t("publishOrder.assign")}
       </PrimaryButton>
       <Modal show={show} onHide={changeShow} className="gradient-modal">
         <Modal.Body>
-          <ModalTitle>Назначить</ModalTitle>
+          <ModalTitle>{t("publishOrder.assign")}</ModalTitle>
           <InputContainer
             name="price"
-            label="Предлагаемая цена [rub]"
+            label={t("publishOrder.offeringPrice_rub")}
             value={price}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setPrice(Number(e.target.value))
@@ -187,8 +195,10 @@ export function PublishOrderInDirect() {
           <RoundedTable
             lightBorderMode={true}
             columns={[
-              <TextCenter style={fontSize}>Перевозчик</TextCenter>,
-              <TextCenter style={fontSize}>Выбор</TextCenter>,
+              <TextCenter style={fontSize}>
+                {t("common.transporter")}
+              </TextCenter>,
+              <TextCenter style={fontSize}>{t("common.selection")}</TextCenter>,
             ]}
             data={(
               mainData as CustomerManager
@@ -214,10 +224,10 @@ export function PublishOrderInDirect() {
           />
           <div className="buttons">
             <OutlineButton onClick={onSubmit} style={btnStyle}>
-              Назначить
+              {t("publishOrder.assign")}
             </OutlineButton>
             <OutlineButton onClick={onReset} style={btnStyle}>
-              Отмена
+              {t("common.cancel")}
             </OutlineButton>
           </div>
         </Modal.Body>
@@ -229,12 +239,13 @@ export function PublishOrderInDirect() {
 export const CompleteOrder = (
   props: ButtonHTMLAttributes<HTMLButtonElement>
 ) => {
+  const { t } = useTranslation();
   const order = useUnit($selectedOrder);
   const [show, changeShow] = useModalState(false);
   return (
     <>
       <PrimaryButton {...props} onClick={() => isOrderSelected(changeShow)}>
-        Завершить
+        {t("completeOrder.buttonText")}
       </PrimaryButton>
       <ConfirmationModal
         show={show}
@@ -246,10 +257,10 @@ export const CompleteOrder = (
         }}
         title={
           <>
-            Вы уверены, что хотите{" "}
+            {t("completeOrder.areYouSure")}{" "}
             {order?.status == OrderStatus.completed
-              ? "отменить завершение заказа"
-              : "завершить заказ"}{" "}
+              ? t("cancelOrderCompletion.areYouSure_status")
+              : t("completeOrder.areYouSure_status")}{" "}
             {<BlueText>№{order?.transportation_number}</BlueText>}?
           </>
         }

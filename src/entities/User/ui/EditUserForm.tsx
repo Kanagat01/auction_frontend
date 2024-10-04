@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
 import { EditField, InputProps, PrimaryButton } from "~/shared/ui";
 import { $mainData, CustomerCompany, editUser, EditUserRequest } from "..";
 
@@ -15,6 +16,7 @@ type EditUserFormProps = {
 };
 
 export function EditUserForm({ isEditing, setIsEditing }: EditUserFormProps) {
+  const { t } = useTranslation();
   const mainData = useUnit($mainData);
   const isCompany = mainData?.user.user_type.split("_")[1] === "company";
 
@@ -28,13 +30,13 @@ export function EditUserForm({ isEditing, setIsEditing }: EditUserFormProps) {
     setData({ ...data, [e.target.name]: e.target.value });
 
   const inputs: Omit<InputProps, "variant">[] = [
-    { label: "Email", value: data.email, name: "email" },
-    { label: "Ф.И.О.", value: data.full_name, name: "full_name" },
+    { label: t("editUser.email"), value: data.email, name: "email" },
+    { label: t("editUser.fullName"), value: data.full_name, name: "full_name" },
     {
       style: !isCompany ? { display: "none" } : {},
       labelStyle: !isCompany ? { display: "none" } : {},
       name: "company_name",
-      label: "Название компании",
+      label: t("editUser.companyName"),
       value: data.company_name,
       required: isCompany,
     },
@@ -59,23 +61,20 @@ export function EditUserForm({ isEditing, setIsEditing }: EditUserFormProps) {
           {...props}
         />
       ))}
-      <div
-        className="d-flex justify-content-evenly w-100 mt-3"
-        // style={{ height: "3.6rem" }}
-      >
+      <div className="d-flex justify-content-evenly w-100 mt-3">
         {isEditing ? (
           <>
             <PrimaryButton
               type="submit"
               style={{ padding: "0.5rem 3rem", fontSize: "1.6rem" }}
             >
-              Сохранить
+              {t("common.save")}
             </PrimaryButton>
             <PrimaryButton
               type="reset"
               style={{ padding: "0.5rem 3rem", fontSize: "1.6rem" }}
             >
-              Отмена
+              {t("common.cancel")}
             </PrimaryButton>
           </>
         ) : (

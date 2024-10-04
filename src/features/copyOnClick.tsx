@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { MouseEvent, ReactNode } from "react";
 
 export const handleClick = (
@@ -20,7 +21,7 @@ export const handleClick = (
         toast.style.top = "-30px";
         toast.style.left = "-5px";
       }
-      toast.innerText = "Скопировано";
+      toast.innerText = t("common.copied");
       parent?.appendChild(toast);
     }
     setTimeout(() => {

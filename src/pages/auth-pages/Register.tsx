@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -9,6 +10,7 @@ import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
 import { Credentials } from "./Credentials";
 
 export function Register() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from || Routes.HOME;
@@ -35,8 +37,8 @@ export function Register() {
         <RoundedInputGroup>
           <RoundedInputGroup.Select
             options={[
-              ["customer", "Заказчик"],
-              ["transporter", "Перевозчик"],
+              ["customer", t("common.customer")],
+              ["transporter", t("common.transporter")],
             ]}
             value={data.user_type}
             onChange={(e: ChangeEvent<HTMLSelectElement>) =>
@@ -51,34 +53,37 @@ export function Register() {
             name="full_name"
             value={data.full_name}
             onChange={onChange}
-            placeholder="ФИО"
+            placeholder={t("registration.inputPlaceholders.fullName")}
             required
           />
           <RoundedInputGroup.Input
             name="company_name"
             value={data.company_name}
             onChange={onChange}
-            placeholder="Название компании"
+            placeholder={t("registration.inputPlaceholders.companyName")}
             required
           />
           <RoundedInputGroup.Input
             name="email"
-            placeholder="Email"
+            placeholder={t("registration.inputPlaceholders.email")}
             value={data.email}
             onChange={onChange}
             required
           />
           <RoundedInputGroup.PasswordInput
             name="password"
-            placeholder="Пароль"
+            placeholder={t("registration.inputPlaceholders.password")}
             value={data.password}
             onChange={onChange}
             required
           />
         </RoundedInputGroup>
-        <PrimaryButton type="submit">Регистрация</PrimaryButton>
+        <PrimaryButton type="submit">
+          {t("registration.buttonText")}
+        </PrimaryButton>
         <span className="link-text">
-          Уже есть аккаунт? <NavLink to={Routes.LOGIN}>Войти</NavLink>
+          {t("login.alreadyHaveAnAccount")}{" "}
+          <NavLink to={Routes.LOGIN}>{t("login.buttonText")}</NavLink>
         </span>
       </form>
       <Credentials />

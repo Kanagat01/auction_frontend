@@ -1,11 +1,12 @@
 import toast from "react-hot-toast";
-import { ButtonHTMLAttributes } from "react";
-import { createEvent, createStore } from "effector";
 import { useUnit } from "effector-react";
-import { useModalState } from "~/shared/lib";
-import { BlueText, ConfirmationModal, OutlineButton } from "~/shared/ui";
-import { OrderOffer, acceptOffer } from "..";
+import { ButtonHTMLAttributes } from "react";
+import { useTranslation } from "react-i18next";
+import { createEvent, createStore } from "effector";
 import { $selectedOrder } from "~/entities/Order";
+import { BlueText, ConfirmationModal, OutlineButton } from "~/shared/ui";
+import { useModalState } from "~/shared/lib";
+import { OrderOffer, acceptOffer } from "..";
 
 export const selectOffer = createEvent<OrderOffer | null>();
 export const $selectedOffer = createStore<OrderOffer | null>(null).on(
@@ -14,16 +15,17 @@ export const $selectedOffer = createStore<OrderOffer | null>(null).on(
 );
 
 export const AcceptOffer = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
+  const { t } = useTranslation();
   const order = useUnit($selectedOrder);
   const offer = useUnit($selectedOffer);
   const [show, changeShow] = useModalState(false);
 
   const onClick = () =>
-    offer ? changeShow() : toast.error("Выберите предложение");
+    offer ? changeShow() : toast.error(t("offers.selectOffer"));
   return (
     <>
       <OutlineButton {...props} onClick={onClick}>
-        Принять
+        {t("common.accept")}
       </OutlineButton>
       {offer && (
         <ConfirmationModal
@@ -39,8 +41,8 @@ export const AcceptOffer = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
           }}
           title={
             <>
-              Вы уверены, что хотите принять предложение{" "}
-              <BlueText>#{offer.id}</BlueText> от{" "}
+              {t("acceptOffer.areYouSure")} <BlueText>#{offer.id}</BlueText>{" "}
+              {t("acceptOffer.from")}{" "}
               <BlueText>
                 {offer.transporter_manager.company.company_name}{" "}
                 {offer.transporter_manager.user.full_name}

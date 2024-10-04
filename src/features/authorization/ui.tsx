@@ -1,11 +1,13 @@
-import { Modal } from "react-bootstrap";
 import { ReactSVG } from "react-svg";
-import { Logout } from "~/shared/assets";
-import { useModalState } from "~/shared/lib";
-import { logout } from ".";
+import { Modal } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { OutlineButton, PrimaryButton, TextCenter, TitleMd } from "~/shared/ui";
+import { useModalState } from "~/shared/lib";
+import { Logout } from "~/shared/assets";
+import { logout } from ".";
 
 export function LogoutBtn() {
+  const { t } = useTranslation();
   const [show, changeShow] = useModalState(false);
   return (
     <>
@@ -23,7 +25,7 @@ export function LogoutBtn() {
         <Modal.Body>
           <TextCenter>
             <TitleMd style={{ fontSize: "1.7rem" }}>
-              Вы уверены, что хотите выйти со своего аккаунта?
+              {t("logout.areYouSure")}
             </TitleMd>
           </TextCenter>
         </Modal.Body>
@@ -33,14 +35,14 @@ export function LogoutBtn() {
             style={{ fontSize: "1.4rem" }}
             onClick={changeShow}
           >
-            Отмена
+            {t("common.cancel")}
           </OutlineButton>
           <PrimaryButton
             className="py-2 px-4"
             style={{ fontSize: "1.4rem" }}
             onClick={logout}
           >
-            Выйти
+            {t("logout.buttonText")}
           </PrimaryButton>
         </Modal.Footer>
       </Modal>

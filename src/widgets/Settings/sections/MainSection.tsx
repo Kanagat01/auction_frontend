@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
-import { Dropdown } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
 import { ReactSVG } from "react-svg";
+import { Dropdown } from "react-bootstrap";
 import { MdLanguage } from "react-icons/md";
 import { BiSolidWallet } from "react-icons/bi";
+import { useTranslation } from "react-i18next";
 import { BsBuildingsFill } from "react-icons/bs";
 import { FaUserCog, FaUsers } from "react-icons/fa";
 import { PersonLoopIcon } from "~/shared/assets";
@@ -25,31 +25,36 @@ export function MainSection({
     [
       <BsBuildingsFill style={iconStyle} />,
       "company",
-      t("my_company"),
-      t("details"),
+      t("settings.myCompany"),
+      t("editDetails.details"),
     ],
     [
       <ReactSVG src={PersonLoopIcon} style={iconStyle} />,
       "security",
-      t("security_section_title"),
-      t("passwords"),
+      t("settings.securitySectionTitle"),
+      t("settings.passwords"),
     ],
     [
       <BiSolidWallet style={iconStyle} />,
       "subscriptions",
-      t("subscriptions"),
+      t("subscriptions.plural"),
       "",
     ],
-    [<FaUsers style={iconStyle} />, "managers", t("your_managers"), ""],
-    [<FaUserCog style={iconStyle} />, "addManager", t("add_manager"), ""],
+    [<FaUsers style={iconStyle} />, "managers", t("settings.yourManagers"), ""],
+    [
+      <FaUserCog style={iconStyle} />,
+      "addManager",
+      t("settings.addManager"),
+      "",
+    ],
   ];
   if (role === "manager") {
     settingOptions = [
       [
         <ReactSVG src={PersonLoopIcon} style={iconStyle} />,
         "security",
-        t("security_section_title"),
-        t("passwords"),
+        t("settings.securitySectionTitle"),
+        t("settings.passwords"),
       ],
     ];
   }
@@ -83,7 +88,9 @@ export function MainSection({
               variant="outline"
               style={{ border: "none", padding: 0 }}
             >
-              <span className={styles.settingOptionTitle}>{t("language")}</span>
+              <span className={styles.settingOptionTitle}>
+                {t("settings.language")}
+              </span>
             </Dropdown.Toggle>
 
             <Dropdown.Menu>

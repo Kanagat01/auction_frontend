@@ -1,13 +1,15 @@
-import { ButtonHTMLAttributes } from "react";
 import { useUnit } from "effector-react";
+import { ButtonHTMLAttributes } from "react";
+import { useTranslation } from "react-i18next";
 import { $selectedOrder, isOrderSelected } from "~/entities/Order";
-import { useModalState } from "~/shared/lib";
 import { BlueText, ConfirmationModal, PrimaryButton } from "~/shared/ui";
+import { useModalState } from "~/shared/lib";
 import { acceptOfferTransporter } from "..";
 
 export const AcceptOfferTransporter = (
   props: ButtonHTMLAttributes<HTMLButtonElement>
 ) => {
+  const { t } = useTranslation();
   const order = useUnit($selectedOrder);
   const priceData = order?.price_data;
   const offer = priceData && "offer_id" in priceData ? priceData : null;
@@ -15,7 +17,7 @@ export const AcceptOfferTransporter = (
   return (
     <>
       <PrimaryButton {...props} onClick={() => isOrderSelected(changeShow)}>
-        Принять
+        {t("common.accept")}
       </PrimaryButton>
       {order && offer && (
         <ConfirmationModal
@@ -30,8 +32,9 @@ export const AcceptOfferTransporter = (
           }}
           title={
             <>
-              Вы уверены, что хотите принять заказ{" "}
-              {<BlueText>№{order.transportation_number}</BlueText>} на сумму{" "}
+              {t("acceptOfferTransporter.areYouSure")}{" "}
+              {<BlueText>№{order.transportation_number}</BlueText>}{" "}
+              {t("acceptOfferTransporter.forPrice")}{" "}
               {<BlueText>{offer.price}</BlueText>}?
             </>
           }

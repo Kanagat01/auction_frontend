@@ -1,10 +1,10 @@
+import { t } from "i18next";
 import { useUnit } from "effector-react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { OrderOfferStatus } from "~/entities/Offer";
 import {
   $selectedOrder,
   setSelectedOrder,
-  orderTranslations,
   TColumn,
   TGetOrder,
 } from "~/entities/Order";
@@ -101,11 +101,7 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
         }
         return value;
       },
-      header: () => {
-        if (!(key in orderTranslations))
-          throw `Add ${key} to orderTranslations`;
-        return orderTranslations[key as keyof typeof orderTranslations];
-      },
+      header: () => t(`orderTranslations.${key}`),
       sortDescFirst: false,
       enableSorting: key !== "status",
     })
@@ -120,10 +116,7 @@ export const getExportData = (
   const keys =
     role === "customer" ? keysCustomer[route] : keysTransporter[route];
   if (!keys) throw "This route not in the dict";
-  const headers = keys.map((key) => {
-    if (!(key in orderTranslations)) throw `Add ${key} to orderTranslations`;
-    return orderTranslations[key as keyof typeof orderTranslations];
-  });
+  const headers = keys.map((key) => t(`orderTranslations.${key}`));
   const data = orders.map((order) => {
     const earliestLoadStage = findEarliestLoadStage(order.stages);
     const latestUnloadStage = findLatestUnloadStage(order.stages);

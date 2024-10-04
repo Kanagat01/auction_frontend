@@ -1,12 +1,12 @@
-import { CSSProperties, ChangeEvent, useState, ReactNode } from "react";
-import { useLocation } from "react-router";
 import { useUnit } from "effector-react";
-import { DriverProfileTranslations } from "~/entities/User";
-import { $preCreateOrder, TGetOrder } from "~/entities/Order";
+import { useLocation } from "react-router";
+import { useTranslation } from "react-i18next";
+import { CSSProperties, ChangeEvent, useState, ReactNode } from "react";
 import { copyOnClickWrapper, handleClick } from "~/features/copyOnClick";
-import { InputContainer, RoundedTable, TitleSm } from "~/shared/ui";
+import { $preCreateOrder, TGetOrder } from "~/entities/Order";
 import Routes from "~/shared/routes";
 import { dateToString } from "~/shared/lib";
+import { InputContainer, RoundedTable, TitleSm } from "~/shared/ui";
 
 const gridContainer: CSSProperties = {
   display: "grid",
@@ -17,6 +17,7 @@ const gridContainer: CSSProperties = {
 };
 
 export function DataSection({ order }: { order: TGetOrder }) {
+  const { t } = useTranslation();
   const preCreateOrder = useUnit($preCreateOrder);
   const transport_body_type = preCreateOrder?.transport_body_types.find(
     (el) => el.id === order.transport_body_type
@@ -40,66 +41,75 @@ export function DataSection({ order }: { order: TGetOrder }) {
     [
       {
         name: "transportation_number",
-        label: "№ Транспортировки",
+        label: t("orderTranslations.transportation_number"),
         defaultValue: order.transportation_number,
       },
       {
         name: "customer_manager",
-        label: "Заказчик",
+        label: t("common.customer"),
         defaultValue: order.customer_manager.user.full_name,
       },
     ],
     [
       {
         name: "comments_for_transporter",
-        label: "Комментарий для перевозчиков",
+        label: t("orderTranslations.comments_for_transporter"),
         defaultValue: order.comments_for_transporter,
       },
       {
         name: "additional_requirements",
-        label: "Доп. требования",
+        label: t("orderTranslations.additional_requirements_short"),
         defaultValue: order.additional_requirements,
       },
     ],
     [
       {
         name: "transport_body_height",
-        label: "Высота кузова",
+        label: t("orderTranslations.transport_body_height"),
         defaultValue: order.transport_body_height,
       },
       {
         name: "transport_body_length",
-        label: "Длина кузова",
+        label: t("orderTranslations.transport_body_length"),
         defaultValue: order.transport_body_length,
       },
       {
         name: "transport_body_width",
-        label: "Ширина кузова",
+        label: t("orderTranslations.transport_body_width"),
         defaultValue: order.transport_body_width,
       },
     ],
   ];
   let tableData: [ReactNode, ReactNode][] = [
-    ["Стартовая цена", order.start_price],
-    ["Шаг цены", order.price_step],
-    ["Тип кузова", transport_body_type?.name],
-    ["Способ погрузки", transport_load_type?.name],
-    ["Способ выгрузки", transport_unload_type?.name],
-    ["ТС, м3", order.transport_volume],
-    ["Темп. режим", order.temp_mode],
-    ["ADR", order.adr],
+    [t("orderTranslations.start_price"), order.start_price],
+    [t("orderTranslations.price_step"), order.price_step],
+    [t("orderTranslations.transport_body_type"), transport_body_type?.name],
+    [t("orderTranslations.transport_load_type"), transport_load_type?.name],
+    [t("orderTranslations.transport_unload_type"), transport_unload_type?.name],
+    [t("orderTranslations.transport_volume"), order.transport_volume],
+    [t("orderTranslations.temp_mode"), order.temp_mode],
+    [t("orderTranslations.adr"), order.adr],
   ];
   if (order.driver) {
     tableData.push(
       ...([
-        [DriverProfileTranslations.phone_number, order.driver.phone_number],
-        [DriverProfileTranslations.full_name, order.driver.user.full_name],
         [
-          DriverProfileTranslations.passport_number,
+          t("driverProfileTranslations.phone_number"),
+          order.driver.phone_number,
+        ],
+        [t("driverProfileTranslations.full_name"), order.driver.user.full_name],
+        [
+          t("driverProfileTranslations.passport_number"),
           order.driver.passport_number,
         ],
-        [DriverProfileTranslations.machine_data, order.driver.machine_data],
-        [DriverProfileTranslations.machine_number, order.driver.machine_number],
+        [
+          t("driverProfileTranslations.machine_data"),
+          order.driver.machine_data,
+        ],
+        [
+          t("driverProfileTranslations.machine_number"),
+          order.driver.machine_number,
+        ],
       ] as [ReactNode, ReactNode][])
     );
   }
@@ -136,13 +146,13 @@ export function DataSection({ order }: { order: TGetOrder }) {
           ))}
         </div>
       ))}
-      <TitleSm>Таблица</TitleSm>
+      <TitleSm>{t("common.table")}</TitleSm>
       <RoundedTable data={tableData} />
       <div className="gray-bg">
         <div style={gridContainer}>
           <TitleSm className="ms-2 mb-2" style={{ fontWeight: 600 }}>
             <div className="d-flex align-items-center justify-content-between">
-              Поставка{" "}
+              {t("orderStage.singular")}{" "}
               <span className="gray-text">
                 <InputContainer
                   variant="select"
@@ -162,20 +172,22 @@ export function DataSection({ order }: { order: TGetOrder }) {
             </div>
           </TitleSm>
           <TitleSm className="ms-2 mb-2" style={{ fontWeight: 600 }}>
-            № Поставки:{" "}
+            {t("orderStage.stageNumber")}:{" "}
             <span className="gray-text">
               {copyOnClickWrapper(order_stage_number)}
             </span>
           </TitleSm>
-          {["Погрузка", "Выгрузка"].map((text) => (
-            <TitleSm
-              key={text}
-              className="position-relative ms-2 mb-2"
-              style={{ fontWeight: 600 }}
-            >
-              {text}
-            </TitleSm>
-          ))}
+          {[t("orderStage.loadingStage"), t("orderStage.unloadingStage")].map(
+            (text) => (
+              <TitleSm
+                key={text}
+                className="position-relative ms-2 mb-2"
+                style={{ fontWeight: 600 }}
+              >
+                {text}
+              </TitleSm>
+            )
+          )}
           {[load_stage, unload_stage].map((stage, key) => (
             <RoundedTable
               key={key}
@@ -210,7 +222,8 @@ export function DataSection({ order }: { order: TGetOrder }) {
               className="d-flex flex-column justify-content-between"
             >
               <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
-                Параметры груза - {copyOnClickWrapper(cargo)}
+                {t("orderTranslations.cargo_parameters")} -{" "}
+                {copyOnClickWrapper(cargo)}
               </TitleSm>
               <div className="gray-line" />
             </div>
@@ -218,11 +231,15 @@ export function DataSection({ order }: { order: TGetOrder }) {
           {[1, 2].map((key) => (
             <div key={key}>
               <div className="d-flex justify-content-between mt-2">
-                <TitleSm className="gray-text">Вес</TitleSm>
+                <TitleSm className="gray-text">
+                  {t("orderTranslations.weight")}
+                </TitleSm>
                 <TitleSm>{copyOnClickWrapper(`${weight} kg`)}</TitleSm>
               </div>
               <div className="d-flex justify-content-between mt-1">
-                <TitleSm className="gray-text">Обьем</TitleSm>
+                <TitleSm className="gray-text">
+                  {t("orderTranslations.volume")}
+                </TitleSm>
                 <TitleSm>{copyOnClickWrapper(`${volume} cbm`)}</TitleSm>
               </div>
             </div>
@@ -230,7 +247,7 @@ export function DataSection({ order }: { order: TGetOrder }) {
           {[load_stage, unload_stage].map((stage, key) => (
             <div key={key}>
               <TitleSm className="mt-4 mb-2" style={{ fontWeight: 600 }}>
-                Комментарии к поставке
+                {t("orderStageTranslations.comments")}
               </TitleSm>
               <div className="gray-line mb-2" />
               <TitleSm>

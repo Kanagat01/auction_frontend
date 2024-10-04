@@ -4,6 +4,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   InputContainer,
   MainTitle,
@@ -15,6 +16,7 @@ import {
 } from "~/shared/ui";
 
 export default function CargoPlan() {
+  const { t } = useTranslation();
   const columnHelper = createColumnHelper<any>();
   const keys = [
     "Время",
@@ -290,7 +292,7 @@ export default function CargoPlan() {
   return (
     <RoundedWhiteBox>
       <div className="p-5">
-        <MainTitle>План погрузки</MainTitle>
+        <MainTitle>{t("orders.pages.cargoPlan")}</MainTitle>
         <div className="control-panel">
           {[
             ["", "Пункт погрузки", "Пункт погрузки"],
@@ -308,7 +310,7 @@ export default function CargoPlan() {
           <div className="actions flex-row">
             {[
               ["Прибытие", "Закрыть для перевозчика"],
-              ["Погрузка", "Открыть для перевозчика"],
+              [t("orderStage.loadingStage"), "Открыть для перевозчика"],
               ["Отбытие"],
               ["Проблема", "Подать данные"],
             ].map((arr, key) => (

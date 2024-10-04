@@ -1,12 +1,13 @@
-import toast from "react-hot-toast";
 import {
   useState,
   ChangeEvent,
   CSSProperties,
   ButtonHTMLAttributes,
 } from "react";
+import { t } from "i18next";
+import toast from "react-hot-toast";
 import { Modal } from "react-bootstrap";
-import { DriverProfileTranslations } from "~/entities/User";
+import { useTranslation } from "react-i18next";
 import { useModalState } from "~/shared/lib";
 import {
   InputContainer,
@@ -20,7 +21,6 @@ import {
   addDriverData,
   $selectedOrder,
   OrderStatus,
-  OrderStatusTranslation,
 } from "..";
 
 const btnStyle: CSSProperties = {
@@ -30,12 +30,13 @@ const btnStyle: CSSProperties = {
   textWrap: "nowrap",
 };
 const inputs: [keyof Omit<AddDriverDataRequest, "order_id">, string][] = [
-  ["full_name", "Имя"],
-  ["phone_number", "+7 (777) 777 7777"],
+  ["full_name", t("addDriverData.inputPlaceholders.fullName")],
+  ["phone_number", t("addDriverData.inputPlaceholders.phoneNumber")],
   ["passport_number", "000000"],
-  ["machine_data", "Данные"],
+  ["machine_data", t("addDriverData.inputPlaceholders.machineData")],
   ["machine_number", "000000"],
 ];
+
 const initialState = {
   full_name: "",
   machine_data: "",
@@ -47,6 +48,7 @@ const initialState = {
 export const AddDriverData = (
   props: ButtonHTMLAttributes<HTMLButtonElement>
 ) => {
+  const { t } = useTranslation();
   const [show, changeShow] = useModalState(false);
   const [driverData, setDriverData] =
     useState<Omit<AddDriverDataRequest, "order_id">>(initialState);
@@ -54,13 +56,13 @@ export const AddDriverData = (
   const onClick = () => {
     const order = $selectedOrder.getState();
     if (!order) {
-      toast.error("Выберите заказ");
+      toast.error(t("orders.selectOrder"));
       return;
     } else if (order.status !== OrderStatus.being_executed) {
       toast.error(
-        `Нельзя подать данные, статус заказа "${
-          OrderStatusTranslation[order.status]
-        }"`
+        t("addDriverData.canNotAddData", {
+          status: t(`orderStatus.${order.status}`),
+        })
       );
       return;
     }
@@ -85,15 +87,15 @@ export const AddDriverData = (
   return (
     <>
       <PrimaryButton {...props} onClick={onClick}>
-        Подать данные
+        {t("addDriverData.title")}
       </PrimaryButton>
       <Modal show={show} onHide={changeShow} className="gradient-modal">
         <Modal.Body>
-          <ModalTitle className="mb-4">Подать данные</ModalTitle>
+          <ModalTitle className="mb-4">{t("addDriverData.title")}</ModalTitle>
           {inputs.map(([name, placeholder], key) => (
             <InputContainer
               {...{ key, name, placeholder, onChange }}
-              label={DriverProfileTranslations[name]}
+              label={t(`driverProfileTranslations.${name}`)}
               value={driverData[name]}
               variant="input"
               type={
@@ -109,10 +111,10 @@ export const AddDriverData = (
           ))}
           <div className="buttons">
             <OutlineButton onClick={onSubmit} style={btnStyle}>
-              Подать данные
+              {t("addDriverData.title")}
             </OutlineButton>
             <OutlineButton onClick={onReset} style={btnStyle}>
-              Отмена
+              {t("common.cancel")}
             </OutlineButton>
           </div>
         </Modal.Body>

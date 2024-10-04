@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react";
 import { Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import {
   FieldProps,
   fieldUpdate,
@@ -7,7 +8,6 @@ import {
   initialOrder,
   SelectFieldProps,
 } from "~/features/create-order";
-import { orderTranslations } from "~/entities/Order";
 import { InputContainer } from "~/shared/ui";
 import styles from "./styles.module.scss";
 
@@ -27,7 +27,8 @@ const handleChange = fieldUpdate.prepend(
 );
 
 export const SelectField = ({ name, value, options }: SelectFieldProps) => {
-  const label = orderTranslations[name];
+  const { t } = useTranslation();
+  const label = t(`orderTranslations.${name}`);
   return (
     <Col md={4} className="p-0">
       <InputContainer
@@ -45,7 +46,8 @@ export const SelectField = ({ name, value, options }: SelectFieldProps) => {
 };
 
 export const Field = ({ name, value, colNum }: FieldProps) => {
-  const label = orderTranslations[name];
+  const { t } = useTranslation();
+  const label = t("orderTranslations.${name}");
   const type = typeof initialOrder[name] === "number" ? "number" : "string";
   switch (colNum) {
     case 1:

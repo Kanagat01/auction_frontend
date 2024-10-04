@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import toast from "react-hot-toast";
 import axios, { AxiosError } from "axios";
 import { attach, createEffect, createEvent, Effect } from "effector";
@@ -30,16 +31,17 @@ const registerCompanyFx = createEffect<
     return response.data.message;
   } catch (error) {
     if (error instanceof AxiosError) {
-      if (error.response?.status! > 499) throw "Ошибка на сервере";
+      if (error.response?.status! > 499)
+        throw t("common.serverError", { code: error.response?.status });
 
       const { message } = error.response?.data;
       if (message) {
         if (message.email && message.email[0] === "user_already_exists")
-          throw "Пользователь с таким email уже существует";
+          throw t("registration.userAlreadyExists");
         throw message;
       }
     }
-    throw "Неизвестная ошибка";
+    throw t("common.unknownError", { error });
   }
 });
 
@@ -48,7 +50,7 @@ export const registerCompany = createEvent<
 >();
 registerCompany.watch(({ navigateFunc, ...data }) => {
   const errorsList: string[] = [];
-  if (!isValidEmail(data.email)) errorsList.push("Неправильный формат email");
+  if (!isValidEmail(data.email)) errorsList.push(t("common.notValidEmail"));
 
   const passwordError = validatePassword(data.password);
   if (passwordError !== "") errorsList.push(passwordError);
@@ -58,14 +60,14 @@ registerCompany.watch(({ navigateFunc, ...data }) => {
     return;
   }
   toast.promise(registerCompanyFx(data), {
-    loading: "Регистрируем аккаунт...",
+    loading: t("registration.loadingCompany"),
     success: (message) => {
       localStorage.setItem("token", message.token);
       setAuth(true);
       navigateFunc();
-      return "Вы успешно зарегистрированы";
+      return t("registration.successCompany");
     },
-    error: (err) => `Произошла ошибка: ${err}`,
+    error: (err) => t("common.errorMessage", { err }),
   });
 });
 
@@ -91,24 +93,24 @@ registerManager.watch(({ repeat_password, onSuccess, ...data }) => {
     toast.error(passwordValidation);
     return;
   } else if (data.password !== repeat_password) {
-    toast.error("Пароли не совпадают");
+    toast.error(t("changePassword.passwordsDoNotMatch"));
     return;
   } else if (!isValidEmail(data.email)) {
-    toast.error("Неправильный формат email");
+    toast.error(t("common.notValidEmail"));
     return;
   }
   toast.promise(registerManagerFx(data), {
-    loading: "Регистрируем менеджера",
+    loading: t("registration.loadingManager"),
     success: (manager) => {
       const prevState = $mainData.getState() as CustomerCompany;
       setMainData({ ...prevState, managers: [...prevState.managers, manager] });
       onSuccess();
-      return "Менеджер успешно зарегистрирован";
+      return t("registration.successManager");
     },
     error: (err) => {
       if (err?.email?.[0] === "user_already_exists")
-        return "Пользователь с таким email уже существует";
-      return `Произошла ошибка: ${err}`;
+        return t("registration.userAlreadyExists");
+      return t("common.errorMessage", { err });
     },
   });
 });

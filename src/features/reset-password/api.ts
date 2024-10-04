@@ -1,10 +1,11 @@
+import { t } from "i18next";
 import toast from "react-hot-toast";
 import axios, { AxiosError } from "axios";
 import { createEffect, createEvent } from "effector";
 import { setAuth } from "~/features/authorization";
 import { isValidEmail, validatePassword } from "~/shared/lib";
-import Routes from "~/shared/routes";
 import { API_URL } from "~/shared/config";
+import Routes from "~/shared/routes";
 import {
   ForgotPasswordRequest,
   ResetPasswordConfirmRequest,
@@ -21,18 +22,19 @@ const forgotPasswordFx = createEffect<ForgotPasswordRequest, string>(
       return response.data.message;
     } catch (error) {
       if (error instanceof AxiosError) {
-        if (error.response?.status! > 499) throw "Ошибка на сервере";
+        if (error.response?.status! > 499)
+          throw t("common.serverError", { code: error.response?.status });
 
         const { message } = error.response?.data;
         if (message) {
           if (typeof message === "object" && message.email)
-            throw "Введите правильный адрес электронной почты";
+            throw t("forgotPassword.enterCorrectEmail");
           else if (typeof message === "string" && message === "user_not_found")
-            throw "Пользователь с таким email не найден";
+            throw t("forgotPassword.userNotFound");
           throw message;
         }
       }
-      throw "Неизвестная ошибка";
+      throw t("common.unknownError", { error });
     }
   }
 );
@@ -42,16 +44,16 @@ export const forgotPassword = createEvent<
 >();
 forgotPassword.watch(({ email, setSuccess }) => {
   if (!isValidEmail(email)) {
-    toast.error("Неправильный формат email");
+    toast.error(t("common.notValidEmail"));
     return;
   }
   toast.promise(forgotPasswordFx({ email }), {
-    loading: "Отправляем запрос...",
+    loading: t("forgotPassword.loading"),
     success: () => {
       setSuccess(true);
-      return "Письмо для сброса пароля отправлено";
+      return t("forgotPassword.success");
     },
-    error: (err) => `Произошла ошибка: ${err}`,
+    error: (err) => t("common.errorMessage", { err }),
   });
 });
 
@@ -67,7 +69,8 @@ const resetPasswordConfirmFx = createEffect<
     return response.data.message;
   } catch (error) {
     if (error instanceof AxiosError) {
-      if (error.response?.status! > 499) throw "Ошибка на сервере";
+      if (error.response?.status! > 499)
+        throw t("common.serverError", { code: error.response?.status });
 
       const { message } = error.response?.data;
       if (message) {
@@ -75,12 +78,12 @@ const resetPasswordConfirmFx = createEffect<
           switch (message) {
             case "invalid_token":
               setIsValidToken(false);
-              throw "Адрес не существует";
+              throw t("resetPassword.invalidToken");
             case "token_expired":
               setIsValidToken(false);
-              throw "Ссылка истекла";
+              throw t("resetPassword.tokenExpired");
             case "user_not_found":
-              throw "Пользователь не найден";
+              throw t("login.404");
           }
         } else if (typeof message === "object") {
           if (
@@ -89,12 +92,12 @@ const resetPasswordConfirmFx = createEffect<
               "passwords_do_not_match"
             )
           )
-            throw "Пароли не совпадают";
+            throw t("changePassword.passwordsDoNotMatch");
         }
         throw message;
       }
     }
-    throw "Неизвестная ошибка";
+    throw t("common.unknownError", { error });
   }
 });
 
@@ -103,7 +106,7 @@ export const resetPasswordConfirm = createEvent<
 >();
 resetPasswordConfirm.watch(({ navigate, ...data }) => {
   if (data.new_password !== data.confirm_password) {
-    toast.error("Пароли не совпадают");
+    toast.error(t("changePassword.passwordsDoNotMatch"));
     return;
   }
 
@@ -114,13 +117,13 @@ resetPasswordConfirm.watch(({ navigate, ...data }) => {
   }
 
   toast.promise(resetPasswordConfirmFx(data), {
-    loading: "Сбрасываем пароль...",
+    loading: t("resetPassword.loading"),
     success: ({ token }) => {
       localStorage.setItem("token", token);
       setAuth(true);
       navigate(Routes.HOME);
-      return "Ваш пароль обновлен";
+      return t("resetPassword.success");
     },
-    error: (err) => `Произошла ошибка: ${err}`,
+    error: (err) => t("common.errorMessage", { err }),
   });
 });

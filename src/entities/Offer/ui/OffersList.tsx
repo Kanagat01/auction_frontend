@@ -1,8 +1,10 @@
+import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
 import { Checkbox, RoundedTable, TextCenter, TitleMd } from "~/shared/ui";
 import { $selectedOffer, OrderOffer, selectOffer } from "..";
-import { useUnit } from "effector-react";
 
 export function OffersList({ offers }: { offers: OrderOffer[] }) {
+  const { t } = useTranslation();
   const selectedOffer = useUnit($selectedOffer);
   const docsData = offers.map((offer) => [
     <TextCenter>
@@ -27,12 +29,12 @@ export function OffersList({ offers }: { offers: OrderOffer[] }) {
         className="d-flex align-items-center justify-content-between mb-3"
         style={{ height: "3rem" }}
       >
-        <TitleMd>Предложения</TitleMd>
+        <TitleMd>{t("offers.plural")}</TitleMd>
       </div>
       <RoundedTable
         columns={[
-          <TextCenter>Перевозчик</TextCenter>,
-          <TextCenter>Ставка</TextCenter>,
+          <TextCenter>{t("common.transporter")}</TextCenter>,
+          <TextCenter>{t("common.bid")}</TextCenter>,
         ]}
         data={docsData}
       />

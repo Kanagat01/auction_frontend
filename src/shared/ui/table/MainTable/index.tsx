@@ -1,4 +1,5 @@
 import { Dispatch, HTMLAttributes, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 import { Table } from "@tanstack/react-table";
 
 import {
@@ -43,6 +44,7 @@ export function MainTable({
   columnOrder,
   setColumnOrder,
 }: MainTableProps) {
+  const { t } = useTranslation();
   const headerGroups = table.getHeaderGroups();
   const rows = table.getRowModel().rows;
   const checkRowProps = (obj: unknown) =>
@@ -100,7 +102,7 @@ export function MainTable({
               <tr>
                 <td colSpan={headerGroups[0].headers.length}>
                   <TitleMd className="p-4">
-                    <TextCenter>Нет данных для отображения</TextCenter>
+                    <TextCenter>{t("common.noData")}</TextCenter>
                   </TitleMd>
                 </td>
               </tr>
@@ -138,7 +140,7 @@ export function MainTable({
               <tr>
                 <td colSpan={headerGroups[0].headers.length}>
                   <TitleMd className="p-4">
-                    <TextCenter>Нет данных для отображения</TextCenter>
+                    <TextCenter>{t("common.noData")}</TextCenter>
                   </TitleMd>
                 </td>
               </tr>

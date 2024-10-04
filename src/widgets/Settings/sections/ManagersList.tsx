@@ -1,4 +1,5 @@
 import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
 import {
   $mainData,
   CustomerCompany,
@@ -8,14 +9,15 @@ import { Checkbox, RoundedTable, TextCenter } from "~/shared/ui";
 import { $selectedManager, fontSize, setSelectedManager } from "./helpers";
 
 export function ManagersList() {
+  const { t } = useTranslation();
   const mainData = useUnit($mainData) as CustomerCompany | TransporterCompany;
   const selectedManager = useUnit($selectedManager);
   return (
     <RoundedTable
       columns={[
-        <TextCenter style={fontSize}>ID</TextCenter>,
-        <TextCenter style={fontSize}>Менеджер</TextCenter>,
-        <TextCenter style={fontSize}>Email</TextCenter>,
+        <TextCenter style={fontSize}>{t("common.id")}</TextCenter>,
+        <TextCenter style={fontSize}>{t("common.manager")}</TextCenter>,
+        <TextCenter style={fontSize}>{t("editUser.email")}</TextCenter>,
       ]}
       data={mainData.managers.map(({ user: { email, full_name }, ...data }) => {
         const id =

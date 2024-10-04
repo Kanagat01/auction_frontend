@@ -1,5 +1,6 @@
-import { FormEvent, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { FormEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { forgotPassword } from "~/features/reset-password";
 import { PrimaryButton, RoundedInputGroup } from "~/shared/ui";
 import { useTextInputState } from "~/shared/lib";
@@ -7,6 +8,7 @@ import Routes from "~/shared/routes";
 import { Credentials } from "./Credentials";
 
 export function ForgotPassword() {
+  const { t } = useTranslation();
   const [success, setSuccess] = useState<boolean>(false);
   const [email, emailOnChange] = useTextInputState("");
   const handleSubmit = (e: FormEvent) => {
@@ -18,14 +20,9 @@ export function ForgotPassword() {
       <form className="login-form" onSubmit={handleSubmit}>
         <span className="login-title">Cargonika</span>
         <span className="login-subtitle">
-          {success ? (
-            'На введенный вами email было отправлено сообщение со ссылкой для сброса пароля. Если письмо не пришло проверьте папку "Спам"'
-          ) : (
-            <>
-              Для восстановления пароля введите <br /> Ваш адрес электронной
-              почты
-            </>
-          )}
+          {success
+            ? t("forgotPassword.loginSubtitleSuccess")
+            : t("forgotPassword.loginSubtitle")}
         </span>
         {!success ? (
           <>
@@ -37,14 +34,17 @@ export function ForgotPassword() {
                 required
               />
             </RoundedInputGroup>
-            <PrimaryButton type="submit">Восстановить</PrimaryButton>
+            <PrimaryButton type="submit">
+              {t("forgotPassword.recover")}
+            </PrimaryButton>
             <span className="link-text">
-              Уже есть аккаунт? <NavLink to={Routes.LOGIN}>Войти</NavLink>
+              {t("login.alreadyHaveAnAccount")}{" "}
+              <NavLink to={Routes.LOGIN}>{t("login.buttonText")}</NavLink>
             </span>
           </>
         ) : (
           <a href="#" className="mt-1" onClick={() => setSuccess(false)}>
-            Изменить Email
+            {t("forgotPassword.changeEmail")}
           </a>
         )}
       </form>

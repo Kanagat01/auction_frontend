@@ -1,4 +1,5 @@
 import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
 import {
   $mainData,
   $settings,
@@ -10,6 +11,8 @@ import { formatPhoneNumber } from "~/shared/lib";
 import styles from "./styles.module.scss";
 
 export function MenuProfile() {
+  const { i18n } = useTranslation();
+
   const mainData = useUnit($mainData);
   const settings = useUnit($settings);
   let orgName;
@@ -30,10 +33,10 @@ export function MenuProfile() {
           {mainData
             ? `${Number(
                 ("balance" in mainData ? mainData : mainData.company).balance
-              ).toLocaleString("ru-RU", {
+              ).toLocaleString(i18n.language || "ru-RU", {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 2,
-              })} Rub`
+              })} ₽`
             : ""}
         </span>
         <span className={styles["org-name"]}>

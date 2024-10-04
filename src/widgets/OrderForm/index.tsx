@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useMatch } from "react-router";
 import { useUnit } from "effector-react";
 import { Col, Row } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import {
   $orderForm,
   clearForm,
@@ -55,6 +56,7 @@ function deepEqual(obj1: any, obj2: any): boolean {
 }
 
 export function OrderForm(preCreateOrder: PreCreateOrderResponse) {
+  const { t } = useTranslation();
   const order = useUnit($orderForm);
   const match = useMatch(Routes.EDIT_ORDER);
 
@@ -91,7 +93,7 @@ export function OrderForm(preCreateOrder: PreCreateOrderResponse) {
     >
       <Row>
         <Col md={6} lg={3} className="mb-4">
-          <div className={styles.title}>Заказчик</div>
+          <div className={styles.title}>{t("common.customer")}</div>
           {inputNamesCol1.map((name) => (
             <Field
               key={name}
@@ -102,7 +104,7 @@ export function OrderForm(preCreateOrder: PreCreateOrderResponse) {
           ))}
         </Col>
         <Col md={6} lg={4} className="mb-4">
-          <div className={styles.title}>Дополнительно</div>
+          <div className={styles.title}>{t("orders.additional")}</div>
           <div className={styles.secondCol}>
             <Field
               name="comments_for_transporter"
@@ -117,7 +119,7 @@ export function OrderForm(preCreateOrder: PreCreateOrderResponse) {
           </div>
         </Col>
         <Col md={12} lg={5} className="mb-4">
-          <div className={styles.title}>Транспорт</div>
+          <div className={styles.title}>{t("orders.transport")}</div>
           <Row>
             <SelectField
               name="transport_body_type"

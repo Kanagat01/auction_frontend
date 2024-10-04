@@ -1,15 +1,11 @@
 import { ChangeEvent } from "react";
 import { useStoreMap } from "effector-react";
-import {
-  CargoParams,
-  OrderStageTranslations,
-  OrderStageKey,
-  TStage,
-} from "~/entities/OrderStage";
+import { useTranslation } from "react-i18next";
+import { CargoParams, OrderStageKey, TStage } from "~/entities/OrderStage";
 import { InputContainer, OutlineButton } from "~/shared/ui";
-import { stageFieldUpdate } from "../stageEvents";
-import { StageFieldUpdatePayload } from "../types";
 import { $orderStages, initialOrderStage } from "../state";
+import { StageFieldUpdatePayload } from "../types";
+import { stageFieldUpdate } from "../stageEvents";
 import styles from "./styles.module.scss";
 
 type FieldProps = { name: OrderStageKey; stageType: TStage };
@@ -38,16 +34,17 @@ const handleChange = stageFieldUpdate.prepend(
 );
 
 const StageTypeInput = ({ value }: { value: TStage }) => {
+  const { t } = useTranslation();
   return (
     <InputContainer
       name="stage"
-      label="Тип этапа"
+      label={t("orderStage.stageType")}
       value={value}
       className="w-100 h-auto mb-3"
       variant="bootstrap-select"
       options={[
-        ["load_stage", "Погрузка"],
-        ["unload_stage", "Выгрузка"],
+        ["load_stage", t("orderStage.loadingStage")],
+        ["unload_stage", t("orderStage.unloadingStage")],
       ]}
       labelStyle={{
         color: "var(--default-font-color)",
@@ -58,6 +55,7 @@ const StageTypeInput = ({ value }: { value: TStage }) => {
 };
 
 const Field = ({ name, stageType }: FieldProps) => {
+  const { t } = useTranslation();
   const value = useStoreMap({
     store: $orderStages,
     keys: [name, stageType],
@@ -66,7 +64,7 @@ const Field = ({ name, stageType }: FieldProps) => {
   return (
     <InputContainer
       {...{ name, value, onChange: handleChange }}
-      label={OrderStageTranslations[name]}
+      label={t(`orderStageTranslations.${name}`)}
       variant={name === "comments" ? "textarea" : "input"}
       type={
         name === "date"
@@ -82,6 +80,7 @@ const Field = ({ name, stageType }: FieldProps) => {
 };
 
 const StageCoupleField = ({ name }: { name: keyof CargoParams }) => {
+  const { t } = useTranslation();
   const value = useStoreMap({
     store: $orderStages,
     keys: [name],
@@ -90,7 +89,7 @@ const StageCoupleField = ({ name }: { name: keyof CargoParams }) => {
   return (
     <InputContainer
       {...{ name, value, onChange: handleChange }}
-      label={OrderStageTranslations[name]}
+      label={t(`orderStageTranslations.${name}`)}
       variant="input"
       type={name === "cargo" ? "text" : "number"}
       labelStyle={{ color: "var(--default-font-color)" }}
@@ -100,6 +99,7 @@ const StageCoupleField = ({ name }: { name: keyof CargoParams }) => {
 };
 
 const TimeInput = ({ name, stageType }: FieldProps) => {
+  const { t } = useTranslation();
   const value = useStoreMap({
     store: $orderStages,
     keys: [name, stageType],
@@ -108,7 +108,7 @@ const TimeInput = ({ name, stageType }: FieldProps) => {
   return (
     <InputContainer
       {...{ name, value, onChange: handleChange }}
-      label={OrderStageTranslations[name]}
+      label={t(`orderStageTranslations.${name}`)}
       variant="input"
       type="time"
       className="mb-0"

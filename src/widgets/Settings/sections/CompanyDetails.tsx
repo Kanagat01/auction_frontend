@@ -1,6 +1,6 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { $mainData, CustomerCompany, editDetails } from "~/entities/User";
 import { InputContainer, PrimaryButton } from "~/shared/ui";
 import { btnStyle, inputProps } from "./helpers";
@@ -24,7 +24,7 @@ export function CompanyDetails() {
       <InputContainer
         variant="textarea"
         name="details"
-        label={t("details")}
+        label={t("editDetails.details")}
         value={details}
         onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
           setDetails(e.target.value)
@@ -35,10 +35,10 @@ export function CompanyDetails() {
       />
       <div className="d-flex justify-content-evenly w-100 mt-4">
         <PrimaryButton type="submit" style={btnStyle}>
-          Сохранить
+          {t("common.save")}
         </PrimaryButton>
         <PrimaryButton type="reset" style={btnStyle}>
-          Отмена
+          {t("common.cancel")}
         </PrimaryButton>
       </div>
     </form>

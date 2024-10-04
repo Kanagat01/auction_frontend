@@ -1,7 +1,8 @@
-import { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
-import { useLocation } from "react-router-dom";
 import { useUnit } from "effector-react";
+import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { createEvent, createStore } from "effector";
+import { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
 import { COLLAPSED_STORAGE_KEY } from "~/shared/lib";
 import { InputProps } from "~/shared/ui";
 import Routes from "~/shared/routes";
@@ -18,13 +19,14 @@ export const useDefaultInputs = (): {
   transportationNumber: number;
   defaultInputs: Omit<InputProps, "variant">[];
 } => {
+  const { t } = useTranslation();
   const [cityFrom, setCityFrom] = useState<string>("");
   const [cityTo, setCityTo] = useState<string>("");
   const [transportationNumber, setTransportationNumber] = useState<number>(0);
   const defaultInputs: Omit<InputProps, "variant">[] = [
     {
       name: "transportation_number",
-      label: "№ Транспортировки",
+      label: t("orderTranslations.transportation_number"),
       placeholder: "00000000",
       type: "number",
       min: 0,
@@ -42,16 +44,16 @@ export const useDefaultInputs = (): {
     },
     {
       name: "city_from",
-      label: "Город-старт",
-      placeholder: "Москва",
+      label: t("orderTranslations.city_from"),
+      placeholder: t("orders.pages.inputPlaceholders.cityFrom"),
       value: cityFrom,
       onChange: (e: ChangeEvent<HTMLInputElement>) =>
         setCityFrom(e.target.value),
     },
     {
       name: "city_to",
-      label: "Город-место назначения",
-      placeholder: "Балашиха",
+      label: t("orderTranslations.city_to"),
+      placeholder: t("orders.pages.inputPlaceholders.cityTo"),
       value: cityTo,
       onChange: (e: ChangeEvent<HTMLInputElement>) => setCityTo(e.target.value),
     },

@@ -1,6 +1,7 @@
-import { ReactNode, useEffect } from "react";
 import { ReactSVG } from "react-svg";
 import { useUnit } from "effector-react";
+import { ReactNode, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { NavLink, useLocation } from "react-router-dom";
 
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -21,6 +22,7 @@ import Routes from "~/shared/routes";
 import styles from "./styles.module.scss";
 
 export function Sidebar() {
+  const { t } = useTranslation();
   const userType = useUnit($userType);
   const notifications = useUnit($notifications);
 
@@ -58,7 +60,7 @@ export function Sidebar() {
         {NotificationDot(Routes.ORDERS_BEING_EXECUTED)}
         <FaTruckMoving className={styles.icon} />
       </>,
-      "Журнал",
+      t("orders.pages.beingExecuted"),
       Routes.ORDERS_BEING_EXECUTED,
     ],
     [
@@ -66,7 +68,7 @@ export function Sidebar() {
         {NotificationDot(Routes.ORDERS_IN_AUCTION)}
         <ReactSVG src={Hammer} className={styles.icon} />
       </>,
-      "Аукцион",
+      t("orders.pages.inAuction"),
       Routes.ORDERS_IN_AUCTION,
     ],
     [
@@ -78,7 +80,7 @@ export function Sidebar() {
           style={{ fontSize: "3.5rem", lineHeight: "3rem" }}
         />
       </>,
-      "Торги",
+      t("orders.pages.inBidding"),
       Routes.ORDERS_IN_BIDDING,
     ],
     [
@@ -86,12 +88,12 @@ export function Sidebar() {
         {NotificationDot(Routes.ORDERS_IN_DIRECT)}
         <MdDownload className={styles.icon} />
       </>,
-      "Назначенные",
+      t("orders.pages.inDirect"),
       Routes.ORDERS_IN_DIRECT,
     ],
     // [
     //   <TbBoxMultiple className={styles.icon} />,
-    //   "План погрузки",
+    //   t("orders.pages.cargoPlan"),
     //   Routes.CARGO_PLAN,
     // ],
     [
@@ -99,7 +101,7 @@ export function Sidebar() {
         {NotificationDot(Routes.CANCELLED_ORDERS)}
         <RiDeleteBin5Line className={styles.icon} />
       </>,
-      "Отмененные",
+      t("orders.pages.cancelled"),
       Routes.CANCELLED_ORDERS,
     ],
   ];
@@ -107,7 +109,7 @@ export function Sidebar() {
   if (getRole(userType) === "customer") {
     sections.splice(1, 0, [
       <ImNewspaper className={styles.icon} />,
-      "Заказы",
+      t("orders.pages.unpublished"),
       Routes.UNPUBLISHED_ORDERS,
     ]);
   }
@@ -123,7 +125,9 @@ export function Sidebar() {
           <NavLink
             to={route}
             className={route === currentRoute ? styles.active : ""}
-            style={title === "Торги" ? { padding: "0.5rem" } : {}}
+            style={
+              title === t("orders.pages.inBidding") ? { padding: "0.5rem" } : {}
+            }
           >
             {icon}
           </NavLink>

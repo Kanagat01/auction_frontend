@@ -1,4 +1,5 @@
 import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
 import { $userType, getRole } from "~/entities/User";
 import { CancelOrder, OrderStatus, UnpublishOrder } from "~/entities/Order";
 import {
@@ -8,6 +9,7 @@ import {
 import { OrdersPage, textActionProps } from "./helpers";
 
 export function OrdersInDirect() {
+  const { t } = useTranslation();
   const userType = useUnit($userType);
   const customerPageData = {
     textActions:
@@ -33,7 +35,7 @@ export function OrdersInDirect() {
   };
   return (
     <OrdersPage
-      title="Назначенные"
+      title={t("orders.pages.inDirect")}
       pageData={
         getRole(userType) === "customer"
           ? customerPageData

@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import { Modal } from "react-bootstrap";
 import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
 import { useState, useEffect, ChangeEvent, ButtonHTMLAttributes } from "react";
 
 import { ModalTitle, InputContainer, OutlineButton } from "~/shared/ui";
@@ -36,6 +37,7 @@ export function CrudOrderStage({
 }: {
   orderStageNumber: number | "";
 }) {
+  const { t } = useTranslation();
   const mode = useUnit($mode);
   const show = useUnit($showStageFormModal);
   const stageType = useUnit($stageType);
@@ -68,7 +70,7 @@ export function CrudOrderStage({
       >
         <Modal.Body>
           <form className="position-relative overflow-hidden">
-            <ModalTitle>Поставка</ModalTitle>
+            <ModalTitle>{t("orderStage.singular")}</ModalTitle>
             <div
               className={`d-flex ${styles.animation}`}
               style={
@@ -79,16 +81,16 @@ export function CrudOrderStage({
             >
               <Stage
                 stageType="load_stage"
-                text1="Отмена"
+                text1={t("common.cancel")}
                 onClick1={resetStages}
-                text2="Далее"
+                text2={t("orderStage.next")}
                 onClick2={() => setStageType("unload_stage")}
               />
               <Stage
                 stageType="unload_stage"
-                text1="Назад"
+                text1={t("orderStage.back")}
                 onClick1={() => setStageType("load_stage")}
-                text2="Сохранить"
+                text2={t("common.save")}
                 onClick2={saveStages}
               />
             </div>
@@ -100,6 +102,7 @@ export function CrudOrderStage({
 }
 
 export function OrderStageForm() {
+  const { t } = useTranslation();
   const selectedStage = useUnit($selectedStage);
   const [orderStageNumber, setOrderStageNumber] = useState<number | "">(
     selectedStage ? selectedStage.order_stage_number : ""
@@ -120,7 +123,7 @@ export function OrderStageForm() {
         (el) => el.order_stage_number === value
       );
       if (alreadyExist) {
-        setErrorText("Такой номер поставки уже существует");
+        setErrorText(t("orderStage.orderStageWithThisNumberAlreadyExists"));
         return;
       } else {
         setErrorText(undefined);
@@ -145,7 +148,7 @@ export function OrderStageForm() {
     <div className="d-flex justify-content-between">
       <div className="d-flex flex-column">
         <InputContainer
-          label="№ Поставки"
+          label={t("orderStage.stageNumber")}
           name="order_stage_number"
           value={orderStageNumber}
           onChange={onChange}
@@ -172,10 +175,10 @@ export function OrderStageForm() {
           style={{ marginTop: "2rem", marginBottom: "1.5rem" }}
           type="submit"
         >
-          Сохранить
+          {t("common.save")}
         </OutlineButton>
         <OutlineButton className={styles.formButton} type="reset">
-          Отмена
+          {t("common.cancel")}
         </OutlineButton>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
 import { $userType, getRole } from "~/entities/User";
 import {
   AddDriverData,
@@ -10,6 +11,7 @@ import {
 import { OrdersPage, textActionProps } from "./helpers";
 
 export function OrdersBeingExecuted() {
+  const { t } = useTranslation();
   const userType = useUnit($userType);
   const customerPageData = {
     textActions:
@@ -35,7 +37,7 @@ export function OrdersBeingExecuted() {
   };
   return (
     <OrdersPage
-      title="Журнал перевозок"
+      title={t("orders.pages.beingExecuted")}
       pageData={
         getRole(userType) === "customer"
           ? customerPageData

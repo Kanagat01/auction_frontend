@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { FaPen } from "react-icons/fa6";
 import { useUnit } from "effector-react";
 import { Col, Row } from "react-bootstrap";
-import { FaPen } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 import { $mainData, EditUserForm } from "~/entities/User";
 import { RoundedGrayButton, RoundedWhiteBox, TitleLg } from "~/shared/ui";
 import styles from "./styles.module.scss";
 
 export default function Cabinet() {
+  const { t } = useTranslation();
   const mainData = useUnit($mainData);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   return (
@@ -17,7 +19,7 @@ export default function Cabinet() {
             className="d-flex justify-content-between align-items-center"
             style={{ height: "4rem" }}
           >
-            <TitleLg>Информация о профиле</TitleLg>
+            <TitleLg>{t("editUser.profileInfo")}</TitleLg>
             <RoundedGrayButton
               onClick={() => setIsEditing(!isEditing)}
               style={{ fontSize: "2rem", width: "4rem", height: "100%" }}
@@ -42,8 +44,3 @@ export default function Cabinet() {
     </Row>
   );
 }
-
-// <div className={styles["profile-location"]}>
-//   <FaLocationDot />
-//   <span style={{ lineHeight: "2.4rem" }}>Москва</span>
-// </div>

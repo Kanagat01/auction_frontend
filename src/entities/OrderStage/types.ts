@@ -3,7 +3,6 @@ export type CargoParams = {
   weight: number;
   volume: number;
 };
-type CargoParamKey = keyof CargoParams;
 
 export type OrderStages = {
   id?: number;
@@ -20,24 +19,6 @@ export type OrderStages = {
 };
 
 export type OrderStageKey = keyof Omit<OrderStages, "id" | "completed">;
-
-export const OrderStageTranslations: Record<
-  OrderStageKey | CargoParamKey,
-  string
-> = {
-  date: "Дата",
-  company: "Компания",
-  postal_code: "Индекс",
-  city: "Город",
-  address: "Адрес",
-  contact_person: "Контактное лицо",
-  cargo: "Груз",
-  weight: "Вес",
-  volume: "Обьем",
-  comments: "Комментарий к поставке",
-  time_start: "С",
-  time_end: "По",
-};
 
 export type TStages = {
   id?: number;

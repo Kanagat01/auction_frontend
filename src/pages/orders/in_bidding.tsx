@@ -1,10 +1,12 @@
 import { useUnit } from "effector-react";
+import { useTranslation } from "react-i18next";
 import { $userType, getRole } from "~/entities/User";
 import { AcceptBestOffer, MakeOffer } from "~/entities/Offer";
 import { CancelOrder, OrderStatus, UnpublishOrder } from "~/entities/Order";
 import { OrdersPage, textActionProps } from "./helpers";
 
 export function OrdersInBidding() {
+  const { t } = useTranslation();
   const userType = useUnit($userType);
   const customerPageData = {
     textActions:
@@ -30,7 +32,7 @@ export function OrdersInBidding() {
   };
   return (
     <OrdersPage
-      title="Торги"
+      title={t("orders.pages.beingExecuted")}
       pageData={
         getRole(userType) === "customer"
           ? customerPageData

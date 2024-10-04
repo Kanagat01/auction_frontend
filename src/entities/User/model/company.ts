@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import toast from "react-hot-toast";
 import { attach, createEvent, Effect } from "effector";
 import { apiRequestFx, RequestParams } from "~/shared/api";
@@ -22,12 +23,12 @@ editDetails.watch(({ details }) => {
     details,
   };
   toast.promise(editUserFx(data), {
-    loading: "Сохраняем реквизиты...",
+    loading: t("editDetails.loading"),
     success: () => {
       setMainData({ ...state, details } as TMainData);
-      return "Реквизиты обновлены";
+      return t("editDetails.success");
     },
-    error: (err) => `Произошла ошибка: ${err}`,
+    error: (err) => t("common.errorMessage", { err }),
   });
 });
 
@@ -46,19 +47,19 @@ const changeSubscriptionFx: Effect<
 export const changeSubscription = createEvent<{ subscription_id: number }>();
 changeSubscription.watch((data) => {
   toast.promise(changeSubscriptionFx(data), {
-    loading: "Обновляем тариф...",
+    loading: t("changeSubscription.loading"),
     success: (newMainData) => {
       setMainData(newMainData);
-      return "Тариф обновлен";
+      return t("changeSubscription.success");
     },
     error: (err) => {
       if (typeof err === "string") {
         if (err === "subscription does not exist")
-          return "Тариф с таким id не существует";
+          return t("changeSubscription.subscriptionNotExists");
         else if (err === "Only company accounts can change subscription")
-          return "Только аккаунт компании может изменять тарифы";
+          return t("changeSubscription.onlyCompanyCanChange");
       }
-      return `Произошла ошибка: ${err}`;
+      return t("common.errorMessage", { err });
     },
   });
 });
@@ -84,7 +85,7 @@ const editManagerFx: Effect<
 export const editManager = createEvent<EditManagerRequest>();
 editManager.watch((data) => {
   if (!isValidEmail(data.email)) {
-    toast.error("Неправильный формат email");
+    toast.error(t("common.notValidEmail"));
     return;
   }
   const state = $mainData.getState();
@@ -98,18 +99,18 @@ editManager.watch((data) => {
       (m) => m.transporter_manager_id === data.manager_id
     );
   if (!manager) {
-    toast.error("Менеджер не найден");
+    toast.error(t("editManager.managerNotFound"));
     return;
   }
   if (
     data.email === manager.user.email &&
     data.full_name === manager.user.full_name
   ) {
-    toast.error("Вы не изменили ни одно поле");
+    toast.error(t("common.youDidNotChangeAnyField"));
     return;
   }
   toast.promise(editManagerFx(data), {
-    loading: "Обновляем данные менеджера...",
+    loading: t("editManager.loading"),
     success: (newManager) => {
       const prevState = $mainData.getState() as
         | CustomerCompany
@@ -126,17 +127,17 @@ editManager.watch((data) => {
         const newState = { ...prevState, managers } as TMainData;
         setMainData(newState);
       }
-      return "Данные менеджера обновлены";
+      return t("editManager.success");
     },
     error: (err) => {
-      if (err?.email) return "Неправильный email";
+      if (err?.email) return t("common.wrongEmail");
       if (
         err?.manager_id &&
         err.manager_id ===
           "Manager with this id does not exist or does not belong to you"
       )
-        return "Менеджер с таким id не существует или он не принадлежит вам";
-      return `Произошла ошибка: ${err}`;
+        return t("editManager.notExistOrNotBelongError");
+      return t("common.errorMessage", { err });
     },
   });
 });

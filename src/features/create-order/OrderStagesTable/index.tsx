@@ -25,7 +25,7 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
               t("orderStage.stage"),
               t("orderStage.datetime"),
               t("orderStageTranslations.company"),
-              t("orderStageTranslations.postalCode"),
+              t("orderStageTranslations.postal_code"),
               t("orderStageTranslations.city"),
               t("orderStageTranslations.address"),
             ].map((text, idx) => (
@@ -34,7 +34,7 @@ export function OrderStagesTable({ orderStages }: { orderStages: TStages[] }) {
               </th>
             ))}
             <th colSpan={2}>{t("orderStageTranslations.cargo")}</th>
-            <th rowSpan={2}>{t("orderStageTranslations.contactPerson")}</th>
+            <th rowSpan={2}>{t("orderStageTranslations.contact_person")}</th>
           </tr>
           <tr>
             <th>{t("orderStageTranslations.weight")}</th>

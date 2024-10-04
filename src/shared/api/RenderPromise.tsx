@@ -4,7 +4,7 @@ import { Preloader } from "~/shared/ui";
 
 const CenteredPreloader = () => {
   return (
-    <div className="d-flex align-items-center justify-content-center w-100 h-100">
+    <div className="d-flex align-items-center justify-content-center w-100">
       <Preloader />
     </div>
   );

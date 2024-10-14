@@ -1,24 +1,6 @@
 import { useUnit } from "effector-react";
 import { useTranslation } from "react-i18next";
-import { createEffect, createStore } from "effector";
-import { apiInstance } from "~/shared/api";
-
-type TSettings = { phone_number: string; email: string };
-
-const getSettingsFx = createEffect<void, TSettings>(async () => {
-  try {
-    const response = await apiInstance.get("user/common/get_settings/");
-    return response.data.message;
-  } catch (err) {
-    console.error(err);
-  }
-});
-getSettingsFx();
-
-const $settings = createStore<TSettings | null>(null).on(
-  getSettingsFx.doneData,
-  (_, state) => state
-);
+import { $settings } from "~/entities/User";
 
 export function Credentials() {
   const { t } = useTranslation();

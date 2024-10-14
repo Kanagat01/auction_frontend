@@ -1,7 +1,7 @@
 import { createStore, createEffect, createEvent } from "effector";
 import { apiInstance } from "~/shared/api";
 import {
-  Settings,
+  TSettings,
   TUserType,
   CustomerCompany,
   CustomerManager,
@@ -15,10 +15,7 @@ export type TMainData =
   | TransporterCompany
   | TransporterManager;
 
-export const getMainDataFx = createEffect<
-  void,
-  { profile: TMainData; settings: Settings }
->(async () => {
+export const getMainDataFx = createEffect<void, TMainData>(async () => {
   try {
     const response = await apiInstance.get("/user/common/get_user/");
     return response.data.message;
@@ -30,7 +27,7 @@ export const getMainDataFx = createEffect<
 export const updateBalance = createEvent<number>();
 export const setMainData = createEvent<TMainData | null>();
 export const $mainData = createStore<TMainData | null>(null)
-  .on(getMainDataFx.doneData, (_, payload) => payload.profile)
+  .on(getMainDataFx.doneData, (_, payload) => payload)
   .on(setMainData, (_, newState) => newState)
   .on(updateBalance, (state, newBalance) => {
     if (!state) return null;
@@ -50,7 +47,17 @@ export const $userType = createStore<TUserType | "">("").on(
   (_, state) => state?.user.user_type ?? ""
 );
 
-export const $settings = createStore<Settings | null>(null).on(
-  getMainDataFx.doneData,
-  (_, _payload) => _payload.settings
+const getSettingsFx = createEffect<void, TSettings>(async () => {
+  try {
+    const response = await apiInstance.get("user/common/get_settings/");
+    return response.data.message;
+  } catch (err) {
+    console.error(err);
+  }
+});
+getSettingsFx();
+
+export const $settings = createStore<TSettings | null>(null).on(
+  getSettingsFx.doneData,
+  (_, _payload) => _payload
 );

@@ -32,7 +32,7 @@ export function OrdersInBidding() {
   };
   return (
     <OrdersPage
-      title={t("orders.pages.beingExecuted")}
+      title={t("orders.pages.inBidding")}
       pageData={
         getRole(userType) === "customer"
           ? customerPageData

@@ -3,7 +3,6 @@ import { Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { OutlineButton, PrimaryButton, TextCenter, TitleMd } from "~/shared/ui";
 import { useModalState } from "~/shared/lib";
-import { Logout } from "~/shared/assets";
 import { logout } from ".";
 
 export function LogoutBtn() {
@@ -13,7 +12,7 @@ export function LogoutBtn() {
     <>
       <button onClick={changeShow}>
         <ReactSVG
-          src={Logout}
+          src="assets/svg/logout.svg"
           style={{ fontSize: "3rem", lineHeight: "2rem" }}
         />
       </button>

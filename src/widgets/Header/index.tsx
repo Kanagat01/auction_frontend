@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import { MenuProfile, SettingsModal } from "~/widgets";
 import { $isAuthenticated, LogoutBtn } from "~/features/authorization";
 import { Notifications } from "~/entities/Notification";
-import { Person } from "~/shared/assets";
 import Routes from "~/shared/routes";
 import styles from "./styles.module.scss";
 
@@ -21,7 +20,7 @@ export function Header() {
           <div className={styles["menu-actions"]}>
             <Notifications />
             <NavLink to={Routes.PROFILE}>
-              <ReactSVG src={Person} />
+              <ReactSVG src="assets/svg/person.svg" />
             </NavLink>
             <SettingsModal />
             <LogoutBtn />

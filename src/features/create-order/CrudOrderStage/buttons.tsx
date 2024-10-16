@@ -6,7 +6,6 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { LuCopyPlus, LuPenSquare } from "react-icons/lu";
 
 import { useModalState } from "~/shared/lib";
-import { FolderPlus } from "~/shared/assets";
 import {
   BlueText,
   OutlineButton,
@@ -34,7 +33,7 @@ export function CreateStage(props: ButtonHTMLAttributes<HTMLButtonElement>) {
       }}
       {...props}
     >
-      <ReactSVG src={FolderPlus} />
+      <ReactSVG src="assets/svg/folder_plus.svg" />
     </OutlineButton>
   );
 }

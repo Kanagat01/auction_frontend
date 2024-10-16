@@ -13,7 +13,6 @@ import {
   PublishOrderInDirect,
 } from "~/entities/Order";
 import Routes from "~/shared/routes";
-import { FolderPlus } from "~/shared/assets";
 import { iconActionProps, OrdersPage, textActionProps } from "./helpers";
 
 export function UnpublishedOrders() {
@@ -29,7 +28,7 @@ export function UnpublishedOrders() {
             {...iconActionProps}
             onClick={() => clearForm()}
           >
-            <ReactSVG src={FolderPlus} />
+            <ReactSVG src="assets/svg/folder_plus.svg" />
           </NavLink>
           <NavLink
             to={Routes.NEW_ORDER}

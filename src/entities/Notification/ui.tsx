@@ -7,7 +7,6 @@ import { ReactSVG } from "react-svg";
 import { PrimaryButton, SectionButton, TitleLg, TitleMd } from "~/shared/ui";
 import { dateToLongMonthString, useModalState } from "~/shared/lib";
 import { RenderPromise } from "~/shared/api";
-import { Bell } from "~/shared/assets";
 
 import {
   $notifications,
@@ -139,7 +138,7 @@ export function Notifications() {
   return (
     <>
       <a href="#" onClick={changeShow} className={styles.notificationBell}>
-        <ReactSVG src={Bell} />
+        <ReactSVG src="assets/svg/bell.svg" />
         {notifications.length > 0 && (
           <span className={styles.notificationCount}>
             {notifications.length}

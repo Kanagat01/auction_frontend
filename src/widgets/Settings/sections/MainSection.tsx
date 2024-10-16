@@ -6,7 +6,6 @@ import { BiSolidWallet } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
 import { BsBuildingsFill } from "react-icons/bs";
 import { FaUserCog, FaUsers } from "react-icons/fa";
-import { PersonLoopIcon } from "~/shared/assets";
 import { fontSize, iconStyle, TSection } from "./helpers";
 import styles from "../styles.module.scss";
 
@@ -29,7 +28,7 @@ export function MainSection({
       t("editDetails.details"),
     ],
     [
-      <ReactSVG src={PersonLoopIcon} style={iconStyle} />,
+      <ReactSVG src="assets/svg/person_loop.svg" style={iconStyle} />,
       "security",
       t("settings.securitySectionTitle"),
       t("settings.passwords"),
@@ -51,7 +50,7 @@ export function MainSection({
   if (role === "manager") {
     settingOptions = [
       [
-        <ReactSVG src={PersonLoopIcon} style={iconStyle} />,
+        <ReactSVG src="assets/svg/person_loop.svg" style={iconStyle} />,
         "security",
         t("settings.securitySectionTitle"),
         t("settings.passwords"),

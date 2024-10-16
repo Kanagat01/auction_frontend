@@ -16,7 +16,6 @@ import {
   removeNotification,
 } from "~/entities/Notification";
 import { $userType, getRole } from "~/entities/User";
-import { Hammer, ThreeHouses } from "~/shared/assets";
 import { TooltipOnHover } from "~/shared/ui";
 import Routes from "~/shared/routes";
 import styles from "./styles.module.scss";
@@ -66,7 +65,7 @@ export function Sidebar() {
     [
       <>
         {NotificationDot(Routes.ORDERS_IN_AUCTION)}
-        <ReactSVG src={Hammer} className={styles.icon} />
+        <ReactSVG src="assets/svg/hammer.svg" className={styles.icon} />
       </>,
       t("orders.pages.inAuction"),
       Routes.ORDERS_IN_AUCTION,
@@ -75,7 +74,7 @@ export function Sidebar() {
       <>
         {NotificationDot(Routes.ORDERS_IN_BIDDING)}
         <ReactSVG
-          src={ThreeHouses}
+          src="assets/svg/3_houses.svg"
           className={styles.icon}
           style={{ fontSize: "3.5rem", lineHeight: "3rem" }}
         />

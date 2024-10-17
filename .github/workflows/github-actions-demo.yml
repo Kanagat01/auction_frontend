@@ -15,8 +15,8 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            cd ${{ secrets.PROJECT_FOLDER }};
+            cd auction_frontend;
             git pull;
-            cd ${{ secrets.DOCKER_FOLDER }};
-            docker compose up -d --build ${{ secrets.CONTAINER_NAME }};
+            cd ../auction_backend;
+            docker compose up -d --build react_app;
       - run: echo "💡 The server code has been updated"

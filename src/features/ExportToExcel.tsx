@@ -20,7 +20,10 @@ export function ExportToExcelButton({
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
     const fileExtension = ".xlsx";
     const ws = XLSX.utils.aoa_to_sheet(data);
-    const wb = { Sheets: { data: ws }, SheetNames: [t("common.data")] };
+    const wb = {
+      Sheets: { [t("common.data")]: ws },
+      SheetNames: [t("common.data")],
+    };
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const dataBlob = new Blob([excelBuffer], { type: fileType });
     saveAs(dataBlob, filename + fileExtension);

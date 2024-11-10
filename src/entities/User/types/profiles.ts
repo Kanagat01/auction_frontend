@@ -45,7 +45,6 @@ export type CustomerManager = {
 export type DriverProfile = {
   driver_id: number;
   user: TUser;
-  birth_date: string;
   passport_number: string;
   phone_number: string;
   machine_data: string;

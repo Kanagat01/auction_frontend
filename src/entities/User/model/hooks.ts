@@ -5,9 +5,12 @@ export const useIsActive = () => {
   const mainData = useUnit($mainData);
   if (!mainData) return false;
 
-  if ("transporter_company_id" in mainData) {
+  if (
+    "transporter_company_id" in mainData ||
+    "customer_company_id" in mainData
+  ) {
     if (mainData.balance <= 0) return false;
-  } else if ("transporter_manager_id" in mainData) {
+  } else {
     if (mainData.company.balance <= 0) return false;
   }
 

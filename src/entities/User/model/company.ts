@@ -58,6 +58,13 @@ changeSubscription.watch((data) => {
           return t("changeSubscription.subscriptionNotExists");
         else if (err === "Only company accounts can change subscription")
           return t("changeSubscription.onlyCompanyCanChange");
+        else if (err.startsWith("insufficient_funds")) {
+          let summa = err.split(":")[1];
+          summa = summa.includes(".")
+            ? summa.replace(/(\.\d*?[1-9])0+$/, "$1").replace(/\.0+$/, "")
+            : summa;
+          return t("changeSubscription.insufficient_funds", { summa });
+        }
       }
       return t("common.errorMessage", { err });
     },

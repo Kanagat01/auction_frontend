@@ -17,7 +17,9 @@ export function SubscriptionsList() {
   );
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (subscriptionId) changeSubscription({ subscription_id: subscriptionId });
+    if (subscriptionId === mainData.subscription?.id) return;
+    else if (subscriptionId)
+      changeSubscription({ subscription_id: subscriptionId });
     else toast.error(t("subscriptions.chooseSubscription"));
   };
 

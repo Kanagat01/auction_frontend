@@ -348,7 +348,8 @@
         "loading": "Обновляем тариф...",
         "success": "Тариф обновлен",
         "subscriptionNotExists": "Тариф с таким id не существует",
-        "onlyCompanyCanChange": "Только аккаунт компании может изменять тарифы"
+        "onlyCompanyCanChange": "Только аккаунт компании может изменять тарифы",
+        "insufficient_funds": "Недостаточно средств. Пополните баланс еще на {{ summa }} ₽"
     },
     "editManager": {
         "title": "Редактировать менеджера",
@@ -371,7 +372,6 @@
         "companyName": "Название компании"
     },
     "driverProfileTranslations": {
-        "birth_date": "Дата рождения",
         "full_name": "ФИО водителя",
         "passport_number": "Номер паспорта",
         "phone_number": "Телефон",

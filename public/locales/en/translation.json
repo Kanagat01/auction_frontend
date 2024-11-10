@@ -348,7 +348,8 @@
         "loading": "Updating subscription...",
         "success": "Subscription updated",
         "subscriptionNotExists": "Subscription with this id does not exist",
-        "onlyCompanyCanChange": "Only company accounts can change subscriptions"
+        "onlyCompanyCanChange": "Only company accounts can change subscriptions",
+        "insufficient_funds": "Insufficient funds. Top up your balance with another {{ summa }} ₽"
     },
     "editManager": {
         "title": "Edit Manager",
@@ -371,7 +372,6 @@
         "companyName": "Company Name"
     },
     "driverProfileTranslations": {
-        "birth_date": "Birth Date",
         "full_name": "Driver's Full Name",
         "passport_number": "Passport Number",
         "phone_number": "Phone Number",

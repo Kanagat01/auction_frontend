@@ -46,7 +46,7 @@ export const $notifications = createStore<TNotification[]>([])
         title: t("notifications.chooseSubscription.title"),
         description: t("notifications.chooseSubscription.description"),
       });
-    } else if ("transporter_company_id" in mainData) {
+    } else if ("balance" in mainData) {
       if (mainData.balance <= 0) {
         data.push({
           ...defaultNotificationProp,

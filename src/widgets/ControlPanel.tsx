@@ -24,7 +24,7 @@ export function ControlPanel({
     const auctionInputs: Omit<InputProps, "variant">[] = [
       {
         name: "price",
-        label: t("orderTranslations.currentPrice"),
+        label: t("orderTranslations.current_price"),
         defaultValue:
           priceData && "current_price" in priceData
             ? priceData.current_price

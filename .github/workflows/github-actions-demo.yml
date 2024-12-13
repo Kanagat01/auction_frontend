@@ -18,5 +18,5 @@ jobs:
             cd auction_frontend;
             git pull;
             cd ../auction_backend;
-            docker compose up -d --build react_app;
+            docker-compose up -d --build react_app;
       - run: echo "💡 The server code has been updated"

@@ -54,7 +54,7 @@ export function MapSection({ tracking, stages }: MapSectionProps) {
         <TitleMd className="w-100 h-100 mt-4">{t("common.noData")}</TitleMd>
       )}
       {stages && (
-        <div className="mt-4">
+        <div className="mt-5">
           <RoundedTable
             columns={[
               <TextCenter>{t("orderStage.stageNumber")}</TextCenter>,
@@ -64,8 +64,10 @@ export function MapSection({ tracking, stages }: MapSectionProps) {
               ({ order_stage_number, load_stage, unload_stage }) => [
                 <TextCenter>{order_stage_number}</TextCenter>,
                 <TextCenter>
-                  {load_stage.completed && unload_stage.completed
-                    ? t("orderStage.delivered")
+                  {unload_stage.completed
+                    ? t("orderStage.unloadStageDelivered")
+                    : load_stage.completed
+                    ? t("orderStage.loadStageDelivered")
                     : t("orderStage.notDelivered")}
                 </TextCenter>,
               ]

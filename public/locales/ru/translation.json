@@ -318,7 +318,8 @@
         "stageType": "Тип этапа",
         "datetime": "Дата время",
         "deliveryStatus": "Статус доставки",
-        "delivered": "Груз доставлен",
+        "loadStageDelivered": "Погрузка завершена",
+        "unloadStageDelivered": "Выгрузка завершена",
         "notDelivered": "Ожидает доставки"
     },
     "orderStageTranslations": {

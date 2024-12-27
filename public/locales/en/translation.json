@@ -318,7 +318,8 @@
         "stageType": "Stage Type",
         "datetime": "Date Time",
         "deliveryStatus": "Delivery Status",
-        "delivered": "Cargo Delivered",
+        "loadStageDelivered": "Loading is completed",
+        "unloadStageDelivered": "Unloading is completed",
         "notDelivered": "Awaiting Delivery"
     },
     "orderStageTranslations": {

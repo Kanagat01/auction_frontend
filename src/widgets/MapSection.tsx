@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
-import { OrderTracking, OrderTrackingGeoPoint } from "~/entities/Order";
+import { OrderTracking } from "~/entities/Order";
 import { TStages } from "~/entities/OrderStage";
 import { YANDEX_MAPS_API_KEY } from "~/shared/config";
 import { RoundedTable, TextCenter, TitleMd } from "~/shared/ui";
@@ -12,13 +12,10 @@ type MapSectionProps = {
 
 export function MapSection({ tracking, stages }: MapSectionProps) {
   const { t } = useTranslation();
-  const centralGeoPoint = tracking?.geopoints[
-    Math.floor(tracking.geopoints.length / 2)
-  ] as OrderTrackingGeoPoint;
   return (
     <>
       <TitleMd>{t("mapSection.map")}</TitleMd>
-      {tracking && tracking.geopoints.length !== 0 ? (
+      {tracking ? (
         <div
           className="w-100 h-100 mt-4"
           style={{
@@ -31,22 +28,19 @@ export function MapSection({ tracking, stages }: MapSectionProps) {
             <Map
               width="100%"
               defaultState={{
-                center: [centralGeoPoint.latitude, centralGeoPoint.longitude],
+                center: [tracking.latitude, tracking.longitude],
                 zoom: 12,
                 controls: ["zoomControl", "fullscreenControl"],
               }}
               modules={["control.ZoomControl", "control.FullscreenControl"]}
             >
-              {tracking.geopoints.map((geo) => (
-                <Placemark
-                  key={geo.id}
-                  defaultGeometry={[geo.latitude, geo.longitude]}
-                  modules={["geoObject.addon.balloon"]}
-                  properties={{
-                    balloonContentBody: t("mapSection.cargoLocation"),
-                  }}
-                />
-              ))}
+              <Placemark
+                defaultGeometry={[tracking.latitude, tracking.longitude]}
+                modules={["geoObject.addon.balloon"]}
+                properties={{
+                  balloonContentBody: t("mapSection.cargoLocation"),
+                }}
+              />
             </Map>
           </YMaps>
         </div>

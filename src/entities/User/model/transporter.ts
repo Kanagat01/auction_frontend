@@ -1,7 +1,7 @@
 import { t } from "i18next";
 import toast from "react-hot-toast";
 import { createEvent, attach, Effect } from "effector";
-import { RequestParams, apiRequestFx } from "~/shared/api";
+import { apiRequestFx } from "~/shared/api";
 import { CustomerCompany, TransporterCompany } from "../types";
 import { $mainData, setMainData } from "./state";
 
@@ -10,7 +10,7 @@ export const getTransportersFx: Effect<
   Omit<TransporterCompany, "user" | "managers">[]
 > = attach({
   effect: apiRequestFx,
-  mapParams: (): RequestParams => ({
+  mapParams: () => ({
     method: "get",
     url: "/user/customer/get_transporter_companies/",
   }),
@@ -21,7 +21,7 @@ const addToAllowedFx: Effect<
   Omit<TransporterCompany, "managers" | "user">
 > = attach({
   effect: apiRequestFx,
-  mapParams: (data): RequestParams => ({
+  mapParams: (data) => ({
     method: "post",
     url: "/user/customer/add_transporter_to_allowed_companies/",
     data,
@@ -56,7 +56,7 @@ addTransportToAllowed.watch(({ transporter_company_id, onReset }) => {
 const deleteFromAllowedFx: Effect<{ transporter_company_id: number }, string> =
   attach({
     effect: apiRequestFx,
-    mapParams: (data): RequestParams => ({
+    mapParams: (data) => ({
       method: "post",
       url: "/user/customer/delete_transporter_from_allowed_companies/",
       data,

@@ -1,12 +1,12 @@
 import { t } from "i18next";
 import { attach, createEvent, createStore, Effect } from "effector";
-import { apiRequestFx, RequestParams } from "~/shared/api";
+import { apiRequestFx } from "~/shared/api";
 import { NotificationType, TNotification } from "./types";
 import { $mainData } from "../User";
 
 export const getNotificationsFx: Effect<void, TNotification[]> = attach({
   effect: apiRequestFx,
-  mapParams: (): RequestParams => ({
+  mapParams: () => ({
     method: "get",
     url: "notifications/get_notifications/",
   }),
@@ -15,7 +15,7 @@ export const getNotificationsFx: Effect<void, TNotification[]> = attach({
 const removeNotificationFx: Effect<{ notification_id: number }, string> =
   attach({
     effect: apiRequestFx,
-    mapParams: (data): RequestParams => ({
+    mapParams: (data) => ({
       method: "post",
       url: "notifications/delete_notification/",
       data,

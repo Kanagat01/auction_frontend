@@ -1,6 +1,6 @@
 import { Effect, attach } from "effector";
 import { OrderModel } from "~/entities/Order";
-import { RequestParams, apiRequestFx } from "~/shared/api";
+import { apiRequestFx } from "~/shared/api";
 import {
   AddOrderStageRequest,
   EditOrderStageRequest,
@@ -11,7 +11,7 @@ import {
 export const addOrderStageFx: Effect<AddOrderStageRequest, OrderModel> = attach(
   {
     effect: apiRequestFx,
-    mapParams: (data: AddOrderStageRequest): RequestParams => ({
+    mapParams: (data: AddOrderStageRequest) => ({
       method: "post",
       url: "/auction/customer/add_order_stage/",
       data,
@@ -23,7 +23,7 @@ export const addOrderStageFx: Effect<AddOrderStageRequest, OrderModel> = attach(
 export const editOrderStageFx: Effect<EditOrderStageRequest, OrderModel> =
   attach({
     effect: apiRequestFx,
-    mapParams: (data): RequestParams => ({
+    mapParams: (data) => ({
       method: "post",
       url: "/auction/customer/edit_order_stage/",
       data,
@@ -36,7 +36,7 @@ export const preCreateOrderFx: Effect<
   PreCreateOrderResponse
 > = attach({
   effect: apiRequestFx,
-  mapParams: ({ transportation_number }): RequestParams => {
+  mapParams: ({ transportation_number }) => {
     let queryParams = "";
     if (transportation_number)
       queryParams += `?transportation_number=${transportation_number}`;

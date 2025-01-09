@@ -10,7 +10,7 @@ import {
   CustomerManager,
 } from "~/entities/User";
 import { API_URL } from "~/shared/config";
-import { apiRequestFx, RequestParams } from "~/shared/api";
+import { apiRequestFx } from "~/shared/api";
 import { isValidEmail, validatePassword } from "~/shared/lib";
 import {
   RegisterCompanyRequest,
@@ -77,7 +77,7 @@ const registerManagerFx: Effect<
   Omit<CustomerManager, "company">
 > = attach({
   effect: apiRequestFx,
-  mapParams: (data: RegisterManagerRequest): RequestParams => ({
+  mapParams: (data: RegisterManagerRequest) => ({
     method: "post",
     url: "/user/common/register_manager/",
     data,

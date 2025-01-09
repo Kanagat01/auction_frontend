@@ -1,7 +1,7 @@
 import { t } from "i18next";
 import toast from "react-hot-toast";
 import { attach, createEvent, Effect } from "effector";
-import { apiRequestFx, RequestParams } from "~/shared/api";
+import { apiRequestFx } from "~/shared/api";
 import { isValidEmail } from "~/shared/lib";
 import {
   CustomerCompany,
@@ -37,7 +37,7 @@ const changeSubscriptionFx: Effect<
   CustomerCompany | TransporterCompany
 > = attach({
   effect: apiRequestFx,
-  mapParams: (data): RequestParams => ({
+  mapParams: (data) => ({
     method: "post",
     url: "/user/common/change_subscription/",
     data,
@@ -82,7 +82,7 @@ const editManagerFx: Effect<
   TransporterManager | CustomerManager
 > = attach({
   effect: apiRequestFx,
-  mapParams: (data): RequestParams => ({
+  mapParams: (data) => ({
     method: "post",
     url: "/user/common/edit_manager/",
     data,

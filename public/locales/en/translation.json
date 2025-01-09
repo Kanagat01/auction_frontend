@@ -289,6 +289,10 @@
         "success": "Order status changed to \"Being Executed\"",
         "areYouSure_status": "cancel completion of the order"
     },
+    "getOrderPdf": {
+        "loading": "Downloading the pdf...",
+        "success": "The file has been downloaded successfully"
+    },
     "addDriverData": {
         "title": "Submit data",
         "loading": "Submitting driver data...",

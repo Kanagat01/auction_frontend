@@ -1,14 +1,14 @@
 import { t } from "i18next";
 import toast from "react-hot-toast";
 import { attach, createEvent, Effect } from "effector";
-import { apiRequestFx, RequestParams } from "~/shared/api";
+import { apiRequestFx } from "~/shared/api";
 import { validatePassword } from "~/shared/lib";
 import { ChangePasswordRequest, ChangePasswordResponse } from "./types";
 
 const changePasswordFx: Effect<ChangePasswordRequest, ChangePasswordResponse> =
   attach({
     effect: apiRequestFx,
-    mapParams: (data: ChangePasswordRequest): RequestParams => ({
+    mapParams: (data: ChangePasswordRequest) => ({
       method: "post",
       url: "/user/common/change_password/",
       data,

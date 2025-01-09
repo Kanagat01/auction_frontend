@@ -1,7 +1,7 @@
 import { Effect, attach } from "effector";
 import { DriverProfile } from "~/entities/User";
 import { OrderModel, TGetOrder } from "~/entities/Order";
-import { RequestParams, apiRequestFx } from "~/shared/api";
+import { apiRequestFx } from "~/shared/api";
 import {
   OrderIDRequest,
   AddDriverDataRequest,
@@ -18,10 +18,7 @@ import {
 // get order
 export const findCargoFx: Effect<FindCargoRequest, TGetOrder> = attach({
   effect: apiRequestFx,
-  mapParams: ({
-    transportation_number,
-    machine_number,
-  }: FindCargoRequest): RequestParams => ({
+  mapParams: ({ transportation_number, machine_number }: FindCargoRequest) => ({
     method: "get",
     url: `/auction/find_cargo/${transportation_number}/${machine_number}/`,
   }),
@@ -36,7 +33,7 @@ export const getOrdersFx: Effect<GetOrdersRequest, GetOrdersResponse> = attach({
     cityFrom,
     cityTo,
     transportationNumber,
-  }: GetOrdersRequest): RequestParams => {
+  }: GetOrdersRequest) => {
     let queryParams = `status=${status}`;
     if (page) queryParams += "&page=" + page;
     if (cityFrom) queryParams += "&city_from=" + cityFrom;
@@ -54,7 +51,7 @@ export const getOrdersFx: Effect<GetOrdersRequest, GetOrdersResponse> = attach({
 export const createOrderFx: Effect<CreateOrderRequest, CreateOrderResponse> =
   attach({
     effect: apiRequestFx,
-    mapParams: (data: CreateOrderRequest): RequestParams => ({
+    mapParams: (data: CreateOrderRequest) => ({
       method: "post",
       url: "/auction/customer/create_order/",
       data,
@@ -64,7 +61,7 @@ export const createOrderFx: Effect<CreateOrderRequest, CreateOrderResponse> =
 // edit order
 export const editOrderFx: Effect<EditOrderRequest, EditOrderResponse> = attach({
   effect: apiRequestFx,
-  mapParams: (data: EditOrderRequest): RequestParams => ({
+  mapParams: (data: EditOrderRequest) => ({
     method: "post",
     url: "/auction/customer/edit_order/",
     data,
@@ -74,7 +71,7 @@ export const editOrderFx: Effect<EditOrderRequest, EditOrderResponse> = attach({
 // cancel order
 export const cancelOrderFx: Effect<OrderIDRequest, OrderModel> = attach({
   effect: apiRequestFx,
-  mapParams: (data: OrderIDRequest): RequestParams => ({
+  mapParams: (data: OrderIDRequest) => ({
     method: "post",
     url: `/auction/customer/cancel_order/`,
     data,
@@ -84,7 +81,7 @@ export const cancelOrderFx: Effect<OrderIDRequest, OrderModel> = attach({
 // unpublish order
 export const unpublishOrderFx: Effect<OrderIDRequest, OrderModel> = attach({
   effect: apiRequestFx,
-  mapParams: (data: OrderIDRequest): RequestParams => ({
+  mapParams: (data: OrderIDRequest) => ({
     method: "post",
     url: "/auction/customer/unpublish_order/",
     data,
@@ -94,7 +91,7 @@ export const unpublishOrderFx: Effect<OrderIDRequest, OrderModel> = attach({
 // publish order
 export const publishOrderFx: Effect<PublishOrderRequest, OrderModel> = attach({
   effect: apiRequestFx,
-  mapParams: (data: PublishOrderRequest): RequestParams => ({
+  mapParams: (data: PublishOrderRequest) => ({
     method: "post",
     url: `/auction/customer/publish_order/`,
     data,
@@ -104,7 +101,7 @@ export const publishOrderFx: Effect<PublishOrderRequest, OrderModel> = attach({
 // complete order
 export const completeOrderFx: Effect<OrderIDRequest, OrderModel> = attach({
   effect: apiRequestFx,
-  mapParams: (data: OrderIDRequest): RequestParams => ({
+  mapParams: (data: OrderIDRequest) => ({
     method: "post",
     url: `/auction/customer/complete_order/`,
     data,
@@ -115,7 +112,7 @@ export const completeOrderFx: Effect<OrderIDRequest, OrderModel> = attach({
 export const cancelOrderCompletionFx: Effect<OrderIDRequest, OrderModel> =
   attach({
     effect: apiRequestFx,
-    mapParams: (data: OrderIDRequest): RequestParams => ({
+    mapParams: (data: OrderIDRequest) => ({
       method: "post",
       url: `/auction/customer/cancel_order_completion/`,
       data,
@@ -126,7 +123,7 @@ export const cancelOrderCompletionFx: Effect<OrderIDRequest, OrderModel> =
 export const addDriverDataFx: Effect<AddDriverDataRequest, DriverProfile> =
   attach({
     effect: apiRequestFx,
-    mapParams: (data: AddDriverDataRequest): RequestParams => ({
+    mapParams: (data: AddDriverDataRequest) => ({
       method: "post",
       url: `/auction/transporter/add_driver_data/`,
       data,

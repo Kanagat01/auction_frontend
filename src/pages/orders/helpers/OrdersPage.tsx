@@ -4,6 +4,7 @@ import { useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { ControlPanel, ControlPanelProps, OrderSections } from "~/widgets";
 import { ExportToExcelButton } from "~/features/ExportToExcel";
+import { GetOrderPdf } from "~/features/GetOrderPdf";
 import { $websocket } from "~/features/websocket";
 import {
   $orders,
@@ -89,6 +90,7 @@ export function OrdersPage({
                 inputs={defaultInputs}
                 iconActions={
                   <>
+                    <GetOrderPdf {...iconActionProps} />
                     <ExportToExcelButton
                       filename={`${t("orders.plural")} - ${t(
                         `orderStatus.${status}`

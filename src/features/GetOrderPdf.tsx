@@ -20,7 +20,7 @@ const getOrderPdfFx = createEffect<OrderIDRequest, string>(
       url: `auction/get_order_pdf/?order_id=${order_id}`,
       responseType: "blob" as ResponseType,
     });
-    const filename = `order_${order_id}.docx`;
+    const filename = `order_${order_id}.pdf`;
     saveAs(new Blob([response.data]), filename);
     return "ok";
   }

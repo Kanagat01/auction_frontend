@@ -67,7 +67,7 @@ registerCompany.watch(({ navigateFunc, ...data }) => {
       navigateFunc();
       return t("registration.successCompany");
     },
-    error: (err) => t("common.errorMessage", { err }),
+    error: (error) => t("common.errorMessage", { error }),
   });
 });
 
@@ -107,10 +107,10 @@ registerManager.watch(({ repeat_password, onSuccess, ...data }) => {
       onSuccess();
       return t("registration.successManager");
     },
-    error: (err) => {
-      if (err?.email?.[0] === "user_already_exists")
+    error: (error) => {
+      if (error?.email?.[0] === "user_already_exists")
         return t("registration.userAlreadyExists");
-      return t("common.errorMessage", { err });
+      return t("common.errorMessage", { error });
     },
   });
 });

@@ -53,7 +53,7 @@ forgotPassword.watch(({ email, setSuccess }) => {
       setSuccess(true);
       return t("forgotPassword.success");
     },
-    error: (err) => t("common.errorMessage", { err }),
+    error: (error) => t("common.errorMessage", { error }),
   });
 });
 
@@ -124,6 +124,6 @@ resetPasswordConfirm.watch(({ navigate, ...data }) => {
       navigate(Routes.HOME);
       return t("resetPassword.success");
     },
-    error: (err) => t("common.errorMessage", { err }),
+    error: (error) => t("common.errorMessage", { error }),
   });
 });

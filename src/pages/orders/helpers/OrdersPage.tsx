@@ -115,9 +115,9 @@ export function OrdersPage({
                   paginator={paginator ?? undefined}
                 />
               ),
-              error: (err) => (
+              error: (error) => (
                 <PageError>
-                  {t("common.errorMessage", { err: err?.message })}
+                  {t("common.errorMessage", { error: error?.message })}
                 </PageError>
               ),
             })}

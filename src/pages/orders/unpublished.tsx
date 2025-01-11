@@ -28,7 +28,7 @@ export function UnpublishedOrders() {
             {...iconActionProps}
             onClick={() => clearForm()}
           >
-            <ReactSVG src="assets/svg/folder_plus.svg" />
+            <ReactSVG src="/assets/svg/folder_plus.svg" />
           </NavLink>
           <NavLink
             to={Routes.NEW_ORDER}

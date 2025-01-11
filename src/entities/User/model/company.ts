@@ -28,7 +28,7 @@ editDetails.watch(({ details }) => {
       setMainData({ ...state, details } as TMainData);
       return t("editDetails.success");
     },
-    error: (err) => t("common.errorMessage", { err }),
+    error: (error) => t("common.errorMessage", { error }),
   });
 });
 
@@ -52,21 +52,21 @@ changeSubscription.watch((data) => {
       setMainData(newMainData);
       return t("changeSubscription.success");
     },
-    error: (err) => {
-      if (typeof err === "string") {
-        if (err === "subscription does not exist")
+    error: (error) => {
+      if (typeof error === "string") {
+        if (error === "subscription does not exist")
           return t("changeSubscription.subscriptionNotExists");
-        else if (err === "Only company accounts can change subscription")
+        else if (error === "Only company accounts can change subscription")
           return t("changeSubscription.onlyCompanyCanChange");
-        else if (err.startsWith("insufficient_funds")) {
-          let summa = err.split(":")[1];
+        else if (error.startsWith("insufficient_funds")) {
+          let summa = error.split(":")[1];
           summa = summa.includes(".")
             ? summa.replace(/(\.\d*?[1-9])0+$/, "$1").replace(/\.0+$/, "")
             : summa;
           return t("changeSubscription.insufficient_funds", { summa });
         }
       }
-      return t("common.errorMessage", { err });
+      return t("common.errorMessage", { error });
     },
   });
 });
@@ -136,15 +136,15 @@ editManager.watch((data) => {
       }
       return t("editManager.success");
     },
-    error: (err) => {
-      if (err?.email) return t("common.wrongEmail");
+    error: (error) => {
+      if (error?.email) return t("common.wrongEmail");
       if (
-        err?.manager_id &&
-        err.manager_id ===
+        error?.manager_id &&
+        error.manager_id ===
           "Manager with this id does not exist or does not belong to you"
       )
         return t("editManager.notExistOrNotBelongError");
-      return t("common.errorMessage", { err });
+      return t("common.errorMessage", { error });
     },
   });
 });

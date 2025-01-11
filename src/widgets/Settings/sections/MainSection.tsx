@@ -28,7 +28,7 @@ export function MainSection({
       t("editDetails.details"),
     ],
     [
-      <ReactSVG src="assets/svg/person_loop.svg" style={iconStyle} />,
+      <ReactSVG src="/assets/svg/person_loop.svg" style={iconStyle} />,
       "security",
       t("settings.securitySectionTitle"),
       t("settings.passwords"),
@@ -50,7 +50,7 @@ export function MainSection({
   if (role === "manager") {
     settingOptions = [
       [
-        <ReactSVG src="assets/svg/person_loop.svg" style={iconStyle} />,
+        <ReactSVG src="/assets/svg/person_loop.svg" style={iconStyle} />,
         "security",
         t("settings.securitySectionTitle"),
         t("settings.passwords"),

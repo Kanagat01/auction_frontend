@@ -37,14 +37,14 @@ function handleOrderAction(
       },
       error: actionMessage.error
         ? actionMessage.error
-        : (err) => {
-            if (err instanceof Array) {
-              const statusError = err.find((el) =>
+        : (error) => {
+            if (error instanceof Array) {
+              const statusError = error.find((el) =>
                 el.startsWith("order_status_is")
               );
-              if (err.includes("order_is_completed"))
+              if (error.includes("order_is_completed"))
                 return t("orderModel.orderCompletedError");
-              else if (err.includes("order_is_completed_or_unpublished")) {
+              else if (error.includes("order_is_completed_or_unpublished")) {
                 removeOrder(order_id);
                 return t("orderModel.orderCompletedOrUnpublished");
               } else if (statusError) {
@@ -63,7 +63,7 @@ function handleOrderAction(
                 }
               }
             }
-            return t("common.errorMessage", { err });
+            return t("common.errorMessage", { error });
           },
     });
   } else toast.error(t("orders.selectOrder"));
@@ -89,17 +89,17 @@ publishOrder.watch(({ publish_to, ...data }) =>
       success: t("publishOrder.success", {
         status: t(`orderStatus.${publish_to}`),
       }),
-      error: (err) => {
-        if ("transporter_company_id" in err) {
+      error: (error) => {
+        if ("transporter_company_id" in error) {
           if (
-            err.transporter_company_id instanceof Array &&
-            err.transporter_company_id.includes(
+            error.transporter_company_id instanceof Array &&
+            error.transporter_company_id.includes(
               "TransporterCompany has no manager"
             )
           )
             return t("publishOrder.transporterHasNoManager");
         }
-        return t("common.errorMessage", { err });
+        return t("common.errorMessage", { error });
       },
     },
     { publish_to, ...data }

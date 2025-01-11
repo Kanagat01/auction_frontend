@@ -65,7 +65,7 @@ export function Sidebar() {
     [
       <>
         {NotificationDot(Routes.ORDERS_IN_AUCTION)}
-        <ReactSVG src="assets/svg/hammer.svg" className={styles.icon} />
+        <ReactSVG src="/assets/svg/hammer.svg" className={styles.icon} />
       </>,
       t("orders.pages.inAuction"),
       Routes.ORDERS_IN_AUCTION,
@@ -74,7 +74,7 @@ export function Sidebar() {
       <>
         {NotificationDot(Routes.ORDERS_IN_BIDDING)}
         <ReactSVG
-          src="assets/svg/3_houses.svg"
+          src="/assets/svg/3_houses.svg"
           className={styles.icon}
           style={{ fontSize: "3.5rem", lineHeight: "3rem" }}
         />

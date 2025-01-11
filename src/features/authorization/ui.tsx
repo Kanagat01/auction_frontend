@@ -12,7 +12,7 @@ export function LogoutBtn() {
     <>
       <button onClick={changeShow}>
         <ReactSVG
-          src="assets/svg/logout.svg"
+          src="/assets/svg/logout.svg"
           style={{ fontSize: "3rem", lineHeight: "2rem" }}
         />
       </button>

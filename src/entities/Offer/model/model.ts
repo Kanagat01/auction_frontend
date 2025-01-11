@@ -50,19 +50,19 @@ createOffer.watch(({ inAuction, onReset, ...data }) =>
       onReset();
       return t("createOffer.success");
     },
-    error: (err) => {
-      if (typeof err === "object") {
-        const status = err?.response?.status;
-        const message = err?.response?.data?.message;
-        const priceError = err?.response?.data?.price?.[0];
+    error: (error) => {
+      if (typeof error === "object") {
+        const status = error?.response?.status;
+        const message = error?.response?.data?.message;
+        const priceError = error?.response?.data?.price?.[0];
 
         if (status > 499) return t("common.serverError", { code: status });
         if (priceError === "Price must be greater than 0")
           return t("createOffer.priceError");
-        return t("common.errorMessage", { err: message });
-      } else if (typeof err === "string") {
-        if (err.startsWith("not_valid_price. Price must be less than")) {
-          const current_price = Number(err.split(" ")[6]);
+        return t("common.errorMessage", { error: message });
+      } else if (typeof error === "string") {
+        if (error.startsWith("not_valid_price. Price must be less than")) {
+          const current_price = Number(error.split(" ")[6]);
           if (current_price)
             updateOrder({
               orderId: data.order_id,
@@ -71,7 +71,7 @@ createOffer.watch(({ inAuction, onReset, ...data }) =>
           return t("createOffer.priceChangedError");
         }
       }
-      return t("common.errorMessage", { err });
+      return t("common.errorMessage", { error });
     },
   })
 );
@@ -97,7 +97,7 @@ acceptOffer.watch(({ isBestOffer, transportation_number, ...data }) =>
         transportationNumber: transportation_number,
       });
     },
-    error: (err) => t("common.errorMessage", { err }),
+    error: (error) => t("common.errorMessage", { error }),
   })
 );
 
@@ -118,7 +118,7 @@ rejectOffer.watch(({ orderId, order_offer_id, ...data }) =>
       }
       return t("rejectOffer.success", { id: order_offer_id });
     },
-    error: (err) => t("common.errorMessage", { err }),
+    error: (error) => t("common.errorMessage", { error }),
   })
 );
 
@@ -138,7 +138,7 @@ acceptOfferTransporter.watch(({ transportation_number, ...data }) =>
         transportationNumber: transportation_number,
       });
     },
-    error: (err) => t("common.errorMessage", { err }),
+    error: (error) => t("common.errorMessage", { error }),
   })
 );
 
@@ -158,6 +158,6 @@ rejectOfferTransporter.watch(({ transportation_number, ...data }) =>
         transportationNumber: transportation_number,
       });
     },
-    error: (err) => t("common.errorMessage", { err }),
+    error: (error) => t("common.errorMessage", { error }),
   })
 );

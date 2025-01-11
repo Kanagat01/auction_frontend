@@ -34,11 +34,11 @@ changePassword.watch(({ onSuccess, ...data }) => {
       onSuccess();
       return t("changePassword.success");
     },
-    error: (err) => {
-      if (err === "wrong_password") return t("changePassword.wrongPassword");
-      else if (err === "passwords_do_not_match")
+    error: (error) => {
+      if (error === "wrong_password") return t("changePassword.wrongPassword");
+      else if (error === "passwords_do_not_match")
         return t("changePassword.passwordsDoNotMatch");
-      return t("common.errorMessage", { err });
+      return t("common.errorMessage", { error });
     },
   });
 });

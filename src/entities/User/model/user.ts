@@ -63,9 +63,9 @@ editUser.watch(({ setIsEditing, ...data }) => {
         setIsEditing(false);
         return t("editUser.success");
       },
-      error: (err) => {
-        if (err?.email) return t("common.wrongEmail");
-        return t("common.errorMessage", { err });
+      error: (error) => {
+        if (error?.email) return t("common.wrongEmail");
+        return t("common.errorMessage", { error });
       },
     }
   );

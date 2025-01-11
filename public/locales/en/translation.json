@@ -10,7 +10,7 @@
         "copied": "Copied",
         "data": "Data",
         "credentials": "2024 Cargonika LLC. All rights reserved",
-        "errorMessage": "An error occurred: {{err}}",
+        "errorMessage": "An error occurred: {{error}}",
         "serverError": "Server error. Code {{code}}",
         "unknownError": "Unknown error: {{error}}",
         "noData": "There is no data to display",

@@ -48,7 +48,7 @@ const stageCoupleValidation = (func: (state: TStages) => void) => {
             ? t("orderStage.loadingStage")
             : t("orderStage.unloadingStage")) +
           "." +
-          t("orderStageTranslations.${field}");
+          t(`orderStageTranslations.${field}`);
         emptyFields.push(fieldName);
       }
     }

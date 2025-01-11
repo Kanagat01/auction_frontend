@@ -33,7 +33,7 @@ export function CreateStage(props: ButtonHTMLAttributes<HTMLButtonElement>) {
       }}
       {...props}
     >
-      <ReactSVG src="assets/svg/folder_plus.svg" />
+      <ReactSVG src="/assets/svg/folder_plus.svg" />
     </OutlineButton>
   );
 }

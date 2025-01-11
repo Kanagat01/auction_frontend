@@ -33,7 +33,7 @@ export function GetOrderPdf(props: ButtonHTMLAttributes<HTMLButtonElement>) {
     toast.promise(getOrderPdfFx({ order_id: order.id }), {
       loading: t("getOrderPdf.loading"),
       success: t("getOrderPdf.success"),
-      error: (err) => t("common.errorMessage", { err }),
+      error: (error) => t("common.errorMessage", { error }),
     });
   };
   return (

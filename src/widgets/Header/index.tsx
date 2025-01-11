@@ -20,7 +20,7 @@ export function Header() {
           <div className={styles["menu-actions"]}>
             <Notifications />
             <NavLink to={Routes.PROFILE}>
-              <ReactSVG src="assets/svg/person.svg" />
+              <ReactSVG src="/assets/svg/person.svg" />
             </NavLink>
             <SettingsModal />
             <LogoutBtn />

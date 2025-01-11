@@ -62,10 +62,10 @@ addDriverData.watch(({ onReset, ...data }) => {
       onReset();
       return t("addDriverData.success");
     },
-    error: (err) => {
-      if (err === "Status should be being_executed") {
+    error: (error) => {
+      if (error === "Status should be being_executed") {
         return t("addDriverData.shouldBeBeingExecuted");
-      } else if (typeof err === "object") {
+      } else if (typeof error === "object") {
         const getErrorValue = (value: unknown) => {
           if (Array.isArray(value) && typeof value[0] === "string") {
             if (value[0].startsWith("max_length is")) {
@@ -78,7 +78,7 @@ addDriverData.watch(({ onReset, ...data }) => {
           }
           return value;
         };
-        return Object.entries(err)
+        return Object.entries(error)
           .map(
             ([key, value]) =>
               `${t(`driverProfileTranslations.${key}`)}: ${getErrorValue(
@@ -87,7 +87,7 @@ addDriverData.watch(({ onReset, ...data }) => {
           )
           .join("\n");
       }
-      return t("common.errorMessage", { err });
+      return t("common.errorMessage", { error });
     },
   });
 });

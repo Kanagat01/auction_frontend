@@ -48,7 +48,7 @@ login.watch(({ navigateFunc, ...data }) => {
       navigateFunc();
       return t("login.success");
     },
-    error: (err) => t("common.errorMessage", { err }),
+    error: (error) => t("common.errorMessage", { error }),
   });
 });
 

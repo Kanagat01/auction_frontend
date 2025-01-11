@@ -49,7 +49,7 @@ addTransportToAllowed.watch(({ transporter_company_id, onReset }) => {
         id: transporter.transporter_company_id,
       });
     },
-    error: (err) => t("common.errorMessage", { err }),
+    error: (error) => t("common.errorMessage", { error }),
   });
 });
 

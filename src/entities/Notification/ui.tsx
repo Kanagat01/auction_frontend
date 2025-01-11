@@ -138,7 +138,7 @@ export function Notifications() {
   return (
     <>
       <a href="#" onClick={changeShow} className={styles.notificationBell}>
-        <ReactSVG src="assets/svg/bell.svg" />
+        <ReactSVG src="/assets/svg/bell.svg" />
         {notifications.length > 0 && (
           <span className={styles.notificationCount}>
             {notifications.length}

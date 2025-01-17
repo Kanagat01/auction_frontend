@@ -104,6 +104,7 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
       header: () => t(`orderTranslations.${key}`),
       sortDescFirst: false,
       enableSorting: key !== "status",
+      enableMultiSort: false,
     })
   );
 };

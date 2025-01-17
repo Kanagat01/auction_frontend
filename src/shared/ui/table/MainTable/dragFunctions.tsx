@@ -11,10 +11,9 @@ export const DraggableTableHeader = ({
 }: {
   header: Header<unknown, unknown>;
 }) => {
-  const { attributes, isDragging, listeners, setNodeRef, transform } =
-    useSortable({
-      id: header.column.id,
-    });
+  const { isDragging, setNodeRef, transform } = useSortable({
+    id: header.column.id,
+  });
 
   const style: CSSProperties = {
     opacity: isDragging ? 0.8 : 1,
@@ -33,7 +32,7 @@ export const DraggableTableHeader = ({
       ref={setNodeRef}
       style={style}
     >
-      <span {...attributes} {...listeners}>
+      <span>
         {header.isPlaceholder
           ? null
           : flexRender(header.column.columnDef.header, header.getContext())}
@@ -92,7 +91,7 @@ export function handleDragEnd(
     setColumnOrder((columnOrder: string[]) => {
       const oldIndex = columnOrder.indexOf(active.id as string);
       const newIndex = columnOrder.indexOf(over.id as string);
-      return active.id !== "column_0"
+      return active.id !== "column_0" && newIndex !== 0
         ? arrayMove(columnOrder, oldIndex, newIndex)
         : columnOrder;
     });

@@ -250,7 +250,7 @@ export function DataSection({ order }: { order: TGetOrder }) {
                 {t("orderStageTranslations.comments")}
               </TitleSm>
               <div className="gray-line mb-2" />
-              <TitleSm>
+              <TitleSm style={{ wordBreak: "break-word" }}>
                 {stage.comments ? copyOnClickWrapper(stage.comments) : "—"}
               </TitleSm>
             </div>

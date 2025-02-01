@@ -22,9 +22,9 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
   const keys =
     role === "customer" ? keysCustomer[route] : keysTransporter[route];
   if (!keys) throw "This route not in the dict";
-  return keys.map((key, index) =>
+  return keys.map((key) =>
     columnHelper.accessor(key, {
-      id: `column_${index}`,
+      id: key,
       cell: (info) => {
         const row = info.row;
         const order = row.original;
@@ -102,11 +102,69 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
         return value;
       },
       header: () => t(`orderTranslations.${key}`),
-      sortDescFirst: false,
       enableSorting: key !== "status",
-      enableMultiSort: false,
+      enableMultiSort: true,
+      sortingFn: (a, b, columnId) => {
+        const order1 = a.original;
+        const value1 = getOrderColumnValue(
+          columnId as keyof TColumn,
+          role,
+          order1,
+          findEarliestLoadStage(order1.stages),
+          findLatestUnloadStage(order1.stages)
+        );
+
+        const order2 = b.original;
+        const value2 = getOrderColumnValue(
+          columnId as keyof TColumn,
+          role,
+          order2,
+          findEarliestLoadStage(order2.stages),
+          findLatestUnloadStage(order2.stages)
+        );
+        return defaultSortingFn(value1, value2);
+      },
     })
   );
+};
+
+export const defaultSortingFn = (valueA: unknown, valueB: unknown) => {
+  if (typeof valueA === "string" && typeof valueB === "string") {
+    return valueA.localeCompare(valueB);
+  }
+
+  if (typeof valueA === "number" && typeof valueB === "number") {
+    return valueA - valueB;
+  }
+
+  if (valueA instanceof Date && valueB instanceof Date) {
+    return valueA.getTime() - valueB.getTime();
+  }
+
+  if (
+    typeof valueA === "string" &&
+    typeof valueB === "string" &&
+    !isNaN(Date.parse(valueA)) &&
+    !isNaN(Date.parse(valueB))
+  ) {
+    return new Date(valueA).getTime() - new Date(valueB).getTime();
+  }
+
+  if (typeof valueA === "boolean" && typeof valueB === "boolean") {
+    return valueA === valueB ? 0 : valueA ? 1 : -1;
+  }
+
+  if (valueA === valueB) {
+    return 0;
+  }
+  if (valueA === null || valueA === undefined) {
+    return 1;
+  }
+  if (valueB === null || valueB === undefined) {
+    return -1;
+  }
+
+  return 0;
 };
 
 export const getExportData = (

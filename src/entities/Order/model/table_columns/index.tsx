@@ -16,6 +16,7 @@ import { Checkbox } from "~/shared/ui";
 import Routes from "~/shared/routes";
 import { keysCustomer, keysTransporter } from "./keys";
 import { getOrderColumnValue } from "./getOrderColumnValue";
+import { dateTimeToString, dateToLongMonthString } from "~/shared/lib";
 
 export const getColumns = (route: Routes, role: "transporter" | "customer") => {
   const columnHelper = createColumnHelper<TColumn>();
@@ -30,80 +31,91 @@ export const getColumns = (route: Routes, role: "transporter" | "customer") => {
         const order = row.original;
         const earliestLoadStage = findEarliestLoadStage(order.stages);
         const latestUnloadStage = findLatestUnloadStage(order.stages);
-        const value = getOrderColumnValue(
-          key,
-          role,
-          order,
-          earliestLoadStage,
-          latestUnloadStage
-        );
-        if (key === "transportation_number") {
-          const selectedOrder = useUnit($selectedOrder);
-          const orderId = order.id;
-          const checked = selectedOrder?.id === orderId;
-          return (
-            <div
-              className="d-flex align-items-center position-relative"
-              style={{ wordBreak: "break-word", width: "fit-content" }}
-            >
-              <Checkbox
-                className="mr-3"
-                {...{
-                  name: orderId.toString(),
-                  checked: checked,
-                  disabled: !row.getCanSelect(),
-                  indeterminate: row.getIsSomeSelected()
-                    ? row.getIsSomeSelected()
-                    : undefined,
-                  onChange: () => setSelectedOrder(!checked ? order : null),
-                }}
-              />
-              <span className="ms-3">{value}</span>
-              {order.isNewOrder && (
-                <span
-                  className="blue-circle"
-                  style={{ top: "0.25rem", right: "-1.5rem" }}
+        const value =
+          getOrderColumnValue(
+            key,
+            role,
+            order,
+            earliestLoadStage,
+            latestUnloadStage
+          ) ?? "-";
+        switch (key) {
+          case "transportation_number":
+            const selectedOrder = useUnit($selectedOrder);
+            const orderId = order.id;
+            const checked = selectedOrder?.id === orderId;
+            return (
+              <div
+                className="d-flex align-items-center position-relative"
+                style={{ wordBreak: "break-word", width: "fit-content" }}
+              >
+                <Checkbox
+                  className="mr-3"
+                  {...{
+                    name: orderId.toString(),
+                    checked: checked,
+                    disabled: !row.getCanSelect(),
+                    indeterminate: row.getIsSomeSelected()
+                      ? row.getIsSomeSelected()
+                      : undefined,
+                    onChange: () => setSelectedOrder(!checked ? order : null),
+                  }}
                 />
-              )}
-            </div>
-          );
-        } else if (key === "transporter") {
-          if (role === "transporter") return value;
-          return (
-            <span
-              style={
-                order?.offers?.[0]?.status == OrderOfferStatus.rejected
-                  ? { color: "var(--danger)" }
-                  : {}
-              }
-            >
-              {value}
-            </span>
-          );
-        } else if (key === "offer_price") {
-          const priceData = order.price_data;
-          return (
-            <span
-              style={
-                priceData && "is_best_offer" in priceData
-                  ? {
-                      color: priceData.is_best_offer
-                        ? "var(--success)"
-                        : "var(--danger)",
-                      textDecoration: "underline",
-                    }
-                  : {}
-              }
-            >
-              {value}
-            </span>
-          );
+                <span className="ms-3">{value?.toString() ?? "-"}</span>
+                {order.isNewOrder && (
+                  <span
+                    className="blue-circle"
+                    style={{ top: "0.25rem", right: "-1.5rem" }}
+                  />
+                )}
+              </div>
+            );
+          case "transporter":
+            if (role === "transporter") return value;
+            return (
+              <span
+                style={
+                  order?.offers?.[0]?.status == OrderOfferStatus.rejected
+                    ? { color: "var(--danger)" }
+                    : {}
+                }
+              >
+                {value?.toString() ?? "-"}
+              </span>
+            );
+          case "offer_price":
+            const priceData = order.price_data;
+            return (
+              <span
+                style={
+                  priceData && "is_best_offer" in priceData
+                    ? {
+                        color: priceData.is_best_offer
+                          ? "var(--success)"
+                          : "var(--danger)",
+                        textDecoration: "underline",
+                      }
+                    : {}
+                }
+              >
+                {value?.toString()}
+              </span>
+            );
+          case "updated_at":
+          case "created_at":
+            return value !== "-" ? dateTimeToString(value as string) : value;
+          case "loading_date":
+          case "unloading_date":
+            return value !== "-"
+              ? dateToLongMonthString(value as string)
+              : value;
+          default:
+            return value;
         }
-        return value;
       },
       header: () => t(`orderTranslations.${key}`),
       enableSorting: key !== "status",
-      enableMultiSort: true,
+      enableMultiSort: false,
       sortingFn: (a, b, columnId) => {
         const order1 = a.original;
         const value1 = getOrderColumnValue(

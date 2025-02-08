@@ -6,7 +6,6 @@ import {
   CancelOrder,
   CompleteOrder,
   OrderStatus,
-  UnpublishOrder,
 } from "~/entities/Order";
 import { OrdersPage, textActionProps } from "./helpers";
 
@@ -19,7 +18,6 @@ export function OrdersBeingExecuted() {
         <>
           <CompleteOrder {...textActionProps} />
           <CancelOrder variant="text" {...textActionProps} />
-          <UnpublishOrder {...textActionProps} />
         </>
       ) : (
         ""
